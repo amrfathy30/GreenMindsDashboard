@@ -14,7 +14,7 @@ const Label: FC<LabelProps> = ({ htmlFor, children, className }) => {
       htmlFor={htmlFor}
       className={clsx(
         twMerge(
-          "mb-1.5 block text-sm font-medium text-[#828282] dark:text-gray-400",
+          "mb-1.5 block text-base font-medium capitalize text-[#1F2937] dark:text-gray-400",
           className,
         ),
       )}

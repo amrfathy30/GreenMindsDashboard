@@ -17,6 +17,7 @@ import {
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import AppHeader from "./AppHeader";
+import { UserCog } from "lucide-react";
 
 
 type NavItem = {
@@ -46,7 +47,12 @@ const navItems: NavItem[] = [
   {
     icon: <UserCircleIcon />,
     name: "Settings",
-    path: "/profile",
+    path: "/setting",
+  },
+  {
+    icon: <UserCog />,
+    name: "Users",
+    path: "/users",
   },
   {
     name: "Help",

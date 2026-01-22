@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/UserProfiles";
+import Setting from "./pages/Setting/Setting";
 import Videos from "./pages/UiElements/Videos";
 import Images from "./pages/UiElements/Images";
 import Alerts from "./pages/UiElements/Alerts";
@@ -20,7 +20,8 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import VideosList from "./pages/videos/videosList";
 import GamesList from "./pages/games/gamesList";
-
+import AgeGroup from "./pages/Setting/AgeGroup";
+import Users from "./pages/Users/Users";
 
 export default function App() {
   return (
@@ -36,7 +37,9 @@ export default function App() {
             <Route path="/games" element={<GamesList />} />
 
             {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/setting" element={<Setting />} />
+            <Route path="/age-group" element={<AgeGroup />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
 
