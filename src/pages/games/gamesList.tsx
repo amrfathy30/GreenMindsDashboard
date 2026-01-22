@@ -1,17 +1,67 @@
-import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import { useState } from "react";
 import PageMeta from "../../components/common/PageMeta";
+import GameCard from "./gameCard";
+import Pagination from "../../components/common/Pagination";
+import Button from "../../components/ui/button/Button";
+
+// بيانات وهمية للتجربة
+const MOCK_GAMES = [
+  { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
+  { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
+    { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
+  { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
+    { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
+  { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
+];
 
 export default function GamesList() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10;
   return (
     <>
-    <PageMeta
-      title="Games Dashboard | TailAdmin - React.js Admin Dashboard Template"
-      description="This is React.js Images page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
-    />
-    <PageBreadcrumb pageTitle="Games" />
-    <div className="space-y-5 sm:space-y-6">
-    
-    </div>
-  </>
+      <PageMeta
+        title="Games Dashboard | TailAdmin"
+        description="Manage your games list easily."
+      />
+
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900 sm:p-6">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            Games - Admin
+          </h2>
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() => console.log("Open Modal")}
+            startIcon={
+              <div className="flex h-5 w-5 items-center justify-center rounded-[4px] border-2 border-white bg-transparent text-white font-bold text-xs">
+                +
+              </div>
+            }
+          >
+            Add Games
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {MOCK_GAMES.map((game) => (
+            <GameCard 
+              key={game.id}
+              title={game.title}
+              description={game.description}
+              image={game.image}
+            />
+          ))}
+        </div>
+
+       <div className="border-t border-gray-100 dark:border-gray-800 mt-6">
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          onPageChange={(page) => setCurrentPage(page)} 
+        />
+      </div>
+      </div>
+    </>
   );
 }
