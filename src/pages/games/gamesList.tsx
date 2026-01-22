@@ -24,14 +24,14 @@ export default function GamesList() {
         description="Manage your games list easily."
       />
 
-      <div className="relative rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900 sm:p-6 h-[calc(100vh-48px)]">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 bg-[#EDEDED]  dark:border-gray-800 dark:bg-gray-900  h-[calc(100vh-48px)]">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             Games - Admin
           </h2>
           <Button
             size="sm"
-            variant="primary"
+            variant="primaryGrid"
             onClick={() => console.log("Open Modal")}
             startIcon={
               <div className="flex h-5 w-5 items-center justify-center rounded-[4px] border-2 border-white bg-transparent text-white font-bold text-xs">
@@ -43,7 +43,7 @@ export default function GamesList() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[84%]">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
           {MOCK_GAMES.map((game) => (
             <GameCard 
               key={game.id}

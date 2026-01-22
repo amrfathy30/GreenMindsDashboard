@@ -16,11 +16,19 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description }) => {
       <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl">
         <img src={image} alt={title} className="h-full w-full object-cover" />
         
+
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-1">
+        <h3 className="text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
+          {title}
+        </h3>
         <button 
           onClick={() => setShowMenu(!showMenu)}
-          className="absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-gray-600 backdrop-blur-sm hover:bg-white dark:bg-black/50 dark:text-gray-300"
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#EFEFEF] text-gray-600 backdrop-blur-sm hover:bg-white dark:bg-black/50 dark:text-gray-300"
         >
-          <MoreVertical size={18} />
+          <MoreVertical size={12} />
         </button>
 
         {showMenu && (
@@ -33,12 +41,8 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description }) => {
             </button>
           </div>
         )}
-      </div>
+        </div>
 
-      <div>
-        <h3 className="mb-1 text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
-          {title}
-        </h3>
         <p className="line-clamp-2 text-xs text-gray-500 dark:text-gray-400">
           {description}
         </p>
