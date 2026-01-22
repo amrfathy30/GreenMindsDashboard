@@ -24,7 +24,7 @@ export default function GamesList() {
         description="Manage your games list easily."
       />
 
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900 sm:p-6">
+      <div className="relative rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900 sm:p-6 h-[calc(100vh-48px)]">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             Games - Admin
@@ -43,7 +43,7 @@ export default function GamesList() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[84%]">
           {MOCK_GAMES.map((game) => (
             <GameCard 
               key={game.id}
@@ -54,7 +54,7 @@ export default function GamesList() {
           ))}
         </div>
 
-       <div className="border-t border-gray-100 dark:border-gray-800 mt-6">
+       <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
         <Pagination 
           currentPage={currentPage} 
           totalPages={totalPages} 

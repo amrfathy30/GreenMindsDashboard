@@ -13,7 +13,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description }) => {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
 
-      <div className="relative mb-4 aspect-square overflow-hidden rounded-xl">
+      <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl">
         <img src={image} alt={title} className="h-full w-full object-cover" />
         
         <button 
@@ -36,7 +36,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description }) => {
       </div>
 
       <div>
-        <h3 className="mb-1 text-base font-semibold text-gray-900 dark:text-white truncate">
+        <h3 className="mb-1 text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
           {title}
         </h3>
         <p className="line-clamp-2 text-xs text-gray-500 dark:text-gray-400">
