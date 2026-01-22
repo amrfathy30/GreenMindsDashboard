@@ -9,7 +9,6 @@ import { ReactComponent as BoltIcon } from "./bolt.svg?react";
 import { ReactComponent as ArrowUpIcon } from "./arrow-up.svg?react";
 import { ReactComponent as ArrowDownIcon } from "./arrow-down.svg?react";
 import { ReactComponent as FolderIcon } from "./folder.svg?react";
-import { ReactComponent as VideoIcon } from "./videos.svg?react";
 import { ReactComponent as AudioIcon } from "./audio.svg?react";
 import { ReactComponent as GridIcon } from "./grid.svg?react";
 import { ReactComponent as FileIcon } from "./file.svg?react";
@@ -32,7 +31,7 @@ import { ReactComponent as ChevronUpIcon } from "./chevron-up.svg?react";
 import { ReactComponent as PaperPlaneIcon } from "./paper-plane.svg?react";
 import { ReactComponent as LockIcon } from "./lock.svg?react";
 import { ReactComponent as EnvelopeIcon } from "./envelope.svg?react";
-import { ReactComponent as UserIcon } from "./user-line.svg?react";
+
 import { ReactComponent as CalenderIcon } from "./calender-line.svg?react";
 import { ReactComponent as EyeIcon } from "./eye.svg?react";
 import { ReactComponent as EyeCloseIcon } from "./eye-close.svg?react";
@@ -56,8 +55,21 @@ import { ReactComponent as AlertHexaIcon } from "./alert-hexa.svg?react";
 import { ReactComponent as Users } from "./User Heart.svg?react";
 import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
 
+// used Icons 
+import { ReactComponent as VideoIcon } from "./video.svg?react";
+import { ReactComponent as GameIcon } from "./game.svg?react";
+import { ReactComponent as AnalyticsIcon } from "./analytics.svg?react";
+import { ReactComponent as SettingsIcon } from "./settings.svg?react";
+import { ReactComponent as UserIcon } from "./user-line.svg?react";
+
 export {
   Users,
+  VideoIcon,
+  GameIcon,
+  AnalyticsIcon,
+  SettingsIcon,
+  UserIcon,
+
   ErrorHexaIcon,
   AlertHexaIcon,
   MoreDotIcon,
@@ -65,7 +77,6 @@ export {
   FileIcon,
   GridIcon,
   AudioIcon,
-  VideoIcon,
   BoltIcon,
   PlusIcon,
   BoxIcon,
@@ -92,7 +103,6 @@ export {
   PaperPlaneIcon,
   EnvelopeIcon,
   LockIcon,
-  UserIcon,
   CalenderIcon,
   EyeIcon,
   EyeCloseIcon,

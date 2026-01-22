@@ -18,10 +18,13 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
-import VideosList from "./pages/videos/videosList";
+
 import GamesList from "./pages/games/gamesList";
 import AgeGroup from "./pages/Setting/AgeGroup";
 import Users from "./pages/Users/Users";
+import VideosList from "./pages/videos/videosList";
+import Analytics from "./pages/analytics/analyticsList";
+
 
 export default function App() {
   return (
@@ -29,12 +32,15 @@ export default function App() {
       <Router>
         <ScrollToTop />
         <Routes>
+        <Route index path="/" element={<SignIn />} />
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Home />} />
+
             {/* Pages */}
             <Route path="/videos" element={<VideosList />} />
             <Route path="/games" element={<GamesList />} />
+            <Route path="/analytics" element={<Analytics />} />
+            
 
             {/* Others Page */}
             <Route path="/users" element={<Users />} />

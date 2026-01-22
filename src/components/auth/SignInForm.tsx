@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
+import { useNavigate } from "react-router";
+import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
-import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 
 export default function SignInForm() {
+  const navigate =useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const handleOnSubmit=(e:any)=>{
+    e.preventDefault()
+    navigate('/videos')
+  }
   return (
     <div className="flex flex-col flex-1">
      
@@ -22,7 +26,7 @@ export default function SignInForm() {
           <div>
           
         
-            <form>
+            <form onSubmit={handleOnSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -66,7 +70,7 @@ export default function SignInForm() {
                   </Link>
                 </div> */}
                 <div>
-                  <Button className="w-full" size="md">
+                  <Button className="w-full" size="md" type="submit">
                   Login
                   </Button>
                 </div>
