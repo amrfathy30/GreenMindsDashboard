@@ -6,7 +6,7 @@ export const ThemeToggleButton: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-6 right-6 flex items-center justify-center 
+      className="z-90 fixed bottom-4 right-4 flex items-center justify-center 
       text-gray-500 transition-colors 
       bg-gray-300 border border-gray-200 
       rounded-full 
