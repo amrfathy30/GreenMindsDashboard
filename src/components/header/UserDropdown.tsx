@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
-import { Link } from "react-router";
+import EditProfileModal from "../../pages/Setting/EditProfileModal";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,29 +13,32 @@ export default function UserDropdown() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  const [openModalEditProfile, setOpenModalEditProfile] = useState(false);
+
   return (
     <div className="relative border-y w-full py-2">
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400 w-full"
       >
-
         <div className="flex justify-between w-full">
           <div className="flex items-center">
             <div className="mr-3 overflow-hidden rounded-full h-11 w-11">
               <img src="/images/user/owner.jpg" alt="User" />
             </div>
             <div className="flex flex-col items-start">
-            <span className="block mr-1 font-medium text-theme-sm">User</span>
-            <span className="block mr-1 font-medium text-theme-sm">user@greenMind.com</span>
+              <span className="block mr-1 font-medium text-theme-sm">User</span>
+              <span className="block mr-1 font-medium text-theme-sm">
+                user@greenMind.com
+              </span>
             </div>
-
-
           </div>
 
           <svg
-            className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
-              }`}
+            className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
             width="18"
             height="20"
             viewBox="0 0 18 20"
@@ -51,7 +54,6 @@ export default function UserDropdown() {
             />
           </svg>
         </div>
-
       </button>
 
       <Dropdown
@@ -64,16 +66,19 @@ export default function UserDropdown() {
             User Name
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-          user@greenMind.com
+            user@greenMind.com
           </span>
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
           <li>
             <DropdownItem
-              onItemClick={closeDropdown}
+              onItemClick={() => {
+                closeDropdown();
+                setOpenModalEditProfile(true);
+              }}
               tag="a"
-              to="/profile"
+              // to="/edit-profile"
               className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
               <svg
@@ -119,10 +124,12 @@ export default function UserDropdown() {
               Account settings
             </DropdownItem>
           </li>
-      
         </ul>
-
       </Dropdown>
+      <EditProfileModal
+        open={openModalEditProfile}
+        onClose={() => setOpenModalEditProfile(false)}
+      />
     </div>
   );
 }
