@@ -38,7 +38,7 @@ export default function Users() {
       <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-4">
         <div className="flex items-center gap-4">
           <button
-            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-3xl ${
+            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-2xl ${
               activeTab === "tab1"
                 ? "bg-[#25B16F] text-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
@@ -58,7 +58,7 @@ export default function Users() {
             Parent
           </button>
           <button
-            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-3xl ${
+            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-2xl ${
               activeTab === "tab3"
                 ? "bg-[#25B16F] text-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
