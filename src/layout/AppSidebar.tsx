@@ -2,9 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router"; // Use Link for navigation
 import { useSidebar } from "../context/SidebarContext";
 import AppHeader from "./AppHeader";
-import { UserCog } from "lucide-react";
-
-import { AnalyticsIcon, GameIcon, ListIcon, SettingsIcon, UserCircleIcon, VideoIcon } from "../icons";
+import { AnalyticsIcon, GameIcon, SettingsIcon, UserCircleIcon, VideoIcon } from "../icons";
 
 type NavItem = {
   name: string;
@@ -34,14 +32,9 @@ const navItems: NavItem[] = [
     path: "/setting",
   },
   {
-    icon: <UserCog />,
+    icon: <UserCircleIcon />,
     name: "Users",
     path: "/users",
-  },
-  {
-    name: "Help",
-    icon: <UserCircleIcon />,
-    path: "/form-elements",
   },
 ];
 
