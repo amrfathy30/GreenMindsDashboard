@@ -198,7 +198,7 @@ layer(base);
 }
 
 @utility menu-item-active {
-  @apply bg-linear-to-r from-primary to-secondary  text-white;
+  @apply bg-linear-to-r from-primary to-secondary text-white;
 }
 
 @utility menu-item-inactive {

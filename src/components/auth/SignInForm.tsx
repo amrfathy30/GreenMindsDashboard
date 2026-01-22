@@ -70,7 +70,7 @@ export default function SignInForm() {
                   </Link>
                 </div> */}
                 <div>
-                  <Button className="w-full" size="md" type="submit">
+                  <Button className="w-full" variant="primaryGrid" size="lg" type="submit">
                   Login
                   </Button>
                 </div>
