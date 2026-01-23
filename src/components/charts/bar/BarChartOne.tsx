@@ -3,11 +3,11 @@ import { ApexOptions } from "apexcharts";
 
 export default function BarChartOne() {
   const options: ApexOptions = {
-    colors: ["#465fff"],
+    colors: ["#8ED6E2"],
     chart: {
       fontFamily: "Outfit, sans-serif",
       type: "bar",
-      height: 180,
+      height: 300,
       toolbar: {
         show: false,
       },
@@ -29,20 +29,7 @@ export default function BarChartOne() {
       colors: ["transparent"],
     },
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: ["2:4", "5:7", "8:10", "10:12"],
       axisBorder: {
         show: false,
       },
@@ -83,14 +70,14 @@ export default function BarChartOne() {
   };
   const series = [
     {
-      name: "Sales",
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      name: "age number",
+      data: [168, 385, 201, 298],
     },
   ];
   return (
     <div className="max-w-full overflow-x-auto custom-scrollbar">
-      <div id="chartOne" className="min-w-[1000px]">
-        <Chart options={options} series={series} type="bar" height={180} />
+      <div id="chartOne" className="">
+        <Chart options={options} series={series} type="bar" height={300} />
       </div>
     </div>
   );
