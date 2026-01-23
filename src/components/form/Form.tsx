@@ -13,7 +13,7 @@ const Form: FC<FormProps> = ({ onSubmit, children, className }) => {
         event.preventDefault(); 
         onSubmit(event);
       }}
-      className={` ${className}`} 
+      className={`border-[#D3D3D3] dark:border-gray-800 ${className}`} 
     >
       {children}
     </form>

@@ -274,7 +274,7 @@ export default function ParentsList() {
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Confirm Delete"
+        title="Delete Parent"
         description="Are you sure you want to delete this Parent?"
       />
 

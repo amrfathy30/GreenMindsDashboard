@@ -12,7 +12,7 @@ export default function Taps() {
 
   return (
     <div>
-      <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-4">
+      <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8">
         <div className="flex items-center gap-4">
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${

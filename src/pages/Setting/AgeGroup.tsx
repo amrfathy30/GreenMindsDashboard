@@ -116,7 +116,7 @@ export default function AgeGroup() {
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Confirm Delete"
+        title="Delete Age Group"
         description="Are you sure you want to delete this age group?"
       />
     </div>

@@ -117,8 +117,8 @@ export default function ChildrenList() {
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Confirm Delete"
-        description="Are you sure you want to delete this children?"
+        title="Delete Child"
+        description="Are you sure you want to delete this child?"
       />
       <EditChildModal
         open={openEditModal}
