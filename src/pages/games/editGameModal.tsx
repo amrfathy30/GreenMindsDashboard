@@ -111,7 +111,7 @@ const EditGameModal: React.FC<EditGameModalProps> = ({ isOpen, onClose, gameData
                       <div className="text-[#25B16F]">
                         <Upload size={18} strokeWidth={2.5} />
                       </div>
-                      <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
+                      <span className="text-sm font-bold bg-gradient-to-r from-[#009DD1] to-[#25B16F] bg-clip-text text-transparent">
                         Upload Thumbnail
                       </span>
                     </button>

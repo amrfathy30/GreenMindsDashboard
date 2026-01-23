@@ -32,7 +32,7 @@ const AddGameModal: React.FC<AddGameModalProps> = ({ isOpen, onClose }) => {
       <div className="relative w-full max-w-3xl rounded-[15px] bg-white shadow-2xl dark:bg-gray-900 overflow-visible mt-10">
         
         <div 
-          className="absolute -top-8 md:-top-10 right h-[60px] md:h-[90px] w-[80%] sm:w-[85%] rounded-tr-[50px] md:rounded-tr-[90px] bg-gradient-to-r from-[#00A7E1] to-[#25B16F] flex items-center px-4 sm:px-8z-20"
+          className="absolute -top-8 md:-top-10 right h-[60px] md:h-[90px] w-[80%] sm:w-[85%] rounded-tr-[50px] md:rounded-tr-[90px] bg-gradient-to-r from-[#009DD1] to-[#25B16F] flex items-center px-4 sm:px-8z-20"
         >
           <h2 className="text-xl sm:text-3xl font-bold text-white tracking-wide truncate">Add New Game</h2>
         </div>
