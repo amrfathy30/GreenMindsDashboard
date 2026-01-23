@@ -1,8 +1,9 @@
-import { ChevronRight, Globe, Mail, Users } from "lucide-react";
+import { ChevronRight, Globe } from "lucide-react";
 import { useRef, useState } from "react";
 import PageMeta from "../../components/common/PageMeta";
 import SmtpSettingsModal from "./SmtpSettingsModal";
 import { Link } from "react-router";
+import { AgeGroup, BoxIcon, ListView, MessageSettings } from "../../icons";
 // import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 
 export default function Setting() {
@@ -27,7 +28,7 @@ export default function Setting() {
           {/* language  */}
           <div className="border-b pb-3 px-4">
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-1 text-[#6B6B6B]">
+              <div className="flex items-center gap-2 text-[#6B6B6B]">
                 <Globe className="w-5 h-5" />
                 <span>Language</span>
               </div>
@@ -62,19 +63,39 @@ export default function Setting() {
             onClick={() => setOpenModal(true)}
             className="flex justify-between items-center border-b pb-3 px-4 cursor-pointer"
           >
-            <div className="flex items-center gap-1 text-[#6B6B6B] text-base">
-              <Mail className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-[#6B6B6B] text-base">
+              <MessageSettings className="w-5 h-5" />
               <span>SMTP Settings</span>
             </div>
           </div>
           {/* age-groups */}
           <Link
             to="/age-group"
+            className="flex justify-between items-center px-4 border-b pb-3 cursor-pointer"
+          >
+            <div className="flex items-center gap-2 text-[#6B6B6B] text-base">
+              <AgeGroup className="w-5 h-5" />
+              <span>Age groups</span>
+            </div>
+          </Link>
+          {/* login-streaks */}
+          <Link
+            to="/login-streaks"
+            className="flex justify-between items-center px-4 border-b pb-3 cursor-pointer"
+          >
+            <div className="flex items-center gap-2 text-[#6B6B6B] text-base">
+              <ListView className="w-5 h-5" />
+              <span>Login Streaks</span>
+            </div>
+          </Link>
+          {/* profile-levels */}
+          <Link
+            to="/profile-levels"
             className="flex justify-between items-center px-4 cursor-pointer"
           >
-            <div className="flex items-center gap-1 text-[#6B6B6B] text-base">
-              <Users className="w-5 h-5" />
-              <span>Age groups</span>
+            <div className="flex items-center gap-2 text-[#6B6B6B] text-base">
+              <BoxIcon className="w-5 h-5" />
+              <span>Profile Levels</span>
             </div>
           </Link>
         </div>

@@ -5,9 +5,33 @@ import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
 import { EditIcon, RemoveIcon } from "../../../icons";
 import { Link } from "react-router";
-import EditParentModal from "./EditParentModal";
+import Pagination from "../../../components/common/Pagination";
+import ParentModal from "./ParentModal";
+
+export type Parents = {
+  id: number;
+  name_en: string;
+  name_ar: string;
+  email: string;
+  childrenList: Child[];
+  LastRegister?: string;
+};
+
+export type Child = {
+  name: string;
+  phone: string;
+  email: string;
+  points: string;
+  streaks: string;
+};
 
 export default function ParentsList() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10;
+
+  const [openParentModal, setOpenParentModal] = useState(false);
+  const [selectedParent, setSelectedParent] = useState<Parents | null>(null);
+
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -24,15 +48,13 @@ export default function ParentsList() {
     setSelectedDeleteId(null);
   };
 
-  const [openEditModal, setOpenEditModal] = useState(false);
-
-  const [parentList, setParentList] = useState([
+  const [parentList, setParentList] = useState<Parents[]>([
     {
       id: 1,
-      name: "Mohamed",
+      name_ar: "احمد",
+      name_en: "Ahmed",
       email: "mohamed@gmail.com",
       LastRegister: "5/7/16",
-      Children: "(3)",
       childrenList: [
         {
           name: "Ahmed",
@@ -59,10 +81,10 @@ export default function ParentsList() {
     },
     {
       id: 2,
-      name: "mohamed",
+      name_ar: "احمد",
+      name_en: "Ahmed",
       email: "mohamed@gmail.com",
       LastRegister: "5/7/16",
-      Children: "(3)",
       childrenList: [
         {
           name: "Ahmed",
@@ -89,10 +111,10 @@ export default function ParentsList() {
     },
     {
       id: 3,
-      name: "mohamed",
+      name_ar: "احمد",
+      name_en: "Ahmed",
       email: "mohamed@gmail.com",
       LastRegister: "5/7/16",
-      Children: "(3)",
       childrenList: [
         {
           name: "Ahmed",
@@ -119,10 +141,10 @@ export default function ParentsList() {
     },
     {
       id: 4,
-      name: "mohamed",
+      name_ar: "احمد",
+      name_en: "Ahmed",
       email: "mohamed@gmail.com",
       LastRegister: "5/7/16",
-      Children: "(3)",
       childrenList: [
         {
           name: "Ahmed",
@@ -149,10 +171,10 @@ export default function ParentsList() {
     },
     {
       id: 5,
-      name: "mohamed",
+      name_ar: "احمد",
+      name_en: "Ahmed",
       email: "mohamed@gmail.com",
       LastRegister: "5/7/16",
-      Children: "(3)",
       childrenList: [
         {
           name: "Ahmed",
@@ -181,8 +203,12 @@ export default function ParentsList() {
 
   const columns = [
     {
-      key: "name",
-      label: "Name",
+      key: "name_ar",
+      label: "Name (Ar)",
+    },
+    {
+      key: "name_en",
+      label: "Name (En)",
     },
     {
       key: "email",
@@ -205,7 +231,7 @@ export default function ParentsList() {
               <span>{item?.name},</span>
             </div>
           ))}
-          <span>({row.childrenList.length})</span>
+          ({row.childrenList.length})
         </div>
       ),
     },
@@ -214,18 +240,11 @@ export default function ParentsList() {
       label: "Actions",
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
-          {/* <button
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("Edit", row);
-            }}
-          >
-            <AddIcon className="w-8 h-8" />
-          </button> */}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setOpenEditModal(true);
+              setSelectedParent(row);
+              setOpenParentModal(true);
             }}
           >
             <EditIcon className="w-8 h-8" />
@@ -253,7 +272,7 @@ export default function ParentsList() {
           canExpand: (row) => row.childrenList?.length > 0,
           renderExpandedRows: (row) =>
             row.childrenList.map((child: any) => (
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="font-semibold">{child.name}</span>
                 <span className="font-semibold">{child.phone}</span>
                 <span className="font-semibold">{child.email}</span>
@@ -269,6 +288,13 @@ export default function ParentsList() {
             )),
         }}
       />
+      <div className="my-6 w-full flex items-center justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      </div>
 
       <ConfirmModal
         open={openConfirm}
@@ -278,9 +304,20 @@ export default function ParentsList() {
         description="Are you sure you want to delete this Parent?"
       />
 
-      <EditParentModal
-        open={openEditModal}
-        onClose={() => setOpenEditModal(false)}
+      <ParentModal
+        open={openParentModal}
+        onClose={() => {
+          setOpenParentModal(false);
+          setSelectedParent(null);
+        }}
+        initialData={selectedParent}
+        onSave={(Parent) => {
+          setParentList((prev) =>
+            selectedParent
+              ? prev.map((p) => (p.id === Parent.id ? Parent : p))
+              : [...prev, Parent],
+          );
+        }}
       />
     </div>
   );

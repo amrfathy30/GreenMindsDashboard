@@ -1,28 +1,69 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import Checkbox from "../../../components/form/input/Checkbox";
 import Label from "../../../components/form/Label";
+import { Child, Parents } from "./ParentsList";
 
-interface AddParentModalProps {
+interface ParentModalProps {
   open: boolean;
   onClose: () => void;
+  initialData?: Parents | null;
+  onSave: (data: Parents) => void;
 }
 
-export default function AddParentModal({ open, onClose }: AddParentModalProps) {
+export default function ParentModal({
+  open,
+  onClose,
+  initialData,
+  onSave,
+}: ParentModalProps) {
   const [checked, setChecked] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name_en: "",
+    name_ar: "",
+    email: "",
+    childrenList: [] as Child[],
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name_en: initialData.name_en,
+        name_ar: initialData.name_ar,
+        email: initialData.email,
+        childrenList: initialData.childrenList,
+      });
+    } else {
+      setFormData({
+        name_en: "",
+        name_ar: "",
+        email: "",
+        childrenList: [],
+      });
+    }
+  }, [initialData, open]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    onSave({
+      id: initialData?.id ?? Date.now(),
+      ...formData,
+    });
+
+    onClose();
   };
+
   return (
     <Modal
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title="Add New Parent"
+      title={initialData ? "Edit Parent" : "Add New Parent"}
     >
       <Form
         onSubmit={onSubmit}
@@ -30,7 +71,7 @@ export default function AddParentModal({ open, onClose }: AddParentModalProps) {
       >
         <div>
           <Input
-            id="name_En"
+            id="name_en"
             label="Parent Name (EN)"
             placeholder="Enter Name Here"
             // error
@@ -57,7 +98,7 @@ export default function AddParentModal({ open, onClose }: AddParentModalProps) {
         </div>
         <div className="flex justify-between items-center gap-3 flex-col md:flex-row">
           <Label htmlFor="" className="w-full">
-            Parent Childrens
+            Parent Children
           </Label>
           <Input id="search" placeholder="Children Search" />
         </div>
@@ -106,7 +147,10 @@ export default function AddParentModal({ open, onClose }: AddParentModalProps) {
           </div>
         </div>
 
-        <Button className="mt-2">Add Parent</Button>
+        <Button className="mt-2">
+          {" "}
+          {initialData ? "Update Parent" : "Add Parent"}
+        </Button>
       </Form>
     </Modal>
   );

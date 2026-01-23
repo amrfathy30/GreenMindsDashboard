@@ -64,9 +64,15 @@ import { ReactComponent as UserIcon } from "./user-line.svg?react";
 import { ReactComponent as AddIcon } from "./add.svg?react";
 import { ReactComponent as EditIcon } from "./Edit.svg?react";
 import { ReactComponent as RemoveIcon } from "./Remove.svg?react";
+import { ReactComponent as ListView } from "./ListView.svg?react";
+import { ReactComponent as MessageSettings } from "./MessageSettings.svg?react";
+import { ReactComponent as AgeGroup } from "./AgeGroup.svg?react";
 
 export {
   Users,
+  ListView,
+  MessageSettings,
+  AgeGroup,
   AddIcon,
   RemoveIcon,
   EditIcon,

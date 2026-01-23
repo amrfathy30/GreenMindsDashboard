@@ -1,31 +1,69 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import Checkbox from "../../../components/form/input/Checkbox";
+import { Admin } from "./AdminsList";
 
-interface EditAdminModalProps {
+interface AdminModalProps {
   open: boolean;
   onClose: () => void;
+  initialData?: Admin | null;
+  onSave: (data: Admin) => void;
 }
 
-export default function EditAdminModal({ open, onClose }: EditAdminModalProps) {
+export default function AdminModal({
+  open,
+  onClose,
+  initialData,
+  onSave,
+}: AdminModalProps) {
   const [checked, setChecked] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    permissions: [] as string[],
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        email: initialData.email,
+        permissions: initialData.permissions,
+      });
+    } else {
+      setFormData({
+        name: "",
+        email: "",
+        permissions: [],
+      });
+    }
+  }, [initialData, open]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    onSave({
+      id: initialData?.id ?? Date.now(),
+      ...formData,
+    });
+
+    onClose();
   };
+
   return (
     <Modal
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title="Edit Admin"
+      title={initialData ? "Edit Admin" : "Add New Admin"}
     >
       <Form
         onSubmit={onSubmit}
-        className="flex flex-col gap-3 p-6 my-6  border rounded-2xl"
+        className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
       >
         <div>
           <Input
@@ -100,7 +138,9 @@ export default function EditAdminModal({ open, onClose }: EditAdminModalProps) {
           </div>
         </div>
 
-        <Button className="mt-2">Edit Admin</Button>
+        <Button className="mt-2">
+          {initialData ? "Update Admin" : "Add Admin"}
+        </Button>
       </Form>
     </Modal>
   );

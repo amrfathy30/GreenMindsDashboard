@@ -1,10 +1,10 @@
 import { JSX, useState } from "react";
 import { Plus } from "lucide-react";
-import AddAdminModal from "./Admins/AddAdminModal";
-import AddParentModal from "./Parents/AddParentModal";
+import AddAdminModal from "./Admins/AdminModal";
+import AddParentModal from "./Parents/ParentModal";
 import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
-import AddChildModal from "./Children/AddChildModal";
+import AddChildModal from "./Children/ChildrenModal";
 import ChildrenList from "./Children/ChildrenList";
 
 export default function Users() {
@@ -38,7 +38,9 @@ export default function Users() {
 
   return (
     <div className="md:p-4">
-      <h2 className="font-medium text-2xl mb-4 text-[#000000] dark:text-white">Users</h2>
+      <h2 className="font-medium text-2xl mb-4 text-[#000000] dark:text-white">
+        Users
+      </h2>
 
       <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8">
         <div className="flex items-center gap-4">
