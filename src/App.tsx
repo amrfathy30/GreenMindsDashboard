@@ -21,6 +21,7 @@ import AgeGroup from "./pages/Setting/AgeGroup";
 import Users from "./pages/Users/Users";
 import VideosList from "./pages/videos/videosList";
 import Analytics from "./pages/analytics/analyticsList";
+import AvatarsList from "./pages/Avatars/avatarsList"
 import ChildrenInfo from "./pages/Users/Children/ChildrenInfo/ChildrenInfo";
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
             {/* Pages */}
             <Route path="/videos" element={<VideosList />} />
             <Route path="/games" element={<GamesList />} />
+            <Route path="/avatars" element={<AvatarsList />} />
             <Route path="/analytics" element={<Analytics />} />
 
             {/* Others Page */}

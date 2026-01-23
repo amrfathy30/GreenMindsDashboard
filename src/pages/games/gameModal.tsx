@@ -16,6 +16,7 @@ interface GameModalProps {
 const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(gameData?.image || null);
+  const ageGroups = ["2-4 Years", "5-7 Years", "8-10 Years", "11-13 Years"];
   if (!isOpen) return null;
 
   const handleUploadClick = () => {
@@ -65,6 +66,23 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }
           placeholder="Enter Name Here"
 
         />
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-black dark:text-gray-300">
+            Select Age Group
+          </label>
+          <select 
+            id="age_group"
+            defaultValue={gameData?.ageGroup || ""}
+            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
+          >
+            <option value="" disabled>Select Age Group</option>
+            {ageGroups.map((group) => (
+              <option key={group} value={group} className="dark:bg-[#1a222c]">
+                {group}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="grid grid-cols-2 space-x-2 w-full">
           <TextArea
             id="description_en"
