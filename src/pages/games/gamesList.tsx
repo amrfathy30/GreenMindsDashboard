@@ -3,6 +3,8 @@ import PageMeta from "../../components/common/PageMeta";
 import GameCard from "./gameCard";
 import Pagination from "../../components/common/Pagination";
 import Button from "../../components/ui/button/Button";
+import EditGameModal from "./editGameModal";
+import AddGameModal from "./addGameModal";
 
 // بيانات وهمية للتجربة
 const MOCK_GAMES = [
@@ -16,7 +18,14 @@ const MOCK_GAMES = [
 
 export default function GamesList() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<any>(null);
   const totalPages = 10;
+  const handleEditClick = (game: any) => {
+    setSelectedGame(game);
+    setIsEditModalOpen(true);
+  };
   return (
     <>
       <PageMeta
@@ -32,7 +41,7 @@ export default function GamesList() {
           <Button
             size="sm"
             variant="primaryGrid"
-            onClick={() => console.log("Open Modal")}
+            onClick={() => setIsModalOpen(true)}
             startIcon={
               <div className="flex h-5 w-5 items-center justify-center rounded-[4px] border-2 border-white bg-transparent text-white font-bold text-xs">
                 +
@@ -50,6 +59,7 @@ export default function GamesList() {
               title={game.title}
               description={game.description}
               image={game.image}
+              onEdit={() => handleEditClick(game)}
             />
           ))}
         </div>
@@ -62,6 +72,16 @@ export default function GamesList() {
         />
       </div>
       </div>
+
+      <AddGameModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+      <EditGameModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        gameData={selectedGame}
+      />
     </>
   );
 }
