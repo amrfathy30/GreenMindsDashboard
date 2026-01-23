@@ -20,26 +20,21 @@ export default function ConfirmModal({
     <Modal
       isOpen={open}
       onClose={onClose}
-      className="max-w-md mx-4 "
+      className="max-w-xl mx-4"
       title={title}
+      dangerType
     >
-      <div className="p-6">
-        <p className="mb-4 text-gray-700">{description}</p>
-        <div className="flex justify-end gap-3">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              onConfirm();
-              onClose();
-            }}
-            className="bg-red-500 hover:bg-red-600"
-          >
-            Delete
-          </Button>
+      <div className="pb-6">
+        <div className="border border-[#D3D3D3] dark:border-gray-800 rounded-[15px] h-[120px] my-4 flex items-center justify-center">
+          <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-relaxed">
+            {description}
+          </p>
         </div>
+        <Button className="mt-2 w-full" onClick={() => onConfirm()}>
+          Delete
+        </Button>
       </div>
+
     </Modal>
   );
 }

@@ -134,7 +134,7 @@ export default function AdminsList() {
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Confirm Delete"
+        title="Delete Admin"
         description="Are you sure you want to delete this admin?"
       />
       <EditAdminModal
@@ -142,5 +142,6 @@ export default function AdminsList() {
         onClose={() => setOpenEditModal(false)}
       />
     </div>
+    
   );
 }

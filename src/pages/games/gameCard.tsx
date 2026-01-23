@@ -6,13 +6,14 @@ interface GameCardProps {
   title: string;
   description: string;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit }) => {
+const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#9ea6ff14]">
 
       <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl">
         <img src={image} alt={title} className="h-full w-full object-cover" />
@@ -42,8 +43,14 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit })
             className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700" >
               Edit
             </button>
-            <button className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
-               Delete
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(); 
+              }}
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-red-50"
+            >
+              Delete
             </button>
           </div>
         )}

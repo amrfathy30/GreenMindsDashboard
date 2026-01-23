@@ -36,7 +36,7 @@ const Input: FC<InputProps> = ({
   error = false,
   hint,
 }) => {
-  let inputClasses = `h-11 w-full rounded-lg border px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-none focus:ring-3 dark:bg-gray-900 dark:text-white ${className}`;
+  let inputClasses = `h-11 w-full rounded-lg border px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-none focus:ring-3 dark:bg-[#1e1e1e] dark:text-white ${className}`;
 
   if (disabled) {
     inputClasses +=
@@ -57,7 +57,7 @@ const Input: FC<InputProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className="mb-1.5 block text-base font-medium text-black dark:text-gray-300"
+          className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300"
         >
           {label}
         </label>

@@ -9,10 +9,10 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
-      <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0">
+    <div className="relative p-6 bg-white z-1 dark:bg-[#1e1e1e] sm:p-0">
+      <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-[#1e1e1e] sm:p-0">
        
-        <div className="relative items-center hidden w-full h-full lg:w-[30%] bg-linear-to-t from-[#F5F5F5] to-white dark:bg-white/5 lg:grid">
+        <div className="relative items-center hidden w-full h-full lg:w-[30%] bf-white dark:bg-black lg:grid">
         <img className="absolute top-0 w-full h-full" src="/images/grid-image/bg-auth.png"/>
 
         <img className="absolute bottom-0 w-[90%] mx-auto right-[50%] translate-x-[50%]" src="/images/grid-image/kids.png"/>

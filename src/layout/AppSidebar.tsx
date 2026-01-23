@@ -72,14 +72,14 @@ const AppSidebar: React.FC = () => {
           >
             <span
               className={`menu-item-icon-size ${isActive(nav.path)
-                  ? "text-white"
-                  : "text-black"
+                  ? "text-white dark:text-black"
+                  : "text-black dark:text-white"
                 }`}
             >
               {nav.icon}
             </span>
             {(isExpanded || isHovered || isMobileOpen) && (
-              <span className="menu-item-text">{nav.name}</span>
+              <span className="menu-item-text ">{nav.name}</span>
             )}
           </Link>
         </li>
@@ -89,7 +89,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col justify-between lg:mt-0 top-0  left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 shadow-xl
+      className={`fixed mt-16 flex flex-col justify-between lg:mt-0 top-0  left-0 bg-white dark:bg-[#1e1e1e] dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 shadow-xl
         ${isExpanded || isMobileOpen ? "w-[320px]" :  "w-[90px]"}
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0`}
@@ -162,7 +162,7 @@ const SearchSection = ({ inputRef }: { inputRef: React.RefObject<HTMLInputElemen
             ref={inputRef}
             type="text"
             placeholder="Search ..."
-            className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+            className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-[#1e1e1e] dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
           />
         </div>
       </form>

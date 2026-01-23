@@ -38,15 +38,15 @@ export default function Users() {
 
   return (
     <div className="md:p-4">
-      <h2 className="font-medium text-2xl mb-4 text-[#000000]">Users</h2>
+      <h2 className="font-medium text-2xl mb-4 text-[#000000] dark:text-white">Users</h2>
 
-      <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-4">
+      <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8">
         <div className="flex items-center gap-4">
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab1"
-                ? "bg-[#25B16F] text-white"
-                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                ? "bg-[#25B16F] text-white "
+                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800  border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab1")}
           >
@@ -56,7 +56,7 @@ export default function Users() {
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab2"
                 ? "bg-[#25B16F] text-white"
-                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800  border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab2")}
           >
@@ -66,7 +66,7 @@ export default function Users() {
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab3"
                 ? "bg-[#25B16F] text-white"
-                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800  border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab3")}
           >

@@ -8,6 +8,7 @@ interface ModalProps {
   children: React.ReactNode;
   showCloseButton?: boolean;
   isFullscreen?: boolean;
+  dangerType?: boolean
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -18,6 +19,7 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   showCloseButton = true,
   isFullscreen = false,
+  dangerType = false
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -53,13 +55,13 @@ export const Modal: React.FC<ModalProps> = ({
 
   const contentClasses = isFullscreen
     ? "w-full h-full"
-    : "relative w-full rounded-lg bg-white dark:bg-gray-900 max-h-[90vh] flex flex-col";
+    : "relative w-full rounded-lg bg-white dark:bg-[#1e1e1e] max-h-[70vh] flex flex-col";
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center overflow-y-auto modal z-99999">
+    <div className="fixed inset-0 flex items-center justify-center overflow-y-auto custom-scrollbar modal z-99999">
       {!isFullscreen && (
         <div
-          className="fixed inset-0 h-full w-full bg-[#00000099]"
+          className="fixed inset-0 h-full w-full bg-[#00000099] backdrop-blur-[1px]"
           onClick={onClose}
         ></div>
       )}
@@ -68,17 +70,25 @@ export const Modal: React.FC<ModalProps> = ({
         className={`${contentClasses}  ${className} mt-5 md:mt-10`}
         onClick={(e) => e.stopPropagation()}
       >
+      <div className={`flex items-center absolute top-0 left-0 w-[80%] bg-linear-to-r  rounded-tr-[124px] -mt-8 md:-mt-10 p-4
+         ${dangerType ? 'from-[#D10000] to-[#402E25]' : 'from-[#009DD1] to-[#25B16F]'}`}>
+      {dangerType &&
+          <svg width="30" height="30" viewBox="0 0 50 50" fill="none" className="mr-3">
+            <path d="M25 37.5C25.7083 37.5 26.3021 37.2604 26.7813 36.7813C27.2604 36.3021 27.5 35.7083 27.5 35C27.5 34.2917 27.2604 33.6979 26.7813 33.2188C26.3021 32.7396 25.7083 32.5 25 32.5C24.2917 32.5 23.6979 32.7396 23.2188 33.2188C22.7396 33.6979 22.5 34.2917 22.5 35C22.5 35.7083 22.7396 36.3021 23.2188 36.7813C23.6979 37.2604 24.2917 37.5 25 37.5ZM22.5 27.5H27.5V12.5H22.5V27.5ZM25 50C21.5417 50 18.2917 49.3437 15.25 48.0312C12.2083 46.7187 9.5625 44.9375 7.3125 42.6875C5.0625 40.4375 3.28125 37.7917 1.96875 34.75C0.65625 31.7083 0 28.4583 0 25C0 21.5417 0.65625 18.2917 1.96875 15.25C3.28125 12.2083 5.0625 9.5625 7.3125 7.3125C9.5625 5.0625 12.2083 3.28125 15.25 1.96875C18.2917 0.65625 21.5417 0 25 0C28.4583 0 31.7083 0.65625 34.75 1.96875C37.7917 3.28125 40.4375 5.0625 42.6875 7.3125C44.9375 9.5625 46.7187 12.2083 48.0312 15.25C49.3437 18.2917 50 21.5417 50 25C50 28.4583 49.3437 31.7083 48.0312 34.75C46.7187 37.7917 44.9375 40.4375 42.6875 42.6875C40.4375 44.9375 37.7917 46.7187 34.75 48.0312C31.7083 49.3437 28.4583 50 25 50Z" fill="white" />
+          </svg>}
         {title && (
-          <h2 className="absolute top-0 left-0 w-[80%] text-2xl capitalize font-semibold bg-linear-to-r from-[#009DD1] to-[#25B16F] rounded-tr-[124px] p-4 text-white -mt-8 md:-mt-10">
+          <h2 className={` text-2xl capitalize font-semibold text-white`}>
             {title}
           </h2>
         )}
+      </div>
+
 
         {showCloseButton && (
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-3! top-2! z-999 flex h-8! w-8! items-center justify-center rounded-full text-black transition-colors hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white sm:right-6 sm:top-6 sm:h-11 sm:w-11"
+            className="absolute right-3! top-2! z-999 flex h-8! w-8! items-center justify-end  text-black transition-colors  hover:text-gray-700 dark:text-gray-400 dark:hover:text-white sm:right-6 sm:top-6 sm:h-11 sm:w-11"
           >
             <svg
               width="22"
@@ -96,7 +106,7 @@ export const Modal: React.FC<ModalProps> = ({
             </svg>
           </button>
         )}
-        <div className="flex-1 overflow-y-auto px-4 mt-4">{children}</div>
+        <div className="flex-1 overflow-y-auto px-4 mt-8">{children}</div>
       </div>
     </div>
   );
