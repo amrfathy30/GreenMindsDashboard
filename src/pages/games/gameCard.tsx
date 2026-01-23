@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { MoreVertical, Edit, Trash2 } from "lucide-react"; 
+import { MoreVertical} from "lucide-react"; 
 
 interface GameCardProps {
   image: string;
   title: string;
   description: string;
+  onEdit: () => void;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ image, title, description }) => {
+const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -25,11 +26,16 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description }) => {
 
         {showMenu && (
           <div className="absolute right-2 bottom-12 z-10 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
-            <button className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700">
-              <Edit size={14} /> Edit
+            <button 
+            onClick={(e) => {
+          e.stopPropagation(); 
+          onEdit();
+        }}
+            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700" >
+              Edit
             </button>
             <button className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
-              <Trash2 size={14} /> Delete
+               Delete
             </button>
           </div>
         )}
