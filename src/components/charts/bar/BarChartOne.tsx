@@ -18,10 +18,19 @@ export default function BarChartOne() {
         columnWidth: "39%",
         borderRadius: 5,
         borderRadiusApplication: "end",
+        dataLabels: {
+          position: "top", // Places the label at the top of the bar
+        },
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true, // Switched to true
+      offsetY: -20, // Moves the label 20px above the bar
+      style: {
+        fontSize: "12px",
+        colors: ["#304758"], 
+        fontFamily: "Outfit, sans-serif",
+      },
     },
     stroke: {
       show: true,
@@ -58,7 +67,6 @@ export default function BarChartOne() {
     fill: {
       opacity: 1,
     },
-
     tooltip: {
       x: {
         show: false,
@@ -68,15 +76,17 @@ export default function BarChartOne() {
       },
     },
   };
+
   const series = [
     {
       name: "age number",
       data: [168, 385, 201, 298],
     },
   ];
+
   return (
     <div className="max-w-full overflow-x-auto custom-scrollbar">
-      <div id="chartOne" className="">
+      <div id="chartOne">
         <Chart options={options} series={series} type="bar" height={300} />
       </div>
     </div>
