@@ -1,26 +1,29 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { Plus } from "lucide-react";
 import AddAdminModal from "./Admins/AddAdminModal";
 import AddParentModal from "./Parents/AddParentModal";
 import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
-import Childers from "./Childers/Childers";
+import AddChildModal from "./Children/AddChildModal";
+import ChildrenList from "./Children/ChildrenList";
 
 export default function Users() {
-  const [activeTab, setActiveTab] = useState("tab1");
-
   const [openModalAdmin, setOpenModalAdmin] = useState(false);
   const [openModalParent, setOpenModalParent] = useState(false);
+  const [openModalChild, setOpenModalChild] = useState(false);
 
-  const tabContent = {
+  const [activeTab, setActiveTab] = useState<"tab1" | "tab2" | "tab3">("tab1");
+
+  const tabContent: Record<"tab1" | "tab2" | "tab3", JSX.Element> = {
     tab1: <AdminsList />,
     tab2: <ParentsList />,
-    tab3: <Childers />,
+    tab3: <ChildrenList />,
   };
 
-  const tabNames: { [key: string]: string } = {
+  const tabNames: Record<"tab1" | "tab2" | "tab3", string> = {
     tab1: "Admin",
     tab2: "Parent",
+    tab3: "Children",
   };
 
   const handleAdd = () => {
@@ -28,6 +31,8 @@ export default function Users() {
       setOpenModalAdmin(true);
     } else if (activeTab === "tab2") {
       setOpenModalParent(true);
+    } else if (activeTab === "tab3") {
+      setOpenModalChild(true);
     }
   };
 
@@ -38,7 +43,7 @@ export default function Users() {
       <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-4">
         <div className="flex items-center gap-4">
           <button
-            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-3xl ${
+            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab1"
                 ? "bg-[#25B16F] text-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
@@ -48,7 +53,7 @@ export default function Users() {
             Admins
           </button>
           <button
-            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-3xl ${
+            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab2"
                 ? "bg-[#25B16F] text-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
@@ -58,21 +63,21 @@ export default function Users() {
             Parent
           </button>
           <button
-            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-3xl ${
+            className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab3"
                 ? "bg-[#25B16F] text-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab3")}
           >
-            Childers
+            Children
           </button>
         </div>
 
         {tabNames[activeTab] && (
           <button
             onClick={handleAdd}
-            className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-2xl font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
+            className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
           >
             <Plus />
             Add {tabNames[activeTab]}
@@ -89,6 +94,10 @@ export default function Users() {
       <AddParentModal
         open={openModalParent}
         onClose={() => setOpenModalParent(false)}
+      />
+      <AddChildModal
+        open={openModalChild}
+        onClose={() => setOpenModalChild(false)}
       />
     </div>
   );

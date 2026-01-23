@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import BasicTableOne from "../../components/tables/BasicTables/BasicTableOne";
 import AddButton from "../../components/ui/button/AddButton";
@@ -5,6 +6,7 @@ import { Plus } from "lucide-react";
 import AgeGroupModal from "./AgeGroupModal";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import { toast } from "sonner";
+import PageMeta from "../../components/common/PageMeta";
 
 export default function AgeGroup() {
   const [ageGroups, setAgeGroups] = useState([
@@ -86,6 +88,10 @@ export default function AgeGroup() {
 
   return (
     <div>
+      <PageMeta
+        title="Age Group | Green minds Admin Dashboard"
+        description="Age Group | Green minds Admin Dashboard"
+      />
       <div className="md:px-10">
         <h2 className="font-medium text-2xl p-4 text-[#000000]">Age Group</h2>
         <div className="flex justify-end my-4">
