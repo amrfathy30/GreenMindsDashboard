@@ -5,8 +5,8 @@ import Pagination from "../../components/common/Pagination";
 import Button from "../../components/ui/button/Button";
 import AddGameModal from "./AddGameModal";
 import EditGameModal from "./editGameModal";
+import DeleteGameModal from "./deleteGameModal";
 
-// بيانات وهمية للتجربة
 const MOCK_GAMES = [
   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
@@ -21,11 +21,18 @@ export default function GamesList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const totalPages = 10;
   const handleEditClick = (game: any) => {
     setSelectedGame(game);
     setIsEditModalOpen(true);
   };
+
+  const handleDeleteClick = (game: any) => {
+  setSelectedGame(game);
+  setIsDeleteModalOpen(true);
+};
+
   return (
     <>
       <PageMeta
@@ -60,6 +67,7 @@ export default function GamesList() {
               description={game.description}
               image={game.image}
               onEdit={() => handleEditClick(game)}
+              onDelete={() => handleDeleteClick(game)}
             />
           ))}
         </div>
@@ -82,6 +90,10 @@ export default function GamesList() {
         onClose={() => setIsEditModalOpen(false)} 
         gameData={selectedGame}
       />
+      <DeleteGameModal 
+  isOpen={isDeleteModalOpen} 
+  onClose={() => setIsDeleteModalOpen(false)} 
+/>
     </>
   );
 }
