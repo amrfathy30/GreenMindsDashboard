@@ -1,54 +1,51 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
-import ConfirmModal from "../../../components/common/ConfirmModal";
-import { toast } from "sonner";
 import { EditIcon, RemoveIcon } from "../../../icons";
-import EditAdminModal from "./EditAdminModal";
+import { toast } from "sonner";
+import ConfirmModal from "../../../components/common/ConfirmModal";
+import EditChildModal from "./EditChildModal";
 
-export default function AdminsList() {
+export default function ChildrenList() {
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [adminList, setAdminList] = useState([
+
+  const [childrenList, setChildrenList] = useState([
     {
       id: 1,
       name: "mohamed",
       email: "mohamed@gmail.com",
-      status: "verified",
       LastRegister: "5/7/16",
-      permissions: "Parents,Games",
+      parent: "ali mohamed",
     },
     {
       id: 2,
       name: "mohamed",
       email: "mohamed@gmail.com",
-      status: "verified",
       LastRegister: "5/7/16",
-      permissions: "Parents,Games",
+      parent: "ali mohamed",
     },
     {
       id: 3,
       name: "mohamed",
       email: "mohamed@gmail.com",
-      status: "not verified",
       LastRegister: "5/7/16",
-      permissions: "Parents,Games",
+      parent: "ali mohamed",
     },
     {
       id: 4,
       name: "mohamed",
       email: "mohamed@gmail.com",
-      status: "verified",
       LastRegister: "5/7/16",
-      permissions: "Parents,Games",
+      parent: "ali mohamed",
     },
     {
       id: 5,
       name: "mohamed",
       email: "mohamed@gmail.com",
-      status: "not verified",
       LastRegister: "5/7/16",
-      permissions: "Parents,Games",
+      parent: "ali mohamed",
     },
   ]);
 
@@ -59,14 +56,12 @@ export default function AdminsList() {
 
   const confirmDelete = () => {
     if (selectedDeleteId !== null) {
-      setAdminList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success("The admin has been deleted successfully");
+      setChildrenList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
+      toast.success("The children has been deleted successfully");
     }
 
     setSelectedDeleteId(null);
   };
-
-  const [openEditModal, setOpenEditModal] = useState(false);
 
   const columns = [
     {
@@ -76,18 +71,6 @@ export default function AdminsList() {
     {
       key: "email",
       label: "email",
-      render: (row: any) => (
-        <div className="flex justify-center items-center gap-2">
-          <span>{row.email}</span>
-          <span
-            className={`text-sm ${
-              row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
-            }`}
-          >
-            {row.status === "verified" ? "Verified" : "Not Verified"}
-          </span>
-        </div>
-      ),
     },
     {
       key: "LastRegister",
@@ -97,8 +80,8 @@ export default function AdminsList() {
       ),
     },
     {
-      key: "permissions",
-      label: "permissions",
+      key: "parent",
+      label: "parent",
     },
     {
       key: "actions",
@@ -129,15 +112,15 @@ export default function AdminsList() {
 
   return (
     <div>
-      <BasicTableOne data={adminList} columns={columns} />{" "}
+      <BasicTableOne data={childrenList} columns={columns} />{" "}
       <ConfirmModal
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
         title="Confirm Delete"
-        description="Are you sure you want to delete this admin?"
+        description="Are you sure you want to delete this children?"
       />
-      <EditAdminModal
+      <EditChildModal
         open={openEditModal}
         onClose={() => setOpenEditModal(false)}
       />
