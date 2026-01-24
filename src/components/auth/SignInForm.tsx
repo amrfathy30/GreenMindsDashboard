@@ -1,38 +1,93 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
+import { adminLogin } from "../../api/services/authService";
 
 export default function SignInForm() {
-  const navigate =useNavigate()
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const handleOnSubmit=(e:any)=>{
-    e.preventDefault()
-    navigate('/videos')
-  }
+ 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [showForgetPassword, setShowForgetPassword] = useState(false);
+
+
+  useEffect(() => {
+    const checkExistingAuth = async () => {
+      const token = localStorage.getItem('GMadminToken');
+      if (!token) {
+        setCheckingAuth(false);
+        return;
+      }
+      try {
+        navigate('/videos');
+      } catch (error) {
+        localStorage.removeItem('GMadminToken');
+        setCheckingAuth(false);
+      }
+    };
+
+    checkExistingAuth();
+  }, [navigate]);
+
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  };
+
+  const handleOnSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    // if (!validateEmail(email)) {
+    //   setError('Please Enter a valid email')
+    //   setLoading(false)
+    //   return;
+    // }
+   
+    try {
+      const response = await adminLogin({ email, password });
+      if (response.token) {
+        localStorage.setItem('GMadminToken', response.token);
+        navigate('/videos');
+      }
+      else{
+        navigate('/videos');
+      }
+    } catch (err: any) {
+      navigate('/videos');
+    }
+
+  };
+
   return (
     <div className="flex flex-col flex-1">
-     
+
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="text-center mb-2 font-semibold text-[#525252] text-title-sm dark:text-white/90 sm:text-title-md">
-            Login to your Account
+              Login to your Account
             </h1>
           </div>
           <div>
-          
-        
+
+
             <form onSubmit={handleOnSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input placeholder="info@gmail.com" value={email} onChange={e=>setEmail(e.target.value)} />
                 </div>
                 <div>
                   <Label>
@@ -42,6 +97,7 @@ export default function SignInForm() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
+                      value={password} onChange={e=>setPassword(e.target.value)} 
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -70,8 +126,8 @@ export default function SignInForm() {
                   </Link>
                 </div> */}
                 <div>
-                  <Button className="w-full" variant="primaryGrid" size="lg" type="submit">
-                  Login
+                  <Button className="w-full" variant="primaryGrid" size="lg" type="submit" disabled={!(email && password)} loading={loading}>
+                    Login
                   </Button>
                 </div>
               </div>

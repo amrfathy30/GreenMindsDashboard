@@ -5,6 +5,7 @@ import Pagination from "../../components/common/Pagination";
 import Button from "../../components/ui/button/Button";
 import DeleteGameModal from "./deleteGameModal";
 import GameModal from "./gameModal";
+import { PlusIcon } from "../../icons";
 
 const MOCK_GAMES = [
   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
@@ -48,12 +49,11 @@ export default function GamesList() {
             size="sm"
             variant="primaryGrid"
             onClick={() => setIsModalOpen(true)}
-            startIcon={
-              <div className="flex h-5 w-5 items-center justify-center rounded-[4px] border-2 border-white bg-transparent text-white font-bold text-xs">
-                +
-              </div>
-            }
+           
           >
+            <div className="text-white">
+              <PlusIcon />
+            </div>
             Add Games
           </Button>
         </div>

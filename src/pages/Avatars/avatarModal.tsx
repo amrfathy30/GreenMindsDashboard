@@ -51,7 +51,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
             Upload your avatar
           </label>
           <div className="flex flex-col sm:flex-row items-center gap-4 ">
-            <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#9ea6ff14] overflow-hidden border border-gray-100 border-gray-700">
+            <div className="relative flex h-[80px] w-[80px] shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-[#9ea6ff14] overflow-hidden border border-gray-100 border-gray-700">
               {previewImage ? (
                 <img src={previewImage} alt="Preview" className="h-full w-full object-cover" />
               ) : (
