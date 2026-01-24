@@ -8,13 +8,17 @@ import { AppWrapper } from "./components/common/PageMeta.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
 import { Toaster } from "sonner";
 
+import { LanguageProvider } from "./api/locales/LanguageContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
-      <AppWrapper>
-        <App />
-        <Toaster richColors position="top-right" />
-      </AppWrapper>
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <AppWrapper>
+          <App />
+          <Toaster richColors position="top-right" />
+        </AppWrapper>
+      </ThemeProvider>
+    </LanguageProvider>
+
   </StrictMode>,
 );

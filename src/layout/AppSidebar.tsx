@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router"; // Use Link for navigation
 import { useSidebar } from "../context/SidebarContext";
 import AppHeader from "./AppHeader";
 import { AnalyticsIcon, GameIcon, SettingsIcon, UserCircleIcon, VideoIcon,AvatarIcon } from "../icons";
+import { useLanguage } from "../api/locales/LanguageContext";
 
 type NavItem = {
   name: string;
@@ -47,7 +48,7 @@ const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const { isRTL} = useLanguage();
   // Keyboard shortcut for search focus
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -97,6 +98,7 @@ const AppSidebar: React.FC = () => {
       className={`fixed mt-16 flex flex-col justify-between lg:mt-0 top-0  left-0 bg-white dark:bg-[#1e1e1e] dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 shadow-xl
         ${isExpanded || isMobileOpen ? "w-[320px]" :  "w-[90px]"}
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
+        ${isRTL?"right-0":"left-0"}
         lg:translate-x-0`}
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -80,6 +80,7 @@ export default function EditProfileModal({
               placeholder="mohamed"
               className="border-b border-gray-300 focus:outline-none focus:ring-0 w-full md:w-1/2"
             />
+            
           </div>
 
           <div className="border border-[#E5E7EB]"></div>
