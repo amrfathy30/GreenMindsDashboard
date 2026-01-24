@@ -21,7 +21,7 @@ const initialVideos: VideoType[] = [
 ];
 
 export default function VideosList() {
-  const { t} = useLanguage();
+  const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -47,12 +47,12 @@ export default function VideosList() {
   return (
     <>
       <PageMeta
-        title="Games Dashboard | TailAdmin"
-        description="Manage your games list easily."
+        title="Videos Dashboard | Green minds Admin Dashboard"
+        description="Manage your videos list easily."
       />
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 bg-[#EDEDED]  dark:border-gray-800 dark:bg-[#9ea6ff14]  h-[calc(100vh-48px)]">
-        <div className="flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] py-4">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 bg-[#EDEDED]  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)]">
+        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t('Videos_Admin')}
           </h2>

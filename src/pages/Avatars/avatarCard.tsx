@@ -16,18 +16,18 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ image,ageGroup,onEdit,onDelete 
     setShowMenu(false);
   });
   return (
-    <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#9ea6ff14]">
+    <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#1e1e1e]">
 
-      <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl flex items-center justify-center border">
+      <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl flex items-center justify-center border dark:border-gray-600">
         <img src={image} className="h-[100px] w-[100px] rounded-full object-cover border" />
       
       </div>
 
       <div>
         <div className="flex items-center justify-between mb-1" ref={menuRef}>
-        <h3 className="text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
+        <h3 className="flex items-center text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
           Age Group:
-          <span className="text-sm text-[#009DD1]">{ageGroup}</span> 
+          <span className="text-sm mx-2 text-[#009DD1] flex">{ageGroup}</span> 
         </h3>
         <button 
           onClick={() => setShowMenu(!showMenu)}

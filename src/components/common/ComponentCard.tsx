@@ -13,7 +13,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
 }) => {
   return (
     <div
-      className={`rounded-xl h-full bg-white dark:border-gray-800 dark:bg-white/[0.03] ${className}`}
+      className={`rounded-xl h-full bg-white dark:bg-[#1e1e1e] dark:border-gray-800  ${className}`}
     >
       {/* Card Header */}
       <div className="px-4 pt-5">
