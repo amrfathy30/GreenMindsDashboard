@@ -85,7 +85,7 @@ const AppSidebar: React.FC = () => {
             >
               {nav.icon}
             </span>
-            {(isExpanded || isHovered || isMobileOpen) && (
+            {(isExpanded  || isMobileOpen) && (
               <span className="menu-item-text ">{nav.name}</span>
             )}
           </Link>
@@ -101,16 +101,15 @@ const AppSidebar: React.FC = () => {
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         ${isRTL?"right-0":"left-0"}
         lg:translate-x-0`}
-      onMouseEnter={() => !isExpanded && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+     
     >
       <div className="flex flex-col">
         <div
-          className={`pt-8 flex flex-col ${!isExpanded && !isHovered ? "lg:justify-center" : "items-center justify-center"
+          className={`pt-8 flex flex-col items-center justify-center "
             }`}
         >
           <Link to="/">
-            {isExpanded || isHovered || isMobileOpen ? (
+            {isExpanded || isMobileOpen ? (
               <img
                 src="/images/logo/Greenmindslogo.png"
                 alt="Logo"
@@ -119,10 +118,10 @@ const AppSidebar: React.FC = () => {
               />
             ) : (
               <img
-                src="/images/logo/logo-icon.svg"
+                src="/images/logo/Greenmindslogo.png"
                 alt="Logo"
-                width={32}
-                height={32}
+                width={40}
+                height={40}
               />
             )}
           </Link>
@@ -147,11 +146,16 @@ const AppSidebar: React.FC = () => {
 
 // Fixed SearchSection: Destructured { inputRef } from props
 const SearchSection = ({ inputRef }: { inputRef: React.RefObject<HTMLInputElement | null> }) => {
+  const { isExpanded, isMobileOpen } = useSidebar();
   return (
-    <div className="hidden lg:block mt-8 mb-6">
+    <div className={`
+       ${isExpanded|| isMobileOpen?'w-full':"w-[40px]"}
+       hidden lg:block mt-8 mb-6`}>
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="relative">
-          <span className="absolute -translate-y-1/2 pointer-events-none left-4 top-1/2">
+          <span className={`
+            ${isExpanded|| isMobileOpen?'-translate-y-1/2 left-4 top-1/2':"left-[50%] top-[50%] -translate-y-1/2 -translate-x-1/2"}
+            absolute pointer-events-none `}>
             <svg
               className="fill-gray-500 dark:fill-gray-400"
               width="20"
@@ -169,8 +173,10 @@ const SearchSection = ({ inputRef }: { inputRef: React.RefObject<HTMLInputElemen
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search ..."
-            className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 ps-12 pe-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-[#1e1e1e] dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+            placeholder={isExpanded|| isMobileOpen?"Search ...":""}
+            className={`
+              ${isExpanded|| isMobileOpen?'w-full py-2.5 ps-12 pe-14':"w-[40px] p-2"}
+              dark:bg-dark-900 h-11  rounded-lg border border-gray-200 bg-transparent  text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-[#1e1e1e] dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800`}
           />
         </div>
       </form>

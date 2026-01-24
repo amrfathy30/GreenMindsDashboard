@@ -2,7 +2,9 @@ import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import EditProfileModal from "../../pages/Setting/EditProfileModal";
+import { useSidebar } from "../../context/SidebarContext";
 export default function UserDropdown() {
+  const { isMobileOpen,isExpanded} = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
@@ -27,11 +29,11 @@ export default function UserDropdown() {
             <div className="me-3 overflow-hidden rounded-full h-11 w-11">
               <img src="/images/user/owner.jpg" alt="User" />
             </div>
-            <div className="flex flex-col items-start">
+            {isExpanded||isMobileOpen?   <div className="flex flex-col items-start">
               <span className="block me-1 font-medium text-theme-sm">User</span>
               <span className="block me-1 font-medium text-theme-sm">user@greenMind.com</span>
-            </div>
-          </div>
+            </div>:""
+          }          </div>
 
           <svg width="19" height="4" viewBox="0 0 19 4" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.8125 1.875C2.8125 2.12364 2.71373 2.3621 2.53791 2.53791C2.3621 2.71373 2.12364 2.8125 1.875 2.8125C1.62636 2.8125 1.3879 2.71373 1.21209 2.53791C1.03627 2.3621 0.9375 2.12364 0.9375 1.875C0.9375 1.62636 1.03627 1.3879 1.21209 1.21209C1.3879 1.03627 1.62636 0.9375 1.875 0.9375C2.12364 0.9375 2.3621 1.03627 2.53791 1.21209C2.71373 1.3879 2.8125 1.62636 2.8125 1.875ZM10.3125 1.875C10.3125 2.12364 10.2137 2.3621 10.0379 2.53791C9.8621 2.71373 9.62364 2.8125 9.375 2.8125C9.12636 2.8125 8.8879 2.71373 8.71209 2.53791C8.53627 2.3621 8.4375 2.12364 8.4375 1.875C8.4375 1.62636 8.53627 1.3879 8.71209 1.21209C8.8879 1.03627 9.12636 0.9375 9.375 0.9375C9.62364 0.9375 9.8621 1.03627 10.0379 1.21209C10.2137 1.3879 10.3125 1.62636 10.3125 1.875ZM17.8125 1.875C17.8125 2.12364 17.7137 2.3621 17.5379 2.53791C17.3621 2.71373 17.1236 2.8125 16.875 2.8125C16.6264 2.8125 16.3879 2.71373 16.2121 2.53791C16.0363 2.3621 15.9375 2.12364 15.9375 1.875C15.9375 1.62636 16.0363 1.3879 16.2121 1.21209C16.3879 1.03627 16.6264 0.9375 16.875 0.9375C17.1236 0.9375 17.3621 1.03627 17.5379 1.21209C17.7137 1.3879 17.8125 1.62636 17.8125 1.875Z" stroke="#1FAE7F" stroke-opacity="0.5" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" />

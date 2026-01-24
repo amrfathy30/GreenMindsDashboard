@@ -5,7 +5,7 @@ import UserDropdown from "../components/header/UserDropdown";
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
-  const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const { isMobileOpen,isExpanded, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -37,10 +37,10 @@ const AppHeader: React.FC = () => {
                 fill="currentColor" />
               </svg>
 
-              <span className="dark:text-white ">Logout</span>
+             {isExpanded||isMobileOpen? <span className="dark:text-white ">Logout</span>:""}
             </a>
             <button
-              className="items-center justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 lg:border"
+              className="items-center p-1 justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 lg:border"
               onClick={handleToggle}
               aria-label="Toggle Sidebar"
             >
@@ -61,7 +61,7 @@ const AppHeader: React.FC = () => {
                 </svg>
               ) : (
                 <svg
-                  width="16"
+                  width="12"
                   height="12"
                   viewBox="0 0 16 12"
                   fill="none"
