@@ -14,7 +14,6 @@ export default function Analytics() {
         title="Analytics Dashboard | Green minds Admin Dashboard"
         description=""
       />
-      <PageBreadcrumb pageTitle="Games" />
       <div className="bg-[#FAFAFA] min-h-screen rounded-tl-3xl rounded-tr-3xl">
         <div className="space-y-5 sm:space-y-6">
           <h2 className="font-medium text-2xl p-4 border text-[#000000] border-[#EDEDED] rounded-tl-3xl rounded-tr-3xl">
@@ -27,15 +26,15 @@ export default function Analytics() {
               <Total />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
+              <div className="col-span-1 md:col-span-3">
                 <AgeGroupChart />
               </div>
 
-              <div>
+              <div className="col-span-1 md:col-span-3">
                 <PointsDistribution />
               </div>
-              <div className="lg:col-span-1">
+              <div className="col-span-1 md:col-span-2">
                 <TopRanked />
               </div>
             </div>

@@ -1,79 +1,160 @@
+import { useEffect, useState, useRef } from "react";
 import Chart from "react-apexcharts";
+import { ApexOptions } from "apexcharts";
 import ComponentCard from "../../../components/common/ComponentCard";
 
 export default function PointsDistribution() {
-  const series = [20, 30, 40, 50, 60];
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<{ x: number; y: number; index: number }[]>([]);
+  const [pieCenter, setPieCenter] = useState<{ x: number; y: number } | null>(null);
+  const [pieSize, setPieSize] = useState<{ w: number; h: number } | null>(null);
+  const series = [500, 400, 300, 200, 100];
+  const labels = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5"];
+  const colors = ["#FF4906", "#39CEF3", "#39CEF3", "#39CEF3", "#72CA3D"];
 
-  const options: ApexCharts.ApexOptions = {
+  const updatePositions = () => {
+    if (!containerRef.current) return;
+
+    const svgLabels = containerRef.current.querySelectorAll(".apexcharts-datalabels text");
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const pieElement = containerRef.current.querySelector(".apexcharts-pie");
+
+    if (pieElement) {
+      const pieRect = pieElement.getBoundingClientRect();
+
+      setPieCenter({
+        x: pieRect.left - containerRect.left + pieRect.width / 2,
+        y: pieRect.top - containerRect.top + pieRect.height / 2,
+      });
+      setPieSize({
+        w: pieRect?.width,
+        h: pieRect.height,
+      });
+    }
+    if (svgLabels.length === 0) return;
+
+    const newCoords = Array.from(svgLabels).map((node, i) => {
+      const rect = node.getBoundingClientRect();
+      return {
+        x: rect.left - containerRect.left + rect.width / 2,
+        y: rect.top - containerRect.top + rect.height / 2,
+        index: i,
+      };
+    });
+
+    setCoords(newCoords);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(updatePositions, 600);
+    const observer = new MutationObserver(updatePositions);
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current, { childList: true, subtree: true });
+    }
+
+    window.addEventListener("resize", updatePositions);
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+      window.removeEventListener("resize", updatePositions);
+    };
+  }, []);
+
+  const options: ApexOptions = {
     chart: {
-      type: "radialBar",
+      type: "donut",
+      animations: { enabled: false },
+      toolbar: { show: false },
     },
-    colors: [
-      "#9BE15D", // Level 1
-      "#38BDF8", // Level 2
-      "#22D3EE", // Level 3
-      "#38BDF8", // Level 4
-      "#FF6A2A", // Level 5
-    ],
+    grid: {
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      }
+    },
+    colors: colors,
+    fill: {
+      type: "gradient",
+
+    },
     plotOptions: {
-      radialBar: {
-        hollow: {
-          size: "45%",
-        },
-        track: {
-          background: "#f3f4f6",
-          margin: 8,
-        },
+      pie: {
+        customScale: 0.65,
+        donut: { size: "55%" },
         dataLabels: {
-          show: false,
+          offset: 95,
+          minAngleToShowLabel: 0
         },
       },
     },
-    stroke: {
-      lineCap: "round",
+    dataLabels: {
+      enabled: true,
+      style: {
+        fontSize: "0px",
+        colors: ["transparent"],
+      },
+      dropShadow: { enabled: false }
     },
-    labels: ["L1", "L2", "L3", "L4", "L5"],
+    legend: { show: false },
+    labels: labels,
+    stroke: {
+      width: 8,
+      colors: ["#ffffff"]
+    },
   };
 
   return (
     <ComponentCard title="Points Distribution">
-      <div className="relative flex justify-center">
-        <Chart
-          options={options}
-          series={series}
-          type="radialBar"
-          height={320}
-        />
+      <div className="max-w-full overflow-x-auto custom-scrollbar">
+        <div ref={containerRef} className="relative w-full h-[400px]">
 
-        {/* Center Icon */}
-        <div className="absolute inset-0 flex items-center justify-center text-3xl">
-          <img className="w-14 h-14" src="/images/money.png" alt="money" />
+          <Chart options={options} series={series} type="donut" height="100%" />
+
+          {/* Center Money Icon */}
+          {pieCenter && pieSize&&(
+            <div
+              className="absolute pointer-events-none flex items-center justify-center rounded-full shadow-xl"
+              style={{
+                width:`${pieSize.w-30}px`,
+                height:`${pieSize.w-30}px`,
+                left: `${pieCenter.x}px`,
+                top: `${pieCenter.y}px`,
+                transform: "translate(-47%, -51%)",
+              }}
+            >
+              <img className="w-14 h-14" src="/images/money.png" alt="money" />
+            </div>
+          )}
+
+
+          {/* CUSTOM HTML LABELS */}
+          {coords.map((pos) => (
+            <div
+              key={pos.index}
+              className="absolute pointer-events-none flex flex-col items-center"
+              style={{
+                left: `${pos.x}px`,
+                top: `${pos.y}px`,
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <div className="text-sm font-black whitespace-nowrap" style={{ color: colors[pos.index] }}>
+                {series[pos.index]} Points
+              </div>
+              <svg width="65" height="2" viewBox="0 0 65 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 1H34.9746H65" stroke="#CDCDCD" stroke-width="2" stroke-dasharray="2 2" />
+              </svg>
+
+              <div className=" text-[12px] font-bold text-black dark:text-white whitespace-nowrap">
+                {labels[pos.index]}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
-      {/* Labels */}
-      {/* <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
-        <div>
-          <span className="text-green-500 font-bold">100 Points</span>
-          <div>Level 1</div>
-        </div>
-        <div className="text-right">
-          <span className="text-orange-500 font-bold">500 Points</span>
-          <div>Level 5</div>
-        </div>
-        <div>
-          <span className="text-sky-400 font-bold">200 Points</span>
-          <div>Level 2</div>
-        </div>
-        <div className="text-right">
-          <span className="text-cyan-400 font-bold">400 Points</span>
-          <div>Level 4</div>
-        </div>
-        <div>
-          <span className="text-cyan-500 font-bold">300 Points</span>
-          <div>Level 3</div>
-        </div>
-      </div> */}
     </ComponentCard>
   );
 }

@@ -18,7 +18,7 @@ export default function TopRanked() {
           </div>
         </div>
         <img
-          className="w-6 h-6 object-cover"
+          className="w-8 h-8 object-cover"
           src="/images/first.png"
           alt="first"
         />
@@ -36,7 +36,7 @@ export default function TopRanked() {
           </div>
         </div>
         <img
-          className="w-6 h-6 object-cover"
+          className="w-8 h-8 object-cover"
           src="/images/second.png"
           alt="first"
         />
@@ -54,7 +54,7 @@ export default function TopRanked() {
           </div>
         </div>
         <img
-          className="w-6 h-6 object-cover"
+          className="w-8 h-8 object-cover"
           src="/images/third.png"
           alt="first"
         />
