@@ -24,12 +24,12 @@ export default function UserDropdown() {
 
         <div className="flex justify-between items-center w-full">
           <div className="flex items-center">
-            <div className="mr-3 overflow-hidden rounded-full h-11 w-11">
+            <div className="me-3 overflow-hidden rounded-full h-11 w-11">
               <img src="/images/user/owner.jpg" alt="User" />
             </div>
             <div className="flex flex-col items-start">
-              <span className="block mr-1 font-medium text-theme-sm">User</span>
-              <span className="block mr-1 font-medium text-theme-sm">user@greenMind.com</span>
+              <span className="block me-1 font-medium text-theme-sm">User</span>
+              <span className="block me-1 font-medium text-theme-sm">user@greenMind.com</span>
             </div>
           </div>
 

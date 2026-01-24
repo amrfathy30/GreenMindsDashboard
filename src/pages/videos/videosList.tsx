@@ -87,7 +87,7 @@ export default function VideosList() {
                       <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-all">
                         <div className="bg-white/80 dark:bg-gray-700/80 p-2 rounded-full shadow-lg">
-                          <Play size={18} fill="#6B6B6B" className="ml-0.5 dark:fill-gray-300" />
+                          <Play size={18} fill="#6B6B6B" className="ms-0.5 dark:fill-gray-300" />
                         </div>
                       </div>
                     </div>

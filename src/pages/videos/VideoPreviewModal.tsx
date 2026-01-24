@@ -57,7 +57,7 @@ export default function VideoPreviewModal({ isOpen, onClose }: VideoPreviewModal
                   {isPlaying ? (
                     <Pause size={70} fill="white" className="text-white drop-shadow-xl" />
                   ) : (
-                    <Play size={70} fill="white" className="text-white drop-shadow-xl ml-2" />
+                    <Play size={70} fill="white" className="text-white drop-shadow-xl ms-2" />
                   )}
                </button>
 
@@ -94,12 +94,12 @@ export default function VideoPreviewModal({ isOpen, onClose }: VideoPreviewModal
 
                <div 
                 onClick={togglePlay}
-                className="w-12 h-12 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-lg ml-2"
+                className="w-12 h-12 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-lg ms-2"
                >
                   {isPlaying ? (
                     <Pause size={24} fill="black" className="text-black" />
                   ) : (
-                    <Play size={24} fill="black" className="text-black ml-1" />
+                    <Play size={24} fill="black" className="text-black ms-1" />
                   )}
                </div>
             </div>

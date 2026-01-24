@@ -132,7 +132,7 @@ export default function MonthlySalesChart() {
       </div>
 
       <div className="max-w-full overflow-x-auto custom-scrollbar">
-        <div className="-ml-5 min-w-[650px] xl:min-w-full ps-2">
+        <div className="-ms-5 min-w-[650px] xl:min-w-full ps-2">
           <Chart options={options} series={series} type="bar" height={180} />
         </div>
       </div>

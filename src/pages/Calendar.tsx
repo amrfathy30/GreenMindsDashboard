@@ -199,7 +199,7 @@ const Calendar: React.FC = () => {
                               checked={eventLevel === key}
                               onChange={() => setEventLevel(key)}
                             />
-                            <span className="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
+                            <span className="flex items-center justify-center w-5 h-5 me-2 border border-gray-300 rounded-full box dark:border-gray-700">
                               <span
                                 className={`h-2 w-2 rounded-full bg-white ${
                                   eventLevel === key ? "block" : "hidden"
