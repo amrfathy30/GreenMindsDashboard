@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
-import EditProfileModal from "../../pages/Setting/EditProfileModal";
+import EditProfileModal from "../../pages/Profile/EditProfileModal";
 import { useSidebar } from "../../context/SidebarContext";
 export default function UserDropdown() {
   const { isMobileOpen,isExpanded} = useSidebar();

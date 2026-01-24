@@ -6,12 +6,14 @@ import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
 import AddChildModal from "./Children/ChildrenModal";
 import ChildrenList from "./Children/ChildrenList";
+import { useLanguage } from "../../api/locales/LanguageContext";
 
 export default function Users() {
+  const { t } = useLanguage();
+
   const [openModalAdmin, setOpenModalAdmin] = useState(false);
   const [openModalParent, setOpenModalParent] = useState(false);
   const [openModalChild, setOpenModalChild] = useState(false);
-
   const [activeTab, setActiveTab] = useState<"tab1" | "tab2" | "tab3">("tab1");
 
   const tabContent: Record<"tab1" | "tab2" | "tab3", JSX.Element> = {
@@ -20,26 +22,22 @@ export default function Users() {
     tab3: <ChildrenList />,
   };
 
-  const tabNames: Record<"tab1" | "tab2" | "tab3", string> = {
-    tab1: "Admin",
-    tab2: "Parent",
-    tab3: "Children",
+  const addButtonText = {
+    tab1: t("addAdmin"),
+    tab2: t("addParent"),
+    tab3: t("addChild"),
   };
 
   const handleAdd = () => {
-    if (activeTab === "tab1") {
-      setOpenModalAdmin(true);
-    } else if (activeTab === "tab2") {
-      setOpenModalParent(true);
-    } else if (activeTab === "tab3") {
-      setOpenModalChild(true);
-    }
+    if (activeTab === "tab1") setOpenModalAdmin(true);
+    else if (activeTab === "tab2") setOpenModalParent(true);
+    else if (activeTab === "tab3") setOpenModalChild(true);
   };
 
   return (
     <div className="md:p-4">
       <h2 className="font-medium text-2xl mb-4 text-[#000000] dark:text-white">
-        Users
+        {t("pageTitle")}
       </h2>
 
       <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8">
@@ -47,44 +45,42 @@ export default function Users() {
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab1"
-                ? "bg-[#25B16F] text-white "
-                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800  border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                ? "bg-[#25B16F] text-white"
+                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab1")}
           >
-            Admins
+            {t("adminsTab")}
           </button>
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab2"
                 ? "bg-[#25B16F] text-white"
-                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800  border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab2")}
           >
-            Parent
+            {t("parentsTab")}
           </button>
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab3"
                 ? "bg-[#25B16F] text-white"
-                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800  border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab3")}
           >
-            Children
+            {t("childrenTab")}
           </button>
         </div>
 
-        {tabNames[activeTab] && (
-          <button
-            onClick={handleAdd}
-            className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
-          >
-            <Plus />
-            Add {tabNames[activeTab]}
-          </button>
-        )}
+        <button
+          onClick={handleAdd}
+          className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
+        >
+          <Plus />
+          {addButtonText[activeTab]}
+        </button>
       </div>
 
       <div>{tabContent[activeTab]}</div>
@@ -92,14 +88,24 @@ export default function Users() {
       <AddAdminModal
         open={openModalAdmin}
         onClose={() => setOpenModalAdmin(false)}
+        onSave={(data) => {
+          console.log("Saved admin:", data);
+        }}
       />
+
       <AddParentModal
         open={openModalParent}
         onClose={() => setOpenModalParent(false)}
+        onSave={(data) => {
+          console.log("Saved parent:", data);
+        }}
       />
       <AddChildModal
         open={openModalChild}
         onClose={() => setOpenModalChild(false)}
+        onSave={(data) => {
+          console.log("Saved child:", data);
+        }}
       />
     </div>
   );

@@ -5,6 +5,7 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import Checkbox from "../../../components/form/input/Checkbox";
 import { Admin } from "./AdminsList";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 interface AdminModalProps {
   open: boolean;
@@ -19,6 +20,8 @@ export default function AdminModal({
   initialData,
   onSave,
 }: AdminModalProps) {
+  const { t } = useLanguage();
+
   const [checked, setChecked] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -59,7 +62,7 @@ export default function AdminModal({
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title={initialData ? "Edit Admin" : "Add New Admin"}
+      title={initialData ? t("EditAdmin") : t("AddNewAdmin")}
     >
       <Form
         onSubmit={onSubmit}
@@ -68,70 +71,64 @@ export default function AdminModal({
         <div>
           <Input
             id="name_En"
-            label="Admin Name (EN)"
-            placeholder="Enter Name Here"
-            // error
-            // hint="Admin Name (EN) is required"
+            label={t("AdminNameEN")}
+            placeholder={t("EnterNameHere")}
           />
         </div>
         <div>
           <Input
             id="name_ar"
-            label="Admin Name (AR)"
-            placeholder="Enter Name Here"
-            // error
-            // hint="Admin Name (AR) is required"
+            label={t("AdminNameAR")}
+            placeholder={t("EnterNameHere")}
           />
         </div>
         <div>
           <Input
             id="email"
-            label="Admin Email"
-            placeholder="Enter Admin Email"
-            // error
-            // hint="Admin Email is required"
+            label={t("AdminEmail")}
+            placeholder={t("EnterAdminEmail")}
           />
         </div>
         <div className="">
-          <h2>Admin Permissions</h2>
+          <h2>{t("AdminPermissions")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-3">
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"} // fallback in case you add it later
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Permission 1"
+              label={"Permission 1"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
@@ -139,7 +136,7 @@ export default function AdminModal({
         </div>
 
         <Button className="mt-2">
-          {initialData ? "Update Admin" : "Add Admin"}
+          {initialData ? t("UpdateAdmin") : t("AddAdmin")}
         </Button>
       </Form>
     </Modal>

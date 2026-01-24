@@ -6,6 +6,7 @@ import Button from "../../../components/ui/button/Button";
 import Checkbox from "../../../components/form/input/Checkbox";
 import Label from "../../../components/form/Label";
 import { Child, Parents } from "./ParentsList";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 interface ParentModalProps {
   open: boolean;
@@ -20,12 +21,15 @@ export default function ParentModal({
   initialData,
   onSave,
 }: ParentModalProps) {
+  const { t } = useLanguage();
+
   const [checked, setChecked] = useState(false);
 
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
     email: "",
+    status: "",
     childrenList: [] as Child[],
   });
 
@@ -35,6 +39,7 @@ export default function ParentModal({
         name_en: initialData.name_en,
         name_ar: initialData.name_ar,
         email: initialData.email,
+        status: initialData.status,
         childrenList: initialData.childrenList,
       });
     } else {
@@ -42,6 +47,7 @@ export default function ParentModal({
         name_en: "",
         name_ar: "",
         email: "",
+        status: "",
         childrenList: [],
       });
     }
@@ -63,84 +69,78 @@ export default function ParentModal({
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title={initialData ? "Edit Parent" : "Add New Parent"}
+      title={initialData ? t("EditParent") : t("AddNewParent")}
     >
       <Form
         onSubmit={onSubmit}
-        className="flex flex-col gap-3 p-4 my-6  border rounded-2xl"
+        className="flex flex-col gap-3 p-4 my-6 border rounded-2xl"
       >
         <div>
           <Input
             id="name_en"
-            label="Parent Name (EN)"
-            placeholder="Enter Name Here"
-            // error
-            // hint="Parent Name (EN) is required"
+            label={t("ParentNameEN")}
+            placeholder={t("EnterNameHere")}
           />
         </div>
         <div>
           <Input
             id="name_ar"
-            label="Parent Name (AR)"
-            placeholder="Enter Name Here"
-            // error
-            // hint="Parent Name (AR) is required"
+            label={t("ParentNameAR")}
+            placeholder={t("EnterNameHere")}
           />
         </div>
         <div>
           <Input
             id="email"
-            label="Parent Email"
-            placeholder="Enter Parent Email"
-            // error
-            // hint="Parent Email is required"
+            label={t("ParentEmail")}
+            placeholder={t("EnterParentEmail")}
           />
         </div>
         <div className="flex justify-between items-center gap-3 flex-col md:flex-row">
           <Label htmlFor="" className="w-full">
-            Parent Children
+            {t("ParentChildren")}
           </Label>
-          <Input id="search" placeholder="Children Search" />
+          <Input id="search" placeholder={t("ChildrenSearch")} />
         </div>
-        <div className="">
+        <div>
           <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-3">
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
             <Checkbox
-              label="Children 1"
+              label={t("Child") || "Child"}
               checked={checked}
               onChange={(newChecked) => setChecked(newChecked)}
             />
@@ -148,8 +148,7 @@ export default function ParentModal({
         </div>
 
         <Button className="mt-2">
-          {" "}
-          {initialData ? "Update Parent" : "Add Parent"}
+          {initialData ? t("UpdateParent") : t("AddParent")}
         </Button>
       </Form>
     </Modal>

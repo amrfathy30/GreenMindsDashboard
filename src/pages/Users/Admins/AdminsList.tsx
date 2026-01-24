@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { EditIcon, RemoveIcon } from "../../../icons";
 import Pagination from "../../../components/common/Pagination";
 import AdminModal from "./AdminModal";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 export type Admin = {
   id: number;
@@ -18,7 +19,7 @@ export type Admin = {
 export default function AdminsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
-
+  const { t } = useLanguage();
   const [openAdminModal, setOpenAdminModal] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
 
@@ -58,11 +59,11 @@ export default function AdminsList() {
   const columns = [
     {
       key: "name",
-      label: "Name",
+      label: t("name"),
     },
     {
       key: "email",
-      label: "email",
+      label: t("email"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <span>{row.email}</span>
@@ -71,25 +72,25 @@ export default function AdminsList() {
               row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
             }`}
           >
-            {row.status === "verified" ? "Verified" : "Not Verified"}
+            {row.status === "verified" ? t("verified") : t("notVerified")}
           </span>
         </div>
       ),
     },
     {
       key: "LastRegister",
-      label: "Last Register",
+      label: t("lastRegister"),
       render: (row: any) => (
         <span className="text-[#757575]">{row.LastRegister}</span>
       ),
     },
     {
       key: "permissions",
-      label: "permissions",
+      label: t("permissions"),
     },
     {
       key: "actions",
-      label: "actions",
+      label: t("actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <button
@@ -98,15 +99,16 @@ export default function AdminsList() {
               setSelectedAdmin(row);
               setOpenAdminModal(true);
             }}
+            aria-label={t("common.edit")}
           >
             <EditIcon className="w-8 h-8" />
           </button>
-
           <button
             onClick={(e) => {
               e.stopPropagation();
               handleDelete(row.id);
             }}
+            aria-label={t("common.delete")}
           >
             <RemoveIcon className="w-8 h-8" />
           </button>
@@ -129,8 +131,8 @@ export default function AdminsList() {
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Delete Admin"
-        description="Are you sure you want to delete this admin?"
+        title={t("deleteAdmin")}
+        description={t("confirmDeleteAdmin")}
       />
       <AdminModal
         open={openAdminModal}

@@ -7,11 +7,13 @@ import { EditIcon, RemoveIcon } from "../../../icons";
 import { Link } from "react-router";
 import Pagination from "../../../components/common/Pagination";
 import ParentModal from "./ParentModal";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 export type Parents = {
   id: number;
   name_en: string;
   name_ar: string;
+  status: string;
   email: string;
   childrenList: Child[];
   LastRegister?: string;
@@ -28,6 +30,7 @@ export type Child = {
 export default function ParentsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
+  const { t } = useLanguage();
 
   const [openParentModal, setOpenParentModal] = useState(false);
   const [selectedParent, setSelectedParent] = useState<Parents | null>(null);
@@ -43,9 +46,13 @@ export default function ParentsList() {
   const confirmDelete = () => {
     if (selectedDeleteId !== null) {
       setParentList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success("The parent has been deleted successfully");
+      toast.success(
+        t("ParentDeletedSuccessfully") ||
+          "The parent has been deleted successfully",
+      );
     }
     setSelectedDeleteId(null);
+    setOpenConfirm(false);
   };
 
   const [parentList, setParentList] = useState<Parents[]>([
@@ -54,126 +61,7 @@ export default function ParentsList() {
       name_ar: "احمد",
       name_en: "Ahmed",
       email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      childrenList: [
-        {
-          name: "Ahmed",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Mona",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Seif",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      childrenList: [
-        {
-          name: "Ahmed",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Mona",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Seif",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      childrenList: [
-        {
-          name: "Ahmed",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Mona",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Seif",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      childrenList: [
-        {
-          name: "Ahmed",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Mona",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Seif",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-      ],
-    },
-    {
-      id: 5,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      email: "mohamed@gmail.com",
+      status: "verified",
       LastRegister: "5/7/16",
       childrenList: [
         {
@@ -204,32 +92,42 @@ export default function ParentsList() {
   const columns = [
     {
       key: "name_ar",
-      label: "Name (Ar)",
+      label: t("NameAr"),
     },
     {
       key: "name_en",
-      label: "Name (En)",
+      label: t("NameEn"),
     },
     {
       key: "email",
-      label: "email",
+      label: t("email"),
+      render: (row: any) => (
+        <div className="flex justify-center items-center gap-2">
+          <span>{row.email}</span>
+          <span
+            className={`text-sm ${
+              row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
+            }`}
+          >
+            {row.status === "verified" ? t("Verified") : t("NotVerified")}
+          </span>
+        </div>
+      ),
     },
     {
       key: "LastRegister",
-      label: "Last Register",
+      label: t("LastRegister"),
       render: (row: any) => (
         <span className="text-[#757575]">{row.LastRegister}</span>
       ),
     },
     {
       key: "Children",
-      label: "childrenList",
+      label: t("Children"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-1">
           {row.childrenList.map((item: { name: string }, index: number) => (
-            <div key={index}>
-              <span>{item?.name},</span>
-            </div>
+            <span key={index}>{item.name},</span>
           ))}
           ({row.childrenList.length})
         </div>
@@ -237,7 +135,7 @@ export default function ParentsList() {
     },
     {
       key: "actions",
-      label: "Actions",
+      label: t("Actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <button
@@ -249,7 +147,6 @@ export default function ParentsList() {
           >
             <EditIcon className="w-8 h-8" />
           </button>
-
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -262,17 +159,18 @@ export default function ParentsList() {
       ),
     },
   ];
+
   return (
     <div>
       <BasicTableOne
         data={parentList}
         columns={columns}
         expandable={{
-          title: "Children",
+          title: t("Children"),
           canExpand: (row) => row.childrenList?.length > 0,
           renderExpandedRows: (row) =>
-            row.childrenList.map((child: any) => (
-              <div className="flex justify-between items-center">
+            row.childrenList.map((child: any, index: number) => (
+              <div key={index} className="flex justify-between items-center">
                 <span className="font-semibold">{child.name}</span>
                 <span className="font-semibold">{child.phone}</span>
                 <span className="font-semibold">{child.email}</span>
@@ -282,7 +180,7 @@ export default function ParentsList() {
                   to="/children-info"
                   className="text-[#25B16F] font-semibold hover:underline"
                 >
-                  See more
+                  {t("SeeMore") || "See more"}
                 </Link>
               </div>
             )),
@@ -300,8 +198,8 @@ export default function ParentsList() {
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Delete Parent"
-        description="Are you sure you want to delete this Parent?"
+        title={t("DeleteParent")}
+        description={t("AreYouSureDeleteParent")}
       />
 
       <ParentModal

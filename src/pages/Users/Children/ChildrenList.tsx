@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import Pagination from "../../../components/common/Pagination";
 import ChildrenModal from "./ChildrenModal";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 export type Children = {
   id: number;
@@ -22,6 +23,8 @@ export type Children = {
 };
 
 export default function ChildrenList() {
+  const { t } = useLanguage();
+
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
 
@@ -47,58 +50,6 @@ export default function ChildrenList() {
       password: "",
       confirm_password: "",
     },
-    {
-      id: 2,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      phone: "0123456789",
-      age: "15",
-      gender: "male",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      parent_phone: "012346789",
-      password: "",
-      confirm_password: "",
-    },
-    {
-      id: 3,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      phone: "0123456789",
-      age: "15",
-      gender: "male",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      parent_phone: "012346789",
-      password: "",
-      confirm_password: "",
-    },
-    {
-      id: 4,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      phone: "0123456789",
-      age: "15",
-      gender: "male",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      parent_phone: "012346789",
-      password: "",
-      confirm_password: "",
-    },
-    {
-      id: 5,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      phone: "0123456789",
-      age: "15",
-      gender: "male",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      parent_phone: "012346789",
-      password: "",
-      confirm_password: "",
-    },
   ]);
 
   const handleDelete = (id: number) => {
@@ -109,39 +60,42 @@ export default function ChildrenList() {
   const confirmDelete = () => {
     if (selectedDeleteId !== null) {
       setChildrenList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success("The children has been deleted successfully");
+      toast.success(
+        t("ChildDeletedSuccessfully") ||
+          "The child has been deleted successfully",
+      );
     }
-
     setSelectedDeleteId(null);
+    setOpenConfirm(false);
   };
 
   const columns = [
     {
       key: "name_en",
-      label: "Name (En)",
+      label: t("NameEn"),
     },
     {
       key: "name_ar",
-      label: "Name (Ar)",
+      label: t("NameAr"),
     },
     {
       key: "email",
-      label: "email",
+      label: t("email"),
     },
     {
       key: "LastRegister",
-      label: "Last Register",
+      label: t("LastRegister"),
       render: (row: any) => (
         <span className="text-[#757575]">{row.LastRegister}</span>
       ),
     },
     {
       key: "parent_phone",
-      label: "parent Phone",
+      label: t("ParentPhone"),
     },
     {
       key: "actions",
-      label: "actions",
+      label: t("Actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <button
@@ -153,7 +107,6 @@ export default function ChildrenList() {
           >
             <EditIcon className="w-8 h-8" />
           </button>
-
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -169,7 +122,7 @@ export default function ChildrenList() {
 
   return (
     <div>
-      <BasicTableOne data={childrenList} columns={columns} />{" "}
+      <BasicTableOne data={childrenList} columns={columns} />
       <div className="my-6 w-full flex items-center justify-center">
         <Pagination
           currentPage={currentPage}
@@ -177,13 +130,15 @@ export default function ChildrenList() {
           onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
+
       <ConfirmModal
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Delete Child"
-        description="Are you sure you want to delete this child?"
+        title={t("DeleteChild")}
+        description={t("AreYouSureDeleteChild")}
       />
+
       <ChildrenModal
         open={openChildrenModal}
         onClose={() => {
