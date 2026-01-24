@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router"; // Use Link for navigation
 import { useSidebar } from "../context/SidebarContext";
 import AppHeader from "./AppHeader";
-import { AnalyticsIcon, GameIcon, SettingsIcon, UserCircleIcon, VideoIcon } from "../icons";
+import { AnalyticsIcon, GameIcon, SettingsIcon, UserCircleIcon, VideoIcon,AvatarIcon } from "../icons";
 
 type NavItem = {
   name: string;
@@ -21,6 +21,11 @@ const navItems: NavItem[] = [
     name: "Games",
     path: "/games",
   },
+  {
+  icon: <AvatarIcon />,  
+  name: "Avatars",
+  path: "/avatars",
+},
   {
     icon: <AnalyticsIcon />,
     name: "Analytics",

@@ -58,6 +58,7 @@ import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
 // used Icons
 import { ReactComponent as VideoIcon } from "./video.svg?react";
 import { ReactComponent as GameIcon } from "./game.svg?react";
+import { ReactComponent as AvatarIcon } from "./avatarIcon.svg?react";
 import { ReactComponent as AnalyticsIcon } from "./analytics.svg?react";
 import { ReactComponent as SettingsIcon } from "./settings.svg?react";
 import { ReactComponent as UserIcon } from "./user-line.svg?react";
@@ -78,6 +79,7 @@ export {
   EditIcon,
   VideoIcon,
   GameIcon,
+  AvatarIcon,
   AnalyticsIcon,
   SettingsIcon,
   UserIcon,

@@ -2,32 +2,31 @@ import React, { useState } from "react";
 import { MoreVertical} from "lucide-react"; 
 import { useClickOutside } from "../../hooks/useClickOutside";
 
-interface GameCardProps {
+interface AvatarCardProps {
   image: string;
-  title: string;
-  description: string;
+  ageGroup: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,onDelete }) => {
+const AvatarCard: React.FC<AvatarCardProps> = ({ image,ageGroup,onEdit,onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
-   const menuRef = useClickOutside(() => {
-      setShowMenu(false);
-    });
+
+  const menuRef = useClickOutside(() => {
+    setShowMenu(false);
+  });
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#9ea6ff14]">
 
       <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl">
-        <img src={image} alt={title} className="h-full w-full object-cover" />
-        
-
+        <img src={image} className="h-full w-full object-cover" />
+      
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-1"ref={menuRef}>
+        <div className="flex items-center justify-between mb-1" ref={menuRef}>
         <h3 className="text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
-          {title}
+          Age Group: {ageGroup}
         </h3>
         <button 
           onClick={() => setShowMenu(!showMenu)}
@@ -58,13 +57,9 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
           </div>
         )}
         </div>
-
-        <p className="line-clamp-2 text-xs text-gray-500 dark:text-gray-400">
-          {description}
-        </p>
       </div>
     </div>
   );
 };
 
-export default GameCard;
+export default AvatarCard;
