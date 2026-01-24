@@ -13,7 +13,7 @@ export default function TopRanked() {
             alt="child-image"
           />
           <div>
-            <h2 className="text-sm">ahmed</h2>
+            <h2 className="text-sm dark:text-white">ahmed</h2>
             <h2 className="text-sm text-[#8E9ABB]">900 points</h2>
           </div>
         </div>
@@ -31,7 +31,7 @@ export default function TopRanked() {
             alt="child-image"
           />
           <div>
-            <h2 className="text-sm">ahmed</h2>
+            <h2 className="text-sm dark:text-white">ahmed</h2>
             <h2 className="text-sm text-[#8E9ABB]">900 points</h2>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function TopRanked() {
             alt="child-image"
           />
           <div>
-            <h2 className="text-sm">ahmed</h2>
+            <h2 className="text-sm dark:text-white">ahmed</h2>
             <h2 className="text-sm text-[#8E9ABB]">900 points</h2>
           </div>
         </div>

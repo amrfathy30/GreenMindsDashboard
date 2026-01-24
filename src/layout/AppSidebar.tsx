@@ -150,7 +150,7 @@ const SearchSection = ({ inputRef }: { inputRef: React.RefObject<HTMLInputElemen
   return (
     <div className={`
        ${isExpanded|| isMobileOpen?'w-full':"w-[40px]"}
-       hidden lg:block mt-8 mb-6`}>
+       hidden lg:block mt-8 mb-6 px-6`}>
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="relative">
           <span className={`

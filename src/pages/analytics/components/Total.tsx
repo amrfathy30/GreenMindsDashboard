@@ -8,7 +8,7 @@ export default function Total() {
           <h2 className="text-[#05A0C3] text-[80px] font-extrabold text-center leading-20">
             35
           </h2>
-          <h2 className="text-[#3D3F45] text-[30px] font-extrabold text-center">
+          <h2 className="text-[#3D3F45] dark:text-white text-[30px] font-extrabold text-center">
             videos
           </h2>
         </div>
@@ -17,7 +17,7 @@ export default function Total() {
           <h2 className="text-[#23B075] text-[80px] font-extrabold text-center leading-20">
             20
           </h2>
-          <h2 className="text-[#3D3F45] text-[30px] font-extrabold text-center">
+          <h2 className="text-[#3D3F45] dark:text-white text-[30px] font-extrabold text-center">
             Games
           </h2>
         </div>
