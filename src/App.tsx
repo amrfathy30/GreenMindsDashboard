@@ -17,7 +17,7 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 
 import GamesList from "./pages/games/gamesList";
-import AgeGroup from "./pages/Setting/AgeGroup/AgeGroup";
+import AgeGroup from "./pages/Setting/AgeGroup/AgeGroupList";
 import Users from "./pages/Users/Users";
 import VideosList from "./pages/videos/videosList";
 import Analytics from "./pages/analytics/analyticsList";

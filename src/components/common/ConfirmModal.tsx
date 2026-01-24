@@ -1,3 +1,4 @@
+import { useLanguage } from "../../api/locales/LanguageContext";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 
@@ -7,15 +8,18 @@ interface ConfirmModalProps {
   onConfirm: () => void;
   title?: string;
   description?: string;
+  loading?: boolean;
 }
 
 export default function ConfirmModal({
   open,
   onClose,
   onConfirm,
+  loading = false,
   title = "Are you sure?",
   description = "This action cannot be undone.",
 }: ConfirmModalProps) {
+  const { t } = useLanguage();
   return (
     <Modal
       isOpen={open}
@@ -30,11 +34,10 @@ export default function ConfirmModal({
             {description}
           </p>
         </div>
-        <Button className="mt-2 w-full" onClick={() => onConfirm()}>
-          Delete
-        </Button>
+        <Button className="mt-2 w-full" onClick={onConfirm} disabled={loading}>
+          {loading ? t("deleting") : t("delete")}
+        </Button>{" "}
       </div>
-
     </Modal>
   );
 }
