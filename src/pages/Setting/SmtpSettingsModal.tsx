@@ -21,10 +21,10 @@ export default function SmtpSettingsModal({
       title="Smtp Settings"
       isOpen={open}
       onClose={onClose}
-      className="mx-4 md:0 md:h-[80%]! max-w-xl pb-4 pt-10! md:p-6"
+    className="max-w-xl mx-4"
     >
-      <Form onSubmit={onSubmit} className="flex flex-col gap-3">
-        <div className="border-b pb-4">
+      <Form onSubmit={onSubmit}  className="flex flex-col gap-3 p-6 my-6  border rounded-2xl">
+      
           <Input
             id="name"
             label="Display Name (اسم المرسل)"
@@ -32,9 +32,7 @@ export default function SmtpSettingsModal({
             // error
             // hint="Name is required"
           />
-        </div>
-
-        <div className="border-b pb-4">
+  
           <Input
             id="email"
             label="SMTP Email (بريد الإرسال)"
@@ -42,9 +40,7 @@ export default function SmtpSettingsModal({
             // error
             // hint="Email is required"
           />
-        </div>
-
-        <div className="border-b pb-4">
+       
           <Input
             id="password"
             label="App Password (كلمة سر التطبيق)"
@@ -52,9 +48,7 @@ export default function SmtpSettingsModal({
             // error
             // hint="password is required"
           />
-        </div>
-
-        <div className="border-b pb-4">
+     
           <Input
             id="server"
             label="SMTP server (الخادم)"
@@ -62,9 +56,7 @@ export default function SmtpSettingsModal({
             // error
             // hint="server is required"
           />
-        </div>
-
-        <div className="border-b pb-4">
+      
           <Input
             id="port"
             label="Port (المنفذ)"
@@ -72,9 +64,7 @@ export default function SmtpSettingsModal({
             // error
             // hint="port is required"
           />
-        </div>
-
-        <div>
+       
           <Input
             id="encryption"
             label="Encryption (التشفير)"
@@ -82,7 +72,7 @@ export default function SmtpSettingsModal({
             // error
             // hint="Encryption is required"
           />
-        </div>
+       
 
         <Button className="mt-2">save</Button>
       </Form>
