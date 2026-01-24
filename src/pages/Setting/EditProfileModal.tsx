@@ -1,10 +1,11 @@
 import { FormEvent, useRef, useState } from "react";
-import Label from "../../components/form/Label";
 import { Modal } from "../../components/ui/modal";
 import { createPortal } from "react-dom";
-import { Edit2 } from "lucide-react";
+import { ArrowBigLeft, Edit2 } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import Form from "../../components/form/Form";
+import Input from "../../components/form/input/InputField";
+import React from "react";
 
 interface EditProfileModalProps {
   open: boolean;
@@ -15,6 +16,8 @@ export default function EditProfileModal({
   open,
   onClose,
 }: EditProfileModalProps) {
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const [avatar, setAvatar] = useState("/images/user.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,76 +41,170 @@ export default function EditProfileModal({
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+  const handleBack = () => {
+    setShowResetPassword(false)
+    setShowChangePassword(false)
+  }
   return createPortal(
-    <Modal isOpen={open} onClose={onClose} className="max-w-xl p-6 mx-4" title="edit profile">
-      <div>
-        <Form onSubmit={onSubmit} className="flex flex-col gap-8">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <img
-                src={avatar}
-                alt="user-avatar"
-                className="w-10 h-10 rounded-full object-cover"
-              />
+    <Modal isOpen={open} onClose={onClose} className="max-w-xl mx-4" title={showChangePassword ? "Change Password" : showResetPassword ? 'Reset Password' : "Edit profile"}>
+     {showChangePassword||showResetPassword?
+      <button className="text-sm text-primary flex items-center gap-2 mt-3" onClick={() => handleBack()}>
+        <ArrowBigLeft />
+        <span>Back to edit</span>
+      </button>:""}
+      {showChangePassword ?
+        <ChangePasswordModal setShowResetPassword={setShowResetPassword} setShowChangePassword={setShowChangePassword} /> :
+        showResetPassword ?
+          <ResetPasswordModal  /> :
+          <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-6 my-6  border rounded-2xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <img
+                    src={avatar}
+                    alt="user-avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
 
-              <div
-                onClick={handleEditClick}
-                className="w-5 h-5 bg-white rounded-full p-1 border flex justify-center items-center cursor-pointer text-Black absolute -right-2 -bottom-2"
-              >
-                <Edit2 className="w-full h-full" />
+                  <div
+                    onClick={handleEditClick}
+                    className="w-5 h-5 bg-white rounded-full p-1 border flex justify-center items-center cursor-pointer text-Black absolute -right-2 -bottom-2"
+                  >
+                    <Edit2 className="w-full h-full" />
+                  </div>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <h2>Mohamed</h2>
+                  <h2>mohamed@greenminds.com</h2>
+                </div>
               </div>
-
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-              />
+              <div>
+                <button className="text-red-500" onClick={() => setShowChangePassword(true)}>
+                  Change password
+                </button>
+              </div>
             </div>
 
-            <div className="flex flex-col">
-              <h2>Mohamed</h2>
-              <h2>mohamed@greenminds.com</h2>
-            </div>
-          </div>
+            <div className="border border-[#E5E7EB]"></div>
 
-          <div className="border border-[#E5E7EB]"></div>
-          <div className="flex justify-between items-center flex-col md:flex-row">
-            <Label htmlFor="">name</Label>
-            <input
-              type="text"
-              placeholder="mohamed"
-              className="border-b border-gray-300 focus:outline-none focus:ring-0 w-full md:w-1/2"
+            <Input
+              id="name"
+              label="Admin Name"
+              placeholder="Enter Name Here"
+
             />
-            
-          </div>
 
-          <div className="border border-[#E5E7EB]"></div>
-          <div className="flex justify-between items-center flex-col md:flex-row">
-            <Label htmlFor="">Email account</Label>
-            <input
-              type="email"
-              placeholder="mohamed@green minds.com"
-              className="border-b border-gray-300 focus:outline-none focus:ring-0 w-full md:w-1/2"
+            <Input
+              id="email"
+              label="Admin Email"
+              placeholder="Enter email Here"
+
             />
-          </div>
 
-          <div className="border border-[#E5E7EB]"></div>
-          <div className="flex justify-between items-center flex-col md:flex-row">
-            <Label htmlFor="">Reset password</Label>
-            <input
-              type="password"
-              placeholder="************"
-              className="border-b border-gray-300 focus:outline-none focus:ring-0 w-full md:w-1/2"
-            />
-          </div>
+            <Button>save</Button>
+          </Form>
+      }
 
-          <div className="border border-[#E5E7EB]"></div>
-          <Button>save</Button>
-        </Form>
-      </div>
     </Modal>,
     document.body,
   );
+}
+interface ModalProps {
+  setShowResetPassword: any
+  setShowChangePassword: any
+
+}
+const ChangePasswordModal: React.FC<ModalProps> = ({
+  setShowResetPassword,
+  setShowChangePassword
+}) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+  const handleSetShowResetPassword = () =>{
+    setShowChangePassword(false)
+     setShowResetPassword(true)}
+
+  return (
+    <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-6 my-6  border rounded-2xl">
+      <Input
+        type="password"
+        id="old_password"
+        label="Old Password"
+        placeholder="Enter old password here"
+
+      />
+      <Input
+        type="password"
+        id="password"
+        label="New Password"
+        placeholder="Enter new password here"
+
+      />
+      <Input
+        type="password"
+        id="password_confirmation"
+        label="New password Confirmation"
+        placeholder="Enter new password confirmation here"
+      />
+      <div className="flex items-center gap-2">
+        <p>Forgot your password?</p>
+        <button className="text-red-500 text-sm" onClick={() => handleSetShowResetPassword()}>
+          Send email to reset password
+        </button>
+
+      </div>
+
+
+
+      <Button>save</Button>
+    </Form>
+  )
+}
+const ResetPasswordModal=() => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  return (
+    <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-6 my-6  border rounded-2xl">
+      <div className="flex items-center gap-2">
+        <p className="text-secondary">A one time password (otp) has been sent to your email.</p>
+      </div>
+      <Input
+        type="number"
+        id="otp"
+        label="OTP"
+        placeholder="Enter OTP here"
+
+      />
+      <Input
+        type="password"
+        id="password"
+        label="New Password"
+        placeholder="Enter new password here"
+
+      />
+      <Input
+        type="password"
+        id="password_confirmation"
+        label="New password Confirmation"
+        placeholder="Enter new password confirmation here"
+      />
+
+
+
+
+      <Button>save</Button>
+    </Form>
+  )
 }
