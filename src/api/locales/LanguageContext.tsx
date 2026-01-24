@@ -11,9 +11,21 @@ interface LanguageContextType {
 
 const translations = {
   en: {
+    'videos':"Videos",
+    "games":"Games",
+    "analytics":"Analytics",
+    "avatars":"Avatars",
+    "settings":"Settings",
+    "users":"Users",
     'Videos_Admin':"Videos - Admin"
   },
   ar: {
+    'videos':"فيديوهات",
+    "games":"ألعاب",
+    "avatars":"الصور الرمزية",
+    "settings":"إعدادات",
+    "analytics":"تحليلات",
+    "users":"مستخدمين",
     'Videos_Admin':"إدارة الفيديوهات"
   },
 };

@@ -11,44 +11,45 @@ type NavItem = {
   path: string;
 };
 
-const navItems: NavItem[] = [
-  {
-    icon: <VideoIcon />,
-    name: "Videos",
-    path: "/videos",
-  },
-  {
-    icon: <GameIcon />,
-    name: "Games",
-    path: "/games",
-  },
-  {
-  icon: <AvatarIcon />,  
-  name: "Avatars",
-  path: "/avatars",
-},
-  {
-    icon: <AnalyticsIcon />,
-    name: "Analytics",
-    path: "/analytics",
-  },
-  {
-    icon: <SettingsIcon/>,
-    name: "Settings",
-    path: "/setting",
-  },
-  {
-    icon: <UserCircleIcon />,
-    name: "Users",
-    path: "/users",
-  },
-];
+
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isRTL} = useLanguage();
+  const { isRTL,t} = useLanguage();
+  const navItems: NavItem[] = [
+    {
+      icon: <VideoIcon />,
+      name: t('videos'),
+      path: "/videos",
+    },
+    {
+      icon: <GameIcon />,
+      name:  t('games'),
+      path: "/games",
+    },
+    {
+    icon: <AvatarIcon />,  
+    name: t('avatars'),
+    path: "/avatars",
+  },
+    {
+      icon: <AnalyticsIcon />,
+      name: t('analytics'),
+      path: "/analytics",
+    },
+    {
+      icon: <SettingsIcon/>,
+      name: t('settings'),
+      path: "/setting",
+    },
+    {
+      icon: <UserCircleIcon />,
+      name: t('users'),
+      path: "/users",
+    },
+  ];
   // Keyboard shortcut for search focus
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
