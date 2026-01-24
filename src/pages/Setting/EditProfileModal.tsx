@@ -63,9 +63,8 @@ export default function EditProfileModal({
                   <img
                     src={avatar}
                     alt="user-avatar"
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="w-10 h-10 rounded-full object-cover invert-0 dark:invert"
                   />
-
                   <div
                     onClick={handleEditClick}
                     className="w-5 h-5 bg-white rounded-full p-1 border flex justify-center items-center cursor-pointer text-Black absolute -right-2 -bottom-2"
@@ -82,7 +81,7 @@ export default function EditProfileModal({
                   />
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col dark:text-white">
                   <h2>Mohamed</h2>
                   <h2>mohamed@greenminds.com</h2>
                 </div>
@@ -94,7 +93,7 @@ export default function EditProfileModal({
               </div>
             </div>
 
-            <div className="border border-[#E5E7EB]"></div>
+            <div className="border border-[#E5E7EB] dark:border-gray-800"></div>
 
             <Input
               id="name"
