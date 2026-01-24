@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import ProfileLevelModal from "./ProfileLevelsModal";
 import { toast } from "sonner";
@@ -9,49 +10,55 @@ import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne"
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { EditIcon, RemoveIcon } from "../../../icons";
 import Pagination from "../../../components/common/Pagination";
-type ProfileLevel = {
-  id: number;
-  levelNameAr: string;
-  levelNameEn: string;
-  from: string;
-  to: string;
-};
+import { LevelApiResponse, LevelList } from "../../../utils/types/levelType";
+import {
+  allLevelData,
+  createLevel,
+  deleteLevel,
+  updateLevel,
+} from "../../../api/services/levelService";
+import { useLanguage } from "../../../api/locales/LanguageContext";
+import { ShowToastSuccess } from "../../../components/common/ToastHelper";
+import TableLoading from "../../../components/loading/TableLoading";
 
 export default function ProfileLevels() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
+  const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
-  const [ProfileLevels, setProfileLevels] = useState<ProfileLevel[]>([
-    {
-      id: 1,
-      levelNameAr: "مستوي 1",
-      levelNameEn: "first Level",
-      from: "2 pts",
-      to: "4 pts",
-    },
-    {
-      id: 2,
-      levelNameAr: "مستوي 2",
-      levelNameEn: "second Level",
-      from: "5 pts",
-      to: "7 pts",
-    },
-    {
-      id: 3,
-      levelNameAr: "مستوي 3",
-      levelNameEn: "third Level",
-      from: "8 pts",
-      to: "10 pts",
-    },
-  ]);
+  const [ProfileLevels, setProfileLevels] = useState<LevelList[]>([]);
 
-  const [openModalAge, setOpenModalAge] = useState(false);
-  const [editData, setEditData] = useState<{
-    from: string;
-    to: string;
-    levelNameAr: string;
-    levelNameEn: string;
-  } | null>(null);
+  useEffect(() => {
+    const fetchLevels = async () => {
+      try {
+        setLoading(true);
+        const data: LevelApiResponse = await allLevelData({
+          page: currentPage,
+          pageSize: 10,
+        });
+
+        setProfileLevels(
+          data.Data.map((item) => ({
+            id: item.Id,
+            levelNameAr: item.levelNameAr,
+            levelNameEn: item.levelNameEn,
+            MinPoints: item.MinPoints,
+            MaxPoints: item.MaxPoints,
+          })),
+        );
+      } catch (error) {
+        toast.error(t("failed_load_level"));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLevels();
+  }, [currentPage, t]);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState<LevelList | null>(null);
 
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
@@ -61,80 +68,120 @@ export default function ProfileLevels() {
     setOpenConfirm(true);
   };
 
-  const confirmDelete = () => {
-    if (selectedDeleteId !== null) {
+  const confirmDelete = async () => {
+    if (!selectedDeleteId) return;
+
+    try {
+      setLoading(true);
+      const res = await deleteLevel(selectedDeleteId);
+
+      ShowToastSuccess(res?.Message || t("success_delete_level"));
+
       setProfileLevels((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success("The Profile Levels has been deleted successfully");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("failed_delete_level"));
+    } finally {
+      setLoading(false);
+      setOpenConfirm(false);
+      setSelectedDeleteId(null);
     }
-    setSelectedDeleteId(null);
   };
 
-  const handleSave = (data: {
-    levelNameAr: string;
-    levelNameEn: string;
-    from: string;
-    to: string;
-  }) => {
-    if (editData) {
-      setProfileLevels((prev) =>
-        prev.map((item) =>
-          item.from === editData.from && item.to === editData.to
-            ? { ...item, ...data }
-            : item,
-        ),
-      );
-    } else {
-      setProfileLevels((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          levelNameAr: data.levelNameAr,
-          levelNameEn: data.levelNameEn,
-          from: data.from,
-          to: data.to,
-        },
-      ]);
-    }
+  const handleSave = async (data: LevelList) => {
+    try {
+      if (
+        !data.levelNameAr?.trim() ||
+        !data.levelNameEn?.trim() ||
+        data.MinPoints === "" ||
+        data.MaxPoints === ""
+      ) {
+        toast.error(t("all_fields_required"));
+        return;
+      }
+      if (Number(data.MinPoints) >= Number(data.MaxPoints)) {
+        toast.error(t("max_less_min"));
+        return;
+      }
 
-    setEditData(null);
+      setLoading(true);
+
+      let res;
+      if (editData) {
+        res = await updateLevel({ ...data });
+      } else {
+        res = await createLevel({ ...data });
+      }
+
+      const listRes: LevelApiResponse = await allLevelData({
+        page: currentPage,
+        pageSize: 10,
+      });
+
+      setProfileLevels(
+        listRes.Data.map((item) => ({
+          id: item.Id,
+          MaxPoints: item.MaxPoints,
+          MinPoints: item.MinPoints,
+          levelNameAr: item.levelNameAr?.toString() || "",
+          levelNameEn: item.levelNameEn?.toString() || "",
+        })),
+      );
+
+      ShowToastSuccess(
+        res?.Message ||
+          (editData ? t("success_level_update") : t("success_level_create")),
+      );
+      setOpenModal(false);
+      setEditData(null);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("operation_failed"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const columns = [
     {
       key: "levelNameAr",
-      label: "Level Name (Ar)",
+      label: t("levelNameAr"),
+      render: (row: any) => <span>{row.levelNameAr || "__"}</span>,
     },
     {
       key: "levelNameEn",
-      label: "Level Name (En)",
+      label: t("levelNameEn"),
+      render: (row: any) => <span>{row.levelNameEn || "__"}</span>,
     },
     {
-      key: "from",
-      label: "Points from",
+      key: "MinPoints",
+      label: t("minPoints"),
     },
     {
-      key: "to",
-      label: "Points to",
+      key: "MaxPoints",
+      label: t("maxPoints"),
     },
     {
       key: "actions",
-      label: "Actions",
+      label: t("actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <button
             onClick={() => {
               setEditData({
-                from: row.from,
-                to: row.to,
+                MinPoints: row.MinPoints,
+                MaxPoints: row.MaxPoints,
                 levelNameAr: row.levelNameAr,
                 levelNameEn: row.levelNameEn,
               });
-              setOpenModalAge(true);
+              setOpenModal(true);
             }}
+            aria-label={t("common.edit")}
           >
             <EditIcon className="w-8 h-8" />
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button
+            onClick={() => handleDelete(row.id)}
+            aria-label={t("common.delete")}
+          >
             <RemoveIcon className="w-8 h-8" />
           </button>
         </div>
@@ -150,14 +197,18 @@ export default function ProfileLevels() {
       />
       <div className="md:px-10">
         <h2 className="font-medium text-2xl p-4 text-[#000000]">
-          Profile Levels
+          {t("levelNameLabel")}
         </h2>
         <div className="flex justify-end my-4">
-          <AddButton startIcon={<Plus />} onClick={() => setOpenModalAge(true)}>
-            add Profile Levels
+          <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
+            {t("add_level")}
           </AddButton>
         </div>
-        <BasicTableOne data={ProfileLevels} columns={columns} />
+        {loading ? (
+          <TableLoading />
+        ) : (
+          <BasicTableOne data={ProfileLevels} columns={columns} />
+        )}
         <div className="my-6 w-full flex items-center justify-center">
           <Pagination
             currentPage={currentPage}
@@ -168,21 +219,23 @@ export default function ProfileLevels() {
       </div>
 
       <ProfileLevelModal
-        open={openModalAge}
+        open={openModal}
         onClose={() => {
-          setOpenModalAge(false);
+          setOpenModal(false);
           setEditData(null);
         }}
         initialData={editData || undefined}
         onSave={handleSave}
+        loading={loading}
       />
 
       <ConfirmModal
         open={openConfirm}
+        loading={loading}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
-        title="Delete Profile Levels"
-        description="Are you sure you want to delete this Profile Levels?"
+        title={t("delete_level")}
+        description={t("confirm_delete_level")}
       />
     </div>
   );

@@ -1,17 +1,17 @@
-import { AgePayload, AgeQueryParams } from "../../utils/types/ageType";
+import { AgeGroup } from "../../utils/types/ageType";
 import axiosInstance from "../axiosInstance";
 
-export const allAgeData = async (params?: AgeQueryParams) => {
-  const response = await axiosInstance.get("/AgeSectors/GetAll", { params });
+export const allAgeData = async () => {
+  const response = await axiosInstance.get("/AgeSectors/GetAll");
   return response.data;
 };
 
-export const createAge = async (data: AgePayload) => {
+export const createAge = async (data: AgeGroup) => {
   const response = await axiosInstance.post("/AgeSectors/Create", data);
   return response.data;
 };
 
-export const updateAge = async (data: AgePayload) => {
+export const updateAge = async (data: AgeGroup) => {
   const response = await axiosInstance.put("/AgeSectors/Update", data);
   return response.data;
 };

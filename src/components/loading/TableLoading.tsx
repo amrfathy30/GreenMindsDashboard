@@ -1,4 +1,4 @@
-export default function AgeLoading() {
+export default function TableLoading() {
   return (
     <div className="space-y-3 p-4">
       {[...Array(5)].map((_, i) => (

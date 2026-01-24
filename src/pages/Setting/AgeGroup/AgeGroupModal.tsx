@@ -15,18 +15,18 @@ export default function AgeGroupModal({
 }: AgeGroupModalProps) {
   const { t } = useLanguage();
 
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [FromAge, setFromAge] = useState("");
+  const [ToAge, setToAge] = useState("");
   const [DisplayName, setDisplayName] = useState("");
 
   useEffect(() => {
     if (initialData) {
-      setFrom(initialData.from);
-      setTo(initialData.to);
+      setFromAge(initialData.FromAge);
+      setToAge(initialData.ToAge);
       setDisplayName(initialData.DisplayName);
     } else {
-      setFrom("");
-      setTo("");
+      setFromAge("");
+      setToAge("");
       setDisplayName("");
     }
   }, [initialData, open]);
@@ -35,8 +35,8 @@ export default function AgeGroupModal({
     e.preventDefault();
     await onSave({
       id: initialData?.id,
-      from,
-      to,
+      FromAge,
+      ToAge,
       DisplayName,
     });
   };
@@ -55,25 +55,30 @@ export default function AgeGroupModal({
             label={t("ageNameLabel")}
             placeholder={t("ageNamePlaceholder")}
             value={DisplayName}
+            required
             onChange={(e) => setDisplayName(e.target.value)}
           />
         </div>
         <div className="border-b pb-4">
           <Input
             id="FromAge"
+            type="number"
+            required
             label={t("fromLabel")}
             placeholder={t("fromPlaceholder")}
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
+            value={FromAge}
+            onChange={(e) => setFromAge(e.target.value)}
           />
         </div>
         <div className="border-b pb-4">
           <Input
             id="ToAge"
+            type="number"
+            required
             label={t("toLabel")}
             placeholder={t("toPlaceholder")}
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
+            value={ToAge}
+            onChange={(e) => setToAge(e.target.value)}
           />
         </div>
         <Button type="submit" className="mt-2" disabled={loading}>
