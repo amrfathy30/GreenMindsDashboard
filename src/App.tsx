@@ -17,11 +17,13 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 
 import GamesList from "./pages/games/gamesList";
-import AgeGroup from "./pages/Setting/AgeGroup";
+import AgeGroup from "./pages/Setting/AgeGroup/AgeGroup";
 import Users from "./pages/Users/Users";
 import VideosList from "./pages/videos/videosList";
 import Analytics from "./pages/analytics/analyticsList";
 import ChildrenInfo from "./pages/Users/Children/ChildrenInfo/ChildrenInfo";
+import ProfileLevels from "./pages/Setting/ProfileLevels/ProfileLevels";
+import LoginStreaks from "./pages/Setting/LoginStreaks/LoginStreaks";
 
 export default function App() {
   return (
@@ -42,6 +44,8 @@ export default function App() {
             <Route path="/children-info" element={<ChildrenInfo />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/age-group" element={<AgeGroup />} />
+            <Route path="/profile-levels" element={<ProfileLevels />} />
+            <Route path="/login-streaks" element={<LoginStreaks />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
 

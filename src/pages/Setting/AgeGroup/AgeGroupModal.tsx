@@ -1,8 +1,8 @@
 import { FormEvent, useState, useEffect } from "react";
-import Form from "../../components/form/Form";
-import { Modal } from "../../components/ui/modal";
-import Input from "../../components/form/input/InputField";
-import Button from "../../components/ui/button/Button";
+import Form from "../../../components/form/Form";
+import { Modal } from "../../../components/ui/modal";
+import Input from "../../../components/form/input/InputField";
+import Button from "../../../components/ui/button/Button";
 
 interface AgeGroupModalProps {
   open: boolean;

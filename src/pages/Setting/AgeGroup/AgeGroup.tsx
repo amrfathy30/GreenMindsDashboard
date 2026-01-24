@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import BasicTableOne from "../../components/tables/BasicTables/BasicTableOne";
-import AddButton from "../../components/ui/button/AddButton";
+import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
+import AddButton from "../../../components/ui/button/AddButton";
 import { Plus } from "lucide-react";
-import AgeGroupModal from "./AgeGroupModal";
-import ConfirmModal from "../../components/common/ConfirmModal";
+import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
-import PageMeta from "../../components/common/PageMeta";
+import PageMeta from "../../../components/common/PageMeta";
+import { EditIcon, RemoveIcon } from "../../../icons";
+import AgeGroupModal from "./AgeGroupModal";
+import Pagination from "../../../components/common/Pagination";
 
 export default function AgeGroup() {
   const [ageGroups, setAgeGroups] = useState([
@@ -14,6 +16,9 @@ export default function AgeGroup() {
     { id: 2, from: "5", to: "7" },
     { id: 3, from: "8", to: "10" },
   ]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10;
 
   const [openModalAge, setOpenModalAge] = useState(false);
   const [editData, setEditData] = useState<{ from: string; to: string } | null>(
@@ -68,18 +73,10 @@ export default function AgeGroup() {
               setOpenModalAge(true);
             }}
           >
-            <img
-              src="/src/icons/Edit.svg"
-              alt="edit"
-              className="w-8 h-8 object-cover"
-            />
+            <EditIcon className="w-8 h-8" />
           </button>
           <button onClick={() => handleDelete(row.id)}>
-            <img
-              src="/src/icons/Remove.svg"
-              alt="remove"
-              className="w-9 h-9 object-cover"
-            />
+            <RemoveIcon className="w-8 h-8" />
           </button>
         </div>
       ),
@@ -100,6 +97,13 @@ export default function AgeGroup() {
           </AddButton>
         </div>
         <BasicTableOne data={ageGroups} columns={columns} />
+        <div className="my-6 w-full flex items-center justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </div>
       </div>
 
       <AgeGroupModal
