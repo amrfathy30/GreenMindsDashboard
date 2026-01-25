@@ -5,36 +5,87 @@ import { Modal } from "../../components/ui/modal";
 import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
 import TextArea from "../../components/form/input/TextArea";
+import { createGame, updateGame } from "../../api/services/gameService";
 
 interface GameModalProps {
   isOpen: boolean;
   onClose: () => void;
   gameData?: any;
   type: 'add' | 'edit'
+  onSuccess: () => void;
 }
 
-const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }) => {
+const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type,onSuccess }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(gameData?.image || null);
+  const [formError, setFormError] = useState(false);
   const ageGroups = ["2-4 Years", "5-7 Years", "8-10 Years", "11-13 Years"];
   if (!isOpen) return null;
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setFormError(false);
 
+  const formData = new FormData();
+
+  const nameEn = (document.getElementById("name_En") as HTMLInputElement)?.value;
+  const nameAr = (document.getElementById("name_ar") as HTMLInputElement)?.value;
+  const descEn = (document.getElementById("description_en") as HTMLTextAreaElement)?.value;
+  const descAr = (document.getElementById("description_ar") as HTMLTextAreaElement)?.value;
+  const android = (document.getElementById("android") as HTMLInputElement)?.value;
+  const ios = (document.getElementById("ios") as HTMLInputElement)?.value;
+  const apiLink = (document.getElementById("api_link") as HTMLInputElement)?.value;
+  const apiKey = (document.getElementById("ai_key") as HTMLInputElement)?.value;
+  const ageGroup = (document.getElementById("age_group") as HTMLSelectElement)?.value;
+
+  formData.append("GameNameEn", nameEn || "");
+  formData.append("GameNameAr", nameAr || "");
+  formData.append("DescriptionEn", descEn || "");
+  formData.append("DescriptionAr", descAr || "");
+  formData.append("AndroidLink", android || "");
+  formData.append("IosLink", ios || "");
+  formData.append("ApiLink", apiLink || "");
+  formData.append("ApiKey", apiKey || "");
+  formData.append("AgeGroup", ageGroup || "");
+
+  const file = fileInputRef.current?.files?.[0];
+  if (file) {
+    formData.append("Thumbnail", file);
+  }
+
+  if (!nameEn || !nameAr) {
+        setFormError(true);
+        return;
+    }
+
+  try {
+    if (type === 'add') {
+      await createGame(formData);
+    } else {
+      if (gameData?.id) {
+        formData.append("Id", gameData.id.toString());
+      }
+      await updateGame(formData);
+    }
+    onSuccess(); 
+    onClose(); 
+  } catch (error) {
+      setFormError(true); 
+      alert("Please fill out the required fields correctly.");
+    }
+  };
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const onSubmit = () => {
-    onClose()
-  };
+const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string); 
+    };
+    reader.readAsDataURL(file);
+  }
+};
   return (
     <Modal
       isOpen={isOpen}
@@ -43,7 +94,7 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }
       title={type == 'edit' ? "Edit Game" : "Add New Game"}
     >
       <Form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         className="flex flex-col gap-3 p-6 my-6  border rounded-2xl"
       >
 
@@ -51,20 +102,18 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }
           id="name_En"
           label="Game Name (EN)"
           placeholder="Enter Name Here"
-
+          defaultValue={gameData?.gameNameEn || ""}
+          required={true}
+          error={formError}
         />
 
         <Input
           id="name_ar"
           label="Game Name (AR)"
           placeholder="Enter Name Here"
-
-        />
-        <Input
-          id="name_ar"
-          label="Game Name (AR)"
-          placeholder="Enter Name Here"
-
+          defaultValue={gameData?.gameNameAr || ""}
+          required={true}
+          error={formError}
         />
         <div className="space-y-2">
           <label className="block text-sm font-medium text-black dark:text-gray-300">
@@ -85,29 +134,39 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }
         </div>
         <div className="grid grid-cols-2 space-x-2 w-full">
           <TextArea
+            key={gameData?.id || "new"}
             id="description_en"
             label="Description (EN)"
             placeholder="Enter description Here"
+            defaultValue={gameData?.descriptionEn || ""}
+            required={true}
+            error={formError}
           />
           <TextArea
+            key={gameData?.id || "new"}
             id="description_ar"
             label="Description (AR)"
             placeholder="Enter description Here"
+            defaultValue={gameData?.descriptionAr || ""}
+            required={true}
+            error={formError}
           />
         </div>
         <div className="grid grid-cols-1 gap-3">
           {[
-            { label: "Android Link", placeholder: "Enter game URL here", id: "android" },
-            { label: "iOS Link", placeholder: "Enter game URL here", id: "ios" },
-            { label: "API Link", placeholder: "Enter URL here", id: "api_link" },
-            { label: "API Key", placeholder: "Enter API Key here", id: "ai_key" }
+            { label: "Android Link", placeholder: "Enter game URL here", id: "android",val: gameData?.androidLink },
+            { label: "iOS Link", placeholder: "Enter game URL here", id: "ios",val: gameData?.iosLink},
+            { label: "API Link", placeholder: "Enter URL here", id: "api_link", val: gameData?.apiLink },
+            { label: "API Key", placeholder: "Enter API Key here", id: "ai_key", val: gameData?.apiKey }
           ].map((field) => (
             <Input
               key={field.label}
               id={field.id}
               label={field.label}
               placeholder={field.placeholder}
-
+              defaultValue={field.val || ""}
+              required={true}
+              error={formError}
             />
           ))}
         </div>
@@ -145,8 +204,12 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type }
                   Upload Thumbnail
                 </span>
               </button>
-              <Input placeholder="Enter Game thumbnail URL here"
-
+              <Input 
+                id="thumbnail_url" 
+                placeholder="Enter Game thumbnail URL here" 
+                defaultValue={gameData?.thumbnailUrl || ""} 
+                required={true}
+                error={formError}
               />
             </div>
           </div>

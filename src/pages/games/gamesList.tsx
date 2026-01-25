@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAllGames } from "../../api/services/gameService";
 import PageMeta from "../../components/common/PageMeta";
 import GameCard from "./gameCard";
 import Pagination from "../../components/common/Pagination";
@@ -6,23 +7,42 @@ import Button from "../../components/ui/button/Button";
 import DeleteGameModal from "./deleteGameModal";
 import GameModal from "./gameModal";
 import { PlusIcon } from "../../icons";
+import GameCardSkeleton from "../../components/loading/gameloading";
 
-const MOCK_GAMES = [
-  { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
-  { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
-  { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
-  { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
-  { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
-  { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
-];
+// const MOCK_GAMES = [
+//   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
+//   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
+//   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
+//   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
+//   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
+//   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
+// ];
 
 export default function GamesList() {
+  const [games, setGames] = useState<any[]>([]); 
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const totalPages = 10;
+
+const fetchGames = async () => {
+  try {
+    setLoading(true);
+    const response = await getAllGames();
+    setGames(response.Data || []); 
+  } catch (error) {
+    console.error("Failed to fetch games:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchGames();
+}, []);
   const handleEditClick = (game: any) => {
     setSelectedGame(game);
     setIsEditModalOpen(true);
@@ -59,17 +79,23 @@ export default function GamesList() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
-          {MOCK_GAMES.map((game) => (
-            <GameCard
-              key={game.id}
-              title={game.title}
-              description={game.description}
-              image={game.image}
-              onEdit={() => handleEditClick(game)}
-              onDelete={() => handleDeleteClick(game)}
-            />
-          ))}
-        </div>
+  {loading ? (
+    Array.from({ length: 6 }).map((_, index) => (
+            <GameCardSkeleton key={index} />
+          ))
+  ) : (
+    games.map((game) => (
+      <GameCard
+        key={game.id}
+        title={game.gameNameEn || game.title} 
+        description={game.descriptionEn || game.description}
+        image={game.thumbnailUrl || game.image} 
+        onEdit={() => handleEditClick(game)}
+        onDelete={() => handleDeleteClick(game)}
+      />
+    ))
+  )}
+</div>
 
         <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
           <Pagination
@@ -84,16 +110,22 @@ export default function GamesList() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         type="add"
+        onSuccess={fetchGames}
+        
       />
       <GameModal
+        key={selectedGame?.id || 'add'} 
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         gameData={selectedGame}
         type="edit"
+        onSuccess={fetchGames}
       />
       <DeleteGameModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
+        gameId={selectedGame?.id}
+        onSuccess={fetchGames}
       />
     </>
   );
