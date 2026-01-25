@@ -17,6 +17,7 @@ interface InputProps {
   success?: boolean;
   error?: boolean;
   hint?: string;
+  defaultValue?: string | number;
   required?: boolean;
 }
 
@@ -37,6 +38,7 @@ const Input: FC<InputProps> = ({
   error = false,
   required = false,
   hint,
+  defaultValue,
 }) => {
   let inputClasses = `h-11 w-full rounded-lg border px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-none focus:ring-3 dark:bg-[#1e1e1e] dark:text-white ${className}`;
 
@@ -72,6 +74,8 @@ const Input: FC<InputProps> = ({
         name={name}
         placeholder={placeholder}
         value={value}
+        defaultValue={defaultValue}
+        required={required}
         onChange={onChange}
         min={min}
         max={max}

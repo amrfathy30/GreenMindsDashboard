@@ -12,8 +12,9 @@ import { allVideosData, deleteVideo, updateVideo, createVideo } from "../../api/
 import { VideoApiResponse, VideoType } from "../../utils/types/videoType";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
-import AgeLoading from "../../components/loading/ageLoading";
+
 import { allAgeData } from "../../api/services/ageService";
+import TableLoading from "../../components/loading/TableLoading";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
@@ -117,7 +118,7 @@ export default function VideosList() {
           </Button>
         </div>
 
-        {loading ? <AgeLoading /> : (
+        {loading ? <TableLoading /> : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
