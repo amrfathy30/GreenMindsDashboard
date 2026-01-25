@@ -6,6 +6,7 @@ import Button from "../../../components/ui/button/Button";
 import Radio from "../../../components/form/input/Radio";
 import Label from "../../../components/form/Label";
 import { Children } from "./ChildrenList";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 interface ChildModalProps {
   open: boolean;
@@ -20,6 +21,8 @@ export default function ChildrenModal({
   initialData,
   onSave,
 }: ChildModalProps) {
+  const { t } = useLanguage();
+
   const [selectedValue, setSelectedValue] = useState<string>("male");
 
   const handleChange = (value: string) => {
@@ -35,7 +38,7 @@ export default function ChildrenModal({
     confirm_password: "",
     parent_phone: "",
     age: "",
-    gender: "",
+    gender: "male",
   });
 
   useEffect(() => {
@@ -49,8 +52,9 @@ export default function ChildrenModal({
         confirm_password: initialData.confirm_password,
         parent_phone: initialData.parent_phone,
         age: initialData.age,
-        gender: initialData.gender,
+        gender: initialData.gender || "male",
       });
+      setSelectedValue(initialData.gender || "male");
     } else {
       setFormData({
         name_en: "",
@@ -61,8 +65,9 @@ export default function ChildrenModal({
         confirm_password: "",
         parent_phone: "",
         age: "",
-        gender: "",
+        gender: "male",
       });
+      setSelectedValue("male");
     }
   }, [initialData, open]);
 
@@ -72,88 +77,78 @@ export default function ChildrenModal({
     onSave({
       id: initialData?.id ?? Date.now(),
       ...formData,
+      gender: selectedValue,
     });
 
     onClose();
   };
+
   return (
     <Modal
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title="Add New Children"
+      title={initialData ? t("EditChildren") : t("AddNewChildren")}
     >
       <Form
         onSubmit={onSubmit}
-        className="flex flex-col gap-3 p-4 my-6  border rounded-2xl"
+        className="flex flex-col gap-3 p-4 my-6 border rounded-2xl"
       >
         <div>
           <Input
             id="name_en"
-            label="Children Name (EN)"
-            placeholder="Enter Name Here"
-            // error
-            // hint="Children Name (EN) is required"
+            label={t("ChildrenNameEN")}
+            placeholder={t("EnterNameHere")}
           />
         </div>
         <div>
           <Input
             id="name_ar"
-            label="Children Name (AR)"
-            placeholder="Enter Name Here"
-            // error
-            // hint="Children Name (AR) is required"
+            label={t("ChildrenNameAR")}
+            placeholder={t("EnterNameHere")}
           />
         </div>
         <div>
           <Input
             id="email"
-            label="Children Email"
-            placeholder="Enter Children Email"
-            // error
-            // hint="Children Email is required"
+            label={t("ChildrenEmail")}
+            placeholder={t("EnterChildrenEmail")}
           />
         </div>
         <div>
           <Input
             id="phone"
-            label="Children phone"
-            placeholder="Enter Children phone"
-            // error
-            // hint="Children phone is required"
+            label={t("ChildrenPhone")}
+            placeholder={t("EnterChildrenPhone")}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
             <Input
               id="password"
-              label="Children Password"
-              placeholder="Enter Children Password"
-              // error
-              // hint="Children Password is required"
+              label={t("ChildrenPassword")}
+              placeholder={t("EnterChildrenPassword")}
             />
           </div>
           <div>
             <Input
               id="confirm_password"
-              label="Children Confirm Password"
-              placeholder="Enter Children Confirm Password"
-              // error
-              // hint="Children Confirm Password is required"
+              label={t("ChildrenConfirmPassword")}
+              placeholder={t("EnterChildrenConfirmPassword")}
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
-            <Label>Gender</Label>
+            <Label>{t("Gender")}</Label>
             <div className="flex items-center gap-3">
               <Radio
                 id="male"
                 name="gender"
                 value="male"
                 checked={selectedValue === "male"}
-                label="Male"
+                label={t("Male")}
                 onChange={handleChange}
               />
               <Radio
@@ -161,7 +156,7 @@ export default function ChildrenModal({
                 name="gender"
                 value="female"
                 checked={selectedValue === "female"}
-                label="Female"
+                label={t("Female")}
                 onChange={handleChange}
               />
             </div>
@@ -169,10 +164,8 @@ export default function ChildrenModal({
           <div>
             <Input
               id="age"
-              label="age"
-              placeholder="Enter Children age"
-              // error
-              // hint="Children age is required"
+              label={t("Age")}
+              placeholder={t("EnterChildrenAge")}
             />
           </div>
         </div>
@@ -180,14 +173,14 @@ export default function ChildrenModal({
         <div>
           <Input
             id="parent_phone"
-            label="Parent phone"
-            placeholder="Enter Parent phone"
-            // error
-            // hint="Parent phone is required"
+            label={t("ParentPhone")}
+            placeholder={t("EnterParentPhone")}
           />
         </div>
 
-        <Button className="mt-2">Add Children</Button>
+        <Button className="mt-2">
+          {initialData ? t("UpdateChildren") : t("AddChildren")}
+        </Button>
       </Form>
     </Modal>
   );
