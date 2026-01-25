@@ -1,19 +1,8 @@
-export interface AgePayload {
-  Id?: number;
-  FromAge: number;
-  ToAge: number;
-  DisplayName: string;
-}
-
-export interface AgeQueryParams {
-  page?: number;
-  pageSize?: number;
-}
-
 export interface AgeGroup {
-  id: number;
-  from: string;
-  to: string;
+  id?: number;
+  Id?: number;
+  FromAge: string;
+  ToAge: string;
   DisplayName: string;
 }
 
@@ -22,8 +11,8 @@ export interface AgeApiResponse {
   Message: string;
   Data: {
     Id: number;
-    FromAge: number;
-    ToAge: number;
+    FromAge: string;
+    ToAge: string;
     DisplayName: string;
     VideosCount: number;
   }[];
@@ -34,14 +23,14 @@ export interface AgeGroupModalProps {
   onClose: () => void;
   onSave: (data: {
     id?: number;
-    from: string;
-    to: string;
+    FromAge: string;
+    ToAge: string;
     DisplayName: string;
   }) => Promise<void>;
   initialData?: {
-    id: number;
-    from: string;
-    to: string;
+    id?: number;
+    FromAge: string;
+    ToAge: string;
     DisplayName: string;
   };
   loading?: boolean;

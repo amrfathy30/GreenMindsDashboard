@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import PageMeta from "../../../components/common/PageMeta";
 import { EditIcon, RemoveIcon } from "../../../icons";
 import AgeGroupModal from "./AgeGroupModal";
-import Pagination from "../../../components/common/Pagination";
 import {
   allAgeData,
   createAge,
@@ -17,7 +16,7 @@ import {
   updateAge,
 } from "../../../api/services/ageService";
 import { AgeApiResponse, AgeGroup } from "../../../utils/types/ageType";
-import AgeLoading from "../../../components/loading/ageLoading";
+import TableLoading from "../../../components/loading/TableLoading";
 import { useLanguage } from "../../../api/locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 
@@ -25,23 +24,18 @@ export default function AgeGroupList() {
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
   const [ageGroups, setAgeGroups] = useState<AgeGroup[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
 
   useEffect(() => {
     const fetchAgeGroups = async () => {
       try {
         setLoading(true);
-        const data: AgeApiResponse = await allAgeData({
-          page: currentPage,
-          pageSize: 10,
-        });
+        const data: AgeApiResponse = await allAgeData();
 
         setAgeGroups(
           data.Data.map((item) => ({
             id: item.Id,
-            from: item.FromAge.toString(),
-            to: item.ToAge.toString(),
+            FromAge: item.FromAge.toString(),
+            ToAge: item.ToAge.toString(),
             DisplayName: item.DisplayName.toString(),
           })),
         );
@@ -53,15 +47,10 @@ export default function AgeGroupList() {
     };
 
     fetchAgeGroups();
-  }, [currentPage, t]);
+  }, [t]);
 
   const [openModalAge, setOpenModalAge] = useState(false);
-  const [editData, setEditData] = useState<{
-    id: number;
-    from: string;
-    to: string;
-    DisplayName: string;
-  } | null>(null);
+  const [editData, setEditData] = useState<AgeGroup | null>(null);
 
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
@@ -90,48 +79,50 @@ export default function AgeGroupList() {
     }
   };
 
-  const handleSave = async (data: {
-    id?: number;
-    from: string;
-    to: string;
-    DisplayName: string;
-  }) => {
+  const handleSave = async (data: AgeGroup) => {
     try {
-      if (Number(data.from) >= Number(data.to)) {
+      if (
+        !data.DisplayName?.trim() ||
+        data.FromAge === "" ||
+        data.ToAge === ""
+      ) {
+        toast.error(t("all_fields_required"));
+        return;
+      }
+
+      if (Number(data.FromAge) >= Number(data.ToAge)) {
         toast.error(t("from_less_to"));
         return;
       }
+
       setLoading(true);
 
       if (editData) {
         const res = await updateAge({
           Id: data.id!,
-          FromAge: Number(data.from),
-          ToAge: Number(data.to),
+          FromAge: String(data.FromAge),
+          ToAge: String(data.ToAge),
           DisplayName: String(data.DisplayName),
         });
 
         ShowToastSuccess(res?.Message || t("success_age_update"));
       } else {
         const res = await createAge({
-          FromAge: Number(data.from),
-          ToAge: Number(data.to),
+          FromAge: String(data.FromAge),
+          ToAge: String(data.ToAge),
           DisplayName: String(data.DisplayName),
         });
 
         ShowToastSuccess(res?.Message || t("success_age_create"));
       }
 
-      const res: AgeApiResponse = await allAgeData({
-        page: currentPage,
-        pageSize: 10,
-      });
+      const res: AgeApiResponse = await allAgeData();
 
       setAgeGroups(
         res.Data.map((item) => ({
           id: item.Id,
-          from: item.FromAge.toString(),
-          to: item.ToAge.toString(),
+          FromAge: item.FromAge.toString(),
+          ToAge: item.ToAge.toString(),
           DisplayName: item.DisplayName.toString(),
         })),
       );
@@ -153,7 +144,7 @@ export default function AgeGroupList() {
     {
       key: "ageGroups",
       label: t("age_groups"),
-      render: (row: any) => `${t("from")} ${row.from} : ${row.to}`,
+      render: (row: any) => `${t("from")} ${row.FromAge} : ${row.ToAge}`,
     },
     {
       key: "actions",
@@ -163,8 +154,8 @@ export default function AgeGroupList() {
           <button
             onClick={() => {
               setEditData({
-                from: row.from,
-                to: row.to,
+                FromAge: row.FromAge,
+                ToAge: row.ToAge,
                 id: row.id,
                 DisplayName: row.DisplayName,
               });
@@ -200,17 +191,10 @@ export default function AgeGroupList() {
           </AddButton>
         </div>
         {loading ? (
-          <AgeLoading />
+          <TableLoading />
         ) : (
           <BasicTableOne data={ageGroups} columns={columns} />
         )}
-        <div className="my-6 w-full flex items-center justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
       </div>
 
       <AgeGroupModal

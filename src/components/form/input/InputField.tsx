@@ -17,6 +17,7 @@ interface InputProps {
   success?: boolean;
   error?: boolean;
   hint?: string;
+  required?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -34,6 +35,7 @@ const Input: FC<InputProps> = ({
   disabled = false,
   success = false,
   error = false,
+  required = false,
   hint,
 }) => {
   let inputClasses = `h-11 w-full rounded-lg border px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-none focus:ring-3 dark:bg-[#1e1e1e] dark:text-white ${className}`;
@@ -60,6 +62,7 @@ const Input: FC<InputProps> = ({
           className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300"
         >
           {label}
+          {required && <span className="text-error-500">*</span>}{" "}
         </label>
       )}
 
