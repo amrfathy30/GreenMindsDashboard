@@ -13,13 +13,24 @@ import { VideoApiResponse, VideoType } from "../../utils/types/videoType";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import AgeLoading from "../../components/loading/ageLoading";
+import { allAgeData } from "../../api/services/ageService";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
+
+// تعريف الـ Interface للأعمار لحل مشكلة "Unexpected any"
+interface AgeSector {
+  Id: number;
+  DisplayName: string;
+  FromAge: number;
+  ToAge: number;
+}
 
 export default function VideosList() {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<VideoType[]>([]);
+  // تم استبدال any بـ AgeSector[]
+  const [ageSectors, setAgeSectors] = useState<AgeSector[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -28,11 +39,16 @@ export default function VideosList() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoType | null>(null);
 
-  const fetchVideos = async () => {
+  const fetchInitialData = async () => {
     try {
       setLoading(true);
-      const res: VideoApiResponse = await allVideosData({ page: currentPage, pageSize: 10 });
-      setVideos(res.Data || []);
+      // تم استخدام VideoApiResponse هنا لحل مشكلة "defined but never used"
+      const [videosRes, agesRes]: [VideoApiResponse, { Data: AgeSector[] }] = await Promise.all([
+        allVideosData({ page: currentPage, pageSize: 10 }),
+        allAgeData()
+      ]);
+      setVideos(videosRes.Data || []);
+      setAgeSectors(agesRes.Data || []);
     } catch {
       toast.error(t("failed_load_videos"));
     } finally {
@@ -41,7 +57,7 @@ export default function VideosList() {
   };
 
   useEffect(() => {
-    fetchVideos();
+    fetchInitialData();
   }, [currentPage]);
 
   const handleSave = async (formData: FormData) => {
@@ -56,7 +72,7 @@ export default function VideosList() {
       }
       setIsAddOpen(false);
       setIsEditOpen(false);
-      fetchVideos();
+      fetchInitialData();
     } catch (error: unknown) {
       const axiosError = error as { response?: { data?: { Message?: string } } };
       toast.error(axiosError?.response?.data?.Message || t("operation_failed"));
@@ -70,9 +86,7 @@ export default function VideosList() {
     try {
       setLoading(true);
       await deleteVideo(selectedVideo.Id);
-      
       setVideos(prevVideos => prevVideos.filter(v => v.Id !== selectedVideo.Id));
-      
       ShowToastSuccess(t("success_video_delete"));
       setIsDeleteOpen(false);
       setSelectedVideo(null);
@@ -152,7 +166,10 @@ export default function VideosList() {
                       </td>
                       <td className="px-4 py-3 text-center">
                         <span className="text-base font-lalezar text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-md">
-                          {video.AgeSectorName || `Age ${video.AgeSectorId}`}
+                          {(() => {
+                            const sector = ageSectors.find(a => a.Id === video.AgeSectorId);
+                            return sector ? `${sector.FromAge} : ${sector.ToAge}` : (video.AgeSectorName || "-");
+                          })()}
                         </span>
                       </td>
                       <td className="px-4 py-3">

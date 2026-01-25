@@ -13,6 +13,8 @@ const BASE_URL = "https://kidsapi.pulvent.com";
 interface AgeSector {
   Id: number;
   DisplayName: string;
+  FromAge: number; 
+  ToAge: number;  
 }
 
 export default function VideoFormModal({ isOpen, onClose, onSave, type, initialData, loading }: VideoFormModalProps) {
@@ -176,7 +178,11 @@ export default function VideoFormModal({ isOpen, onClose, onSave, type, initialD
               required
             >
               <option value="" disabled>{isRTL ? "اختر الفئة" : "Select Age"}</option>
-              {ageSectors.map((age) => <option key={age.Id} value={age.Id.toString()}>{age.DisplayName}</option>)}
+              {ageSectors.map((age) => (
+  <option key={age.Id} value={age.Id.toString()}>
+    {age.FromAge} : {age.ToAge}
+  </option>
+))}
             </select>
           </div>
           <Input label={isRTL ? "عدد النقاط" : "Number of points"} type="number" value={points.toString()} onChange={(e) => setPoints(Number(e.target.value))} />
