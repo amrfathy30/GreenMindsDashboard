@@ -31,7 +31,7 @@ const AppHeader: React.FC = () => {
 
           <div className="flex w-full  items-center justify-between gap-2 2xsm:gap-3 px-6">
            
-            <a className="flex gap-2 items-center text-[#6B6B6B] dark:text-white" href="/signin">
+            <a className="flex gap-2 items-center text-[#6B6B6B] dark:text-white" href="/">
               <svg width="24" height="24" viewBox="0 0 29 29" fill="none">
                 <path d="M8.31847 18.8291L9.93832 17.1824L8.05636 15.3311L17.6227 15.2524L17.6035 12.9192L8.03717 12.9979L9.88843 11.1159L8.24172 9.49605L3.61358 14.2009L8.31847 18.8291ZM22.3468 22.2138L14.1804 22.281L14.1996 24.6142L22.366 24.5471C23.6493 24.5365 24.6906 23.4779 24.68 22.1946L24.5457 5.86186C24.5352 4.57857 23.4766 3.53724 22.1933 3.54779L14.0269 3.61495L14.0461 5.9482L22.2125 5.88105L22.3468 22.2138Z" 
                 fill="currentColor" />

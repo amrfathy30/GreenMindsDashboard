@@ -25,6 +25,7 @@ import AvatarsList from "./pages/Avatars/avatarsList"
 import ChildrenInfo from "./pages/Users/Children/ChildrenInfo/ChildrenInfo";
 import ProfileLevels from "./pages/Setting/ProfileLevels/ProfileLevels";
 import LoginStreaks from "./pages/Setting/LoginStreaks/LoginStreaks";
+import { ProtectedRoute } from "./protected-route-wrapper";
 
 export default function App() {
   return (
@@ -33,8 +34,11 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           <Route index path="/" element={<SignIn />} />
+          <Route path="*" element={<NotFound />} />
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
+          <Route element={<ProtectedRoute />}>
+  
             {/* Pages */}
             <Route path="/videos" element={<VideosList />} />
             <Route path="/games" element={<GamesList />} />
@@ -69,14 +73,14 @@ export default function App() {
             <Route path="/line-chart" element={<LineChart />} />
             <Route path="/bar-chart" element={<BarChart />} />
           </Route>
-
+          </Route>
           {/* Auth Layout */}
-          <Route path="/signin" element={<SignIn />} />
+         
           {/* <Route path="/signup" element={<SignUp />} /> */}
 
           {/* Fallback Route */}
 
-          <Route path="*" element={<NotFound />} />
+
         </Routes>
       </Router>
     </>

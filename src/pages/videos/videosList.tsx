@@ -103,7 +103,7 @@ export default function VideosList() {
     <>
       <PageMeta title={t("videos")} description="Manage your videos list" />
 
-      <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden mt-2 border border-gray-100 dark:border-gray-800 mx-auto w-full max-w-[1400px]">
+      <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden mt-2 border border-gray-100 dark:border-gray-800 mx-auto w-full h-[calc(100vh-48px)]">
         <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-gray-800">
           <h2 className="text-lg font-bold text-gray-800 dark:text-white">{t("Videos - Admin")}</h2>
 

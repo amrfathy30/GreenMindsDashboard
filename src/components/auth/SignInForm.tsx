@@ -5,12 +5,14 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 import { adminLogin } from "../../api/services/authService";
+import { useLanguage } from "../../api/locales/LanguageContext";
 
 export default function SignInForm() {
+  const {  isRTL} = useLanguage();
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
- 
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,20 +24,13 @@ export default function SignInForm() {
   useEffect(() => {
     const checkExistingAuth = async () => {
       const token = localStorage.getItem('GMadminToken');
-      if (!token) {
-        setCheckingAuth(false);
-        return;
-      }
-      try {
+      if(token){
         navigate('/videos');
-      } catch (error) {
-        localStorage.removeItem('GMadminToken');
-        setCheckingAuth(false);
       }
     };
 
     checkExistingAuth();
-  }, [navigate]);
+  }, []);
 
   const validateEmail = (email: string) => {
     return String(email)
@@ -52,18 +47,23 @@ export default function SignInForm() {
     //   setLoading(false)
     //   return;
     // }
-   
+
     try {
       const response = await adminLogin({ email, password });
-      if (response.token) {
-        localStorage.setItem('GMadminToken', response.token);
-        navigate('/videos');
+      setLoading(false)
+      if (response.StatusCode == 200) {
+        console.log(response)
+        localStorage.setItem('GMadminData', response.Data);
+        localStorage.setItem('GMadminToken', response.Data?.token);
+        window.location.href='/videos'
+        // navigate('/videos');
       }
-      else{
-        navigate('/videos');
+      else {
+        setError(isRTL?"بريد الكتروني غير صحيح او كلمه مرور غير صحيحه":"Invalid email or password")
       }
+
     } catch (err: any) {
-      navigate('/videos');
+      setError(err)
     }
 
   };
@@ -80,14 +80,14 @@ export default function SignInForm() {
           </div>
           <div>
 
-
+{/* <div>{error}</div> */}
             <form onSubmit={handleOnSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" value={email} onChange={e=>setEmail(e.target.value)} />
+                  <Input placeholder="info@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
                 </div>
                 <div>
                   <Label>
@@ -97,7 +97,7 @@ export default function SignInForm() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
-                      value={password} onChange={e=>setPassword(e.target.value)} 
+                      value={password} onChange={e => setPassword(e.target.value)}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
