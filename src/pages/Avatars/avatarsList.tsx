@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import PageMeta from "../../components/common/PageMeta";
 import AvatarCard from "./avatarCard";
 import Pagination from "../../components/common/Pagination";
 import Button from "../../components/ui/button/Button";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import AvatarModal from "./avatarModal";
+import { getAvatarsPaged, deleteAvatar } from "../../api/services/avatarService";
+import AvatarSkeleton from "../../components/loading/avatarLoading";
 
 const MOCK_AVATARS = [
   { id: 1, ageGroup: "2-5 Years", image: "/images/avatarImages/avatar1.png" },
@@ -16,24 +18,50 @@ const MOCK_AVATARS = [
 ];
 
 export default function GamesList() {
+  const [avatars, setAvatars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const totalPages = 10;
+  const [loading, setLoading] = useState(true);
+  const pageSize = 8;
+
   const handleEditClick = (avatar: any) => {
     setSelectedAvatar(avatar);
     setIsEditModalOpen(true);
   };
 
+const loadAvatars = async () => {
+    setLoading(true);
+    try {
+      const response = await getAvatarsPaged(currentPage, pageSize);
+      setAvatars(response.data);
+      setTotalPages(Math.ceil(response.totalCount / pageSize));
+    } catch (error) {
+      console.error("Failed to fetch avatars", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadAvatars();
+  }, [currentPage]);
+
   const handleDeleteClick = (avatar: any) => {
     setSelectedAvatar(avatar);
     setIsDeleteModalOpen(true);
   };
-  const handleConfirmDelete = () => {
-    console.log("Confirmed deleting:", selectedAvatar);
-    setIsDeleteModalOpen(false);
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteAvatar(selectedAvatar.id);
+      loadAvatars(); 
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error("Delete failed");
+    }
   };
   return (
     <>
@@ -62,15 +90,23 @@ export default function GamesList() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
-          {MOCK_AVATARS.map((avatar) => (
+          {loading ? (
+          Array.from({ length: 6 }).map((_, index) => (
+            <AvatarSkeleton key={index} />
+          ))
+        ) : avatars && avatars.length > 0 ? (
+          avatars.map((avatar: any) => (
             <AvatarCard
               key={avatar.id}
-              ageGroup={avatar.ageGroup}
-              image={avatar.image}
+              ageGroup={avatar.ageSector?.name || "N/A"}
+              image={avatar.imagePath || avatar.image}
               onEdit={() => handleEditClick(avatar)}
               onDelete={() => handleDeleteClick(avatar)}
             />
-          ))}
+          ))
+        ) : (
+          <p>No Avatars Found</p>
+        )}
         </div>
 
         <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
@@ -84,7 +120,10 @@ export default function GamesList() {
 
       <AvatarModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          loadAvatars(); 
+        }}
         type="add"
       />
       <AvatarModal

@@ -3,7 +3,7 @@ import { Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import { Modal } from "../../components/ui/modal";
 import Form from "../../components/form/Form";
-
+import { createAvatar, updateAvatar } from "../../api/services/avatarService";
 
 interface AvatarModalProps {
   isOpen: boolean;
@@ -15,15 +15,23 @@ interface AvatarModalProps {
 const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, type }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(avatarData?.image || null);
-  const ageGroups = ["2-4 Years", "5-7 Years", "8-10 Years", "11-13 Years"];
+  const [selectedAgeSector, setSelectedAgeSector] = useState(avatarData?.ageSectorId || "");
+  const [errors, setErrors] = useState<{ image?: string; ageSector?: string }>({});
+  const ageGroups = [
+  { id: 1, label: "2-4 Years" },
+  { id: 2, label: "5-7 Years" },
+  { id: 3, label: "8-10 Years" },
+  { id: 4, label: "11-13 Years" },
+];
   if (!isOpen) return null;
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setErrors((prev) => ({ ...prev, image: undefined }));
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result as string);
@@ -31,9 +39,48 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
       reader.readAsDataURL(file);
     }
   };
-  const onSubmit = () => {
-    onClose()
-  };
+const onSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  let newErrors: { image?: string; ageSector?: string } = {};
+    
+    if (!previewImage && type === 'add') {
+      newErrors.image = "Please upload an avatar image";
+    }
+    
+    if (!selectedAgeSector) {
+      newErrors.ageSector = "Please select an age group";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return; 
+    }
+  const formData = new FormData();
+
+  formData.append("Name", "Avatar_" + Date.now()); 
+  formData.append("AgeSectorId", selectedAgeSector.toString());
+  formData.append("IsActive", "true");
+  formData.append("IsDefault", "false");
+  formData.append("RequiredLevelId", "1"); 
+  formData.append("RequiredPoints", "0");  
+
+  if (fileInputRef.current?.files?.[0]) {
+    formData.append("Image", fileInputRef.current.files[0]);
+  }
+
+  try {
+    if (type === 'edit') {
+      formData.append("Id", avatarData.id);
+      await updateAvatar(formData);
+    } else {
+      await createAvatar(formData);
+    }
+    onClose(); 
+  } catch (error: any) {
+    console.error("Server Error:", error.response?.data);
+    alert("Error: " + (error.response?.status === 401 ? "Unauthorized - Please Login again" : "Check console for details"));
+  }
+};
   return (
     <Modal
       isOpen={isOpen}
@@ -79,19 +126,23 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
                   Upload Avatar Image
                 </span>
               </button>
+              {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image}</p>}
               <div className="space-y-2">
           <select 
             id="age_group"
+            value={selectedAgeSector}
             defaultValue={avatarData?.ageGroup || ""}
+            onChange={(e) => setSelectedAgeSector(e.target.value)}
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
           >
             <option value="" disabled>Select Age Group</option>
             {ageGroups.map((group) => (
-              <option key={group} value={group} className="dark:bg-[#1a222c]">
-                {group}
+              <option key={group.id} value={group.id}>
+                {group.label}
               </option>
             ))}
           </select>
+          {errors.ageSector && <p className="text-xs text-red-500 mt-1">{errors.ageSector}</p>}
         </div>
             </div>
           </div>
