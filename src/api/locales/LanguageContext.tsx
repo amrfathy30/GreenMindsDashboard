@@ -54,7 +54,27 @@ const translations = {
     Next: "Next",
     saving: "Saving...",
     updating: "Updating...",
+
+    // Video translations
+    video_added: "Video added successfully",
+    video_updated: "Video updated successfully",
+    video_deleted: "Video deleted successfully",
+    failed_load_videos: "Failed to load videos",
+    add_video_title: "Add New Video",
+    edit_video_title: "Edit Video",
+    points_label: "Number of Points",
+    confirm_delete_video: "Are you sure you want to delete this video?",
+    success_video_delete: "Video deleted successfully",
+    success_video_create: "Video created successfully",
+    success_video_update: "Video updated successfully",
+    Thumbnail: "Thumbnail",
+    title: "Title",
+    points: "Points",
+    "Videos - Admin": "Videos - Admin",
+    "age group": "Age Group",
+   
   },
+  
   ar: {
     videos: "فيديوهات",
     games: "ألعاب",
@@ -93,6 +113,24 @@ const translations = {
     updateButton: "تحديث",
     saving: "جارٍ الحفظ...",
     updating: "جارٍ التحديث...",
+    
+    // Video translations
+    video_added: "تم إضافة الفيديو بنجاح",
+    video_updated: "تم تحديث الفيديو بنجاح",
+    video_deleted: "تم حذف الفيديو بنجاح",
+    failed_load_videos: "فشل تحميل الفيديوهات",
+    add_video_title: "إضافة فيديو جديد",
+    edit_video_title: "تعديل الفيديو",
+    points_label: "عدد النقاط",
+    confirm_delete_video: "هل أنت متأكد من أنك تريد حذف هذا الفيديو؟",
+    success_video_delete: "تم حذف الفيديو بنجاح",
+    success_video_create: "تم إضافة الفيديو بنجاح",
+    success_video_update: "تم تحديث الفيديو بنجاح",
+    Thumbnail: "الصورة المصغرة",
+    title: "العنوان",
+    points: "النقاط",
+    "Videos - Admin": "إدارة الفيديوهات",
+    "age group": "الفئة العمرية",
   },
 };
 
