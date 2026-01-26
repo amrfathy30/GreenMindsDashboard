@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useLanguage } from "../../api/locales/LanguageContext";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../components/ui/button/Button";
@@ -22,72 +22,94 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type,o
   const [previewImage, setPreviewImage] = useState<string | null>(gameData?.image || null);
   const [formError, setFormError] = useState(false);
   const ageGroups = ["2-4 Years", "5-7 Years", "8-10 Years", "11-13 Years"];
-  if (!isOpen) return null;
-  const handleSubmit = async (e: React.FormEvent) => {
+ 
+const [formDataState, setFormDataState] = useState({
+  nameEn: "",
+  nameAr: "",
+  descEn: "",
+  descAr: "",
+  android: "",
+  ios: "",
+  apiLink: "",
+  apiKey: "",
+  ageGroup: "",
+});
+
+useEffect(() => {
+  if (gameData && isOpen) {
+    setFormDataState({
+      nameEn: gameData.gameNameEn || gameData.title || "", 
+      nameAr: gameData.gameNameAr || "",
+      descEn: gameData.descriptionEn || gameData.description || "",
+      descAr: gameData.descriptionAr || "",
+      android: gameData.androidLink || "",
+      ios: gameData.iosLink || "",
+      apiLink: gameData.apiLink || "",
+      apiKey: gameData.apiKey || "",
+      ageGroup: gameData.ageGroup || "",
+    });
+    setPreviewImage(gameData.thumbnailUrl || null);
+  }
+}, [gameData, isOpen]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormDataState((prev) => ({ ...prev, [id]: value }));
+  };
+
+const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   setFormError(false);
 
+  if (!formDataState.nameEn || !formDataState.nameAr) {
+    setFormError(true);
+    return;
+  }
   const formData = new FormData();
-
-  const nameEn = (document.getElementById("name_En") as HTMLInputElement)?.value;
-  const nameAr = (document.getElementById("name_ar") as HTMLInputElement)?.value;
-  const descEn = (document.getElementById("description_en") as HTMLTextAreaElement)?.value;
-  const descAr = (document.getElementById("description_ar") as HTMLTextAreaElement)?.value;
-  const android = (document.getElementById("android") as HTMLInputElement)?.value;
-  const ios = (document.getElementById("ios") as HTMLInputElement)?.value;
-  const apiLink = (document.getElementById("api_link") as HTMLInputElement)?.value;
-  const apiKey = (document.getElementById("ai_key") as HTMLInputElement)?.value;
-  const ageGroup = (document.getElementById("age_group") as HTMLSelectElement)?.value;
-
-  formData.append("GameNameEn", nameEn || "");
-  formData.append("GameNameAr", nameAr || "");
-  formData.append("DescriptionEn", descEn || "");
-  formData.append("DescriptionAr", descAr || "");
-  formData.append("AndroidLink", android || "");
-  formData.append("IosLink", ios || "");
-  formData.append("ApiLink", apiLink || "");
-  formData.append("ApiKey", apiKey || "");
-  formData.append("AgeGroup", ageGroup || "");
+  formData.append("GameNameEn", formDataState.nameEn);
+  formData.append("GameNameAr", formDataState.nameAr);
+  formData.append("DescriptionEn", formDataState.descEn);
+  formData.append("DescriptionAr", formDataState.descAr);
+  formData.append("AndroidLink", formDataState.android);
+  formData.append("IosLink", formDataState.ios);
+  formData.append("ApiLink", formDataState.apiLink);
+  formData.append("ApiKey", formDataState.apiKey);
+  formData.append("AgeGroup", formDataState.ageGroup);
 
   const file = fileInputRef.current?.files?.[0];
   if (file) {
     formData.append("Thumbnail", file);
   }
 
-  if (!nameEn || !nameAr) {
-        setFormError(true);
-        return;
-    }
-
   try {
-    if (type === 'add') {
-      await createGame(formData);
-    } else {
+    if (type === 'edit') {
       if (gameData?.id) {
         formData.append("Id", gameData.id.toString());
       }
       await updateGame(formData);
+    } else {
+      await createGame(formData);
     }
+    
     onSuccess(); 
-    onClose(); 
-  } catch (error) {
-      setFormError(true); 
-      alert("Please fill out the required fields correctly.");
-    }
-  };
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
-  };
-const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImage(reader.result as string); 
-    };
-    reader.readAsDataURL(file);
+    onClose();   
+  } catch (error: any) {
+    setFormError(true);
+    const msg = error.response?.data?.message || "Error occurred";
+    alert(msg);
   }
 };
+const handleUploadClick = () => fileInputRef.current?.click();
+
+const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setPreviewImage(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+ if (!isOpen) return null;
   return (
     <Modal
       isOpen={isOpen}
@@ -101,29 +123,32 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       >
 
         <Input
-          id="name_En"
-          label={t("game_name_en")}
-          placeholder={t("enter_name_placeholder")}
-          defaultValue={gameData?.gameNameEn || ""}
-          required={true}
-          error={formError}
-        />
+            id="nameEn"
+            label={t("game_name_en")}
+            placeholder={t("enter_name_placeholder")}
+            value={formDataState.nameEn} 
+            onChange={handleChange}
+            required={true}
+            error={formError}
+          />
 
         <Input
-          id="name_ar"
-          label={t("game_name_ar")}
-          placeholder={t("enter_name_placeholder")}
-          defaultValue={gameData?.gameNameAr || ""}
-          required={true}
-          error={formError}
-        />
+            id="nameAr"
+            label={t("game_name_ar")}
+            placeholder={t("enter_name_placeholder")}
+            value={formDataState.nameAr} 
+            onChange={handleChange}
+            required={true}
+            error={formError}
+          />
         <div className="space-y-2">
           <label className="block text-sm font-medium text-black dark:text-gray-300">
             {t("select_age_group")}
           </label>
           <select 
-            id="age_group"
-            defaultValue={gameData?.ageGroup || ""}
+            id="ageGroup"
+            value={formDataState.ageGroup}
+            onChange={handleChange}
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
           >
             <option value="" disabled>{t("select_age_group")}</option>
@@ -135,51 +160,51 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </select>
         </div>
         <div className="grid grid-cols-2 space-x-2 w-full">
-          <TextArea
-            key={gameData?.id || "new"}
-            id="description_en"
-            label={t("description_en")}
-            placeholder={t("enter_description")}
-            defaultValue={gameData?.descriptionEn || ""}
-            required={true}
-            error={formError}
-          />
-          <TextArea
-            key={gameData?.id || "new"}
-            id="description_ar"
-            label={t("description_ar")}
-            placeholder={t("enter_description")}
-            defaultValue={gameData?.descriptionAr || ""}
-            required={true}
-            error={formError}
-          />
-        </div>
+  <TextArea
+    id="descEn"
+    label={t("description_en")}
+    value={formDataState.descEn}
+    onChange={(val) => setFormDataState(prev => ({ ...prev, descEn: val }))}
+    required
+    error={formError}
+  />
+  <TextArea
+    id="descAr"
+    label={t("description_ar")}
+    value={formDataState.descAr}
+    onChange={(val) => setFormDataState(prev => ({ ...prev, descAr: val }))}
+    required
+    error={formError}
+  />
+</div>
         <div className="grid grid-cols-1 gap-3">
-          {[
-            { label: t("android_link"), id: "android", val: gameData?.androidLink },
-            { label: t("ios_link"), id: "ios", val: gameData?.iosLink },
-            { label: t("api_link"), id: "api_link", val: gameData?.apiLink },
-            //{ label: "API Key", placeholder: "Enter API Key here", id: "ai_key", val: gameData?.apiKey }
-          ].map((field) => (
-            <Input
-              key={field.id}
-              id={field.id}
-              label={field.label}
-              placeholder={t("enter_url_placeholder")}
-              defaultValue={field.val || ""}
-              required error={formError}
-            />
-          ))}
-          
-          <Input
-            id="ai_key"
-            label={t("api_key_label")}
-            placeholder={t("enter_api_key_placeholder")}
-            defaultValue={gameData?.apiKey || ""}
-            required error={formError}
-          />
-        </div>
-
+  {[
+    { label: t("android_link"), id: "android" },
+    { label: t("ios_link"), id: "ios" },
+    { label: t("api_link"), id: "apiLink" }, 
+  ].map((field) => (
+    <Input
+      key={field.id}
+      id={field.id}
+      label={field.label}
+      placeholder={t("enter_url_placeholder")}
+      value={formDataState[field.id as keyof typeof formDataState]} 
+      onChange={handleChange}
+      required 
+      error={formError}
+    />
+  ))}
+  
+  <Input
+    id="apiKey" 
+    label={t("api_key_label")}
+    placeholder={t("enter_api_key_placeholder")}
+    value={formDataState.apiKey}
+    onChange={handleChange}
+    required 
+    error={formError}
+  />
+</div>
         <div className="space-y-2">
           <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
             {t("upload_thumbnail_label")}
