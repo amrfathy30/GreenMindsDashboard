@@ -90,9 +90,9 @@ export default function GamesList() {
           ) : (
             games.map((game) => (
               <GameCard
-                key={game.id}
-                title={game.gameNameEn || game.title}
-                description={game.descriptionEn || game.description}
+                key={game.Id}
+                title={game.GameNameEn || game.title}
+                description={game.DescriptionEn || game.description}
                 image={game.thumbnailUrl || game.image}
                 onEdit={() => handleEditClick(game)}
                 onDelete={() => handleDeleteClick(game)}
