@@ -1,6 +1,7 @@
 import React from "react";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import { deleteGame } from "../../api/services/gameService";
+import { useLanguage } from "../../api/locales/LanguageContext";
 
 interface DeleteGameModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface DeleteGameModalProps {
 }
 
 const DeleteGameModal: React.FC<DeleteGameModalProps> = ({ isOpen, onClose, gameId, onSuccess }) => {
+  const { t } = useLanguage();
   if (!isOpen) return null;
 const handleOnClick = async () => {
     if (gameId) {
@@ -27,8 +29,8 @@ const handleOnClick = async () => {
         open={isOpen}
         onClose={onClose}
         onConfirm={handleOnClick}
-        title="Delete Game"
-        description=" Are you sure you want to delete this game ?"
+        title={t("delete_game_title")}
+        description={t("confirm_delete_game")}
       />
   );
 };
