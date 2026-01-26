@@ -205,6 +205,20 @@ const translations = {
     api_link: "API Link",
     delete_game_title: "Delete Game",
     confirm_delete_game: "Are you sure you want to delete this game?",
+    //Avatar Translation
+    avatars_admin: "Avatars - Admin",
+    add_avatar: "Add Avatar",
+    delete_avatar: "Delete Avatar",
+    confirm_delete_avatar: "Are you sure you want to delete this avatar?",
+    edit_avatar: "Edit Avatar",
+    add_new_avatar: "Add New Avatar",
+    no_avatars_found: "No Data Found",
+    no_avatars_desc: "Avatars Section has no data yet, start by adding your first Avatar Now!",
+    manage_avatars_desc: "Manage your Avatars list easily.",
+    upload_image_error: "Please upload an avatar image",
+    select_age_error: "Please select an age group",
+    upload_avatar_label: "Upload your avatar",
+    upload_avatar_btn: "Upload Avatar Image",
   },
   
   ar: {
@@ -400,6 +414,20 @@ const translations = {
     api_link: "رابط الـ API",
     delete_game_title: "حذف اللعبة",
     confirm_delete_game: "هل أنت متأكد من أنك تريد حذف هذه اللعبة؟",
+    //Avatar Translation
+    avatars_admin: "إدارة الصور الرمزية",
+    add_avatar: "إضافة صورة رمزية",
+    delete_avatar: "حذف الصورة الرمزية",
+    confirm_delete_avatar: "هل أنت متأكد من أنك تريد حذف هذه الصورة الرمزية؟",
+    edit_avatar: "تعديل الصورة الرمزية",
+    add_new_avatar: "إضافة صورة رمزية جديدة",
+    no_avatars_found: "لا يوجد بيانات",
+    no_avatars_desc: "قسم الصور الرمزية لا يحتوي على بيانات حالياً، ابدأ بإضافة صورتك الأولى الآن!",
+    manage_avatars_desc: "قم بإدارة قائمة الصور الرمزية الخاصة بك بسهولة.",
+    upload_image_error: "يرجى رفع صورة الرمز الشخصي",
+    select_age_error: "يرجى اختيار الفئة العمرية",
+    upload_avatar_label: "قم برفع صورتك الرمزية",
+    upload_avatar_btn: "رفع صورة الأفاتار"
   },
 };
 

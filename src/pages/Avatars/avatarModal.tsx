@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useLanguage } from "../../api/locales/LanguageContext";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import { Modal } from "../../components/ui/modal";
@@ -13,6 +14,7 @@ interface AvatarModalProps {
 }
 
 const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, type }) => {
+  const { t} = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(avatarData?.image || null);
   const [selectedAgeSector, setSelectedAgeSector] = useState(avatarData?.ageSectorId || "");
@@ -44,11 +46,11 @@ const onSubmit = async (e: React.FormEvent) => {
   let newErrors: { image?: string; ageSector?: string } = {};
     
     if (!previewImage && type === 'add') {
-      newErrors.image = "Please upload an avatar image";
+      newErrors.image = t("upload_image_error");
     }
     
     if (!selectedAgeSector) {
-      newErrors.ageSector = "Please select an age group";
+      newErrors.ageSector = t("select_age_error");
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -86,7 +88,7 @@ const onSubmit = async (e: React.FormEvent) => {
       isOpen={isOpen}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title={type == 'edit' ? "Edit Avatar" : "Add Avatar"}
+      title={type === 'edit' ? t("edit_avatar") : t("add_avatar")}
     >
       <Form
         onSubmit={onSubmit}
@@ -95,7 +97,7 @@ const onSubmit = async (e: React.FormEvent) => {
 
         <div className="space-y-2">
           <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
-            Upload your avatar
+            {t("upload_avatar_label")}
           </label>
           <div className="flex flex-col sm:flex-row items-center gap-4 ">
             <div className="relative flex h-[80px] w-[80px] shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-100 border-gray-700">
@@ -123,7 +125,7 @@ const onSubmit = async (e: React.FormEvent) => {
                   <Upload size={18} strokeWidth={2.5} />
                 </div>
                 <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
-                  Upload Avatar Image
+                  {t("upload_avatar_btn")}
                 </span>
               </button>
               {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image}</p>}
@@ -135,7 +137,7 @@ const onSubmit = async (e: React.FormEvent) => {
             onChange={(e) => setSelectedAgeSector(e.target.value)}
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
           >
-            <option value="" disabled>Select Age Group</option>
+            <option value="" disabled>{t("select_age_group")}</option>
             {ageGroups.map((group) => (
               <option key={group.id} value={group.id}>
                 {group.label}
@@ -149,7 +151,7 @@ const onSubmit = async (e: React.FormEvent) => {
         </div>
 
 
-        <Button className="mt-2" type="submit">Save</Button>
+        <Button className="mt-2" type="submit">{type === 'edit' ? t("updateButton") : t("saveButton")}</Button>
       </Form>
     </Modal>
 
