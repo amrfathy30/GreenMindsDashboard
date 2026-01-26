@@ -40,16 +40,16 @@ export default function BasicTableOne({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl bg-white">
-      <div className="max-w-full overflow-x-auto">
-        <Table className="border">
-          <TableHeader className="border-b bg-[#25B16F] capitalize">
+    <div className="overflow-hidden rounded-xl ">
+      <div className="max-w-full overflow-x-auto border dark:border-gray-600">
+        <Table className="border-0">
+          <TableHeader className="border-b dark:border-gray-600 bg-linear-to-r from-primary to-secondary  capitalize">
             <TableRow>
               {columns.map((col) => (
                 <TableCell
                   key={col.key}
                   isHeader
-                  className="px-5 py-3 text-center text-lg text-white"
+                  className="px-5 py-3 text-start text-lg text-white"
                 >
                   {col.label}
                 </TableCell>
@@ -66,15 +66,15 @@ export default function BasicTableOne({
                   {/* Main Row */}
                   <TableRow
                     className={`
-    ${rowIndex % 2 === 0 ? "bg-[#F5F4F4]" : "bg-[#EAE7E7]"}
-    ${isExpanded ? "bg-[#DFF5EA]" : ""}
+    ${rowIndex % 2 === 0 ? "bg-white dark:bg-[#262626]" : "bg-[#D9D9D940] dark:bg-[#323333]"}
+    ${isExpanded ? "bg-[#D9D9D940] dark:bg-white/[0.01]" : ""}
   `}
                   >
                     {columns.map((col) => (
                       <TableCell
                         key={col.key}
                         onClick={() => handleRowClick(row)}
-                        className="cursor-pointer text-center text-lg py-3 font-semibold"
+                        className="cursor-pointer text-start text-lg px-5 py-2 font-normal dark:text-white"
                       >
                         {col.render ? col.render(row) : row[col.key]}
                       </TableCell>
@@ -89,7 +89,7 @@ export default function BasicTableOne({
                         <TableRow>
                           <TableCell
                             colSpan={columns.length}
-                            className="px-8 py-3 font-bold text-lg"
+                            className="px-5 py-3 font-semibold text-lg dark:text-white"
                           >
                             {typeof expandable.title === "function"
                               ? expandable.title(row)
@@ -104,11 +104,11 @@ export default function BasicTableOne({
                         .map((expandedRow, index) => (
                           <TableRow
                             key={`${row.id}-child-${index}`}
-                            className="bg-gray-100"
+                            className="bg-gray-100 dark:bg-gray-600"
                           >
                             <TableCell
                               colSpan={columns.length}
-                              className="px-8 py-3 bg-white"
+                              className="px-5 py-3 bg-white dark:bg-gray-700"
                             >
                               {expandedRow}
                             </TableCell>

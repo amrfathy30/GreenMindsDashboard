@@ -26,8 +26,8 @@ export default function UserDropdown() {
 
         <div className="flex justify-between items-center w-full">
           <div className="flex items-center">
-            <div className="me-3 overflow-hidden rounded-full h-11 w-11">
-              <img src="/images/user/owner.jpg" alt="User" />
+            <div className="me-3 overflow-hidden rounded-full h-11 w-11 invert-0 dark:invert">
+              <img src="/images/user.png" alt="User" />
             </div>
             {isExpanded||isMobileOpen?   <div className="flex flex-col items-start">
               <span className="block me-1 font-medium text-theme-sm">User</span>

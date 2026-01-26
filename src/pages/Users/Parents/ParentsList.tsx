@@ -170,15 +170,15 @@ export default function ParentsList() {
           canExpand: (row) => row.childrenList?.length > 0,
           renderExpandedRows: (row) =>
             row.childrenList.map((child: any, index: number) => (
-              <div key={index} className="flex justify-between items-center">
+              <div key={index} className="justify-between items-center grid grid-cols-6">
                 <span className="font-semibold">{child.name}</span>
-                <span className="font-semibold">{child.phone}</span>
-                <span className="font-semibold">{child.email}</span>
-                <span className="font-semibold">{child.points}</span>
-                <span className="font-semibold">{child.streaks}</span>
+                <span className="font-semibold text-center">{child.phone}</span>
+                <span className="font-semibold text-center">{child.email}</span>
+                <span className="font-semibold text-center">{child.points}</span>
+                <span className="font-semibold text-center">{child.streaks}</span>
                 <Link
                   to="/children-info"
-                  className="text-[#25B16F] font-semibold hover:underline"
+                  className="text-[#25B16F] font-semibold hover:underline text-end"
                 >
                   {t("SeeMore") || "See more"}
                 </Link>

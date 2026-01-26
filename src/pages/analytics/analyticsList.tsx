@@ -15,13 +15,14 @@ export default function Analytics() {
       />
 
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 bg-[#EDEDED]  dark:border-gray-800 dark:bg-[#adf4b514]">
+<div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          Analytics
-          </h2>
-          </div>
-          <div className="px-4 pb-4 flex flex-col gap-8">
+            Analytics</h2>
+
+        
+        </div>
+          <div className="px-4 py-4 flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <UsersChart />
               <GenderChart />

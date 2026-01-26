@@ -5,7 +5,7 @@ import UserDropdown from "../components/header/UserDropdown";
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
-  const { isMobileOpen,isExpanded, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const { isMobileOpen, isExpanded, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -18,7 +18,11 @@ const AppHeader: React.FC = () => {
   const toggleApplicationMenu = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
   };
-
+  const handleLogOut = () => {
+    localStorage.removeItem('GMadminData');
+    localStorage.removeItem('GMadminToken');
+    window.location.href = '/'
+  }
 
   return (
     <header className="sticky top-0 flex flex-col w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-[#1e1e1e] lg:border-b">
@@ -30,14 +34,14 @@ const AppHeader: React.FC = () => {
           <UserDropdown />
 
           <div className="flex w-full  items-center justify-between gap-2 2xsm:gap-3 px-6">
-           
-            <a className="flex gap-2 items-center text-[#6B6B6B] dark:text-white" href="/">
+
+            <a className="flex gap-2 items-center text-[#6B6B6B] dark:text-white" onClick={() => handleLogOut()}>
               <svg width="24" height="24" viewBox="0 0 29 29" fill="none">
-                <path d="M8.31847 18.8291L9.93832 17.1824L8.05636 15.3311L17.6227 15.2524L17.6035 12.9192L8.03717 12.9979L9.88843 11.1159L8.24172 9.49605L3.61358 14.2009L8.31847 18.8291ZM22.3468 22.2138L14.1804 22.281L14.1996 24.6142L22.366 24.5471C23.6493 24.5365 24.6906 23.4779 24.68 22.1946L24.5457 5.86186C24.5352 4.57857 23.4766 3.53724 22.1933 3.54779L14.0269 3.61495L14.0461 5.9482L22.2125 5.88105L22.3468 22.2138Z" 
-                fill="currentColor" />
+                <path d="M8.31847 18.8291L9.93832 17.1824L8.05636 15.3311L17.6227 15.2524L17.6035 12.9192L8.03717 12.9979L9.88843 11.1159L8.24172 9.49605L3.61358 14.2009L8.31847 18.8291ZM22.3468 22.2138L14.1804 22.281L14.1996 24.6142L22.366 24.5471C23.6493 24.5365 24.6906 23.4779 24.68 22.1946L24.5457 5.86186C24.5352 4.57857 23.4766 3.53724 22.1933 3.54779L14.0269 3.61495L14.0461 5.9482L22.2125 5.88105L22.3468 22.2138Z"
+                  fill="currentColor" />
               </svg>
 
-             {isExpanded||isMobileOpen? <span className="dark:text-white ">Logout</span>:""}
+              {isExpanded || isMobileOpen ? <span className="dark:text-white ">Logout</span> : ""}
             </a>
             <button
               className="items-center p-1 justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 lg:border"

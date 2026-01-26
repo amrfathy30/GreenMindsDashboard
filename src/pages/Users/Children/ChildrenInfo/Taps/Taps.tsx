@@ -17,7 +17,7 @@ export default function Taps() {
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab1"
-                ? "bg-[#25B16F] text-white"
+                ? "bg-linear-to-r from-primary to-secondarytext-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab1")}
@@ -27,7 +27,7 @@ export default function Taps() {
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab2"
-                ? "bg-[#25B16F] text-white"
+                ? "bg-linear-to-r from-primary to-secondary text-white"
                 : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
             }`}
             onClick={() => setActiveTab("tab2")}

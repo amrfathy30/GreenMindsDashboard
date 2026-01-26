@@ -7,7 +7,7 @@ export  function TableLoading() {
         <div
           key={i}
           className={`h-10 w-full rounded-md animate-pulse ${
-            i === 0 ? "bg-[#25B16F] h-14" : "bg-gray-200"
+            i === 0 ? "bg-linear-to-r from-primary to-secondary h-14" : "bg-gray-200"
           }`}
         />
       ))}
