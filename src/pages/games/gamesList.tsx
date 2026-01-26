@@ -20,9 +20,9 @@ import EmptyState from "../../components/common/no-data-found";
 //   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
 //   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
 // ];
-
+const BASE_URL = "https://kidsapi.pulvent.com";
 export default function GamesList() {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [games, setGames] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,16 +91,15 @@ export default function GamesList() {
             games.map((game) => (
               <GameCard
                 key={game.id}
-                title={game.gameNameEn || game.title}
-                description={game.descriptionEn || game.description}
-                image={game.thumbnailUrl || game.image}
+                title={isRTL?game.GameNameAr:game.GameNameEn}
+                description={isRTL?game.DescriptionEn: game.DescriptionAr}
+                image={game.ThumbnailUrl?.startsWith('http') ? game.ThumbnailUrl : `${BASE_URL}/${game.ThumbnailUrl}` || game.image}
                 onEdit={() => handleEditClick(game)}
                 onDelete={() => handleDeleteClick(game)}
               />
             ))
           )}
         </div>
-
         <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
           <Pagination
             currentPage={currentPage}

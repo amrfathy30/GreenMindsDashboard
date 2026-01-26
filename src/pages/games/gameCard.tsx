@@ -16,7 +16,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
       setShowMenu(false);
     });
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#1e1e1e]">
+    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#1e1e1e] h-[300px]">
 
       <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl">
         <img src={image} alt={title} className="h-full w-full object-cover" />
@@ -31,7 +31,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
         </h3>
         <button 
           onClick={() => setShowMenu(!showMenu)}
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#EFEFEF] text-gray-600 backdrop-blur-sm hover:bg-white dark:bg-black/50 dark:text-gray-300"
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#EFEFEF] text-gray-600 backdrop-blur-sm hover:bg-white dark:bg-[#383939] dark:text-gray-300"
         >
           <MoreVertical size={12} />
         </button>
