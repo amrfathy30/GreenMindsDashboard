@@ -52,8 +52,8 @@ export default function SignInForm() {
       const response = await adminLogin({ email, password });
       setLoading(false)
       if (response.StatusCode == 200) {
-        localStorage.setItem('GMadminData', response.Data);
-        localStorage.setItem('GMadminToken', JSON.stringify(response.Data?.token));
+        localStorage.setItem('GMadminData', JSON.stringify(response.Data));
+        localStorage.setItem('GMadminToken', response.Data?.token );
         window.location.href='/videos'
         // navigate('/videos');
       }
