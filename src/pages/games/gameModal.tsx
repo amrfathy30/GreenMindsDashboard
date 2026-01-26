@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useLanguage } from "../../api/locales/LanguageContext";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import { Modal } from "../../components/ui/modal";
@@ -16,6 +17,7 @@ interface GameModalProps {
 }
 
 const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type,onSuccess }) => {
+  const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(gameData?.image || null);
   const [formError, setFormError] = useState(false);
@@ -91,7 +93,7 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       isOpen={isOpen}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title={type == 'edit' ? "Edit Game" : "Add New Game"}
+      title={type === 'edit' ? t("edit_game") : t("add_new_game")}
     >
       <Form
         onSubmit={handleSubmit}
@@ -100,8 +102,8 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         <Input
           id="name_En"
-          label="Game Name (EN)"
-          placeholder="Enter Name Here"
+          label={t("game_name_en")}
+          placeholder={t("enter_name_placeholder")}
           defaultValue={gameData?.gameNameEn || ""}
           required={true}
           error={formError}
@@ -109,22 +111,22 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         <Input
           id="name_ar"
-          label="Game Name (AR)"
-          placeholder="Enter Name Here"
+          label={t("game_name_ar")}
+          placeholder={t("enter_name_placeholder")}
           defaultValue={gameData?.gameNameAr || ""}
           required={true}
           error={formError}
         />
         <div className="space-y-2">
           <label className="block text-sm font-medium text-black dark:text-gray-300">
-            Select Age Group
+            {t("select_age_group")}
           </label>
           <select 
             id="age_group"
             defaultValue={gameData?.ageGroup || ""}
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
           >
-            <option value="" disabled>Select Age Group</option>
+            <option value="" disabled>{t("select_age_group")}</option>
             {ageGroups.map((group) => (
               <option key={group} value={group} className="dark:bg-[#1a222c]">
                 {group}
@@ -136,8 +138,8 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           <TextArea
             key={gameData?.id || "new"}
             id="description_en"
-            label="Description (EN)"
-            placeholder="Enter description Here"
+            label={t("description_en")}
+            placeholder={t("enter_description")}
             defaultValue={gameData?.descriptionEn || ""}
             required={true}
             error={formError}
@@ -145,8 +147,8 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           <TextArea
             key={gameData?.id || "new"}
             id="description_ar"
-            label="Description (AR)"
-            placeholder="Enter description Here"
+            label={t("description_ar")}
+            placeholder={t("enter_description")}
             defaultValue={gameData?.descriptionAr || ""}
             required={true}
             error={formError}
@@ -154,26 +156,33 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         </div>
         <div className="grid grid-cols-1 gap-3">
           {[
-            { label: "Android Link", placeholder: "Enter game URL here", id: "android",val: gameData?.androidLink },
-            { label: "iOS Link", placeholder: "Enter game URL here", id: "ios",val: gameData?.iosLink},
-            { label: "API Link", placeholder: "Enter URL here", id: "api_link", val: gameData?.apiLink },
-            { label: "API Key", placeholder: "Enter API Key here", id: "ai_key", val: gameData?.apiKey }
+            { label: t("android_link"), id: "android", val: gameData?.androidLink },
+            { label: t("ios_link"), id: "ios", val: gameData?.iosLink },
+            { label: t("api_link"), id: "api_link", val: gameData?.apiLink },
+            //{ label: "API Key", placeholder: "Enter API Key here", id: "ai_key", val: gameData?.apiKey }
           ].map((field) => (
             <Input
-              key={field.label}
+              key={field.id}
               id={field.id}
               label={field.label}
-              placeholder={field.placeholder}
+              placeholder={t("enter_url_placeholder")}
               defaultValue={field.val || ""}
-              required={true}
-              error={formError}
+              required error={formError}
             />
           ))}
+          
+          <Input
+            id="ai_key"
+            label={t("api_key_label")}
+            placeholder={t("enter_api_key_placeholder")}
+            defaultValue={gameData?.apiKey || ""}
+            required error={formError}
+          />
         </div>
 
         <div className="space-y-2">
           <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
-            Upload Game Thumbnail or Add the Game Thumbnail link
+            {t("upload_thumbnail_label")}
           </label>
           <div className="flex flex-col sm:flex-row items-center gap-4 ">
             <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-100 border-gray-700">
@@ -201,12 +210,12 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                   <Upload size={18} strokeWidth={2.5} />
                 </div>
                 <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
-                  Upload Thumbnail
+                  {t("upload_button")}
                 </span>
               </button>
               <Input 
                 id="thumbnail_url" 
-                placeholder="Enter Game thumbnail URL here" 
+                placeholder={t("thumbnail_url_placeholder")}
                 defaultValue={gameData?.thumbnailUrl || ""} 
                 required={true}
                 error={formError}
@@ -216,7 +225,7 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         </div>
 
 
-        <Button className="mt-2" type="submit">Save</Button>
+        <Button className="mt-2" type="submit">{type === 'edit' ? t("updateButton") : t("saveButton")}</Button>
       </Form>
     </Modal>
 
