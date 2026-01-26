@@ -205,7 +205,7 @@ export default function ProfileLevels() {
           </AddButton>
         </div>
         {loading ? (
-          <TableLoading />
+          <TableLoading columnCount={5}/>
         ) : (
           <BasicTableOne data={ProfileLevels} columns={columns} />
         )}

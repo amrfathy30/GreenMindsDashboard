@@ -16,7 +16,7 @@ import {
   updateAge,
 } from "../../../api/services/ageService";
 import { AgeApiResponse, AgeGroup } from "../../../utils/types/ageType";
-import {TableLoading} from "../../../components/loading/TableLoading";
+import { TableLoading } from "../../../components/loading/TableLoading";
 import { useLanguage } from "../../../api/locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 
@@ -173,13 +173,14 @@ export default function AgeGroupList() {
   ];
 
   return (
-    <div>
+    <>
       <PageMeta title={t("age_groups")} description={t("age_groups")} />
-      <div className="md:px-10">
-        <h2 className="font-medium text-2xl p-4 text-[#000000]">
-          {t("age_groups")}
-        </h2>
-        <div className="flex justify-end my-4">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
+        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            {t("age_groups")}
+          </h2>
+
           <AddButton
             startIcon={<Plus />}
             onClick={() => {
@@ -190,11 +191,13 @@ export default function AgeGroupList() {
             {t("add_age_groups")}
           </AddButton>
         </div>
-        {loading ? (
-          <TableLoading />
-        ) : (
-          <BasicTableOne data={ageGroups} columns={columns} />
-        )}
+        <div className="px-5">
+          {loading ? (
+            <TableLoading  columnCount={3} />
+          ) : (
+            <BasicTableOne data={ageGroups} columns={columns} />
+          )}
+        </div>
       </div>
 
       <AgeGroupModal
@@ -216,6 +219,6 @@ export default function AgeGroupList() {
         title={t("delete_age")}
         description={t("confirm_delete_age")}
       />
-    </div>
+    </>
   );
 }
