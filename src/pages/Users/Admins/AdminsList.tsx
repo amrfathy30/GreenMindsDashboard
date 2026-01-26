@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import { EditIcon, RemoveIcon } from "../../../icons";
 import Pagination from "../../../components/common/Pagination";
 import AdminModal from "./AdminModal";
 import { useLanguage } from "../../../api/locales/LanguageContext";
+import { ParentList } from "../../../utils/types/parentType";
 
 export type Admin = {
   id: number;
@@ -16,10 +17,28 @@ export type Admin = {
   status?: string;
 };
 
-export default function AdminsList() {
+export default function AdminsList({
+  openAddModal,
+  setOpenAddModal,
+}: {
+  openAddModal?: boolean;
+  setOpenAddModal?: (open: boolean) => void;
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
   const { t } = useLanguage();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState<ParentList | null>(null);
+
+  useEffect(() => {
+    if (openAddModal) {
+      setEditData(null);
+      setOpenModal(true);
+      setOpenAddModal?.(false);
+    }
+  }, [openAddModal, setOpenAddModal]);
+
   const [openAdminModal, setOpenAdminModal] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
 
@@ -135,19 +154,14 @@ export default function AdminsList() {
         description={t("confirmDeleteAdmin")}
       />
       <AdminModal
-        open={openAdminModal}
+        open={openModal}
         onClose={() => {
-          setOpenAdminModal(false);
-          setSelectedAdmin(null);
+          setOpenModal(false);
+          setEditData(null);
         }}
-        initialData={selectedAdmin}
-        onSave={(admin) => {
-          setAdminList((prev) =>
-            selectedAdmin
-              ? prev.map((a) => (a.id === admin.id ? admin : a))
-              : [...prev, admin],
-          );
-        }}
+        initialData={editData || undefined}
+        // onSave={handleSave}
+        // loading={modalLoading}
       />
     </div>
   );

@@ -1,16 +1,28 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { AgeSector } from "../../../utils/types/analyticType";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
-export default function BarChartOne() {
+export default function BarChartOne({
+  ageSectors,
+}: {
+  ageSectors: AgeSector[];
+}) {
+  const { t } = useLanguage();
+  const series = [
+    {
+      name: t("UsersCount"),
+      data: ageSectors.map((sector) => sector.Count),
+    },
+  ];
+
   const options: ApexOptions = {
     colors: ["#8ED6E2"],
     chart: {
-      fontFamily: "Outfit, sans-serif",
       type: "bar",
       height: 300,
-      toolbar: {
-        show: false,
-      },
+      fontFamily: "Outfit, sans-serif",
+      toolbar: { show: false },
     },
     plotOptions: {
       bar: {
@@ -18,33 +30,23 @@ export default function BarChartOne() {
         columnWidth: "39%",
         borderRadius: 5,
         borderRadiusApplication: "end",
-        dataLabels: {
-          position: "top", // Places the label at the top of the bar
-        },
+        dataLabels: { position: "top" },
       },
     },
     dataLabels: {
-      enabled: true, // Switched to true
-      offsetY: -20, // Moves the label 20px above the bar
+      enabled: true,
+      offsetY: -20,
       style: {
         fontSize: "12px",
-        colors: ["#304758"], 
+        colors: ["#304758"],
         fontFamily: "Outfit, sans-serif",
       },
     },
-    stroke: {
-      show: true,
-      width: 4,
-      colors: ["transparent"],
-    },
+    stroke: { show: true, width: 4, colors: ["transparent"] },
     xaxis: {
-      categories: ["2:4", "5:7", "8:10", "10:12"],
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
+      categories: ageSectors.map((sector) => sector.DisplayName),
+      axisBorder: { show: false },
+      axisTicks: { show: false },
     },
     legend: {
       show: true,
@@ -52,37 +54,14 @@ export default function BarChartOne() {
       horizontalAlign: "left",
       fontFamily: "Outfit",
     },
-    yaxis: {
-      title: {
-        text: undefined,
-      },
-    },
-    grid: {
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
-    },
-    fill: {
-      opacity: 1,
-    },
+    yaxis: { title: { text: undefined } },
+    grid: { yaxis: { lines: { show: true } } },
+    fill: { opacity: 1 },
     tooltip: {
-      x: {
-        show: false,
-      },
-      y: {
-        formatter: (val: number) => `${val}`,
-      },
+      x: { show: false },
+      y: { formatter: (val: number) => `${val}` },
     },
   };
-
-  const series = [
-    {
-      name: "age number",
-      data: [168, 385, 201, 298],
-    },
-  ];
 
   return (
     <div className="max-w-full overflow-x-auto custom-scrollbar h-full">

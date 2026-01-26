@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
@@ -8,32 +9,40 @@ import { Link } from "react-router";
 import Pagination from "../../../components/common/Pagination";
 import ParentModal from "./ParentModal";
 import { useLanguage } from "../../../api/locales/LanguageContext";
+import { ParentApiResponse, ParentList } from "../../../utils/types/parentType";
+import {
+  allParentData,
+  createParent,
+  deleteParent,
+  updateParent,
+} from "../../../api/services/parentService";
+import { ShowToastSuccess } from "../../../components/common/ToastHelper";
+import { TableLoading } from "../../../components/loading/TableLoading";
 
-export type Parents = {
-  id: number;
-  name_en: string;
-  name_ar: string;
-  status: string;
-  email: string;
-  childrenList: Child[];
-  LastRegister?: string;
-};
-
-export type Child = {
-  name: string;
-  phone: string;
-  email: string;
-  points: string;
-  streaks: string;
-};
-
-export default function ParentsList() {
+export default function ParentsList({
+  openAddModal,
+  setOpenAddModal,
+}: {
+  openAddModal?: boolean;
+  setOpenAddModal?: (open: boolean) => void;
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
-  const { t } = useLanguage();
+  const [tableLoading, setTableLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState<ParentList | null>(null);
 
-  const [openParentModal, setOpenParentModal] = useState(false);
-  const [selectedParent, setSelectedParent] = useState<Parents | null>(null);
+  useEffect(() => {
+    if (openAddModal) {
+      setEditData(null);
+      setOpenModal(true);
+      setOpenAddModal?.(false);
+    }
+  }, [openAddModal, setOpenAddModal]);
+
+  const { t } = useLanguage();
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -43,67 +52,146 @@ export default function ParentsList() {
     setOpenConfirm(true);
   };
 
-  const confirmDelete = () => {
-    if (selectedDeleteId !== null) {
+  const [parentList, setParentList] = useState<ParentList[]>([]);
+
+  useEffect(() => {
+    const fetchParent = async () => {
+      try {
+        setTableLoading(true);
+        const data: ParentApiResponse = await allParentData({
+          page: currentPage,
+          pageSize: 10,
+        });
+
+        setParentList(
+          data.Data.Items.map((item) => ({
+            id: item.Id,
+            Name: item.Name,
+            UserName: item.UserName,
+            // Name_en: item.Name_en,
+            // Name_ar: item.Name_ar,
+            Email: item.Email,
+            Password: item.Password,
+            ConfirmPassword: item.ConfirmPassword,
+            ParentPhoneNumber: item.ParentPhoneNumber,
+          })),
+        );
+      } catch (error: any) {
+        toast.error(error?.response?.data?.Message || t("operation_failed"));
+      } finally {
+        setTableLoading(false);
+      }
+    };
+
+    fetchParent();
+  }, [currentPage, t]);
+
+  const confirmDelete = async () => {
+    if (!selectedDeleteId) return;
+
+    try {
+      setDeleteLoading(true);
+      const res = await deleteParent(selectedDeleteId);
+
+      ShowToastSuccess(res?.Message || t("ParentDeletedSuccessfully"));
+
       setParentList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success(
-        t("ParentDeletedSuccessfully") ||
-          "The parent has been deleted successfully",
-      );
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("failed_delete_parent"));
+    } finally {
+      setDeleteLoading(false);
+      setOpenConfirm(false);
+      setSelectedDeleteId(null);
     }
-    setSelectedDeleteId(null);
-    setOpenConfirm(false);
   };
 
-  const [parentList, setParentList] = useState<Parents[]>([
-    {
-      id: 1,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      email: "mohamed@gmail.com",
-      status: "verified",
-      LastRegister: "5/7/16",
-      childrenList: [
-        {
-          name: "Ahmed",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Mona",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-        {
-          name: "Seif",
-          phone: "0123456789",
-          email: "abce@123.com",
-          points: "3pts",
-          streaks: "5 streaks",
-        },
-      ],
-    },
-  ]);
+  const handleSave = async (data: ParentList) => {
+    try {
+      if (
+        !data.UserName?.trim() ||
+        !data.Name?.trim() ||
+        data.Email === "" ||
+        data.Password === "" ||
+        data.ConfirmPassword === "" ||
+        data.ParentPhoneNumber === ""
+      ) {
+        toast.error(t("all_fields_required"));
+        return;
+      }
+
+      setModalLoading(true);
+
+      let res;
+      if (editData) {
+        res = await updateParent(data, editData.Id!);
+      } else {
+        res = await createParent({ ...data });
+      }
+
+      const listRes: ParentApiResponse = await allParentData({
+        page: currentPage,
+        pageSize: 10,
+      });
+
+      setParentList(
+        listRes.Data.Items.map((item) => ({
+          id: item.Id,
+          Name: item.Name || "",
+          UserName: item.UserName || "",
+          // Name_ar: item.Name_ar || "",
+          // Name_en: item.Name_en || "",
+          Email: item.Email,
+          Password: item.Password,
+          ConfirmPassword: item.ConfirmPassword,
+          ParentPhoneNumber: item.ParentPhoneNumber,
+        })),
+      );
+
+      ShowToastSuccess(
+        res?.Message || (editData ? t("success_update") : t("success_create")),
+      );
+      setOpenModal(false);
+      setEditData(null);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("operation_failed"));
+    } finally {
+      setModalLoading(false);
+    }
+  };
 
   const columns = [
     {
-      key: "name_ar",
-      label: t("NameAr"),
+      key: "UserName",
+      label: t("UserName"),
+      render: (row: any) => (
+        <span className="text-[#757575] flex justify-center items-center">
+          {row.UserName || "__"}
+        </span>
+      ),
+    },
+    // {
+    //   key: "Name_ar",
+    //   label: t("NameAr"),
+    // },
+    // {
+    //   key: "Name_en",
+    //   label: t("NameEn"),
+    // },
+    {
+      key: "Name",
+      label: t("Name"),
+      render: (row: any) => (
+        <span className="text-[#757575] ">
+          {row.Name || "__"}
+        </span>
+      ),
     },
     {
-      key: "name_en",
-      label: t("NameEn"),
-    },
-    {
-      key: "email",
+      key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <div className="flex justify-center items-center gap-2">
-          <span>{row.email}</span>
+        <div className="flex items-center gap-2">
+          <span>{row.Email}</span>
           <span
             className={`text-sm ${
               row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
@@ -115,34 +203,45 @@ export default function ParentsList() {
       ),
     },
     {
-      key: "LastRegister",
-      label: t("LastRegister"),
+      key: "ParentPhoneNumber",
+      label: t("ParentPhone"),
       render: (row: any) => (
-        <span className="text-[#757575]">{row.LastRegister}</span>
+        <span className="text-[#757575] flex justify-center items-center">
+          {row.ParentPhoneNumber || "__"}
+        </span>
       ),
     },
-    {
-      key: "Children",
-      label: t("Children"),
-      render: (row: any) => (
-        <div className="flex justify-center items-center gap-1">
-          {row.childrenList.map((item: { name: string }, index: number) => (
-            <span key={index}>{item.name},</span>
-          ))}
-          ({row.childrenList.length})
-        </div>
-      ),
-    },
+    // {
+    //   key: "Children",
+    //   label: t("Children"),
+    //   render: (row: any) => (
+    //     <div className="flex justify-center items-center gap-1">
+    //       {row.childrenList.map((item: { name: string }, index: number) => (
+    //         <span key={index}>{item.name},</span>
+    //       ))}
+    //       ({row.childrenList.length})
+    //     </div>
+    //   ),
+    // },
     {
       key: "actions",
       label: t("Actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedParent(row);
-              setOpenParentModal(true);
+            onClick={() => {
+              setEditData({
+                Id: row.id,
+                Name: row.Name,
+                UserName: row.UserName,
+                Name_ar: row.Name_ar,
+                Name_en: row.Name_en,
+                Email: row.Email,
+                Password: row.Password,
+                ConfirmPassword: row.ConfirmPassword,
+                ParentPhoneNumber: row.ParentPhoneNumber,
+              });
+              setOpenModal(true);
             }}
           >
             <EditIcon className="w-8 h-8" />
@@ -162,30 +261,45 @@ export default function ParentsList() {
 
   return (
     <div>
-      <BasicTableOne
-        data={parentList}
-        columns={columns}
-        expandable={{
-          title: t("Children"),
-          canExpand: (row) => row.childrenList?.length > 0,
-          renderExpandedRows: (row) =>
-            row.childrenList.map((child: any, index: number) => (
-              <div key={index} className="justify-between items-center grid grid-cols-6">
-                <span className="font-semibold">{child.name}</span>
-                <span className="font-semibold text-center">{child.phone}</span>
-                <span className="font-semibold text-center">{child.email}</span>
-                <span className="font-semibold text-center">{child.points}</span>
-                <span className="font-semibold text-center">{child.streaks}</span>
-                <Link
-                  to="/children-info"
-                  className="text-[#25B16F] font-semibold hover:underline text-end"
+      {tableLoading ? (
+        <TableLoading columnCount={5} />
+      ) : (
+        <BasicTableOne
+          data={parentList}
+          columns={columns}
+          expandable={{
+            title: t("Children"),
+            canExpand: (row) => row.childrenList?.length > 0,
+            renderExpandedRows: (row) =>
+              row.childrenList.map((child: any, index: number) => (
+                <div
+                  key={index}
+                  className="justify-between items-center grid grid-cols-6"
                 >
-                  {t("SeeMore") || "See more"}
-                </Link>
-              </div>
-            )),
-        }}
-      />
+                  <span className="font-semibold">{child.name}</span>
+                  <span className="font-semibold text-center">
+                    {child.phone}
+                  </span>
+                  <span className="font-semibold text-center">
+                    {child.email}
+                  </span>
+                  <span className="font-semibold text-center">
+                    {child.points}
+                  </span>
+                  <span className="font-semibold text-center">
+                    {child.streaks}
+                  </span>
+                  <Link
+                    to="/children-info"
+                    className="text-[#25B16F] font-semibold hover:underline text-end"
+                  >
+                    {t("SeeMore") || "See more"}
+                  </Link>
+                </div>
+              )),
+          }}
+        />
+      )}
       <div className="my-6 w-full flex items-center justify-center">
         <Pagination
           currentPage={currentPage}
@@ -196,6 +310,7 @@ export default function ParentsList() {
 
       <ConfirmModal
         open={openConfirm}
+        loading={deleteLoading}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
         title={t("DeleteParent")}
@@ -203,19 +318,14 @@ export default function ParentsList() {
       />
 
       <ParentModal
-        open={openParentModal}
+        open={openModal}
         onClose={() => {
-          setOpenParentModal(false);
-          setSelectedParent(null);
+          setOpenModal(false);
+          setEditData(null);
         }}
-        initialData={selectedParent}
-        onSave={(Parent) => {
-          setParentList((prev) =>
-            selectedParent
-              ? prev.map((p) => (p.id === Parent.id ? Parent : p))
-              : [...prev, Parent],
-          );
-        }}
+        initialData={editData || undefined}
+        onSave={handleSave}
+        loading={modalLoading}
       />
     </div>
   );

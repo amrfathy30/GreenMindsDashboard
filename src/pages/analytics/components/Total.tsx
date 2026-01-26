@@ -1,24 +1,33 @@
+import { useLanguage } from "../../../api/locales/LanguageContext";
 import ComponentCard from "../../../components/common/ComponentCard";
 
-export default function Total() {
+export default function Total({
+  totalVideos,
+  totalGames,
+}: {
+  totalVideos: number;
+  totalGames: number;
+}) {
+  const { t } = useLanguage();
+
   return (
-    <ComponentCard title="Total videos & games">
+    <ComponentCard title={t("TotalVideosGames")}>
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-[#05A0C3] text-[80px] font-extrabold text-center leading-20">
-            35
+            {totalVideos}
           </h2>
           <h2 className="text-[#3D3F45] dark:text-white text-[30px] font-extrabold text-center">
-            videos
+            {t("videos")}
           </h2>
         </div>
         <div className="border border-[#0000000D] w-full"></div>
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-[#23B075] text-[80px] font-extrabold text-center leading-20">
-            20
+            {totalGames}
           </h2>
           <h2 className="text-[#3D3F45] dark:text-white text-[30px] font-extrabold text-center">
-            Games
+            {t("games")}
           </h2>
         </div>
       </div>
