@@ -156,6 +156,7 @@ export default function Analytics() {
         setLoadingTopRanks(false);
       }
     };
+    console.log(topRanks)
     fetchData();
   }, [t]);
 
@@ -213,7 +214,7 @@ export default function Analytics() {
               {loadingTopRanks ? (
                 <TopRankedSkeleton />
               ) : (
-                <TopRanked topRanks={topRanks} />
+                <TopRanked  />
               )}
             </div>
           </div>

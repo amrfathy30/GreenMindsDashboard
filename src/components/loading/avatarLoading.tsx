@@ -1,5 +1,3 @@
-import React from "react";
-
 const AvatarSkeleton = () => {
   return (
     <div className="relative animate-pulse flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-[#1e1e1e]">

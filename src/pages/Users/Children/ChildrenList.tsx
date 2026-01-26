@@ -45,10 +45,10 @@ export default function ChildrenList({
     }
   }, [openAddModal, setOpenAddModal]);
 
-  const [openChildrenModal, setOpenChildrenModal] = useState(false);
-  const [selectedChildren, setSelectedChildren] = useState<Children | null>(
-    null,
-  );
+  // const [openChildrenModal, setOpenChildrenModal] = useState(false);
+  // const [selectedChildren, setSelectedChildren] = useState<Children | null>(
+  //   null,
+  // );
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -118,8 +118,8 @@ export default function ChildrenList({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedChildren(row);
-              setOpenChildrenModal(true);
+              // setSelectedChildren(row);
+              // setOpenChildrenModal(true);
             }}
           >
             <EditIcon className="w-8 h-8" />
@@ -161,8 +161,8 @@ export default function ChildrenList({
         onClose={() => {
           setOpenModal(false);
           setEditData(null);
-        }}
-        initialData={editData || undefined}
+        } }
+        initialData={editData || undefined}       
         // onSave={handleSave}
         // loading={modalLoading}
       />

@@ -11,8 +11,8 @@ import { useLanguage } from "../../../api/locales/LanguageContext";
 interface ChildModalProps {
   open: boolean;
   onClose: () => void;
-  initialData?: Children | null;
-  onSave: (data: Children) => void;
+  initialData?: Children | null|any;
+  onSave?: (data: Children) => void;
 }
 
 export default function ChildrenModal({
@@ -73,8 +73,7 @@ export default function ChildrenModal({
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    onSave({
+    onSave&&onSave({
       id: initialData?.id ?? Date.now(),
       ...formData,
       gender: selectedValue,

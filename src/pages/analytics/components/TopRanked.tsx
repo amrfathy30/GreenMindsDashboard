@@ -3,7 +3,7 @@ import ComponentCard from "../../../components/common/ComponentCard";
 import { ArrowRightIcon } from "lucide-react";
 import { useLanguage } from "../../../api/locales/LanguageContext";
 
-export default function TopRanked({ topRanks }) {
+export default function TopRanked({  }) {
   const { t } = useLanguage();
   return (
     <ComponentCard title={t("TopRanked")}>

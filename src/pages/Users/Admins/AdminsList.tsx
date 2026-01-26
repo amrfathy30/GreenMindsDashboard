@@ -39,8 +39,8 @@ export default function AdminsList({
     }
   }, [openAddModal, setOpenAddModal]);
 
-  const [openAdminModal, setOpenAdminModal] = useState(false);
-  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  // const [openAdminModal, setOpenAdminModal] = useState(false);
+  // const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -115,8 +115,8 @@ export default function AdminsList({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedAdmin(row);
-              setOpenAdminModal(true);
+              // setSelectedAdmin(row);
+              // setOpenAdminModal(true);
             }}
             aria-label={t("common.edit")}
           >

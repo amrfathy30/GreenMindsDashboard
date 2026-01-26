@@ -1,10 +1,8 @@
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { Outlet } from "react-router";
-
 import Backdrop from "./Backdrop";
 import AppSidebar from "./AppSidebar";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
-import { useLanguage } from "../api/locales/LanguageContext";
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isMobileOpen } = useSidebar();

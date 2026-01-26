@@ -10,8 +10,8 @@ import { useLanguage } from "../../../api/locales/LanguageContext";
 interface AdminModalProps {
   open: boolean;
   onClose: () => void;
-  initialData?: Admin | null;
-  onSave: (data: Admin) => void;
+  initialData?: Admin | null|any;
+  onSave?: (data: Admin) => void;
 }
 
 export default function AdminModal({
@@ -49,7 +49,7 @@ export default function AdminModal({
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    onSave({
+    onSave&& onSave({
       id: initialData?.id ?? Date.now(),
       ...formData,
     });

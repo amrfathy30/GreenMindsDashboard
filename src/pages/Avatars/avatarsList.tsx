@@ -11,14 +11,7 @@ import AvatarSkeleton from "../../components/loading/avatarLoading";
 import EmptyState from "../../components/common/no-data-found";
 import { PlusIcon } from "../../icons";
 
-const MOCK_AVATARS = [
-  { id: 1, ageGroup: "2-5 Years", image: "/images/avatarImages/avatar1.png" },
-  { id: 2, ageGroup: "5-7 Years", image: "/images/avatarImages/avatar2.png" },
-  { id: 3, ageGroup: "8-10 Years", image: "/images/avatarImages/avatar1.png" },
-  { id: 4, ageGroup: "11-13 Years", image: "/images/avatarImages/avatar2.png" },
-  { id: 5, ageGroup: "2-5 Years", image: "/images/avatarImages/avatar1.png" },
-  { id: 6, ageGroup: "5-7 Years", image: "/images/avatarImages/avatar2.png" },
-];
+
 
 export default function GamesList() {
   const { t } = useLanguage();

@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useSidebar } from "../context/SidebarContext";
 import UserDropdown from "../components/header/UserDropdown";
 
 const AppHeader: React.FC = () => {
-  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
+  // const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, isExpanded, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
@@ -15,9 +14,7 @@ const AppHeader: React.FC = () => {
     }
   };
 
-  const toggleApplicationMenu = () => {
-    setApplicationMenuOpen(!isApplicationMenuOpen);
-  };
+
   const handleLogOut = () => {
     localStorage.removeItem('GMadminData');
     localStorage.removeItem('GMadminToken');
@@ -28,8 +25,7 @@ const AppHeader: React.FC = () => {
     <header className="sticky top-0 flex flex-col w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-[#1e1e1e] lg:border-b">
       <div className="flex flex-col items-center justify-between ">
         <div
-          className={`${isApplicationMenuOpen ? "flex " : "hidden"
-            } flex-col items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+          className={`hidden flex-col items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <UserDropdown />
 

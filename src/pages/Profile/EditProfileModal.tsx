@@ -21,7 +21,7 @@ export default function EditProfileModal({
   onClose,
 }: EditProfileModalProps) {
   const Id = "1";
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoRequest | null>(
     null,
   );
@@ -32,7 +32,7 @@ export default function EditProfileModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fetchPersonalInfo = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
 
       const res = await GetPersonalInfoById(Id);
 
@@ -42,7 +42,7 @@ export default function EditProfileModal({
         error?.response?.data?.Message || "Failed to load personal info",
       );
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 

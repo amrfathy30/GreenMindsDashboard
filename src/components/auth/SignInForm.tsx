@@ -11,7 +11,6 @@ export default function SignInForm() {
   const {  isRTL} = useLanguage();
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,11 +29,11 @@ export default function SignInForm() {
     checkExistingAuth();
   }, []);
 
-  const validateEmail = (email: string) => {
-    return String(email)
-      .toLowerCase()
-      .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-  };
+  // const validateEmail = (email: string) => {
+  //   return String(email)
+  //     .toLowerCase()
+  //     .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  // };
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +77,7 @@ export default function SignInForm() {
           </div>
           <div>
 
-{/* <div>{error}</div> */}
+<div>{error}</div>
             <form onSubmit={handleOnSubmit}>
               <div className="space-y-6">
                 <div>

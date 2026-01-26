@@ -14,7 +14,7 @@ type NavItem = {
 
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen } = useSidebar();
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const { isRTL,t} = useLanguage();

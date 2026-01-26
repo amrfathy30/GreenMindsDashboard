@@ -52,7 +52,7 @@ export default function ParentsList({
     setOpenConfirm(true);
   };
 
-  const [parentList, setParentList] = useState<ParentList[]>([]);
+  const [parentList, setParentList] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchParent = async () => {
