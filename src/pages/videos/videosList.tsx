@@ -14,7 +14,9 @@ import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 
 import { allAgeData } from "../../api/services/ageService";
-import TableLoading from "../../components/loading/TableLoading";
+import { VideoTableSkeleton } from "../../components/loading/TableLoading";
+import EmptyState from "../../components/common/no-data-found";
+
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
@@ -51,7 +53,7 @@ export default function VideosList() {
       setVideos(videosRes.Data || []);
       setAgeSectors(agesRes.Data || []);
     } catch {
-      toast.error(t("failed_load_videos"));
+      // toast.error(t("failed_load_videos"));
     } finally {
       setLoading(false);
     }
@@ -103,7 +105,7 @@ export default function VideosList() {
     <>
       <PageMeta title={t("videos")} description="Manage your videos list" />
 
-      <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden mt-2 border border-gray-100 dark:border-gray-800 mx-auto w-full h-[calc(100vh-48px)]">
+      <div className="relative bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden mt-2 border border-gray-100 dark:border-gray-800 mx-auto w-full h-[calc(100vh-48px)]">
         <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-gray-800">
           <h2 className="text-lg font-bold text-gray-800 dark:text-white">{t("Videos - Admin")}</h2>
 
@@ -113,14 +115,15 @@ export default function VideosList() {
             className="rounded-lg px-4 py-2 text-sm"
             onClick={() => { setSelectedVideo(null); setIsAddOpen(true); }}
           >
-            <div className="text-white scale-75"><PlusIcon /></div>
+            <div className="text-white"><PlusIcon /></div>
             <span className="ml-1">{t("add_video_title")}</span>
           </Button>
         </div>
-
-        {loading ? <TableLoading /> : (
+        {videos?.length == 0 && !loading ? <EmptyState title="No Data Found" description="Videos Section has no data yet, start by adding your first Video Now!"/> : ""}
+        {loading ? <VideoTableSkeleton /> : 
+        videos?.length != 0?(
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[700px]">
+            <table className="w-full text-left border-collapse min-w-[700px] h-full">
               <thead>
                 <tr className="bg-[#D9D9D940] dark:bg-white/[0.02]">
                   <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">{t("Thumbnail")}</th>
@@ -131,12 +134,8 @@ export default function VideosList() {
                 </tr>
               </thead>
               <tbody>
-                {videos.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-10 text-center text-gray-500 text-sm">No videos found.</td>
-                  </tr>
-                ) : (
-                  videos.map((video, index) => (
+                {
+                  videos?.map((video, index) => (
                     <tr key={video.Id} className={`border-b border-gray-50 dark:border-gray-800/50 transition-colors ${index % 2 === 0 ? "bg-white dark:bg-transparent" : "bg-[#D9D9D940] dark:bg-white/[0.01]"}`}>
                       <td className="px-4 py-3">
                         <div 
@@ -191,19 +190,19 @@ export default function VideosList() {
                       </td>
                     </tr>
                   ))
-                )}
+                }
               </tbody>
             </table>
           </div>
-        )}
+        ):""}
         
-        <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/5">
+        <div className="absolute bottom-0 w-full p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/5">
           <Pagination currentPage={currentPage} totalPages={10} onPageChange={setCurrentPage} />
         </div>
       </div>
 
-      <VideoFormModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} onSave={handleSave} type="add" loading={loading} />
-      <VideoFormModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} onSave={handleSave} type="edit" initialData={selectedVideo} loading={loading} />
+      {isAddOpen&&<VideoFormModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} onSave={handleSave} type="add" loading={loading} />}
+      {isEditOpen&&<VideoFormModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} onSave={handleSave} type="edit" initialData={selectedVideo} loading={loading} />}
       <ConfirmModal 
         open={isDeleteOpen} 
         onClose={() => setIsDeleteOpen(false)} 

@@ -47,8 +47,8 @@ export default function EditProfileModal({
   };
 
   useEffect(() => {
-    fetchPersonalInfo();
-  }, []);
+   if(open) fetchPersonalInfo();
+  }, [open]);
 
   if (!open) return null;
 

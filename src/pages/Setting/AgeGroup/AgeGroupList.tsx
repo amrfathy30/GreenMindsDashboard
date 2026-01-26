@@ -16,7 +16,7 @@ import {
   updateAge,
 } from "../../../api/services/ageService";
 import { AgeApiResponse, AgeGroup } from "../../../utils/types/ageType";
-import TableLoading from "../../../components/loading/TableLoading";
+import {TableLoading} from "../../../components/loading/TableLoading";
 import { useLanguage } from "../../../api/locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 

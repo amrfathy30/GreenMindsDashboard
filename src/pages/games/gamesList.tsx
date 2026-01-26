@@ -8,6 +8,7 @@ import DeleteGameModal from "./deleteGameModal";
 import GameModal from "./gameModal";
 import { PlusIcon } from "../../icons";
 import GameCardSkeleton from "../../components/loading/gameLoading";
+import EmptyState from "../../components/common/no-data-found";
 
 
 // const MOCK_GAMES = [
@@ -61,7 +62,7 @@ export default function GamesList() {
         description="Manage your games list easily."
       />
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 bg-[#EDEDED]  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)]">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             Games - Admin
@@ -78,7 +79,7 @@ export default function GamesList() {
             Add Games
           </Button>
         </div>
-
+        {games?.length == 0 && !loading ? <EmptyState title="No Data Found" description="Game Section has no data yet, start by adding your first Game Now!"/> : ""}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
           {loading ? (
             Array.from({ length: 6 }).map((_, index) => (

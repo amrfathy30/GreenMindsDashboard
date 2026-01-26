@@ -119,7 +119,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       />
 
       <div className="flex items-center gap-2">
-        <p>Forgot your password?</p>
+        <p className="dark:text-white">Forgot your password?</p>
         <button
           type="button"
           className="text-red-500 text-sm"

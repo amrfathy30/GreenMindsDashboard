@@ -19,7 +19,7 @@ import {
 } from "../../../api/services/levelService";
 import { useLanguage } from "../../../api/locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
-import TableLoading from "../../../components/loading/TableLoading";
+import {TableLoading} from "../../../components/loading/TableLoading";
 
 export default function ProfileLevels() {
   const [currentPage, setCurrentPage] = useState(1);
