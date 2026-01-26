@@ -1,24 +1,33 @@
 import Chart from "react-apexcharts";
 import ComponentCard from "../../../components/common/ComponentCard";
+import { GenderStats } from "../../../utils/types/analyticType";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
-export default function GenderChart() {
-  const series = [65, 195];
+export default function GenderChart({
+  genderPercentage,
+}: {
+  genderPercentage: GenderStats[];
+}) {
+  const { t } = useLanguage();
+  if (!genderPercentage || genderPercentage.length === 0) return null;
+
+  const male = genderPercentage.find((g) => g.GenderId === null)?.Count || 0;
+  const female = genderPercentage.find((g) => g.GenderId === 1)?.Count || 0;
+
+  const malePercentage =
+    genderPercentage.find((g) => g.GenderId === null)?.Percentage || 0;
+  const femalePercentage =
+    genderPercentage.find((g) => g.GenderId === 1)?.Percentage || 0;
+
+  const series = [male, female];
 
   const options: ApexCharts.ApexOptions = {
-    chart: {
-      type: "donut",
-    },
-    labels: ["Male", "Female"],
+    chart: { type: "donut" },
+    labels: [t("Male"), t("Female")],
     colors: ["#79BEFF", "#FA5A9F"],
-    legend: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      width: 0,
-    },
+    legend: { show: false },
+    dataLabels: { enabled: false },
+    stroke: { width: 0 },
     plotOptions: {
       pie: {
         donut: {
@@ -33,10 +42,10 @@ export default function GenderChart() {
             },
             total: {
               show: true,
-              label: "Users",
+              label: t("pageTitle"),
               fontSize: "28px",
               fontWeight: 800,
-              formatter: () => "260",
+              formatter: () => (male + female).toString(),
             },
           },
         },
@@ -45,27 +54,30 @@ export default function GenderChart() {
   };
 
   return (
-    <ComponentCard title="Users by Gender">
+    <ComponentCard title={t("UsersByGender")}>
       <div className="flex justify-center">
         <Chart options={options} series={series} type="donut" width={260} />
       </div>
 
-      {/* Legend */}
       <div className="mt-6 space-y-3 text-sm">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-[#79BEFF]"></span>
-            <span>Male</span>
+            <span> {t("Male")}</span>
           </div>
-          <span className="text-gray-500">25% · 65 Gender</span>
+          <span className="text-gray-500">
+            {malePercentage}% · {male} {t("pageTitle")}
+          </span>
         </div>
 
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-[#FA5A9F]"></span>
-            <span>Female</span>
+            <span>{t("Female")}</span>
           </div>
-          <span className="text-gray-500">75% · 195 Gender</span>
+          <span className="text-gray-500">
+            {femalePercentage}% · {female} {t("pageTitle")}
+          </span>
         </div>
       </div>
     </ComponentCard>

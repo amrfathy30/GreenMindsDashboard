@@ -2,20 +2,35 @@ import { useEffect, useState, useRef } from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import ComponentCard from "../../../components/common/ComponentCard";
+import { useLanguage } from "../../../api/locales/LanguageContext";
 
 export default function PointsDistribution() {
+  const { t } = useLanguage();
+
   const containerRef = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState<{ x: number; y: number; index: number }[]>([]);
-  const [pieCenter, setPieCenter] = useState<{ x: number; y: number } | null>(null);
+  const [coords, setCoords] = useState<
+    { x: number; y: number; index: number }[]
+  >([]);
+  const [pieCenter, setPieCenter] = useState<{ x: number; y: number } | null>(
+    null,
+  );
   const [pieSize, setPieSize] = useState<{ w: number; h: number } | null>(null);
   const series = [500, 400, 300, 200, 100];
-  const labels = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5"];
+  const labels = [
+    t("Level1"),
+    t("Level2"),
+    t("Level3"),
+    t("Level4"),
+    t("Level5"),
+  ];
   const colors = ["#FF4906", "#39CEF3", "#39CEF3", "#39CEF3", "#72CA3D"];
 
   const updatePositions = () => {
     if (!containerRef.current) return;
 
-    const svgLabels = containerRef.current.querySelectorAll(".apexcharts-datalabels text");
+    const svgLabels = containerRef.current.querySelectorAll(
+      ".apexcharts-datalabels text",
+    );
     const containerRect = containerRef.current.getBoundingClientRect();
     const pieElement = containerRef.current.querySelector(".apexcharts-pie");
 
@@ -50,7 +65,10 @@ export default function PointsDistribution() {
     const observer = new MutationObserver(updatePositions);
 
     if (containerRef.current) {
-      observer.observe(containerRef.current, { childList: true, subtree: true });
+      observer.observe(containerRef.current, {
+        childList: true,
+        subtree: true,
+      });
     }
 
     window.addEventListener("resize", updatePositions);
@@ -72,13 +90,12 @@ export default function PointsDistribution() {
         top: 0,
         right: 0,
         bottom: 0,
-        left: 0
-      }
+        left: 0,
+      },
     },
     colors: colors,
     fill: {
       type: "gradient",
-
     },
     plotOptions: {
       pie: {
@@ -86,7 +103,7 @@ export default function PointsDistribution() {
         donut: { size: "55%" },
         dataLabels: {
           offset: 95,
-          minAngleToShowLabel: 0
+          minAngleToShowLabel: 0,
         },
       },
     },
@@ -96,30 +113,29 @@ export default function PointsDistribution() {
         fontSize: "0px",
         colors: ["transparent"],
       },
-      dropShadow: { enabled: false }
+      dropShadow: { enabled: false },
     },
     legend: { show: false },
     labels: labels,
     stroke: {
       width: 8,
-      colors: ["#ffffff"]
+      colors: ["#ffffff"],
     },
   };
 
   return (
-    <ComponentCard title="Points Distribution">
+    <ComponentCard title={t("PointsDistribution")}>
       <div className="max-w-full overflow-x-auto custom-scrollbar">
         <div ref={containerRef} className="relative w-full h-[400px]">
-
           <Chart options={options} series={series} type="donut" height="100%" />
 
           {/* Center Money Icon */}
-          {pieCenter && pieSize&&(
+          {pieCenter && pieSize && (
             <div
               className="absolute pointer-events-none flex items-center justify-center rounded-full shadow-xl"
               style={{
-                width:`${pieSize.w-30}px`,
-                height:`${pieSize.w-30}px`,
+                width: `${pieSize.w - 30}px`,
+                height: `${pieSize.w - 30}px`,
                 left: `${pieCenter.x}px`,
                 top: `${pieCenter.y}px`,
                 transform: "translate(-47%, -51%)",
@@ -128,7 +144,6 @@ export default function PointsDistribution() {
               <img className="w-14 h-14" src="/images/money.png" alt="money" />
             </div>
           )}
-
 
           {/* CUSTOM HTML LABELS */}
           {coords.map((pos) => (
@@ -141,11 +156,26 @@ export default function PointsDistribution() {
                 transform: "translate(-50%, -50%)",
               }}
             >
-              <div className="text-sm font-black whitespace-nowrap" style={{ color: colors[pos.index] }}>
-                {series[pos.index]} Points
+              <div
+                className="text-sm font-black whitespace-nowrap"
+                style={{ color: colors[pos.index] }}
+              >
+                {series[pos.index]}
+                {t("points")}
               </div>
-              <svg width="65" height="2" viewBox="0 0 65 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 1H34.9746H65" stroke="#CDCDCD" stroke-width="2" stroke-dasharray="2 2" />
+              <svg
+                width="65"
+                height="2"
+                viewBox="0 0 65 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0 1H34.9746H65"
+                  stroke="#CDCDCD"
+                  stroke-width="2"
+                  stroke-dasharray="2 2"
+                />
               </svg>
 
               <div className=" text-[12px] font-bold text-black dark:text-white whitespace-nowrap">

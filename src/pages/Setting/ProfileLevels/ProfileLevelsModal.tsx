@@ -9,7 +9,7 @@ import { useLanguage } from "../../../api/locales/LanguageContext";
 export default function ProfileLevelsModal({
   open,
   onClose,
-  onSave,
+  onSave, 
   loading,
   initialData,
 }: ProfileLevelsModalProps) {

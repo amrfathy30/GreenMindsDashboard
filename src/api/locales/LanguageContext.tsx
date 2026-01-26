@@ -153,6 +153,22 @@ const translations = {
     profileLevels: "Profile Levels",
     english: "English",
     arabic: "Arabic",
+    Level1: "Level 1",
+    Level2: "Level 2",
+    Level3: "Level 3",
+    Level4: "Level 4",
+    Level5: "Level 5",
+    PointsDistribution: "Points Distribution",
+    UsersCount: "Users Count",
+    UsersByAccount: "Users By Account",
+    TotalVideosGames: "Total Videos & Games",
+    UsersByGender: "Users By Gender",
+    UsersByAgeGroup: "Users by age group",
+    UserName: "User Name",
+    success_create: "created successfully",
+    SeeAll: "See All",
+    TopRanked: "Top Ranked",
+    success_update: "Updated successfully",
 
     // Video translations
     video_added: "Video added successfully",
@@ -171,9 +187,8 @@ const translations = {
     points: "Points",
     "Videos - Admin": "Videos - Admin",
     "age group": "Age Group",
-   
   },
-  
+
   ar: {
     // sidebar
     videos: "فيديوهات",
@@ -236,6 +251,19 @@ const translations = {
     maxPoints: "الحد الأقصى للنقاط",
     // users
     pageTitle: "المستخدمون",
+    SeeAll: "شاهد الكل",
+    TopRanked: "الأعلى تصنيفًا",
+    Level1: "مستوي 1",
+    Level2: "مستوي 2",
+    Level3: "مستوي 3",
+    Level4: "مستوي 4",
+    Level5: "مستوي 5",
+    PointsDistribution: "توزيع النقاط",
+    UsersCount: "عدد المستخدمين",
+    UsersByAccount: "المستخدمون حسب الحساب",
+    UsersByGender: "المستخدمون حسب النوع",
+    UsersByAgeGroup: "المستخدمون حسب الفئة العمرية",
+    TotalVideosGames: "إجمالي الفيديوهات والألعاب",
     adminsTab: "المشرفون",
     parentsTab: "الآباء",
     childrenTab: "الأطفال",
@@ -270,6 +298,8 @@ const translations = {
     ParentDeletedSuccessfully: "تم حذف ولي الأمر بنجاح",
     NameAr: "الاسم (عربي)",
     NameEn: "الاسم (إنجليزي)",
+    UserName: "اسم المستخدم",
+
     SeeMore: "عرض المزيد",
     EditParent: "تعديل ولي الأمر",
     AddNewParent: "إضافة ولي أمر جديد",
@@ -306,6 +336,8 @@ const translations = {
     EnterParentPhone: "أدخل هاتف الولي",
     AddChildren: "إضافة أطفال",
     UpdateChildren: "تحديث الأطفال",
+    success_create: "تم الانشاء بنجاح",
+    success_update: "تم التتحديث المستوي بنجاح",
 
     // setting
     setting: "الإعدادات",
@@ -315,7 +347,7 @@ const translations = {
     loginStreaks: "سلسلة تسجيل الدخول",
     profileLevels: "مستويات الملف الشخصي",
     english: "الإنجليزية",
-    arabic: "العربية",    
+    arabic: "العربية",
     // Video translations
     video_added: "تم إضافة الفيديو بنجاح",
     video_updated: "تم تحديث الفيديو بنجاح",

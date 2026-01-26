@@ -3,65 +3,58 @@ import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
-import Checkbox from "../../../components/form/input/Checkbox";
-import Label from "../../../components/form/Label";
-import { Child, Parents } from "./ParentsList";
 import { useLanguage } from "../../../api/locales/LanguageContext";
-
-interface ParentModalProps {
-  open: boolean;
-  onClose: () => void;
-  initialData?: Parents | null;
-  onSave: (data: Parents) => void;
-}
+import { ParentsModalProps } from "../../../utils/types/parentType";
 
 export default function ParentModal({
   open,
   onClose,
-  initialData,
   onSave,
-}: ParentModalProps) {
+  loading,
+  initialData,
+}: ParentsModalProps) {
   const { t } = useLanguage();
 
-  const [checked, setChecked] = useState(false);
-
   const [formData, setFormData] = useState({
-    name_en: "",
-    name_ar: "",
-    email: "",
-    status: "",
-    childrenList: [] as Child[],
+    Name_en: "",
+    Name_ar: "",
+    Name: "",
+    UserName: "",
+    Email: "",
+    Password: "",
+    ConfirmPassword: "",
+    ParentPhoneNumber: "",
   });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        name_en: initialData.name_en,
-        name_ar: initialData.name_ar,
-        email: initialData.email,
-        status: initialData.status,
-        childrenList: initialData.childrenList,
+        Name: initialData.Name,
+        Name_en: initialData.Name_en,
+        Name_ar: initialData.Name_ar,
+        UserName: initialData.UserName,
+        Email: initialData.Email,
+        Password: initialData.Password,
+        ConfirmPassword: initialData.ConfirmPassword,
+        ParentPhoneNumber: initialData.ParentPhoneNumber,
       });
     } else {
       setFormData({
-        name_en: "",
-        name_ar: "",
-        email: "",
-        status: "",
-        childrenList: [],
+        Name_en: "",
+        Name_ar: "",
+        UserName: "",
+        Name: "",
+        Email: "",
+        Password: "",
+        ConfirmPassword: "",
+        ParentPhoneNumber: "",
       });
     }
   }, [initialData, open]);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    onSave({
-      id: initialData?.id ?? Date.now(),
-      ...formData,
-    });
-
-    onClose();
+    onSave(formData);
   };
 
   return (
@@ -75,80 +68,113 @@ export default function ParentModal({
         onSubmit={onSubmit}
         className="flex flex-col gap-3 p-4 my-6 border rounded-2xl"
       >
-        <div>
+        {/* <div>
           <Input
-            id="name_en"
+            id="Name_en"
             label={t("ParentNameEN")}
             placeholder={t("EnterNameHere")}
+            value={formData.Name_en}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, Name_en: e.target.value }))
+            }
           />
         </div>
         <div>
           <Input
-            id="name_ar"
+            id="Name_ar"
             label={t("ParentNameAR")}
             placeholder={t("EnterNameHere")}
+            value={formData.Name_ar}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, Name_ar: e.target.value }))
+            }
+          />
+        </div> */}
+                <div>
+          <Input
+            id="Name"
+            label={t("Name")}
+            placeholder={t("EnterNameHere")}
+            value={formData.Name}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, Name: e.target.value }))
+            }
+          />
+        </div>
+
+        <div>
+          <Input
+            id="UserName"
+            label={t("UserName")}
+            placeholder={t("EnterUserNameHere")}
+            value={formData.UserName}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, UserName: e.target.value }))
+            }
           />
         </div>
         <div>
           <Input
-            id="email"
+            id="Email"
             label={t("ParentEmail")}
             placeholder={t("EnterParentEmail")}
+            value={formData.Email}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, Email: e.target.value }))
+            }
           />
         </div>
-        <div className="flex justify-between items-center gap-3 flex-col md:flex-row">
-          <Label htmlFor="" className="w-full">
-            {t("ParentChildren")}
-          </Label>
-          <Input id="search" placeholder={t("ChildrenSearch")} />
-        </div>
-        <div>
-          <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-3">
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={t("Child") || "Child"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-          </div>
+                <div>
+          <Input
+            id="ParentPhoneNumber"
+            label={t("PhoneNumber")}
+            placeholder={t("EnterPhoneNumber")}
+            value={formData.ParentPhoneNumber}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                ParentPhoneNumber: e.target.value,
+              }))
+            }
+          />
         </div>
 
-        <Button className="mt-2">
-          {initialData ? t("UpdateParent") : t("AddParent")}
+        <div>
+          <Input
+            id="Password"
+            label={t("Password")}
+            type="password"
+            placeholder={t("EnterParentPassword")}
+            value={formData.Password}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, Password: e.target.value }))
+            }
+          />
+        </div>
+        <div>
+          <Input
+            id="ConfirmPassword"
+            label={t("ConfirmPassword")}
+            type="password"
+            placeholder={t("EnterParentConfirmPassword")}
+            value={formData.ConfirmPassword}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                ConfirmPassword: e.target.value,
+              }))
+            }
+          />
+        </div>
+
+        <Button type="submit" className="mt-2" disabled={loading}>
+          {loading
+            ? initialData
+              ? t("updating")
+              : t("saving")
+            : initialData
+              ? t("updateButton")
+              : t("saveButton")}
         </Button>
       </Form>
     </Modal>

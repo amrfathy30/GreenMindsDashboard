@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
 import { EditIcon, RemoveIcon } from "../../../icons";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import ConfirmModal from "../../../components/common/ConfirmModal";
 import Pagination from "../../../components/common/Pagination";
 import ChildrenModal from "./ChildrenModal";
 import { useLanguage } from "../../../api/locales/LanguageContext";
+import { ParentList } from "../../../utils/types/parentType";
 
 export type Children = {
   id: number;
@@ -22,11 +23,27 @@ export type Children = {
   LastRegister?: string;
 };
 
-export default function ChildrenList() {
+export default function ChildrenList({
+  openAddModal,
+  setOpenAddModal,
+}: {
+  openAddModal?: boolean;
+  setOpenAddModal?: (open: boolean) => void;
+}) {
   const { t } = useLanguage();
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState<ParentList | null>(null);
+
+  useEffect(() => {
+    if (openAddModal) {
+      setEditData(null);
+      setOpenModal(true);
+      setOpenAddModal?.(false);
+    }
+  }, [openAddModal, setOpenAddModal]);
 
   const [openChildrenModal, setOpenChildrenModal] = useState(false);
   const [selectedChildren, setSelectedChildren] = useState<Children | null>(
@@ -140,19 +157,14 @@ export default function ChildrenList() {
       />
 
       <ChildrenModal
-        open={openChildrenModal}
+        open={openModal}
         onClose={() => {
-          setOpenChildrenModal(false);
-          setSelectedChildren(null);
+          setOpenModal(false);
+          setEditData(null);
         }}
-        initialData={selectedChildren}
-        onSave={(child) => {
-          setChildrenList((prev) =>
-            selectedChildren
-              ? prev.map((p) => (p.id === child.id ? child : p))
-              : [...prev, child],
-          );
-        }}
+        initialData={editData || undefined}
+        // onSave={handleSave}
+        // loading={modalLoading}
       />
     </div>
   );
