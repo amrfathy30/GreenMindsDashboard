@@ -70,8 +70,8 @@ const loadAvatars = async () => {
   return (
     <>
       <PageMeta
-        title={`${t("avatars")} | Green minds Admin Dashboard`}
-        description={t("manage_avatars_desc")}
+        title="Green minds Admin | Avatars"
+        description=""
       />
 
 <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">

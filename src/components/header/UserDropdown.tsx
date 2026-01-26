@@ -6,6 +6,8 @@ import { useSidebar } from "../../context/SidebarContext";
 export default function UserDropdown() {
   const { isMobileOpen,isExpanded} = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
+  const adminData:any=localStorage.getItem('GMadminData')
+  const GMadminData:any= JSON.parse(adminData)
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -30,8 +32,8 @@ export default function UserDropdown() {
               <img src="/images/user.png" alt="User" />
             </div>
             {isExpanded||isMobileOpen?   <div className="flex flex-col items-start">
-              <span className="block me-1 font-medium text-theme-sm">User</span>
-              <span className="block me-1 font-medium text-theme-sm">user@greenMind.com</span>
+              <span className="block me-1 font-medium text-theme-sm">{GMadminData?.Name}</span>
+              <span className="block me-1 font-medium text-theme-sm">{GMadminData?.Email}</span>
             </div>:""
           }          </div>
 

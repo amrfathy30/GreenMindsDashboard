@@ -6,7 +6,7 @@ export default function SignIn() {
   return (
     <>
       <PageMeta
-        title="SignIn Dashboard | Green minds Admin Dashboard"
+        title="Green minds Admin | SignIn"
         description=""
       />
       <AuthLayout>

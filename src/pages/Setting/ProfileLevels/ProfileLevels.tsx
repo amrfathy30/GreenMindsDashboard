@@ -19,7 +19,7 @@ import {
 } from "../../../api/services/levelService";
 import { useLanguage } from "../../../api/locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
-import {TableLoading} from "../../../components/loading/TableLoading";
+import { TableLoading } from "../../../components/loading/TableLoading";
 
 export default function ProfileLevels() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -129,7 +129,7 @@ export default function ProfileLevels() {
 
       ShowToastSuccess(
         res?.Message ||
-          (editData ? t("success_level_update") : t("success_level_create")),
+        (editData ? t("success_level_update") : t("success_level_create")),
       );
       setOpenModal(false);
       setEditData(null);
@@ -191,9 +191,10 @@ export default function ProfileLevels() {
 
   return (
     <div>
+
       <PageMeta
-        title="Profile Levels | Green minds Admin Dashboard"
-        description="Profile Levels | Green minds Admin Dashboard"
+        title="Green minds Admin | Profile Levels"
+        description={``}
       />
       <div className="md:px-10">
         <h2 className="font-medium text-2xl p-4 text-[#000000]">
@@ -205,7 +206,7 @@ export default function ProfileLevels() {
           </AddButton>
         </div>
         {loading ? (
-          <TableLoading columnCount={5}/>
+          <TableLoading columnCount={5} />
         ) : (
           <BasicTableOne data={ProfileLevels} columns={columns} />
         )}

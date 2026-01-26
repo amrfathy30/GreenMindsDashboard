@@ -106,9 +106,10 @@ export default function LoginStreaks() {
 
   return (
     <div>
+
       <PageMeta
-        title="Login Streaks | Green minds Admin Dashboard"
-        description="Login Streaks | Green minds Admin Dashboard"
+        title="Green minds Admin | Login Streaks"
+        description={``}
       />
       <div className="md:px-10">
         <h2 className="font-medium text-2xl p-4 text-[#000000]">

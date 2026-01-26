@@ -10,7 +10,7 @@ export default function Analytics() {
   return (
     <>
       <PageMeta
-        title="Analytics Dashboard | Green minds Admin Dashboard"
+       title="Green minds Admin | Analytics"
         description=""
       />
 

@@ -13,8 +13,8 @@ export default function ChildrenInfo() {
   return (
     <div className="md:px-8 md:py-4">
       <PageMeta
-        title="Children Information | Green minds Admin Dashboard"
-        description="Children Information | Green minds Admin Dashboard"
+        title="Green minds Admin | Children Information"
+        description={``}
       />
       <div className="flex items-center gap-2">
         <img
