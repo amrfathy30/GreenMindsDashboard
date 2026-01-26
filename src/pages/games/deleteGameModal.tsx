@@ -14,6 +14,7 @@ const DeleteGameModal: React.FC<DeleteGameModalProps> = ({ isOpen, onClose, game
   const { t } = useLanguage();
   if (!isOpen) return null;
 const handleOnClick = async () => {
+    console.log("Attempting to delete game with ID:", gameId); // شوفي الرقم هيطلع كام في الـ Console
     if (gameId) {
       try {
         await deleteGame(gameId);
@@ -21,9 +22,12 @@ const handleOnClick = async () => {
         onClose();
       } catch (error) {
         console.error("Delete failed", error);
+        alert("حدث خطأ أثناء الحذف، تأكدي من الصلاحيات.");
       }
+    } else {
+      console.error("No Game ID provided to modal");
     }
-  };
+};
   return (
     <ConfirmModal
         open={isOpen}
