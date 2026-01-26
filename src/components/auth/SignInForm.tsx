@@ -17,8 +17,6 @@ export default function SignInForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [showForgetPassword, setShowForgetPassword] = useState(false);
 
 
   useEffect(() => {
@@ -52,10 +50,11 @@ export default function SignInForm() {
       const response = await adminLogin({ email, password });
       setLoading(false)
       if (response.StatusCode == 200) {
-        localStorage.setItem('GMadminData', JSON.stringify(response.Data));
-        localStorage.setItem('GMadminToken', response.Data?.token );
+        console.log(response)
+         localStorage.setItem('GMadminToken', response.Data?.token );
+         localStorage.setItem('GMadminData', JSON.stringify(response.Data));
+
         window.location.href='/videos'
-        // navigate('/videos');
       }
       else {
         setError(isRTL?"بريد الكتروني غير صحيح او كلمه مرور غير صحيحه":"Invalid email or password")

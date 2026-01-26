@@ -16,7 +16,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ image,ageGroup,onEdit,onDelete 
     setShowMenu(false);
   });
   return (
-    <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#1e1e1e]">
+    <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-lg shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e]">
 
       <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl flex items-center justify-center border dark:border-gray-600">
         <img src={image} className="h-[100px] w-[100px] rounded-full object-cover border" />

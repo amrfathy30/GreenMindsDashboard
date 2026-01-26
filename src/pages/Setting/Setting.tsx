@@ -22,16 +22,16 @@ export default function Setting() {
         description={``}
       />
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
 
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("pageTitle")}
           </h2>
         </div>
-        <div className="flex flex-col gap-3 m-6 py-4 border border-[#EDEDED] dark:border-gray-600 rounded-tl-3xl rounded-tr-3xl rounded-bl-md rounded-br-md">
+        <div className="flex flex-col gap-3 m-6 py-4 border border-gray-300 dark:border-gray-600 rounded-tl-3xl rounded-tr-3xl rounded-bl-md rounded-br-md">
           {/* Language */}
-          <div className="border-b border-[#EDEDED] dark:border-gray-600  pb-3 px-4">
+          <div className="border-b border-gray-300 dark:border-gray-600  pb-3 px-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white">
                 <Globe className="w-5 h-5" />
@@ -137,7 +137,7 @@ export default function Setting() {
           {/* SMTP Settings */}
           <div
             onClick={() => setOpenModal(true)}
-            className="flex justify-between items-center border-b border-[#EDEDED] dark:border-gray-600  pb-3 px-4 cursor-pointer"
+            className="flex justify-between items-center border-b border-gray-300 dark:border-gray-600  pb-3 px-4 cursor-pointer"
           >
             <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
               <MessageSettings className="w-5 h-5 dark:brightness-300" />
@@ -148,7 +148,7 @@ export default function Setting() {
           {/* Age Groups */}
           <Link
             to="/age-group"
-            className="flex justify-between items-center px-4 border-b border-[#EDEDED] dark:border-gray-600  pb-3 cursor-pointer"
+            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
           >
             <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
               <AgeGroup className="w-5 h-5 dark:brightness-300" />
@@ -159,7 +159,7 @@ export default function Setting() {
           {/* Login Streaks */}
           <Link
             to="/login-streaks"
-            className="flex justify-between items-center px-4 border-b border-[#EDEDED] dark:border-gray-600  pb-3 cursor-pointer dark:text-white"
+            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer dark:text-white"
           >
             <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
               <ListView className="w-5 h-5  dark:brightness-300" />
