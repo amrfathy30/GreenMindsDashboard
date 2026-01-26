@@ -1,4 +1,5 @@
 import { useState,useEffect } from "react";
+import { useLanguage } from "../../api/locales/LanguageContext";
 import PageMeta from "../../components/common/PageMeta";
 import AvatarCard from "./avatarCard";
 import Pagination from "../../components/common/Pagination";
@@ -20,6 +21,7 @@ const MOCK_AVATARS = [
 ];
 
 export default function GamesList() {
+  const { t } = useLanguage();
   const [avatars, setAvatars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -68,14 +70,14 @@ const loadAvatars = async () => {
   return (
     <>
       <PageMeta
-        title="Avatars Dashboard | Green minds Admin Dashboard"
-        description="Manage your Avatars list easily."
+        title={`${t("avatars")} | Green minds Admin Dashboard`}
+        description={t("manage_avatars_desc")}
       />
 
 <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            Avatars - Admin
+            {t("avatars_admin")}
           </h2>
           <Button
             size="sm"
@@ -85,10 +87,10 @@ const loadAvatars = async () => {
               <div className="text-white">
               <PlusIcon />
             </div>
-            Add Avatar
+            {t("add_avatar")}
           </Button>
         </div>
-        {avatars?.length == 0 && !loading ? <EmptyState title="No Data Found" description="Avatars Section has no data yet, start by adding your first Avatar Now!"/> : ""}
+        {avatars?.length == 0 && !loading ? <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")}/> : ""}
    
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
           {loading ? (
@@ -136,8 +138,8 @@ const loadAvatars = async () => {
         open={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Delete Avatar"
-        description="Are you sure you want to delete this avatar?"
+        title={t("delete_avatar")}
+       description={t("confirm_delete_avatar")}
       />
     </>
   );

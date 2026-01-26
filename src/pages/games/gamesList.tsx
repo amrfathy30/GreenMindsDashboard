@@ -60,7 +60,7 @@ export default function GamesList() {
   return (
     <>
       <PageMeta
-        title={`${t("games_admin")} | Green minds`}
+        title={`${t("games_admin")} | Green minds Admin Dashboard`}
         description={t("manage_games_desc")}
       />
 
