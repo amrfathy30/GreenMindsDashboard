@@ -131,8 +131,7 @@ export default function AdminsList({
         !data.Name?.trim() ||
         !data.UserName?.trim() ||
         !data.Email?.trim() ||
-        data.Type === 0 ||
-        (!editData && !data.Password)
+        data.Type === 0
       ) {
         toast.error(t("all_fields_required"));
         return;
@@ -205,7 +204,7 @@ export default function AdminsList({
     },
     {
       key: "Phone",
-      label: t("Phone"),
+      label: t("PhoneNumber"),
       render: (row: any) => (
         <span className="text-[#757575]">{row.Phone || "__"}</span>
       ),

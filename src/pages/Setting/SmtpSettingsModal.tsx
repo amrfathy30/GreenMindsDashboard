@@ -38,7 +38,14 @@ export default function SmtpSettingsModal({
     e.preventDefault();
     try {
       setLoading(true);
-      await updateSmtp(formData);
+
+      // نسخ formData
+      const payload: any = { ...formData };
+
+      // لو الـ Password فاضي نخليه موجود كحقل فاضي
+      if (!payload.Password) payload.Password = "";
+
+      await updateSmtp(payload);
       toast.success("SMTP settings updated successfully");
       onClose();
     } catch (error: any) {

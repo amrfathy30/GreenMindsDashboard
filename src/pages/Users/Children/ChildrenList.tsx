@@ -183,7 +183,7 @@ export default function ChildrenList({
     },
     {
       key: "Phone",
-      label: t("Phone"),
+      label: t("ParentPhone"),
       render: (row: any) => <span>{row.Phone || "__"}</span>,
     },
     {

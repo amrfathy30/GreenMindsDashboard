@@ -103,39 +103,46 @@ export default function ChildrenModal({
           <Input
             id="ParentPhoneNumber"
             label={t("ParentPhoneNumber")}
-            placeholder={t("EnterParentPhoneNumber")}
+            placeholder={t("ParentPhoneNumber")}
             value={formData.ParentPhoneNumber}
             onChange={(e) =>
               setFormData({ ...formData, ParentPhoneNumber: e.target.value })
             }
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div>
-            <Input
-              type="password"
-              id="Password"
-              label={t("ChildrenPassword")}
-              placeholder={t("EnterChildrenPassword")}
-              value={formData.Password}
-              onChange={(e) =>
-                setFormData({ ...formData, Password: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <Input
-              type="password"
-              id="ConfirmPassword"
-              label={t("ChildrenConfirmPassword")}
-              placeholder={t("EnterChildrenConfirmPassword")}
-              value={formData.ConfirmPassword}
-              onChange={(e) =>
-                setFormData({ ...formData, ConfirmPassword: e.target.value })
-              }
-            />
-          </div>
-        </div>
+        {!initialData && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div>
+                <Input
+                  type="password"
+                  id="Password"
+                  label={t("ChildrenPassword")}
+                  placeholder={t("EnterChildrenPassword")}
+                  value={formData.Password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Password: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  id="ConfirmPassword"
+                  label={t("ChildrenConfirmPassword")}
+                  placeholder={t("EnterChildrenConfirmPassword")}
+                  value={formData.ConfirmPassword}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      ConfirmPassword: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
