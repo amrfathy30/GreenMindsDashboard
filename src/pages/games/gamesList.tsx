@@ -30,8 +30,8 @@ export default function GamesList() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const totalPages = 10;
-
+  const [totalPages, setTotalPages] = useState(1);
+  const PAGE_SIZE = 8;
   const fetchGames = async () => {
     try {
       setLoading(true);
@@ -90,7 +90,7 @@ export default function GamesList() {
           ) : (
             games.map((game) => (
               <GameCard
-                key={game.Id}
+                key={game.Id || game.id}
                 title={isRTL?game.GameNameAr:game.GameNameEn}
                 description={isRTL?game.DescriptionEn: game.DescriptionAr}
                 image={game.ThumbnailUrl?.startsWith('http') ? game.ThumbnailUrl : `${BASE_URL}/${game.ThumbnailUrl}` || game.image}
@@ -127,7 +127,7 @@ export default function GamesList() {
       <DeleteGameModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        gameId={selectedGame?.id}
+        gameId={selectedGame?.Id || selectedGame?.id}
         onSuccess={fetchGames}
       />
     </>
