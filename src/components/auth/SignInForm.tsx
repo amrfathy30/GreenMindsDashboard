@@ -11,14 +11,11 @@ export default function SignInForm() {
   const {  isRTL} = useLanguage();
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [showForgetPassword, setShowForgetPassword] = useState(false);
 
 
   useEffect(() => {
@@ -32,11 +29,11 @@ export default function SignInForm() {
     checkExistingAuth();
   }, []);
 
-  const validateEmail = (email: string) => {
-    return String(email)
-      .toLowerCase()
-      .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-  };
+  // const validateEmail = (email: string) => {
+  //   return String(email)
+  //     .toLowerCase()
+  //     .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  // };
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,10 +49,11 @@ export default function SignInForm() {
       const response = await adminLogin({ email, password });
       setLoading(false)
       if (response.StatusCode == 200) {
-        localStorage.setItem('GMadminData', JSON.stringify(response.Data));
-        localStorage.setItem('GMadminToken', response.Data?.token );
+        console.log(response)
+         localStorage.setItem('GMadminToken', response.Data?.token );
+         localStorage.setItem('GMadminData', JSON.stringify(response.Data));
+
         window.location.href='/videos'
-        // navigate('/videos');
       }
       else {
         setError(isRTL?"بريد الكتروني غير صحيح او كلمه مرور غير صحيحه":"Invalid email or password")
@@ -79,7 +77,7 @@ export default function SignInForm() {
           </div>
           <div>
 
-{/* <div>{error}</div> */}
+<div>{error}</div>
             <form onSubmit={handleOnSubmit}>
               <div className="space-y-6">
                 <div>

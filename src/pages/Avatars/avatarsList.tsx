@@ -11,14 +11,7 @@ import AvatarSkeleton from "../../components/loading/avatarLoading";
 import EmptyState from "../../components/common/no-data-found";
 import { PlusIcon } from "../../icons";
 
-const MOCK_AVATARS = [
-  { id: 1, ageGroup: "2-5 Years", image: "/images/avatarImages/avatar1.png" },
-  { id: 2, ageGroup: "5-7 Years", image: "/images/avatarImages/avatar2.png" },
-  { id: 3, ageGroup: "8-10 Years", image: "/images/avatarImages/avatar1.png" },
-  { id: 4, ageGroup: "11-13 Years", image: "/images/avatarImages/avatar2.png" },
-  { id: 5, ageGroup: "2-5 Years", image: "/images/avatarImages/avatar1.png" },
-  { id: 6, ageGroup: "5-7 Years", image: "/images/avatarImages/avatar2.png" },
-];
+
 
 export default function GamesList() {
   const { t } = useLanguage();
@@ -74,7 +67,7 @@ const loadAvatars = async () => {
         description=""
       />
 
-<div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
+<div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("avatars_admin")}

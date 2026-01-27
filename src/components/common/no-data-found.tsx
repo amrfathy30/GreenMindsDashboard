@@ -9,9 +9,7 @@ interface EmptyStateProps {
 
 const EmptyState: React.FC<EmptyStateProps> = ({ 
   title , 
-  description , 
-  onAction, 
-  actionText 
+  description 
 }) => {
   return (
     <div style={styles.container}>

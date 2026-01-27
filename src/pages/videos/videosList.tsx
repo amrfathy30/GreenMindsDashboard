@@ -107,7 +107,7 @@ export default function VideosList() {
         title="Green minds Admin | Videos"
         description={``}
       />
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("Videos - Admin")}</h2>
@@ -125,7 +125,7 @@ export default function VideosList() {
         {videos?.length == 0 && !loading ? <EmptyState title="No Data Found" description="Videos Section has no data yet, start by adding your first Video Now!"/> : ""}
         {loading ? <VideoTableSkeleton /> : 
         videos?.length != 0?(
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto px-4">
             <table className="w-full text-left border-collapse min-w-[700px] h-full">
               <thead>
                 <tr className="bg-[#D9D9D940] dark:bg-white/[0.02]">

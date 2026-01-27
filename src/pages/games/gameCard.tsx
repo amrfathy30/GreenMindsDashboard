@@ -16,9 +16,9 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
       setShowMenu(false);
     });
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-[#1e1e1e] h-[300px]">
+    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-lg shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e] h-[300px]">
 
-      <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl">
+      <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl border dark:boarder-gray-600">
         <img src={image} alt={title} className="h-full w-full object-cover" />
         
 

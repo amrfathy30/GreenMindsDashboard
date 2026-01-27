@@ -37,7 +37,7 @@ export default function EditProfileModal({
 
   const fetchPersonalInfo = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
 
       const res = await GetPersonalInfoById(adminId);
 
@@ -55,7 +55,7 @@ export default function EditProfileModal({
         error?.response?.data?.Message || "Failed to load personal info",
       );
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
