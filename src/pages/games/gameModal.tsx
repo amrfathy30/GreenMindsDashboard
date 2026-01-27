@@ -262,7 +262,6 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                 id="thumbnail_url" 
                 placeholder={t("thumbnail_url_placeholder")}
                 defaultValue={gameData?.thumbnailUrl || ""} 
-                required={true}
                 error={formError}
               />
             </div>
