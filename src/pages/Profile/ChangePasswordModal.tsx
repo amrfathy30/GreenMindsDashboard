@@ -7,12 +7,14 @@ import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
 import Button from "../../components/ui/button/Button";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
+import { useLanguage } from "../../locales/LanguageContext";
 
 const ChangePasswordModal: React.FC<ModalProps> = ({
   setShowResetPassword,
   setShowChangePassword,
   email,
 }) => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [sendEmailLoading, setSendEmailLoading] = useState(false);
 
@@ -96,8 +98,8 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       <Input
         type="password"
         id="CurrentPassword"
-        label="Old Password"
-        placeholder="Enter old password here"
+        label={t("oldPassword")}
+        placeholder={t("placeholderOldPass")}
         value={formData.CurrentPassword}
         onChange={handleChange}
         required
@@ -106,8 +108,8 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       <Input
         type="password"
         id="NewPassword"
-        label="New Password"
-        placeholder="Enter new password here"
+        label={t("newPassword")}
+        placeholder={t("placeholderNewPass")}
         value={formData.NewPassword}
         onChange={handleChange}
         required
@@ -116,27 +118,27 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       <Input
         type="password"
         id="ConfirmPassword"
-        label="Confirm New Password"
-        placeholder="Enter new password confirmation here"
+        label={t("confirmNewPassword")}
+        placeholder={t("placeholderConfirmPass")}
         value={formData.ConfirmPassword}
         onChange={handleChange}
         required
       />
 
       <div className="flex items-center gap-2">
-        <p className="dark:text-white">Forgot your password?</p>
+        <p className="dark:text-white">{t("forgotPassword")}</p>
         <button
           type="button"
           className="text-red-500 text-sm"
           onClick={handleSendResetEmail}
           disabled={sendEmailLoading}
         >
-          {sendEmailLoading ? "Sending..." : "Send email to reset password"}
+          {sendEmailLoading ? t("sending") : t("sendResetEmail")}
         </button>
       </div>
 
       <Button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save"}
+        {loading ? t("saving") : t("saveButton")}
       </Button>
     </Form>
   );
