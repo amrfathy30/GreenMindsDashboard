@@ -9,7 +9,7 @@ import VideoPreviewModal from "./VideoPreviewModal";
 import { PlusIcon } from "../../icons";
 import { useLanguage } from "../../api/locales/LanguageContext";
 import { allVideosData, deleteVideo, updateVideo, createVideo } from "../../api/services/videoService";
-import { VideoApiResponse, VideoType } from "../../utils/types/videoType";
+import {  VideoType } from "../../utils/types/videoType";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 

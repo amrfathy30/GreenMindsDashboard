@@ -239,7 +239,7 @@ export default function Analytics() {
               {loadingTopRanks ? (
                 <TopRankedSkeleton />
               ) : (
-                <TopRanked  />
+                <TopRanked topRanks={topRanks}  />
               )}
             </div>
           </div>

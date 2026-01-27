@@ -30,8 +30,8 @@ export default function GamesList() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [totalPages, setTotalPages] = useState(1);
-  const PAGE_SIZE = 8;
+  // const [totalPages, setTotalPages] = useState(1);
+const totalPages =1
   const fetchGames = async () => {
     try {
       setLoading(true);
