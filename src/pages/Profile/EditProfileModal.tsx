@@ -47,6 +47,7 @@ export default function EditProfileModal({
       const data = res?.Data;
       setFormData({
         Name: data?.Name ?? "",
+        UserName: data?.UserName ?? "",
         Email: data?.Email ?? "",
         Phone: data?.Phone ?? "",
         Id: data?.Id,
@@ -68,6 +69,7 @@ export default function EditProfileModal({
     Name: "",
     Email: "",
     Phone: "",
+    UserName: "",
   });
 
   useEffect(() => {
@@ -103,6 +105,7 @@ export default function EditProfileModal({
         Name: formData.Name,
         Email: formData.Email,
         Phone: formData.Phone,
+        UserName: formData.UserName,
         Password: "",
         ConfirmPassword: "",
       };
@@ -202,11 +205,18 @@ export default function EditProfileModal({
           <div className="border border-[#E5E7EB] dark:border-gray-800"></div>
 
           <Input
-            id="name"
+            id="Name"
             label={t("adminName")}
             placeholder={t("EnterNameHere")}
             value={formData.Name}
             onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+          />
+          <Input
+            id="UserName"
+            label={t("UserName")}
+            placeholder={t("UserName")}
+            value={formData.UserName}
+            onChange={(e) => setFormData({ ...formData, UserName: e.target.value })}
           />
 
           <Input
