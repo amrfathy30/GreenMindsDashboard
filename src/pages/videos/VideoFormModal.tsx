@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Modal } from "../../components/ui/modal";
 import Button from "../../components/ui/button/Button";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import { VideoFormModalProps } from "../../utils/types/videoType";
 import { allAgeData } from "../../api/services/ageService";
 import Input from "../../components/form/input/InputField";

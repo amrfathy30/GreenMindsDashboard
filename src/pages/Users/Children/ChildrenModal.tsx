@@ -5,7 +5,7 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import Radio from "../../../components/form/input/Radio";
 import Label from "../../../components/form/Label";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import { ChildrenModalProps } from "../../../utils/types/childrenType";
 
 export default function ChildrenModal({

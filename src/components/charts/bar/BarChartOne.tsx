@@ -1,7 +1,7 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { AgeSector } from "../../../utils/types/analyticType";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 export default function BarChartOne({
   ageSectors,

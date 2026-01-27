@@ -4,7 +4,7 @@ import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { AgeGroupModalProps } from "../../../utils/types/ageType";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 export default function AgeGroupModal({
   open,

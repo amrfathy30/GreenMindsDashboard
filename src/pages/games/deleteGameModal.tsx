@@ -1,7 +1,7 @@
 import React from "react";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import { deleteGame } from "../../api/services/gameService";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 
 interface DeleteGameModalProps {
   isOpen: boolean;

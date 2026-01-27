@@ -1,5 +1,6 @@
 import type React from "react";
 import { useEffect, useRef } from "react";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 interface DropdownProps {
   isOpen: boolean;
@@ -15,7 +16,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   className = "",
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const {  isRTL} = useLanguage();
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -38,7 +39,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className={`absolute z-40  -right-[110%] bottom-0 mt-2  rounded-xl border border-gray-200 bg-white  shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark ${className}`}
+      className={`absolute z-40 ${isRTL?"-left-[110%]":"-right-[110%]"}  bottom-0 mt-2  rounded-xl border border-gray-200 bg-white  shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark ${className}`}
     >
       {children}
     </div>

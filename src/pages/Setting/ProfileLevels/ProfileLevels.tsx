@@ -16,7 +16,7 @@ import {
   deleteLevel,
   updateLevel,
 } from "../../../api/services/levelService";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
 

@@ -1,7 +1,7 @@
 import Chart from "react-apexcharts";
 import ComponentCard from "../../../components/common/ComponentCard";
 import { GenderStats } from "../../../utils/types/analyticType";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 export default function GenderChart({
   genderPercentage,

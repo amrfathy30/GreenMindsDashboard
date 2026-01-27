@@ -1,7 +1,7 @@
 import ComponentCard from "../../../components/common/ComponentCard";
 import BarChartOne from "../../../components/charts/bar/BarChartOne";
 import { AgeSector } from "../../../utils/types/analyticType";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 export default function AgeGroupChart({
   usersByAgeSector,

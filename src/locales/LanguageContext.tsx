@@ -239,7 +239,8 @@ const translations = {
     select_age: "Select Age",
     num_points: "Number of points",
     add_video_btn: "Add Video",
-    save_edit_btn: "Save Edit"
+    save_edit_btn: "Save Edit",
+    Editprofile:"Edit profile"
   },
   ar: {
     // sidebar
@@ -475,7 +476,8 @@ const translations = {
     select_age: "اختر الفئة",
     num_points: "عدد النقاط",
     add_video_btn: "إضافة فيديو",
-    save_edit_btn: "حفظ التعديلات"
+    save_edit_btn: "حفظ التعديلات",
+    Editprofile:"تعديل الملف الشخصي"
   },
 };
 

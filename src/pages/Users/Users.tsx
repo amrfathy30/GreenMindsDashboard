@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
 import ChildrenList from "./Children/ChildrenList";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 
 export default function Users() {
   const { t } = useLanguage();

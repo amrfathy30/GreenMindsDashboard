@@ -5,7 +5,7 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 import { adminLogin } from "../../api/services/authService";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 
 export default function SignInForm() {
   const {  isRTL} = useLanguage();

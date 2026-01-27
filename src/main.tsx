@@ -8,7 +8,7 @@ import { AppWrapper } from "./components/common/PageMeta.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
 import { Toaster } from "sonner";
 
-import { LanguageProvider } from "./api/locales/LanguageContext.tsx";
+import { LanguageProvider } from "./locales/LanguageContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <LanguageProvider>

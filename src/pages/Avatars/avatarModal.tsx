@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import { Modal } from "../../components/ui/modal";

@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import Pagination from "../../../components/common/Pagination";
 import ChildrenModal from "./ChildrenModal";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import {
   allChildrenData,
   createChildren,

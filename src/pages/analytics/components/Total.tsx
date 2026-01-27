@@ -1,4 +1,4 @@
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import ComponentCard from "../../../components/common/ComponentCard";
 
 export default function Total({

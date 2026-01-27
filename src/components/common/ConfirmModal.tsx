@@ -1,4 +1,4 @@
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 

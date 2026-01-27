@@ -3,7 +3,7 @@ import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import { ParentsModalProps } from "../../../utils/types/parentType";
 
 export default function ParentModal({

@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import PageMeta from "../../components/common/PageMeta";
 import AvatarCard from "./avatarCard";
 import Pagination from "../../components/common/Pagination";

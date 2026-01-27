@@ -3,7 +3,9 @@ import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import EditProfileModal from "../../pages/Profile/EditProfileModal";
 import { useSidebar } from "../../context/SidebarContext";
+import { useLanguage } from "../../locales/LanguageContext";
 export default function UserDropdown() {
+  const { t, isRTL} = useLanguage();
   const { isMobileOpen,isExpanded} = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
   const adminData:any=localStorage.getItem('GMadminData')
@@ -47,7 +49,7 @@ export default function UserDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="absolute right-[-50%] bottom-0 flex w-[160px] flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+        className={`absolute ${isRTL?"left-[-50%] w-[220px]":"right-[-50%] w-[160px]"}  bottom-0 flex  flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark`}
       >
 
         <ul className="flex flex-col border-b border-gray-200 dark:border-gray-800">
@@ -76,7 +78,7 @@ export default function UserDropdown() {
                   fill=""
                 />
               </svg>
-              Edit profile
+             <span className="flex"> {t('Editprofile')}</span>
             </DropdownItem>
           </li>
         </ul>

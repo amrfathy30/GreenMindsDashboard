@@ -7,12 +7,14 @@ import { Modal } from "../../components/ui/modal";
 import { toast } from "sonner";
 import { SmtpList, SmtpSettingsModalProps } from "../../utils/types/SmtpType";
 import { updateSmtp } from "../../api/services/SmtpService";
+import { useLanguage } from "../../locales/LanguageContext";
 
 export default function SmtpSettingsModal({
   open,
   onClose,
   initialData,
 }: SmtpSettingsModalProps) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<SmtpList>({
     Host: "",
     Port: 587,
@@ -52,7 +54,7 @@ useEffect(() => {
 
   return (
     <Modal
-      title="SMTP Settings"
+      title={t('smtpSettings')}
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"

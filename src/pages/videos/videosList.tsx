@@ -7,7 +7,7 @@ import ConfirmModal from "../../components/common/ConfirmModal";
 import VideoFormModal from "./VideoFormModal";
 import VideoPreviewModal from "./VideoPreviewModal";
 import { PlusIcon } from "../../icons";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import { allVideosData, deleteVideo, updateVideo, createVideo } from "../../api/services/videoService";
 import {  VideoType } from "../../utils/types/videoType";
 import { toast } from "sonner";

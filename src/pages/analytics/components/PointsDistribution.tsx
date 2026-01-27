@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import ComponentCard from "../../../components/common/ComponentCard";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import { LevelStats } from "../../../utils/types/analyticType";
 
 export default function PointsDistribution({

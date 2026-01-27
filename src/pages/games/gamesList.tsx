@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import { getAllGames } from "../../api/services/gameService";
 import PageMeta from "../../components/common/PageMeta";
 import GameCard from "./gameCard";

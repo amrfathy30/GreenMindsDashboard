@@ -1,4 +1,4 @@
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 
 export const ThemeToggleButton: React.FC = () => {

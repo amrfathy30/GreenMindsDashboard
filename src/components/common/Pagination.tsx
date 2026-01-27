@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 
 interface PaginationProps {
   currentPage: number;

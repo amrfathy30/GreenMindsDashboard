@@ -24,7 +24,7 @@ import {
   UsersByAgeSector,
 } from "../../api/services/analyticService";
 import { toast } from "sonner";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import {
   BarChartOneSkeleton,
   GenderChartSkeleton,

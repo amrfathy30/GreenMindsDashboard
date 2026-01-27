@@ -4,7 +4,7 @@ import Form from "../../../components/form/Form";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { ProfileLevelsModalProps } from "../../../utils/types/levelType";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 export default function ProfileLevelsModal({
   open,

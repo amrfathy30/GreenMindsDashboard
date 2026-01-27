@@ -1,7 +1,7 @@
 import { useLocation } from "react-router";
 import PageMeta from "../../../../components/common/PageMeta";
 import Taps from "./Taps/Taps";
-import { useLanguage } from "../../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../../locales/LanguageContext";
 
 export default function ChildrenInfo() {
   const { state } = useLocation();

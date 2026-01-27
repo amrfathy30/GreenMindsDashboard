@@ -1,4 +1,4 @@
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 
 

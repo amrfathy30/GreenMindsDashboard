@@ -8,7 +8,7 @@ import { EditIcon, RemoveIcon } from "../../../icons";
 import { Link } from "react-router";
 import Pagination from "../../../components/common/Pagination";
 import ParentModal from "./ParentModal";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import { ParentApiResponse, ParentList } from "../../../utils/types/parentType";
 import {
   allParentData,

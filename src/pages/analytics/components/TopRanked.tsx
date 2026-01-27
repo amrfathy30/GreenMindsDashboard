@@ -1,5 +1,5 @@
 import ComponentCard from "../../../components/common/ComponentCard";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 
 export default function TopRanked({
   topRanks,

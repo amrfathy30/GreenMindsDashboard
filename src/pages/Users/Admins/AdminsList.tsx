@@ -5,7 +5,7 @@ import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
 import { EditIcon, RemoveIcon } from "../../../icons";
 import AdminModal from "./AdminModal";
-import { useLanguage } from "../../../api/locales/LanguageContext";
+import { useLanguage } from "../../../locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import {
   AdminApiResponse,

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Modal } from "../../components/ui/modal";
 import { Maximize, Settings, Volume2, Play, Pause, Loader2 } from "lucide-react";
-import { useLanguage } from "../../api/locales/LanguageContext";
+import { useLanguage } from "../../locales/LanguageContext";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
