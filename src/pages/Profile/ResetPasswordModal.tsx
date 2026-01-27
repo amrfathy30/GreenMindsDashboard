@@ -6,8 +6,10 @@ import Button from "../../components/ui/button/Button";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import { ForgetPassReset } from "../../api/services/profileService";
+import { useLanguage } from "../../locales/LanguageContext";
 
 export default function ResetPasswordModal() {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -24,18 +26,18 @@ export default function ResetPasswordModal() {
     e.preventDefault();
 
     const { otp, NewPassword, ConfirmPassword } = formData;
-    
+
     if (NewPassword.length < 8) {
-      toast.error("Password must be at least 8 characters");
+      toast.error(t("PasswordMustBeAtLeast8Characters"));
       return;
     }
     if (!otp || !NewPassword || !ConfirmPassword) {
-      toast.error("All fields are required");
+      toast.error(t("AllFieldsAreRequired"));
       return;
     }
 
     if (NewPassword !== ConfirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(t("PasswordsDoNotMatch"));
       return;
     }
 
@@ -48,10 +50,10 @@ export default function ResetPasswordModal() {
         ConfirmPassword: ConfirmPassword,
       });
 
-      ShowToastSuccess(res?.Message || "Password updated successfully");
+      ShowToastSuccess(res?.Message || t("PasswordUpdatedSuccessfully"));
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.Message || "Failed to update password",
+        error?.response?.data?.Message || t("FailedToUpdatePassword"),
       );
     } finally {
       setLoading(false);
@@ -61,40 +63,38 @@ export default function ResetPasswordModal() {
   return (
     <Form
       onSubmit={onSubmit}
-      className="flex flex-col gap-3 p-6 my-6  border rounded-2xl"
+      className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
     >
       <div className="flex items-center gap-2">
-        <p className="text-secondary">
-          A one time password (otp) has been sent to your email.
-        </p>
+        <p className="text-secondary">{t("OtpSentMessage")}</p>
       </div>
       <Input
         type="number"
         id="otp"
-        label="OTP"
+        label={t("OTP")}
         value={formData.otp}
         onChange={handleChange}
-        placeholder="Enter OTP here"
+        placeholder={t("EnterOtpHere")}
       />
       <Input
         type="password"
         id="NewPassword"
-        label="New Password"
-        placeholder="Enter new password here"
+        label={t("NewPassword")}
+        placeholder={t("EnterNewPasswordHere")}
         value={formData.NewPassword}
         onChange={handleChange}
       />
       <Input
         type="password"
         id="ConfirmPassword"
-        label="New password Confirmation"
-        placeholder="Enter new password confirmation here"
+        label={t("NewPasswordConfirmation")}
+        placeholder={t("EnterNewPasswordConfirmationHere")}
         value={formData.ConfirmPassword}
         onChange={handleChange}
       />
       <Button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save"}
-      </Button>{" "}
+        {loading ? t("Saving") : t("Save")}
+      </Button>
     </Form>
   );
 }
