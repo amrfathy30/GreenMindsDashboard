@@ -38,17 +38,17 @@ const [formDataState, setFormDataState] = useState({
 useEffect(() => {
   if (gameData && isOpen) {
     setFormDataState({
-      nameEn: gameData.gameNameEn || gameData.title || "", 
-      nameAr: gameData.gameNameAr || "",
-      descEn: gameData.descriptionEn || gameData.description || "",
-      descAr: gameData.descriptionAr || "",
-      android: gameData.androidLink || "",
-      ios: gameData.iosLink || "",
-      apiLink: gameData.apiLink || "",
-      apiKey: gameData.apiKey || "",
-      ageGroup: gameData.ageGroup || "",
+      nameEn: gameData.GameNameEn || "", 
+      nameAr: gameData.GameNameAr || "",
+      descEn: gameData.DescriptionEn || "",
+      descAr: gameData.DescriptionAr || "",
+      android: gameData.AndroidLink || "",
+      ios: gameData.IosLink || "",
+      apiLink: gameData.ApiLink || "",
+      apiKey: gameData.ApiKey || "",
+      ageGroup: gameData.AgeGroup || "",
     });
-    setPreviewImage(gameData.thumbnailUrl || null);
+    setPreviewImage(gameData.ThumbnailUrl || null);
   }
 }, [gameData, isOpen]);
 

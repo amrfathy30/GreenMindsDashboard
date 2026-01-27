@@ -90,11 +90,11 @@ export default function GamesList() {
           ) : (
             games.map((game) => (
               <GameCard
-                key={game.id}
+                key={game.Id}
                 title={isRTL?game.GameNameAr:game.GameNameEn}
                 description={isRTL?game.DescriptionEn: game.DescriptionAr}
                 image={game.ThumbnailUrl?.startsWith('http') ? game.ThumbnailUrl : `${BASE_URL}/${game.ThumbnailUrl}` || game.image}
-                onEdit={() => handleEditClick(game)}
+                 onEdit={() => handleEditClick(game)}
                 onDelete={() => handleDeleteClick(game)}
               />
             ))
