@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 type Language = "en" | "ar";
 
@@ -29,6 +23,8 @@ const translations = {
     deleting: "Deleting...",
     delete: "Delete",
     all_fields_required: "All Fields Required",
+    age_groups: "Age groups",
+    from: "from",
     actions: "Actions",
     operation_failed: "Operation failed",
     saveButton: "Save",
@@ -40,8 +36,6 @@ const translations = {
     // age group
     add_age_groups: "add age group",
     age_groups_name: "Age groups Name",
-    age_groups: "Age groups",
-    from: "From",
     success_age_create: "Age group created successfully",
     success_age_update: "Age group updated successfully",
     success_delete_age: "The age group has been deleted successfully",
@@ -177,7 +171,6 @@ const translations = {
     failed_load_videos: "Failed to load videos",
     add_video_title: "Add Video",
     edit_video_title: "Edit Video",
-    points_label: "Number of Points",
     confirm_delete_video: "Are you sure you want to delete this video?",
     success_video_delete: "Video deleted successfully",
     success_video_create: "Video created successfully",
@@ -185,7 +178,6 @@ const translations = {
     Thumbnail: "Thumbnail",
     title: "Title",
     points: "Points",
-    "Videos - Admin": "Videos - Admin",
     "age group": "Age Group",
    // Game translations
     games_admin: "Games - Admin",
@@ -235,8 +227,20 @@ const translations = {
     select_age_error: "Please select an age group",
     upload_avatar_label: "Upload your avatar",
     upload_avatar_btn: "Upload Avatar Image",
+    "Videos - Admin": "Videos - Admin",
+    placeholder_title_en: "Enter video title here",
+    placeholder_title_ar: "Enter video title here in Arabic",
+    placeholder_video_url: "Enter video URL here",
+    placeholder_thumb_url: "Enter video Thumbnail URL here",
+    upload_video: "Upload Video",
+    upload_thumb: "Upload Thumbnail",
+    label_video: "Upload Video or Add the Video link",
+    label_thumb: "Upload Video Thumbnail or Add the Video Thumbnail link",
+    select_age: "Select Age",
+    num_points: "Number of points",
+    add_video_btn: "Add Video",
+    save_edit_btn: "Save Edit"
   },
-
   ar: {
     // sidebar
     videos: "فيديوهات",
@@ -260,7 +264,7 @@ const translations = {
     saving: "جارٍ الحفظ...",
     updating: "جارٍ التحديث...",
     // age group
-    age_groups: "الفئات العمرية",
+
     age_groups_name: "اسم الفئات العمرية",
     add_age_groups: "إضافة الفئة العمرية",
     success_age_create: "تم إنشاء الفئة العمرية بنجاح",
@@ -347,7 +351,7 @@ const translations = {
     NameAr: "الاسم (عربي)",
     NameEn: "الاسم (إنجليزي)",
     UserName: "اسم المستخدم",
-
+    age_groups: "الفئه العمريه",
     SeeMore: "عرض المزيد",
     EditParent: "تعديل ولي الأمر",
     AddNewParent: "إضافة ولي أمر جديد",
@@ -403,7 +407,6 @@ const translations = {
     failed_load_videos: "فشل تحميل الفيديوهات",
     add_video_title: "إضافة فيديو ",
     edit_video_title: "تعديل الفيديو",
-    points_label: "عدد النقاط",
     confirm_delete_video: "هل أنت متأكد من أنك تريد حذف هذا الفيديو؟",
     success_video_delete: "تم حذف الفيديو بنجاح",
     success_video_create: "تم إضافة الفيديو بنجاح",
@@ -411,7 +414,6 @@ const translations = {
     Thumbnail: "الصورة المصغرة",
     title: "العنوان",
     points: "النقاط",
-    "Videos - Admin": "إدارة الفيديوهات",
     "age group": "الفئة العمرية",
     // Game translations
     games_admin: "إدارة الألعاب",
@@ -460,48 +462,43 @@ const translations = {
     upload_image_error: "يرجى رفع صورة الرمز الشخصي",
     select_age_error: "يرجى اختيار الفئة العمرية",
     upload_avatar_label: "قم برفع صورتك الرمزية",
-    upload_avatar_btn: "رفع صورة الأفاتار"
+    upload_avatar_btn: "رفع صورة الأفاتار",
+    "Videos - Admin": "إدارة الفيديوهات",
+    placeholder_title_en: "ادخل عنوان الفيديو بالإنجليزية",
+    placeholder_title_ar: "ادخل عنوان الفيديو هنا",
+    placeholder_video_url: "ادخل رابط الفيديو هنا",
+    placeholder_thumb_url: "ادخل رابط الصورة المصغرة هنا",
+    upload_video: "تحميل فيديو",
+    upload_thumb: "تحميل الصورة المصغرة",
+    label_video: "تحميل فيديو أو إضافة لينك الفيديو",
+    label_thumb: "تحميل الصورة المصغرة للفيديو أو إضافة لينك الصورة المصغرة",
+    select_age: "اختر الفئة",
+    num_points: "عدد النقاط",
+    add_video_btn: "إضافة فيديو",
+    save_edit_btn: "حفظ التعديلات"
   },
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(
-  undefined,
-);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem("GM-language");
     return saved === "ar" || saved === "en" ? saved : "en";
   });
-
   const isRTL = language === "ar";
-
+  
   useEffect(() => {
     localStorage.setItem("GM-language", language);
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
     document.documentElement.lang = language;
-    if (isRTL) {
-      document.documentElement.classList.add("rtl");
-    } else {
-      document.documentElement.classList.remove("rtl");
-    }
   }, [language, isRTL]);
-
-  const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations.en] || key;
-  };
-
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage, isRTL, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  const t = (key: string): string => translations[language][key as keyof typeof translations.en] || key;
+  return <LanguageContext.Provider value={{ language, setLanguage, isRTL, t }}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
+  if (context === undefined) throw new Error("useLanguage must be used within a LanguageProvider");
   return context;
 }

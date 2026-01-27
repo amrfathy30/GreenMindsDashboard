@@ -20,7 +20,6 @@ import EmptyState from "../../components/common/no-data-found";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
-// تعريف الـ Interface للأعمار لحل مشكلة "Unexpected any"
 interface AgeSector {
   Id: number;
   DisplayName: string;
@@ -32,9 +31,9 @@ export default function VideosList() {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<VideoType[]>([]);
-  // تم استبدال any بـ AgeSector[]
   const [ageSectors, setAgeSectors] = useState<AgeSector[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -45,13 +44,13 @@ export default function VideosList() {
   const fetchInitialData = async () => {
     try {
       setLoading(true);
-      // تم استخدام VideoApiResponse هنا لحل مشكلة "defined but never used"
-      const [videosRes, agesRes]: [VideoApiResponse, { Data: AgeSector[] }] = await Promise.all([
+      const [videosRes, agesRes] = await Promise.all([
         allVideosData({ page: currentPage, pageSize: 10 }),
         allAgeData()
       ]);
       setVideos(videosRes.Data || []);
       setAgeSectors(agesRes.Data || []);
+      setTotalPages(videosRes.TotalPages || 1);
     } catch {
       // toast.error(t("failed_load_videos"));
     } finally {
@@ -76,9 +75,8 @@ export default function VideosList() {
       setIsAddOpen(false);
       setIsEditOpen(false);
       fetchInitialData();
-    } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { Message?: string } } };
-      toast.error(axiosError?.response?.data?.Message || t("operation_failed"));
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("operation_failed"));
     } finally {
       setLoading(false);
     }
@@ -92,10 +90,8 @@ export default function VideosList() {
       setVideos(prevVideos => prevVideos.filter(v => v.Id !== selectedVideo.Id));
       ShowToastSuccess(t("success_video_delete"));
       setIsDeleteOpen(false);
-      setSelectedVideo(null);
-    } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { Message?: string } } };
-      toast.error(axiosError?.response?.data?.Message || t("operation_failed"));
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("operation_failed"));
     } finally {
       setLoading(false);
     }
@@ -141,18 +137,10 @@ export default function VideosList() {
                   videos?.map((video, index) => (
                     <tr key={video.Id} className={`border-b border-gray-50 dark:border-gray-800/50 transition-colors ${index % 2 === 0 ? "bg-white dark:bg-transparent" : "bg-[#D9D9D940] dark:bg-white/[0.01]"}`}>
                       <td className="px-4 py-3">
-                        <div 
-                          onClick={() => { setSelectedVideo(video); setIsPreviewOpen(true); }} 
-                          className="relative aspect-[16/9] h-[55px] rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700 shadow-sm"
-                        >
-                          <img 
-                            src={video.ThumbnailUrl?.startsWith('http') ? video.ThumbnailUrl : `${BASE_URL}/${video.ThumbnailUrl}`} 
-                            className="w-full h-full object-cover" 
-                            alt="" 
-                            onError={(e) => { (e.target as HTMLImageElement).src = "/images/video-thumb/Thumbnail_image.svg"; }}
-                          />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-all">
-                            <div className="bg-white/90 p-1.5 rounded-full shadow-md"><Play size={12} fill="#6B6B6B" className="ml-0.5" /></div>
+                        <div onClick={() => { setSelectedVideo(video); setIsPreviewOpen(true); }} className="relative aspect-[16/9] h-[55px] rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700 shadow-sm">
+                          <img src={video.ThumbnailUrl?.startsWith('http') ? video.ThumbnailUrl : `${BASE_URL}/${video.ThumbnailUrl}`} className="w-full h-full object-cover" alt="" onError={(e) => { (e.target as HTMLImageElement).src = "/images/video-thumb/Thumbnail_image.svg"; }} />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/5 hover:bg-black/15 transition-all">
+                            <div className="bg-white p-1.5 rounded-full shadow-md"><Play size={12} fill="#6B6B6B" className="text-[#6B6B6B]" /></div>
                           </div>
                         </div>
                       </td>
@@ -164,30 +152,24 @@ export default function VideosList() {
                       <td className="px-4 py-3 text-center">
                         <div className="flex items-center justify-center gap-1">
                           <span className="text-[#00B69B] font-lalezar text-xl">+{video.NumberOfPoints}</span>
-                          <img src="/images/video-thumb/Stack of Coins.svg" className="w-8 h-8" alt="coins" />
+                          <img src="/images/video-thumb/Stack of Coins.svg" className="w-8 h-8" alt="" />
                         </div>
                       </td>
                       <td className="px-4 py-3 text-center">
-                        <span className="text-base font-lalezar text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-md">
+                        <span className="text-base font-lalezar text-gray-600 dark:text-gray-300">
                           {(() => {
                             const sector = ageSectors.find(a => a.Id === video.AgeSectorId);
                             return sector ? `${sector.FromAge} : ${sector.ToAge}` : (video.AgeSectorName || "-");
                           })()}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-center">
                         <div className="flex justify-center gap-3">
-                          <button 
-                            onClick={() => { setSelectedVideo(video); setIsEditOpen(true); }} 
-                            className="hover:scale-110 transition-transform p-1"
-                          >
-                            <img src="/images/video-thumb/Edit.svg" className="w-6 h-6 dark:invert" alt="edit" />
+                          <button onClick={() => { setSelectedVideo(video); setIsEditOpen(true); }} className="hover:scale-110 transition-transform">
+                            <img src="/images/video-thumb/Edit.svg" className="w-6 h-6 dark:invert" alt="" />
                           </button>
-                          <button 
-                            onClick={() => { setSelectedVideo(video); setIsDeleteOpen(true); }} 
-                            className="hover:scale-110 transition-transform p-1"
-                          >
-                            <img src="/images/video-thumb/Remove.svg" className="w-6 h-6 dark:invert" alt="remove" />
+                          <button onClick={() => { setSelectedVideo(video); setIsDeleteOpen(true); }} className="hover:scale-110 transition-transform">
+                            <img src="/images/video-thumb/Remove.svg" className="w-6 h-6 dark:invert" alt="" />
                           </button>
                         </div>
                       </td>
@@ -198,27 +180,15 @@ export default function VideosList() {
             </table>
           </div>
         ):""}
-        
-        <div className="absolute bottom-0 w-full p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/5">
-          <Pagination currentPage={currentPage} totalPages={10} onPageChange={setCurrentPage} />
+        <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/5">
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
       </div>
 
-      {isAddOpen&&<VideoFormModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} onSave={handleSave} type="add" loading={loading} />}
-      {isEditOpen&&<VideoFormModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} onSave={handleSave} type="edit" initialData={selectedVideo} loading={loading} />}
-      <ConfirmModal 
-        open={isDeleteOpen} 
-        onClose={() => setIsDeleteOpen(false)} 
-        onConfirm={confirmDelete} 
-        loading={loading} 
-        title={t("delete")} 
-        description={t("confirm_delete_video")} 
-      />
-      <VideoPreviewModal 
-        isOpen={isPreviewOpen} 
-        onClose={() => setIsPreviewOpen(false)} 
-        video={selectedVideo}  
-      />
+      <VideoFormModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} onSave={handleSave} type="add" loading={loading} />
+      <VideoFormModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} onSave={handleSave} type="edit" initialData={selectedVideo} loading={loading} />
+      <ConfirmModal open={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} onConfirm={confirmDelete} loading={loading} title={t("delete")} description={t("confirm_delete_video")} />
+      <VideoPreviewModal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} video={selectedVideo} />
     </>
   );
 }

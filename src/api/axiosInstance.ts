@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'X-Client-Type':'web'
+    'X-Client-Type': 'Web',
   },
 });
 

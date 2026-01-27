@@ -25,6 +25,7 @@ export default function VideoFormModal({ isOpen, onClose, onSave, type, initialD
   const [titleEn, setTitleEn] = useState("");
   const [titleAr, setTitleAr] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [points, setPoints] = useState(0);
   const [ageSectorId, setAgeSectorId] = useState("");
   const [ageSectors, setAgeSectors] = useState<AgeSector[]>([]);
@@ -46,22 +47,21 @@ export default function VideoFormModal({ isOpen, onClose, onSave, type, initialD
     if (initialData && isOpen) {
       setTitleEn(initialData.TitleEn || "");
       setTitleAr(initialData.TitleAr || "");
-      setVideoUrl(initialData.VideoUrl || "");
       setPoints(initialData.NumberOfPoints || 0);
       setAgeSectorId(initialData.AgeSectorId?.toString() || "");
-      
-      const thumbPath = initialData.ThumbnailUrl;
-      setThumbPreview(thumbPath ? (thumbPath.startsWith('http') ? thumbPath : `${BASE_URL}/${thumbPath}`) : null);
-      
-      const videoPath = initialData.VideoUrl;
-      setVideoPreview(videoPath ? (videoPath.startsWith('http') ? videoPath : `${BASE_URL}${videoPath}`) : null);
+      const vUrl = initialData.VideoUrl || "";
+      const tUrl = initialData.ThumbnailUrl || "";
+      setVideoUrl(vUrl);
+      setThumbnailUrl(tUrl);
+      setThumbPreview(tUrl ? (tUrl.startsWith('http') ? tUrl : `${BASE_URL}/${tUrl}`) : null);
+      setVideoPreview(vUrl ? (vUrl.startsWith('http') ? vUrl : `${BASE_URL}/${vUrl}`) : null);
     } else if (!initialData && isOpen) {
       resetForm();
     }
   }, [initialData, isOpen]);
 
   const resetForm = () => {
-    setTitleEn(""); setTitleAr(""); setVideoUrl(""); setPoints(0); 
+    setTitleEn(""); setTitleAr(""); setVideoUrl(""); setThumbnailUrl(""); setPoints(0); 
     setAgeSectorId(""); setThumbnailFile(null); setVideoFile(null); 
     setThumbPreview(null); setVideoPreview(null);
   };
@@ -72,11 +72,42 @@ export default function VideoFormModal({ isOpen, onClose, onSave, type, initialD
       if (fileType === 'thumb') {
         setThumbnailFile(file);
         setThumbPreview(URL.createObjectURL(file));
+        setThumbnailUrl(""); 
       } else {
         setVideoFile(file);
         setVideoPreview(URL.createObjectURL(file));
+        setVideoUrl(""); 
       }
     }
+  };
+
+  const handleThumbnailUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setThumbnailUrl(url);
+    if (url) {
+      setThumbPreview(url.startsWith('http') ? url : `${BASE_URL}/${url}`);
+      setThumbnailFile(null);
+    } else setThumbPreview(null);
+  };
+
+  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setVideoUrl(url);
+    if (url) {
+      setVideoPreview(url.startsWith('http') ? url : `${BASE_URL}/${url}`);
+      setVideoFile(null);
+    } else setVideoPreview(null);
+  };
+
+  const isFormValid = () => {
+    return (
+      titleEn.trim() !== "" &&
+      titleAr.trim() !== "" &&
+      (videoFile !== null || videoUrl.trim() !== "") &&
+      (thumbnailFile !== null || thumbnailUrl.trim() !== "") &&
+      ageSectorId !== "" &&
+      points > 0
+    );
   };
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -85,110 +116,97 @@ export default function VideoFormModal({ isOpen, onClose, onSave, type, initialD
     if (initialData) formData.append("Id", initialData.Id.toString());
     formData.append("TitleEn", titleEn);
     formData.append("TitleAr", titleAr);
-    formData.append("VideoUrl", videoUrl);
     formData.append("NumberOfPoints", points.toString());
     formData.append("AgeSectorId", ageSectorId);
-    if (thumbnailFile) formData.append("Thumbnail", thumbnailFile);
+
     if (videoFile) formData.append("VideoFile", videoFile);
+    else formData.append("VideoUrl", videoUrl);
+
+    if (thumbnailFile) formData.append("Thumbnail", thumbnailFile);
+    else formData.append("ThumbnailUrl", thumbnailUrl);
+
     await onSave(formData);
   };
 
-  const gradientTextStyle = "bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent font-bold text-sm";
+  const getYTID = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      className="max-w-xl mx-4"
-      title={type === "add" ? (isRTL ? "إضافة فيديو جديد" : "Add New Video") : (isRTL ? "تعديل الفيديو" : "Edit Video")}
-    >
+    <Modal isOpen={isOpen} onClose={onClose} className="max-w-xl mx-4" title={type === "add" ? t("add_video_title") : t("edit_video_title")}>
       <Form onSubmit={handleSubmit} className="flex flex-col gap-3 p-6 my-6 border rounded-2xl dark:border-gray-700">
-        {isRTL ? (
-          <>
-            <Input label="عنوان الفيديو بالعربي" placeholder="ادخل عنوان الفيديو هنا" value={titleAr} onChange={(e) => setTitleAr(e.target.value)} />
-            <Input label="عنوان الفيديو بالانجليزي" placeholder="Enter video title here" value={titleEn} onChange={(e) => setTitleEn(e.target.value)} />
-          </>
-        ) : (
-          <>
-            <Input label="Video title (EN)" placeholder="Enter video title here" value={titleEn} onChange={(e) => setTitleEn(e.target.value)} />
-            <Input label="Video title (AR)" placeholder="ادخل عنوان الفيديو هنا" value={titleAr} onChange={(e) => setTitleAr(e.target.value)} />
-          </>
-        )}
+        <div className="grid grid-cols-1 gap-3">
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-gray-300 mb-1">
+              {isRTL ? "عنوان الفيديو بالعربي" : "Video title (AR)"} <span className="text-red-500">*</span>
+            </label>
+            <Input placeholder={t("placeholder_title_ar")} value={titleAr} onChange={(e) => setTitleAr(e.target.value)} required />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-gray-300 mb-1">
+              {isRTL ? "عنوان الفيديو بالانجليزي" : "Video title (EN)"} <span className="text-red-500">*</span>
+            </label>
+            <Input placeholder={t("placeholder_title_en")} value={titleEn} onChange={(e) => setTitleEn(e.target.value)} required />
+          </div>
+        </div>
 
-        {/* Video Upload Section */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-black dark:text-gray-300">
-            {isRTL ? "تحميل فيديو أو إضافة لينك الفيديو" : "Upload Video or Add the Video link"}
-          </label>
+          <label className="block text-sm font-medium text-black dark:text-gray-300">{t("label_video")} <span className="text-red-500">*</span></label>
           <div className={`flex flex-col sm:flex-row items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <div className={`relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700 ${isRTL ? 'order-first sm:order-last' : ''}`}>
-              {videoPreview ? (
-                <video 
-                  src={videoPreview} 
-                  className="h-full w-full object-cover"
-                  controls={false}
-                  muted
-                />
-              ) : (
-                <VideoIcon size={26} className="text-gray-400" />
-              )}
+            <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
+              {videoPreview ? (getYTID(videoPreview) ? <img src={`https://img.youtube.com/vi/${getYTID(videoPreview)}/0.jpg`} className="h-full w-full object-cover" alt="" /> : <video src={videoPreview} className="h-full w-full object-cover" muted />) : <VideoIcon size={26} className="text-gray-400" />}
             </div>
             <div className="w-full space-y-2">
               <input type="file" ref={videoInputRef} className="hidden" accept="video/*" onChange={(e) => handleFileChange(e, 'video')} />
-              <button type="button" onClick={() => videoInputRef.current?.click()} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <div className="text-[#25B16F]"><Upload size={18} strokeWidth={2.5} /></div>
-                <span className={gradientTextStyle}>{isRTL ? "تحميل فيديو" : "Upload Video"}</span>
+              <button type="button" onClick={() => videoInputRef.current?.click()} className="flex items-center gap-2">
+                <Upload size={18} className="text-[#25B16F]" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A7E1] to-[#25B16F] font-bold text-sm">{t("upload_video")}</span>
               </button>
-              <Input placeholder={isRTL ? "ادخل رابط الفيديو هنا" : "Enter video URL here"} value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+              <Input placeholder={t("placeholder_video_url")} value={videoUrl} onChange={handleVideoUrlChange} />
             </div>
           </div>
         </div>
 
-        {/* Thumbnail Upload Section */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-black dark:text-gray-300">
-            {isRTL ? "تحميل الصورة المصغرة للفيديو أو إضافة لينك الصورة المصغرة" : "Upload Video Thumbnail or Add the Video Thumbnail link"}
-          </label>
+          <label className="block text-sm font-medium text-black dark:text-gray-300">{t("label_thumb")} <span className="text-red-500">*</span></label>
           <div className={`flex flex-col sm:flex-row items-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <div className={`relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700 ${isRTL ? 'order-first sm:order-last' : ''}`}>
-              {thumbPreview ? (
-                <img src={thumbPreview} alt="Thumbnail Preview" className="h-full w-full object-cover" />
-              ) : (
-                <ImageIcon size={26} className="text-gray-400" />
-              )}
+            <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
+              {thumbPreview ? <img src={thumbPreview} alt="" className="h-full w-full object-cover" /> : <ImageIcon size={26} className="text-gray-400" />}
             </div>
             <div className="w-full space-y-2">
               <input type="file" ref={thumbInputRef} className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'thumb')} />
-              <button type="button" onClick={() => thumbInputRef.current?.click()} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <div className="text-[#25B16F]"><Upload size={18} strokeWidth={2.5} /></div>
-                <span className={gradientTextStyle}>{isRTL ? "تحميل الصورة المصغرة" : "Upload Thumbnail"}</span>
+              <button type="button" onClick={() => thumbInputRef.current?.click()} className="flex items-center gap-2">
+                <Upload size={18} className="text-[#25B16F]" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A7E1] to-[#25B16F] font-bold text-sm">{t("upload_thumb")}</span>
               </button>
-              <Input placeholder={isRTL ? "ادخل رابط الصورة المصغرة هنا" : "Enter video Thumbnail URL here"} />
+              <Input placeholder={t("placeholder_thumb_url")} value={thumbnailUrl} onChange={handleThumbnailUrlChange} />
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-black dark:text-gray-300">{isRTL ? "الفئة العمرية" : "Age group"}</label>
-            <select 
-              value={ageSectorId} 
-              onChange={(e) => setAgeSectorId(e.target.value)} 
-              className="w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-black outline-none focus:border-[#00A7E1] transition-colors dark:border-gray-700 dark:text-white dark:bg-[#1e1e1e]" 
-              required
-            >
-              <option value="" disabled>{isRTL ? "اختر الفئة" : "Select Age"}</option>
-              {ageSectors.map((age) => (
-  <option key={age.Id} value={age.Id.toString()}>
-    {age.FromAge} : {age.ToAge}
-  </option>
-))}
+            <label className="block text-sm font-medium text-black dark:text-gray-300">{t("age group")} <span className="text-red-500">*</span></label>
+            <select value={ageSectorId} onChange={(e) => setAgeSectorId(e.target.value)} className="w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-black dark:text-white dark:bg-[#1e1e1e]" required>
+              <option value="" disabled>{t("select_age")}</option>
+              {ageSectors.map((age) => <option key={age.Id} value={age.Id.toString()}>{age.FromAge} : {age.ToAge}</option>)}
             </select>
           </div>
-          <Input label={isRTL ? "عدد النقاط" : "Number of points"} type="number" value={points.toString()} onChange={(e) => setPoints(Number(e.target.value))} />
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-gray-300 mb-1">
+              {t("num_points")} <span className="text-red-500">*</span>
+            </label>
+            <Input type="number" placeholder="0" value={points.toString()} onChange={(e) => setPoints(Number(e.target.value))} required />
+          </div>
         </div>
-        <Button type="submit" className="mt-4 py-3" disabled={loading}>
-          {loading ? t("saving") : (type === "add" ? (isRTL ? "إضافة فيديو" : "Add Video") : (isRTL ? "حفظ التعديلات" : "Save Edit"))}
+        <Button 
+          type="submit" 
+          className={`mt-4 py-3 transition-all duration-300 ${!isFormValid() ? 'opacity-50 cursor-not-allowed bg-gray-400' : ''}`} 
+          disabled={loading || !isFormValid()}
+        >
+          {loading ? t("saving") : (type === "add" ? t("add_video_btn") : t("save_edit_btn"))}
         </Button>
       </Form>
     </Modal>
