@@ -100,7 +100,7 @@ export default function GamesList() {
             ? Array.from({ length: 6 }).map((_, index) => (
                 <GameCardSkeleton key={index} />
               ))
-            : games.map((game) => (
+            : games?.map((game) => (
                 <GameCard
                   key={game.Id || game.id}
                   title={isRTL ? game.GameNameAr : game.GameNameEn}
