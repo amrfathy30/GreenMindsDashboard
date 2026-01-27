@@ -12,7 +12,6 @@ import GameCardSkeleton from "../../components/loading/gameLoading";
 import EmptyState from "../../components/common/no-data-found";
 import { useLanguage } from "../../locales/LanguageContext";
 
-
 const BASE_URL = "https://kidsapi.pulvent.com";
 export default function GamesList() {
   const { t, isRTL } = useLanguage();
@@ -25,32 +24,36 @@ export default function GamesList() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const PAGE_SIZE = 8;
-const fetchGames = async () => {
-  try {
-    setLoading(true);
-    // نبعت رقم الصفحة الحالية وحجم الصفحة (مثلاً 8)
-    const response = await getPagedGames(currentPage, PAGE_SIZE);
-    
-    // ملاحظة: تأكدي من الـ Capitalization (Data و TotalCount)
-    setGames(response.Data || []); 
 
-    if (response.TotalCount) {
-      setTotalPages(Math.ceil(response.TotalCount / PAGE_SIZE));
+  const fetchGames = async () => {
+    try {
+      setLoading(true);
+      const response = await getPagedGames(currentPage, PAGE_SIZE);
+
+      const gamesData = Array.isArray(response.Data?.Items)
+        ? response.Data.Items
+        : [];
+      setGames(gamesData);
+
+      if (response.Data?.Total) {
+        setTotalPages(Math.ceil(response.Data.Total / PAGE_SIZE));
+      }
+    } catch (error) {
+      console.error("Failed to fetch games:", error);
+      setGames([]);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Failed to fetch games:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
-useEffect(() => {
-  fetchGames();
-}, [currentPage]);
+  useEffect(() => {
+    fetchGames();
+  }, [currentPage]);
 
   useEffect(() => {
     fetchGames();
   }, []);
+
   const handleEditClick = (game: any) => {
     setSelectedGame(game);
     setIsEditModalOpen(true);
@@ -68,7 +71,7 @@ useEffect(() => {
         description="Manage your games list easily."
       />
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("games_admin")}
@@ -77,7 +80,6 @@ useEffect(() => {
             size="sm"
             variant="primaryGrid"
             onClick={() => setIsModalOpen(true)}
-
           >
             <div className="text-white">
               <PlusIcon />
@@ -85,24 +87,33 @@ useEffect(() => {
             {t("add_game")}
           </Button>
         </div>
-        {games?.length == 0 && !loading ? <EmptyState title={t("no_games_found")} description={t("no_games_desc")}/> : ""}
+        {games?.length == 0 && !loading ? (
+          <EmptyState
+            title={t("no_games_found")}
+            description={t("no_games_desc")}
+          />
+        ) : (
+          ""
+        )}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
-          {loading ? (
-            Array.from({ length: 6 }).map((_, index) => (
-              <GameCardSkeleton key={index} />
-            ))
-          ) : (
-            games.map((game) => (
-              <GameCard
-                key={game.Id || game.id}
-                title={isRTL?game.GameNameAr:game.GameNameEn}
-                description={isRTL?game.DescriptionEn: game.DescriptionAr}
-                image={game.ThumbnailUrl?.startsWith('http') ? game.ThumbnailUrl : `${BASE_URL}/${game.ThumbnailUrl}` || game.image}
-                 onEdit={() => handleEditClick(game)}
-                onDelete={() => handleDeleteClick(game)}
-              />
-            ))
-          )}
+          {loading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <GameCardSkeleton key={index} />
+              ))
+            : games.map((game) => (
+                <GameCard
+                  key={game.Id || game.id}
+                  title={isRTL ? game.GameNameAr : game.GameNameEn}
+                  description={isRTL ? game.DescriptionEn : game.DescriptionAr}
+                  image={
+                    game.ThumbnailUrl?.startsWith("http")
+                      ? game.ThumbnailUrl
+                      : `${BASE_URL}/${game.ThumbnailUrl}` || game.image
+                  }
+                  onEdit={() => handleEditClick(game)}
+                  onDelete={() => handleDeleteClick(game)}
+                />
+              ))}
         </div>
         <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
           <Pagination
@@ -118,10 +129,9 @@ useEffect(() => {
         onClose={() => setIsModalOpen(false)}
         type="add"
         onSuccess={fetchGames}
-
       />
       <GameModal
-        key={selectedGame?.id || 'add'}
+        key={selectedGame?.id || "add"}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         gameData={selectedGame}
