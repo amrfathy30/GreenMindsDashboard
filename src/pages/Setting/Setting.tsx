@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChevronRight, Globe } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageMeta from "../../components/common/PageMeta";
 import SmtpSettingsModal from "./SmtpSettingsModal";
 import { Link } from "react-router";
-import { AgeGroup, BoxIcon, ListView, MessageSettings } from "../../icons";
+import { AgeGroup, BoxIcon, MessageSettings } from "../../icons";
 import { Dropdown } from "../../components/ui/dropdown/Dropdown";
 import { DropdownItem } from "../../components/ui/dropdown/DropdownItem";
 import { useLanguage } from "../../api/locales/LanguageContext";
+import { SmtpList } from "../../utils/types/SmtpType";
+import { allSmtpData } from "../../api/services/SmtpService";
+import { toast } from "sonner";
 
 export default function Setting() {
   const [open, setOpen] = useState(false);
@@ -15,16 +19,31 @@ export default function Setting() {
   const [openModal, setOpenModal] = useState(false);
   const closeDropdown = () => setOpen(false);
 
+  const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
+
+  useEffect(() => {
+    const fetchSmtp = async () => {
+      try {
+        const res = await allSmtpData();
+        if (res?.Data?.length > 0) {
+          setSmtpData(res.Data[0]);
+        }
+      } catch (error: any) {
+        toast.error(
+          error?.response?.data?.Message || "Failed to load SMTP settings",
+        );
+      }
+    };
+
+    fetchSmtp();
+  }, []);
+
   return (
     <>
-      <PageMeta
-        title="Green minds Admin | Settings"
-        description={``}
-      />
+      <PageMeta title="Green minds Admin | Settings" description={``} />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
-
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("pageTitle")}
           </h2>
@@ -79,7 +98,7 @@ export default function Setting() {
                 <Dropdown
                   isOpen={open}
                   onClose={closeDropdown}
-                  className="absolute right-0 top-4 flex h-[74px] w-[200px] flex-col rounded-2xl bg-white shadow-theme-lg dark:bg-gray-dark"
+                  className={`${language === "en" ? "right-0 " : "left-0 "} absolute top-4 flex h-[74px] w-[200px] flex-col rounded-2xl bg-white shadow-theme-lg dark:bg-gray-dark`}
                 >
                   <ul className="flex flex-col">
                     <li>
@@ -157,7 +176,7 @@ export default function Setting() {
           </Link>
 
           {/* Login Streaks */}
-          <Link
+          {/* <Link
             to="/login-streaks"
             className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer dark:text-white"
           >
@@ -165,7 +184,7 @@ export default function Setting() {
               <ListView className="w-5 h-5  dark:brightness-300" />
               <span>{t("loginStreaks")}</span>
             </div>
-          </Link>
+          </Link> */}
 
           {/* Profile Levels */}
           <Link
@@ -179,7 +198,23 @@ export default function Setting() {
           </Link>
         </div>
       </div>
-      <SmtpSettingsModal open={openModal} onClose={() => setOpenModal(false)} />
+
+      <SmtpSettingsModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        initialData={
+          smtpData || {
+            Host: "",
+            Port: 587,
+            UseSsl: true,
+            Username: "",
+            Password: "",
+            SenderEmail: "",
+            SenderName: "",
+            Enabled: true,
+          }
+        }
+      />
     </>
   );
 }

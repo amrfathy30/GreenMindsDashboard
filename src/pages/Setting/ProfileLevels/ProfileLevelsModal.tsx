@@ -9,7 +9,7 @@ import { useLanguage } from "../../../api/locales/LanguageContext";
 export default function ProfileLevelsModal({
   open,
   onClose,
-  onSave, 
+  onSave,
   loading,
   initialData,
 }: ProfileLevelsModalProps) {
@@ -17,26 +17,26 @@ export default function ProfileLevelsModal({
 
   const [MaxPoints, setMaxPoints] = useState<string>("");
   const [MinPoints, setMinPoints] = useState<string>("");
-  const [levelNameAr, setLevelNameAr] = useState("");
-  const [levelNameEn, setLevelNameEn] = useState("");
+  const [NameEn, setNameAr] = useState("");
+  const [NameAr, setNameEn] = useState("");
 
   useEffect(() => {
     if (initialData) {
       setMaxPoints(initialData.MaxPoints.toString());
       setMinPoints(initialData.MinPoints.toString());
-      setLevelNameAr(initialData.levelNameAr);
-      setLevelNameEn(initialData.levelNameEn);
+      setNameAr(initialData.NameAr);
+      setNameEn(initialData.NameEn);
     } else {
       setMaxPoints("");
       setMinPoints("");
-      setLevelNameAr("");
-      setLevelNameEn("");
+      setNameAr("");
+      setNameEn("");
     }
   }, [initialData, open]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSave({ MinPoints, MaxPoints, levelNameEn, levelNameAr });
+    onSave({ MinPoints, MaxPoints, NameEn, NameAr });
   };
 
   return (
@@ -46,26 +46,29 @@ export default function ProfileLevelsModal({
       className="max-w-xl mx-4"
       title={initialData ? t("modalTitleEditLevel") : t("modalTitleAddLevel")}
     >
-      <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-5 mt-4 ">
-        <div className="border-b pb-4">
+      <Form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-3 p-5 my-6 border rounded-2xl"
+      >
+        <div>
           <Input
-            id="levelNameAr"
+            id="NameAr"
             label={t("levelNameAr")}
             placeholder={t("levelNameAr")}
-            value={levelNameAr}
+            value={NameAr}
             required
-            onChange={(e) => setLevelNameAr(e.target.value)}
+            onChange={(e) => setNameAr(e.target.value)}
           />
         </div>
 
-        <div className="border-b pb-4">
+        <div>
           <Input
-            id="levelNameEn"
+            id="NameEn"
             label={t("levelNameEn")}
             placeholder={t("levelNameEn")}
-            value={levelNameEn}
+            value={NameEn}
             required
-            onChange={(e) => setLevelNameEn(e.target.value)}
+            onChange={(e) => setNameEn(e.target.value)}
           />
         </div>
 
@@ -81,7 +84,7 @@ export default function ProfileLevelsModal({
           />
         </div>
 
-        <div className="border-b pb-4">
+        <div>
           <Input
             id="MaxPoints"
             required

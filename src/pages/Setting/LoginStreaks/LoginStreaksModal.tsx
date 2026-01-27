@@ -43,8 +43,8 @@ export default function LoginStreaksModal({
       className="max-w-xl mx-4"
       title={initialData ? "Edit Profile Levels" : "Add Profile Levels"}
     >
-      <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-5 mt-4 ">
-        <div className="border-b pb-4">
+      <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-5 my-6 border rounded-2xl">
+        <div>
           <Input
             id="day"
             label="Day"
@@ -53,7 +53,7 @@ export default function LoginStreaksModal({
             onChange={(e) => setDay(e.target.value)}
           />
         </div>
-        <div className="border-b pb-4">
+        <div>
           <Input
             id="points"
             label="points"

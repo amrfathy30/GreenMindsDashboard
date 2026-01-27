@@ -14,6 +14,21 @@ export interface GenderStats {
   Count: number;
   Percentage: number;
 }
+export interface LevelStats {
+  LevelId: number;
+  LevelNumber: number;
+  LevelName: string;
+  UsersCount: number;
+  Percentage: number;
+}
+
+export interface TopRankedUser {
+  userId: number;
+  userName: string;
+  totalPoints: number;
+  levelId: number;
+  levelName: string;
+}
 
 export interface AgeSector {
   AgeSectorId: number;

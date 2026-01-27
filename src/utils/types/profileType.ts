@@ -21,25 +21,28 @@ export interface SendEmailRequest {
 }
 
 export interface PersonalInfoRequest {
-  Id: number;
+  Id?: number;
   Email: string;
   Phone: string;
-  TypeName: string;
-  AvatarImg: File;
-  CityId: string;
-  CityName: string;
-  CountryId: string;
-  CountryName: string;
-  NationalityId: string;
-  NationalityName: string;
-  GenderId: string;
-  EmployeeCount: string;
-  GenderName: string;
-  VisaStatusId: string;
-  VisaStatusName: string;
-  ParentName: string;
-  Summary: string;
-  loginCountryData: string;
+  Name: string;
+  AvatarImg?: File;
+  AvatarUrl?: string;
+  
+  // TypeName: string;
+  // CityId: string;
+  // CityName: string;
+  // CountryId: string;
+  // CountryName: string;
+  // NationalityId: string;
+  // NationalityName: string;
+  // GenderId: string;
+  // EmployeeCount: string;
+  // GenderName: string;
+  // VisaStatusId: string;
+  // VisaStatusName: string;
+  // ParentName: string;
+  // Summary: string;
+  // loginCountryData: string;
 }
 
 export interface EditProfileModalProps {

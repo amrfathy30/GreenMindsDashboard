@@ -15,13 +15,17 @@ import {
 } from "../../utils/types/profileType";
 import { toast } from "sonner";
 import { GetPersonalInfoById } from "../../api/services/profileService";
+import { updateAdmin } from "../../api/services/adminService";
 
 export default function EditProfileModal({
   open,
   onClose,
 }: EditProfileModalProps) {
-  const Id = "1";
-  // const [loading, setLoading] = useState(false);
+  const adminData: any = localStorage.getItem("GMadminData");
+  const GMadminData: any = JSON.parse(adminData);
+  const adminId = GMadminData?.UserId;
+
+  const [loading, setLoading] = useState(false);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoRequest | null>(
     null,
   );
@@ -30,13 +34,22 @@ export default function EditProfileModal({
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [avatar, setAvatar] = useState("/images/user.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const fetchPersonalInfo = async () => {
     try {
       // setLoading(true);
 
-      const res = await GetPersonalInfoById(Id);
+      const res = await GetPersonalInfoById(adminId);
 
       setPersonalInfo(res?.Data);
+
+      const data = res?.Data;
+      setFormData({
+        Name: data?.Name ?? "",
+        Email: data?.Email ?? "",
+        Phone: data?.Phone ?? "",
+        Id: data?.Id,
+      });
     } catch (error: any) {
       toast.error(
         error?.response?.data?.Message || "Failed to load personal info",
@@ -47,7 +60,19 @@ export default function EditProfileModal({
   };
 
   useEffect(() => {
-   if(open) fetchPersonalInfo();
+    if (personalInfo?.AvatarUrl) {
+      setAvatar(personalInfo.AvatarUrl);
+    }
+  }, [personalInfo]);
+
+  const [formData, setFormData] = useState<PersonalInfoRequest>({
+    Name: "",
+    Email: "",
+    Phone: "",
+  });
+
+  useEffect(() => {
+    if (open) fetchPersonalInfo();
   }, [open]);
 
   if (!open) return null;
@@ -56,25 +81,48 @@ export default function EditProfileModal({
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target;
-    if (!target || !target.files || target.files.length === 0) return;
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const file = target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setAvatar(e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
+    setAvatar(URL.createObjectURL(file));
+
+    setFormData((prev) => ({
+      ...prev,
+      AvatarImg: file,
+    }));
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      setLoading(true);
+      const data = new FormData();
+      data.append("Name", formData.Name);
+      data.append("Email", formData.Email);
+      data.append("Phone", formData.Phone);
+
+      if (formData.AvatarImg) {
+        data.append("AvatarImg", formData.AvatarImg);
+      }
+
+      await updateAdmin(data, adminId);
+
+      toast.success("Profile updated successfully");
+      onClose();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || "Update failed");
+    } finally {
+      setLoading(false);
+    }
   };
+
   const handleBack = () => {
     setShowResetPassword(false);
     setShowChangePassword(false);
   };
+
   return createPortal(
     <Modal
       isOpen={open}
@@ -137,7 +185,7 @@ export default function EditProfileModal({
               </div>
 
               <div className="flex flex-col dark:text-white">
-                <h2>{personalInfo?.TypeName}</h2>
+                <h2>{personalInfo?.Name}</h2>
                 <h2>{personalInfo?.Email}</h2>
               </div>
             </div>
@@ -155,19 +203,35 @@ export default function EditProfileModal({
 
           <Input
             id="name"
-            value={personalInfo?.TypeName || ""}
             label="Admin Name"
             placeholder="Enter Name Here"
+            value={formData.Name}
+            onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
           />
 
           <Input
             id="email"
             label="Admin Email"
             placeholder="Enter email Here"
-            value={personalInfo?.Email || ""}
+            value={formData.Email}
+            onChange={(e) =>
+              setFormData({ ...formData, Email: e.target.value })
+            }
           />
 
-          <Button>save</Button>
+          <Input
+            id="Phone"
+            label="Admin phone"
+            placeholder="Enter phone Here"
+            value={formData.Phone}
+            onChange={(e) =>
+              setFormData({ ...formData, Phone: e.target.value })
+            }
+          />
+
+          <Button type="submit" disabled={loading}>
+            {loading ? "saving" : "save"}
+          </Button>
         </Form>
       )}
     </Modal>,

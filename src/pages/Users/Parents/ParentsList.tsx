@@ -27,7 +27,7 @@ export default function ParentsList({
   setOpenAddModal?: (open: boolean) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
+  const [totalPages, setTotalPages] = useState(0);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -68,14 +68,13 @@ export default function ParentsList({
             id: item.Id,
             Name: item.Name,
             UserName: item.UserName,
-            // Name_en: item.Name_en,
-            // Name_ar: item.Name_ar,
             Email: item.Email,
             Password: item.Password,
             ConfirmPassword: item.ConfirmPassword,
             ParentPhoneNumber: item.ParentPhoneNumber,
           })),
         );
+        setTotalPages(Math.ceil(data.Data.Total / data.Data.PageSize));
       } catch (error: any) {
         toast.error(error?.response?.data?.Message || t("operation_failed"));
       } finally {
@@ -138,12 +137,11 @@ export default function ParentsList({
           id: item.Id,
           Name: item.Name || "",
           UserName: item.UserName || "",
-          // Name_ar: item.Name_ar || "",
-          // Name_en: item.Name_en || "",
           Email: item.Email,
           Password: item.Password,
           ConfirmPassword: item.ConfirmPassword,
           ParentPhoneNumber: item.ParentPhoneNumber,
+          Phone: item.Phone || item.ParentPhoneNumber,
         })),
       );
 
@@ -160,30 +158,20 @@ export default function ParentsList({
   };
 
   const columns = [
-    {
-      key: "UserName",
-      label: t("UserName"),
-      render: (row: any) => (
-        <span className="text-[#757575] flex justify-center items-center">
-          {row.UserName || "__"}
-        </span>
-      ),
-    },
     // {
-    //   key: "Name_ar",
-    //   label: t("NameAr"),
-    // },
-    // {
-    //   key: "Name_en",
-    //   label: t("NameEn"),
+    //   key: "UserName",
+    //   label: t("UserName"),
+    //   render: (row: any) => (
+    //     <span className="text-[#757575] flex justify-center items-center">
+    //       {row.UserName || "__"}
+    //     </span>
+    //   ),
     // },
     {
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="text-[#757575] ">
-          {row.Name || "__"}
-        </span>
+        <span className="text-[#757575] ">{row.Name || "__"}</span>
       ),
     },
     {
@@ -203,11 +191,11 @@ export default function ParentsList({
       ),
     },
     {
-      key: "ParentPhoneNumber",
+      key: "Phone",
       label: t("ParentPhone"),
       render: (row: any) => (
         <span className="text-[#757575] flex justify-center items-center">
-          {row.ParentPhoneNumber || "__"}
+          {row.Phone || "__"}
         </span>
       ),
     },
@@ -234,8 +222,8 @@ export default function ParentsList({
                 Id: row.id,
                 Name: row.Name,
                 UserName: row.UserName,
-                Name_ar: row.Name_ar,
-                Name_en: row.Name_en,
+                // Name_ar: row.Name_ar,
+                // Name_en: row.Name_en,
                 Email: row.Email,
                 Password: row.Password,
                 ConfirmPassword: row.ConfirmPassword,

@@ -4,8 +4,8 @@ import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
 import Button from "../../components/ui/button/Button";
 import { toast } from "sonner";
-import { resetPassword } from "../../api/services/profileService";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
+import { ForgetPassReset } from "../../api/services/profileService";
 
 export default function ResetPasswordModal() {
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,11 @@ export default function ResetPasswordModal() {
     e.preventDefault();
 
     const { otp, NewPassword, ConfirmPassword } = formData;
-
+    
+    if (NewPassword.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
     if (!otp || !NewPassword || !ConfirmPassword) {
       toast.error("All fields are required");
       return;
@@ -38,7 +42,7 @@ export default function ResetPasswordModal() {
     try {
       setLoading(true);
 
-      const res = await resetPassword({
+      const res = await ForgetPassReset({
         otp: otp,
         NewPassword: NewPassword,
         ConfirmPassword: ConfirmPassword,

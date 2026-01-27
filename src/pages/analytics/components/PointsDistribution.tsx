@@ -3,8 +3,13 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import ComponentCard from "../../../components/common/ComponentCard";
 import { useLanguage } from "../../../api/locales/LanguageContext";
+import { LevelStats } from "../../../utils/types/analyticType";
 
-export default function PointsDistribution() {
+export default function PointsDistribution({
+  levelsStatsData,
+}: {
+  levelsStatsData: LevelStats[];
+}) {
   const { t } = useLanguage();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,15 +20,32 @@ export default function PointsDistribution() {
     null,
   );
   const [pieSize, setPieSize] = useState<{ w: number; h: number } | null>(null);
-  const series = [500, 400, 300, 200, 100];
-  const labels = [
-    t("Level1"),
-    t("Level2"),
-    t("Level3"),
-    t("Level4"),
-    t("Level5"),
-  ];
-  const colors = ["#FF4906", "#39CEF3", "#39CEF3", "#39CEF3", "#72CA3D"];
+  // const series = [500, 400, 300, 200, 100];
+  // const labels = [
+  //   t("Level1"),
+  //   t("Level2"),
+  //   t("Level3"),
+  //   t("Level4"),
+  //   t("Level5"),
+  // ];
+  // const colors = ["#FF4906", "#39CEF3", "#39CEF3", "#39CEF3", "#72CA3D"];
+
+  const series =
+    levelsStatsData.length > 0
+      ? levelsStatsData.map((lvl) => lvl.UsersCount)
+      : [0];
+
+  const labels =
+    levelsStatsData.length > 0
+      ? levelsStatsData.map((lvl) => lvl.LevelName)
+      : ["No Data"];
+
+  const colors =
+    levelsStatsData.length > 0
+      ? levelsStatsData.map((_, i) => baseColors[i % baseColors.length])
+      : ["#E5E5E5"];
+
+  const baseColors = ["#FF4906", "#39CEF3", "#72CA3D", "#F7B500", "#9B51E0"];
 
   const updatePositions = () => {
     if (!containerRef.current) return;
