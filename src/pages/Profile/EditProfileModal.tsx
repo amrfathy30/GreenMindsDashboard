@@ -16,11 +16,13 @@ import {
 import { toast } from "sonner";
 import { GetPersonalInfoById } from "../../api/services/profileService";
 import { updateAdmin } from "../../api/services/adminService";
+import { useLanguage } from "../../locales/LanguageContext";
 
 export default function EditProfileModal({
   open,
   onClose,
 }: EditProfileModalProps) {
+  const { t} = useLanguage();
   const adminData: any = localStorage.getItem("GMadminData");
   const GMadminData: any = JSON.parse(adminData);
   const adminId = GMadminData?.UserId;
@@ -130,10 +132,10 @@ export default function EditProfileModal({
       className="max-w-xl mx-4"
       title={
         showChangePassword
-          ? "Change Password"
+          ? t("changePassword")
           : showResetPassword
-            ? "Reset Password"
-            : "Edit profile"
+            ? t("resetPassword")
+            : t("Editprofile")
       }
     >
       {showChangePassword || showResetPassword ? (
@@ -142,7 +144,7 @@ export default function EditProfileModal({
           onClick={() => handleBack()}
         >
           <ArrowBigLeft />
-          <span>Back to edit</span>
+          <span>{t("backToEdit")}</span>
         </button>
       ) : (
         ""
@@ -194,7 +196,7 @@ export default function EditProfileModal({
                 className="text-red-500"
                 onClick={() => setShowChangePassword(true)}
               >
-                Change password
+                {t("changePassword")}
               </button>
             </div>
           </div>
@@ -203,16 +205,16 @@ export default function EditProfileModal({
 
           <Input
             id="name"
-            label="Admin Name"
-            placeholder="Enter Name Here"
+            label={t("adminName")}
+            placeholder={t("EnterNameHere")}
             value={formData.Name}
             onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
           />
 
           <Input
             id="email"
-            label="Admin Email"
-            placeholder="Enter email Here"
+            label={t("adminEmail")}
+            placeholder={t("enterEmail")}
             value={formData.Email}
             onChange={(e) =>
               setFormData({ ...formData, Email: e.target.value })
@@ -221,8 +223,8 @@ export default function EditProfileModal({
 
           <Input
             id="Phone"
-            label="Admin phone"
-            placeholder="Enter phone Here"
+            label={t("adminPhone")}
+            placeholder={t("enterPhone")}
             value={formData.Phone}
             onChange={(e) =>
               setFormData({ ...formData, Phone: e.target.value })
@@ -230,7 +232,7 @@ export default function EditProfileModal({
           />
 
           <Button type="submit" disabled={loading}>
-            {loading ? "saving" : "save"}
+            {loading ? t("saving") : t("saveButton")}
           </Button>
         </Form>
       )}
