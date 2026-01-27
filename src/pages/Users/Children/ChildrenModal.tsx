@@ -20,7 +20,7 @@ export default function ChildrenModal({
 
   const handleChange = (value: string) => {
     setSelectedValue(value);
-    setFormData({ ...formData, gender: value });
+    setFormData({ ...formData, GenderId: value });
   };
 
   const [formData, setFormData] = useState({
@@ -30,12 +30,12 @@ export default function ChildrenModal({
     ConfirmPassword: "",
     ParentPhoneNumber: "",
     DateOfBirth: "",
-    gender: "",
+    GenderId: "",
   });
 
   useEffect(() => {
     if (initialData) {
-      setSelectedValue(initialData.gender || "male");
+      setSelectedValue(initialData.GenderId || "male");
       setFormData({
         Name: initialData.Name || "",
         Email: initialData.Email || "",
@@ -44,7 +44,7 @@ export default function ChildrenModal({
         ParentPhoneNumber:
           initialData.ParentPhoneNumber || initialData.Phone || "",
         DateOfBirth: initialData.DateOfBirth || "",
-        gender: initialData.gender || "male",
+        GenderId: initialData.GenderId || "male",
       });
     } else {
       setSelectedValue("male");
@@ -55,7 +55,7 @@ export default function ChildrenModal({
         ConfirmPassword: "",
         ParentPhoneNumber: "",
         DateOfBirth: "",
-        gender: "male",
+        GenderId: "male",
       });
     }
   }, [initialData, open]);
@@ -143,7 +143,7 @@ export default function ChildrenModal({
             <div className="flex items-center gap-3">
               <Radio
                 id="male"
-                name="gender"
+                name="GenderId"
                 value="male"
                 checked={selectedValue === "male"}
                 label={t("Male")}
