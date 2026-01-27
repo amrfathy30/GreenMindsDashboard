@@ -29,3 +29,27 @@ export const allRolePermissions = async (roleName = "") => {
   );
   return response.data;
 };
+
+export const updateRolePermissions = async (
+  roleId: number,
+  data: {
+    RoleId?: number;
+    NewName?: string;
+    Description?: string;
+    PermissionIds: number[];
+  },
+) => {
+  const response = await axiosInstance.post(
+    `/AdminRoles/${roleId}/permissions/update`,
+    data,
+  );
+  return response.data;
+};
+
+export const createRole = async (data: {
+  RoleName?: string;
+  Permissions: number[];
+}) => {
+  const response = await axiosInstance.post(`/AdminRoles`, data);
+  return response.data;
+};

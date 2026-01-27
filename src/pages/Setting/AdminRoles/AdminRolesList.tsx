@@ -10,18 +10,28 @@ import { AgeApiResponse } from "../../../utils/types/ageType";
 import { useLanguage } from "../../../locales/LanguageContext";
 import {
   allAdminRoles,
+  AllPermissions,
   allRolePermissions,
+  createRole,
+  updateRolePermissions,
 } from "../../../api/services/adminRolesService";
 import { useNavigate } from "react-router";
 import AdminRolePermissions from "./AdminRolePermissions";
+import AddRoleModal from "./AddRoleModal";
 
 export default function AdminRoles() {
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const [adminRoles, setAdminRoles] = useState<any[]>([]);
   const [adminRolePermission, setAdminRolePermission] = useState<any[]>([]);
+  const [allPermissions, setAllPermissions] = useState<any[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+
   const [activeTab, setActiveTab] = useState(0);
+  const [saving, setSaving] = useState(false);
+  const [addRoleLoading, setAddRoleLoading] = useState(false);
+
+  // fetchAdminRoles
   useEffect(() => {
     const fetchAdminRoles = async () => {
       try {
@@ -39,14 +49,28 @@ export default function AdminRoles() {
     fetchAdminRoles();
   }, [t]);
 
+  // fetchAllPermissions
+  useEffect(() => {
+    const fetchAllPermissions = async () => {
+      try {
+        const data = await AllPermissions();
+        setAllPermissions(Array.isArray(data.Data) ? data.Data : []);
+      } catch {
+        toast.error(t("failed_load_permissions"));
+      }
+    };
+
+    fetchAllPermissions();
+  }, [t]);
+
+  // fetchActiveAdminRoles
   const fetchActiveAdminRoles = async () => {
     if (!adminRoles[activeTab]) return;
+
     try {
       setLoading(true);
-      const data: any = await allRolePermissions(adminRoles[activeTab]);
+      const data = await allRolePermissions(adminRoles[activeTab].Name);
       setAdminRolePermission(Array.isArray(data.Data) ? data.Data : []);
-    } catch (error) {
-      /* empty */
     } finally {
       setLoading(false);
     }
@@ -58,6 +82,58 @@ export default function AdminRoles() {
     }
   }, [activeTab, adminRoles]);
 
+  const assignedPermissionIds = adminRolePermission.map((p) => p.Id);
+
+  const handleSavePermissions = async (selectedPermissions: number[]) => {
+    if (saving) return;
+
+    try {
+      setSaving(true);
+      const activeRole = adminRoles[activeTab];
+
+      const payload = {
+        PermissionIds: selectedPermissions,
+      };
+
+      await updateRolePermissions(activeRole.Id, payload);
+
+      await fetchActiveAdminRoles();
+
+      toast.success(t("permissions_updated_successfully"));
+    } catch {
+      toast.error(t("failed_update_permissions"));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSave = async (data: { RoleName: string }) => {
+  try {
+    setAddRoleLoading(true);
+
+    const payload = {
+      RoleName: data.RoleName,
+      Permissions: [], 
+    };
+
+    await createRole(payload);
+
+    toast.success(t("role_created_successfully"));
+
+    setOpenModal(false);
+
+    const rolesData: AgeApiResponse = await allAdminRoles();
+    setAdminRoles(rolesData.Data);
+
+    setActiveTab(rolesData.Data.length - 1);
+  } catch {
+    toast.error(t("failed_create_role"));
+  } finally {
+    setAddRoleLoading(false);
+  }
+};
+
+
   return (
     <>
       <PageMeta title="Green minds Admin | Admin Roles" description={``} />
@@ -67,21 +143,16 @@ export default function AdminRoles() {
             {t("AdminRoles")}
           </h2>
 
-          <AddButton
-            startIcon={<Plus />}
-            onClick={() => {
-              navigate("/create-role");
-            }}
-          >
+          <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
             {t("add_admin_role")}
           </AddButton>
         </div>
         <div className="px-5">
           {/* Tab Headers */}
           <div className="flex border-b border-gray-200">
-            {adminRoles.map((role: string, index: number) => (
+            {adminRoles.map((role, index) => (
               <button
-                key={index}
+                key={role}
                 onClick={() => setActiveTab(index)}
                 className={`py-2 px-4 text-sm font-medium transition-colors duration-200 focus:outline-none
         ${
@@ -90,19 +161,27 @@ export default function AdminRoles() {
             : "text-gray-500 hover:text-gray-700"
         }`}
               >
-                {role}
+                {role?.Name}
               </button>
             ))}
           </div>
+
           {/* Tab Content */}
           <AdminRolePermissions
-            permissions={adminRolePermission}
-            assignedPermissions={adminRolePermission.map((p) => p.DisplayName)}
-            loading={loading}
+            permissions={allPermissions}
+            assignedPermissions={assignedPermissionIds}
+            loading={saving}
             t={t}
-            onSave={(selected) => {
-              console.log("Selected permissions:", selected);
+            onSave={handleSavePermissions}
+          />
+
+          <AddRoleModal
+            open={openModal}
+            onClose={() => {
+              setOpenModal(false);
             }}
+            onSave={handleSave}
+            loading={addRoleLoading}
           />
         </div>
       </div>

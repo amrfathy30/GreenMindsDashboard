@@ -17,7 +17,6 @@ import LoginStreaks from "./pages/Setting/LoginStreaks/LoginStreaks";
 import { ProtectedRoute } from "./protected-route-wrapper";
 import AdminRoles from "./pages/Setting/AdminRoles/AdminRolesList";
 import PermissionsList from "./pages/Setting/Permissions/PermissionsList";
-import UpdatePermission from "./pages/Setting/Permissions/UpdatePermissionModal";
 
 export default function App() {
   return (
@@ -41,7 +40,6 @@ export default function App() {
               <Route path="/profile-levels" element={<ProfileLevels />} />
               <Route path="/login-streaks" element={<LoginStreaks />} />
               <Route path="/permissions-list" element={<PermissionsList />} />
-              <Route path="/update-permission" element={<UpdatePermission />} />
             </Route>
           </Route>
         </Routes>

@@ -17,3 +17,13 @@ export interface UpdatePermissionModalProps {
   };
   loading?: boolean;
 }
+
+export interface AddRoleModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSave: (data: { RoleName: string }) => Promise<void>;
+  initialData?: {
+    RoleName: string;
+  };
+  loading?: boolean;
+}
