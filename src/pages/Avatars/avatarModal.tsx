@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useLanguage } from "../../locales/LanguageContext";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import { Modal } from "../../components/ui/modal";
 import Form from "../../components/form/Form";
 import { createAvatar, updateAvatar } from "../../api/services/avatarService";
+import { allAgeData } from "../../api/services/ageService";
 
 interface AvatarModalProps {
   isOpen: boolean;
@@ -19,13 +20,36 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
   const [previewImage, setPreviewImage] = useState<string | null>(avatarData?.image || null);
   const [selectedAgeSector, setSelectedAgeSector] = useState(avatarData?.ageSectorId || "");
   const [errors, setErrors] = useState<{ image?: string; ageSector?: string }>({});
-  const ageGroups = [
-  { id: 1, label: "2-4 Years" },
-  { id: 2, label: "5-7 Years" },
-  { id: 3, label: "8-10 Years" },
-  { id: 4, label: "11-13 Years" },
-];
-  if (!isOpen) return null;
+  const [ageGroups, setAgeGroups] = useState<any[]>([]);
+
+useEffect(() => {
+    const fetchAgeGroups = async () => {
+      try {
+        const response = await allAgeData();
+        if (response && response.Data) {
+          setAgeGroups(response.Data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch age groups", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchAgeGroups();
+    }
+  }, [isOpen]);
+useEffect(() => {
+    if (avatarData && isOpen) {
+      setSelectedAgeSector(avatarData.AgeSectorId?.toString() || "");
+      setPreviewImage(avatarData.ImageUrl || null);
+    } else if (isOpen) {
+      setSelectedAgeSector("");
+      setPreviewImage(null);
+      setErrors({});
+    }
+  }, [avatarData, isOpen]);
+
+if (!isOpen) return null;
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -130,20 +154,22 @@ const onSubmit = async (e: React.FormEvent) => {
               </button>
               {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image}</p>}
               <div className="space-y-2">
-          <select 
-            id="age_group"
-            value={selectedAgeSector}
-            defaultValue={avatarData?.ageGroup || ""}
-            onChange={(e) => setSelectedAgeSector(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
-          >
-            <option value="" disabled>{t("select_age_group")}</option>
-            {ageGroups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {group.label}
-              </option>
-            ))}
-          </select>
+                  <select
+                  id="ageGroup"
+                  value={selectedAgeSector}
+                  onChange={(e) => {
+                    setSelectedAgeSector(e.target.value);
+                    setErrors(prev => ({ ...prev, ageSector: undefined }));
+                  }}
+                  className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
+                >
+                  <option value="" disabled>{t("select_age_group")}</option>
+                  {ageGroups.map((group: any) => (
+                    <option key={group.Id} value={group.Id} className="dark:bg-[#1a222c]">
+                      {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
+                    </option>
+                  ))}
+                </select>
           {errors.ageSector && <p className="text-xs text-red-500 mt-1">{errors.ageSector}</p>}
         </div>
             </div>
