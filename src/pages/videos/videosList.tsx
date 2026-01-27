@@ -41,18 +41,25 @@ export default function VideosList() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoType | null>(null);
 
-  const fetchInitialData = async () => {
+ const fetchInitialData = async () => {
     try {
       setLoading(true);
       const [videosRes, agesRes] = await Promise.all([
         allVideosData({ page: currentPage, pageSize: 10 }),
         allAgeData()
       ]);
-      setVideos(videosRes.Data || []);
+
+      const responseData = videosRes.Data;
+      const videosArray = responseData?.Items || [];
+      const totalCount = responseData?.Total || 0;
+      const pageSize = responseData?.PageSize || 10;
+      const totalPagesCount = Math.ceil(totalCount / pageSize) || 1;
+
+      setVideos(videosArray);
       setAgeSectors(agesRes.Data || []);
-      setTotalPages(videosRes.TotalPages || 1);
-    } catch {
-      // toast.error(t("failed_load_videos"));
+      setTotalPages(totalPagesCount);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -103,8 +110,8 @@ export default function VideosList() {
         title="Green minds Admin | Videos"
         description={``}
       />
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 min-h-[calc(100vh-48px)] flex flex-col dark:bg-neutral-800 bg-[#EDEDED]">
+        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4 shrink-0">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("Videos - Admin")}</h2>
 
@@ -121,8 +128,8 @@ export default function VideosList() {
         {videos?.length == 0 && !loading ? <EmptyState title="No Data Found" description="Videos Section has no data yet, start by adding your first Video Now!"/> : ""}
         {loading ? <VideoTableSkeleton /> : 
         videos?.length != 0?(
-          <div className="overflow-x-auto px-4">
-            <table className="w-full text-left border-collapse min-w-[700px] h-full">
+          <div className="overflow-x-auto px-4 flex-1">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-[#D9D9D940] dark:bg-white/[0.02]">
                   <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">{t("Thumbnail")}</th>

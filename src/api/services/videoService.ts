@@ -1,7 +1,7 @@
 import axiosInstance from "../axiosInstance";
 
 export const allVideosData = async (params?: { page?: number; pageSize?: number }) => {
-  const response = await axiosInstance.get("/Videos/GetAll", { params });
+  const response = await axiosInstance.get("/Videos/paged", { params });
   return response.data;
 };
 

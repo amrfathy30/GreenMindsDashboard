@@ -7,6 +7,7 @@ import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
 import TextArea from "../../components/form/input/TextArea";
 import { createGame, updateGame } from "../../api/services/gameService";
+import { allAgeData } from "../../api/services/ageService";
 
 interface GameModalProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type,o
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(gameData?.image || null);
   const [formError, setFormError] = useState(false);
-  const ageGroups = ["2-4 Years", "5-7 Years", "8-10 Years", "11-13 Years"];
+  const [ageGroups, setAgeGroups] = useState<any[]>([]);
  
 const [formDataState, setFormDataState] = useState({
   nameEn: "",
@@ -34,7 +35,22 @@ const [formDataState, setFormDataState] = useState({
   apiKey: "",
   ageGroup: "",
 });
+useEffect(() => {
+  const fetchAgeGroups = async () => {
+    try {
+      const response = await allAgeData();
+      if (response && response.Data) {
+        setAgeGroups(response.Data); 
+      }
+    } catch (error) {
+      console.error("Failed to fetch age groups", error);
+    }
+  };
 
+  if (isOpen) {
+    fetchAgeGroups();
+  }
+}, [isOpen]);
 useEffect(() => {
   if (gameData && isOpen) {
     setFormDataState({
@@ -145,19 +161,23 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           <label className="block text-sm font-medium text-black dark:text-gray-300">
             {t("select_age_group")}
           </label>
-          <select 
-            id="ageGroup"
-            value={formDataState.ageGroup}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
-          >
-            <option value="" disabled>{t("select_age_group")}</option>
-            {ageGroups.map((group) => (
-              <option key={group} value={group} className="dark:bg-[#1a222c]">
-                {group}
-              </option>
-            ))}
-          </select>
+<select 
+  id="ageGroup"
+  value={formDataState.ageGroup}
+  onChange={handleChange}
+  className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
+>
+  <option value="" disabled>{t("select_age_group")}</option>
+  {ageGroups && ageGroups.map((group: any) => (
+    <option 
+      key={group.Id} 
+      value={group.DisplayName} 
+      className="dark:bg-[#1a222c]"
+    >
+      {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
+    </option>
+  ))}
+</select>
         </div>
         <div className="grid grid-cols-2 space-x-2 w-full">
   <TextArea
@@ -242,7 +262,6 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                 id="thumbnail_url" 
                 placeholder={t("thumbnail_url_placeholder")}
                 defaultValue={gameData?.thumbnailUrl || ""} 
-                required={true}
                 error={formError}
               />
             </div>

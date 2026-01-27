@@ -27,7 +27,7 @@ const LayoutContent: React.FC = () => {
     ${isMobileOpen ? "ps-0" : ""} overflow-x-auto`}
 >
 
-        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6 min-h-screen">
           <Outlet />
         </div>
       </div>
