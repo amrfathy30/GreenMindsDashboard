@@ -48,8 +48,11 @@ export default function AgeGroupModal({
       className="max-w-xl mx-4"
       title={initialData ? t("modalTitleEditAge") : t("modalTitleAddAge")}
     >
-      <Form onSubmit={onSubmit} className="flex flex-col gap-3 p-6 mt-4">
-        <div className="border-b pb-4">
+      <Form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
+      >
+        <div>
           <Input
             id="DisplayName"
             label={t("ageNameLabel")}
@@ -59,7 +62,7 @@ export default function AgeGroupModal({
             onChange={(e) => setDisplayName(e.target.value)}
           />
         </div>
-        <div className="border-b pb-4">
+        <div>
           <Input
             id="FromAge"
             type="number"
@@ -70,7 +73,7 @@ export default function AgeGroupModal({
             onChange={(e) => setFromAge(e.target.value)}
           />
         </div>
-        <div className="border-b pb-4">
+        <div>
           <Input
             id="ToAge"
             type="number"

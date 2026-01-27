@@ -6,8 +6,8 @@ export interface ParentParams {
 export interface ParentList {
   Id?: number;
   id?: number;
-  Name_en: string;
-  Name_ar: string;
+  // Name_en: string;
+  // Name_ar: string;
   UserName: string;
   Name: string;
   // status: string;
@@ -15,7 +15,7 @@ export interface ParentList {
   Password: string;
   ConfirmPassword: string;
   ParentPhoneNumber: string;
-  // PhoneNumber?: string;
+  Phone?: string;
 }
 
 export interface ParentsModalProps {
@@ -23,8 +23,8 @@ export interface ParentsModalProps {
   loading: boolean;
   onClose: () => void;
   onSave: (data: {
-    Name_en: string;
-    Name_ar: string;
+    // Name_en: string;
+    // Name_ar: string;
     UserName: string;
     Name: string;
     // status: string;
@@ -32,11 +32,11 @@ export interface ParentsModalProps {
     Password: string;
     ConfirmPassword: string;
     ParentPhoneNumber: string;
-    // PhoneNumber?: string;
+    Phone?: string;
   }) => void;
   initialData?: {
-    Name_en: string;
-    Name_ar: string;
+    // Name_en: string;
+    // Name_ar: string;
     UserName: string;
     Name: string;
     // status: string;
@@ -44,7 +44,7 @@ export interface ParentsModalProps {
     Password: string;
     ConfirmPassword: string;
     ParentPhoneNumber: string;
-    // PhoneNumber?: string;
+    Phone?: string;
   };
 }
 
@@ -54,19 +54,18 @@ export interface ParentApiResponse {
   Data: {
     Items: {
       Id: number;
-      Name_en: string;
-      Name_ar: string;
+      // Name_en: string;
+      // Name_ar: string;
       UserName: string;
       Name: string;
       Email: string;
       Password: string;
       ConfirmPassword: string;
       ParentPhoneNumber: string;
-      // PhoneNumber?: string;
+      Phone?: string;
     }[];
     Total: number;
     Page: number;
     PageSize: number;
   };
 }
-

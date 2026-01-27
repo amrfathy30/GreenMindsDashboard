@@ -7,21 +7,20 @@ import ConfirmModal from "../../../components/common/ConfirmModal";
 import Pagination from "../../../components/common/Pagination";
 import ChildrenModal from "./ChildrenModal";
 import { useLanguage } from "../../../api/locales/LanguageContext";
-import { ParentList } from "../../../utils/types/parentType";
-
-export type Children = {
-  id: number;
-  name_en: string;
-  name_ar: string;
-  email: string;
-  phone: string;
-  password: string;
-  confirm_password: string;
-  parent_phone: string;
-  age: string;
-  gender: string;
-  LastRegister?: string;
-};
+import {
+  allChildrenData,
+  createChildren,
+  deleteChildren,
+  updateChildren,
+} from "../../../api/services/childrenService";
+import {
+  ChildrenApiResponse,
+  Children,
+} from "../../../utils/types/childrenType";
+import { ShowToastSuccess } from "../../../components/common/ToastHelper";
+import { TableLoading } from "../../../components/loading/TableLoading";
+import { Link } from "react-router";
+import { EyeIcon } from "lucide-react";
 
 export default function ChildrenList({
   openAddModal,
@@ -33,9 +32,12 @@ export default function ChildrenList({
   const { t } = useLanguage();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
   const [openModal, setOpenModal] = useState(false);
-  const [editData, setEditData] = useState<ParentList | null>(null);
+  const [editData, setEditData] = useState<Children | null>(null);
+  const [tableLoading, setTableLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     if (openAddModal) {
@@ -45,81 +47,181 @@ export default function ChildrenList({
     }
   }, [openAddModal, setOpenAddModal]);
 
-  const [openChildrenModal, setOpenChildrenModal] = useState(false);
-  const [selectedChildren, setSelectedChildren] = useState<Children | null>(
-    null,
-  );
+  const [childrenList, setChildrenList] = useState<Children[]>([]);
+
+  useEffect(() => {
+    const fetchParent = async () => {
+      try {
+        setTableLoading(true);
+        const data: ChildrenApiResponse = await allChildrenData({
+          page: currentPage,
+          pageSize: 10,
+        });
+
+        setChildrenList(
+          data.Data.Items.map((item) => ({
+            id: item.Id,
+            Name: item.Name,
+            Email: item.Email,
+            Password: item.Password,
+            ConfirmPassword: item.ConfirmPassword,
+            ParentPhoneNumber: item.ParentPhoneNumber,
+            Phone: item.Phone,
+            gender: item.gender,
+            DateOfBirth: item.DateOfBirth,
+          })),
+        );
+        setTotalPages(Math.ceil(data.Data.Total / data.Data.PageSize));
+      } catch (error: any) {
+        toast.error(error?.response?.data?.Message || t("operation_failed"));
+      } finally {
+        setTableLoading(false);
+      }
+    };
+
+    fetchParent();
+  }, [currentPage, t]);
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
-
-  const [childrenList, setChildrenList] = useState<Children[]>([
-    {
-      id: 1,
-      name_ar: "احمد",
-      name_en: "Ahmed",
-      phone: "0123456789",
-      age: "15",
-      gender: "male",
-      email: "mohamed@gmail.com",
-      LastRegister: "5/7/16",
-      parent_phone: "012346789",
-      password: "",
-      confirm_password: "",
-    },
-  ]);
 
   const handleDelete = (id: number) => {
     setSelectedDeleteId(id);
     setOpenConfirm(true);
   };
 
-  const confirmDelete = () => {
-    if (selectedDeleteId !== null) {
+  const confirmDelete = async () => {
+    if (!selectedDeleteId) return;
+
+    try {
+      setDeleteLoading(true);
+      const res = await deleteChildren(selectedDeleteId);
+
+      ShowToastSuccess(res?.Message || t("ChildDeletedSuccessfully"));
+
       setChildrenList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success(
-        t("ChildDeletedSuccessfully") ||
-          "The child has been deleted successfully",
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.Message || t("failed_delete_children"),
       );
+    } finally {
+      setDeleteLoading(false);
+      setOpenConfirm(false);
+      setSelectedDeleteId(null);
     }
-    setSelectedDeleteId(null);
-    setOpenConfirm(false);
+  };
+
+  const handleSave = async (data: Children) => {
+    try {
+      if (
+        !data.Name?.trim() ||
+        !data.Email ||
+        !data.DateOfBirth ||
+        !data.gender ||
+        !data.Password ||
+        !data.ConfirmPassword ||
+        !data.ParentPhoneNumber
+      ) {
+        toast.error(t("all_fields_required"));
+        return;
+      }
+
+      if (new Date(data.DateOfBirth) > new Date()) {
+        toast.error(t("InvalidDateOfBirth"));
+        return;
+      }
+
+      if (data.Password !== data.ConfirmPassword) {
+        toast.error(t("PasswordNotMatch"));
+        return;
+      }
+
+      setModalLoading(true);
+
+      let res;
+      if (editData) {
+        res = await updateChildren(data, editData.id!);
+      } else {
+        res = await createChildren({ ...data });
+      }
+
+      const listRes: ChildrenApiResponse = await allChildrenData({
+        page: currentPage,
+        pageSize: 10,
+      });
+
+      setChildrenList(
+        listRes.Data.Items.map((item) => ({
+          id: item.Id,
+          Name: item.Name || "",
+          Email: item.Email,
+          gender: item.gender,
+          DateOfBirth: item.DateOfBirth,
+          Password: item.Password,
+          ConfirmPassword: item.ConfirmPassword,
+          ParentPhoneNumber: item.ParentPhoneNumber || item.Phone || "",
+        })),
+      );
+
+      ShowToastSuccess(
+        res?.Message || (editData ? t("success_update") : t("success_create")),
+      );
+      setOpenModal(false);
+      setEditData(null);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("operation_failed"));
+    } finally {
+      setModalLoading(false);
+    }
   };
 
   const columns = [
     {
-      key: "name_en",
-      label: t("NameEn"),
+      key: "Name",
+      label: t("Name"),
     },
     {
-      key: "name_ar",
-      label: t("NameAr"),
-    },
-    {
-      key: "email",
+      key: "Email",
       label: t("email"),
     },
     {
-      key: "LastRegister",
-      label: t("LastRegister"),
-      render: (row: any) => (
-        <span className="text-[#757575]">{row.LastRegister}</span>
-      ),
+      key: "Phone",
+      label: t("Phone"),
+      render: (row: any) => <span>{row.Phone || "__"}</span>,
     },
     {
-      key: "parent_phone",
-      label: t("ParentPhone"),
+      key: "DateOfBirth",
+      label: t("DateOfBirth"),
+      render: (row: any) => <span>{row.DateOfBirth || "__"}</span>,
     },
     {
       key: "actions",
       label: t("Actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
+          <Link
+            to="/children-info"
+            className="mt-2"
+            state={{ child: row }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button>
+              <EyeIcon className="w-7 h-7 text-black/60" />
+            </button>
+          </Link>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedChildren(row);
-              setOpenChildrenModal(true);
+            onClick={() => {
+              setEditData({
+                id: row.id,
+                Name: row.Name || "",
+                Email: row.Email || "",
+                Password: row.Password || "",
+                ConfirmPassword: row.ConfirmPassword || "",
+                ParentPhoneNumber: row.ParentPhoneNumber || "",
+                gender: row.gender || "male",
+                DateOfBirth: row.DateOfBirth || "",
+              });
+              setOpenModal(true);
             }}
           >
             <EditIcon className="w-8 h-8" />
@@ -139,7 +241,11 @@ export default function ChildrenList({
 
   return (
     <div>
-      <BasicTableOne data={childrenList} columns={columns} />
+      {tableLoading ? (
+        <TableLoading columnCount={5} />
+      ) : (
+        <BasicTableOne data={childrenList} columns={columns} />
+      )}
       <div className="my-6 w-full flex items-center justify-center">
         <Pagination
           currentPage={currentPage}
@@ -150,6 +256,7 @@ export default function ChildrenList({
 
       <ConfirmModal
         open={openConfirm}
+        loading={deleteLoading}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
         title={t("DeleteChild")}
@@ -163,8 +270,8 @@ export default function ChildrenList({
           setEditData(null);
         }}
         initialData={editData || undefined}
-        // onSave={handleSave}
-        // loading={modalLoading}
+        onSave={handleSave}
+        loading={modalLoading}
       />
     </div>
   );

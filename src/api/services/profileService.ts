@@ -5,20 +5,33 @@ import {
 import axiosInstance from "../axiosInstance";
 
 export const updatePassword = async (data: ChangePasswordRequest) => {
+  const response = await axiosInstance.post("/Account/ResetPassword", data);
+  return response.data;
+};
+// still wait
+export const UpdatePersonalInfo = async (data: FormData) => {
   const response = await axiosInstance.post(
-    "/Account/ChangePasswordByOldPassword",
+    "/Account/UpdatePersonalInfo",
     data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
   );
   return response.data;
 };
 
-export const resetPassword = async (data: ResetPasswordRequest) => {
-  const response = await axiosInstance.post("/Account/ChangePass", data);
+
+export const ForgetPassReset = async (data: ResetPasswordRequest) => {
+  const response = await axiosInstance.post("/Account/ForgetPassReset", data);
   return response.data;
 };
 
-export const sendEmail = async (key: string) => {
-  const response = await axiosInstance.post(`/Account/ResendOtp?Key=${key}`);
+export const sendEmail = async (email: string) => {
+  const response = await axiosInstance.get(
+    `/Account/ForgetPassword?email=${email}`,
+  );
   return response.data;
 };
 

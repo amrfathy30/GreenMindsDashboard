@@ -16,22 +16,22 @@ export default function ParentModal({
   const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
-    Name_en: "",
-    Name_ar: "",
+    // Name_en: "",
+    // Name_ar: "",
     Name: "",
     UserName: "",
     Email: "",
     Password: "",
     ConfirmPassword: "",
-    ParentPhoneNumber: "",
+    ParentPhoneNumber: "", 
   });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
         Name: initialData.Name,
-        Name_en: initialData.Name_en,
-        Name_ar: initialData.Name_ar,
+        // Name_en: initialData.Name_en,
+        // Name_ar: initialData.Name_ar,
         UserName: initialData.UserName,
         Email: initialData.Email,
         Password: initialData.Password,
@@ -40,8 +40,8 @@ export default function ParentModal({
       });
     } else {
       setFormData({
-        Name_en: "",
-        Name_ar: "",
+        // Name_en: "",
+        // Name_ar: "",
         UserName: "",
         Name: "",
         Email: "",
@@ -90,7 +90,7 @@ export default function ParentModal({
             }
           />
         </div> */}
-                <div>
+        <div>
           <Input
             id="Name"
             label={t("Name")}
@@ -124,7 +124,7 @@ export default function ParentModal({
             }
           />
         </div>
-                <div>
+        <div>
           <Input
             id="ParentPhoneNumber"
             label={t("PhoneNumber")}

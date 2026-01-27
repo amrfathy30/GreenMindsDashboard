@@ -1,13 +1,8 @@
-export interface LevelQueryParams {
-  page?: number;
-  pageSize?: number;
-}
-
 export interface LevelList {
   Id?: number;
   id?: number;
-  levelNameAr: string;
-  levelNameEn: string;
+  NameAr: string;
+  NameEn: string;
   MaxPoints: string;
   MinPoints: string;
 }
@@ -17,14 +12,14 @@ export interface ProfileLevelsModalProps {
   loading: boolean;
   onClose: () => void;
   onSave: (data: {
-    levelNameAr: string;
-    levelNameEn: string;
+    NameAr: string;
+    NameEn: string;
     MaxPoints: string;
     MinPoints: string;
   }) => void;
   initialData?: {
-    levelNameAr: string;
-    levelNameEn: string;
+    NameAr: string;
+    NameEn: string;
     MaxPoints: string;
     MinPoints: string;
   };
@@ -35,8 +30,8 @@ export interface LevelApiResponse {
   Message: string;
   Data: {
     Id: number;
-    levelNameAr: string;
-    levelNameEn: string;
+    NameAr: string;
+    NameEn: string;
     MaxPoints: string;
     MinPoints: string;
   }[];
@@ -47,15 +42,15 @@ export interface LevelModalProps {
   onClose: () => void;
   onSave: (data: {
     id?: number;
-    levelNameAr: string;
-    levelNameEn: string;
+    NameAr: string;
+    NameEn: string;
     MaxPoints: string;
     MinPoints: string;
   }) => Promise<void>;
   initialData?: {
     id: number;
-    levelNameAr: string;
-    levelNameEn: string;
+    NameAr: string;
+    NameEn: string;
     MaxPoints: string;
     MinPoints: string;
   };

@@ -9,7 +9,6 @@ import AddButton from "../../../components/ui/button/AddButton";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { EditIcon, RemoveIcon } from "../../../icons";
-import Pagination from "../../../components/common/Pagination";
 import { LevelApiResponse, LevelList } from "../../../utils/types/levelType";
 import {
   allLevelData,
@@ -22,8 +21,6 @@ import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
 
 export default function ProfileLevels() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
 
@@ -33,16 +30,13 @@ export default function ProfileLevels() {
     const fetchLevels = async () => {
       try {
         setLoading(true);
-        const data: LevelApiResponse = await allLevelData({
-          page: currentPage,
-          pageSize: 10,
-        });
+        const data: LevelApiResponse = await allLevelData();
 
         setProfileLevels(
           data.Data.map((item) => ({
             id: item.Id,
-            levelNameAr: item.levelNameAr,
-            levelNameEn: item.levelNameEn,
+            NameEn: item.NameEn,
+            NameAr: item.NameAr,
             MinPoints: item.MinPoints,
             MaxPoints: item.MaxPoints,
           })),
@@ -55,7 +49,7 @@ export default function ProfileLevels() {
     };
 
     fetchLevels();
-  }, [currentPage, t]);
+  }, [t]);
 
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<LevelList | null>(null);
@@ -90,8 +84,8 @@ export default function ProfileLevels() {
   const handleSave = async (data: LevelList) => {
     try {
       if (
-        !data.levelNameAr?.trim() ||
-        !data.levelNameEn?.trim() ||
+        !data.NameEn?.trim() ||
+        !data.NameAr?.trim() ||
         data.MinPoints === "" ||
         data.MaxPoints === ""
       ) {
@@ -112,24 +106,21 @@ export default function ProfileLevels() {
         res = await createLevel({ ...data });
       }
 
-      const listRes: LevelApiResponse = await allLevelData({
-        page: currentPage,
-        pageSize: 10,
-      });
+      const listRes: LevelApiResponse = await allLevelData();
 
       setProfileLevels(
         listRes.Data.map((item) => ({
           id: item.Id,
           MaxPoints: item.MaxPoints,
           MinPoints: item.MinPoints,
-          levelNameAr: item.levelNameAr?.toString() || "",
-          levelNameEn: item.levelNameEn?.toString() || "",
+          NameEn: item.NameEn?.toString() || "",
+          NameAr: item.NameAr?.toString() || "",
         })),
       );
 
       ShowToastSuccess(
         res?.Message ||
-        (editData ? t("success_level_update") : t("success_level_create")),
+          (editData ? t("success_level_update") : t("success_level_create")),
       );
       setOpenModal(false);
       setEditData(null);
@@ -142,14 +133,14 @@ export default function ProfileLevels() {
 
   const columns = [
     {
-      key: "levelNameAr",
-      label: t("levelNameAr"),
-      render: (row: any) => <span>{row.levelNameAr || "__"}</span>,
+      key: "NameEn",
+      label: t("NameEn"),
+      render: (row: any) => <span>{row.NameEn || "__"}</span>,
     },
     {
-      key: "levelNameEn",
-      label: t("levelNameEn"),
-      render: (row: any) => <span>{row.levelNameEn || "__"}</span>,
+      key: "NameAr",
+      label: t("NameAr"),
+      render: (row: any) => <span>{row.NameAr || "__"}</span>,
     },
     {
       key: "MinPoints",
@@ -169,8 +160,8 @@ export default function ProfileLevels() {
               setEditData({
                 MinPoints: row.MinPoints,
                 MaxPoints: row.MaxPoints,
-                levelNameAr: row.levelNameAr,
-                levelNameEn: row.levelNameEn,
+                NameEn: row.NameEn,
+                NameAr: row.NameAr,
               });
               setOpenModal(true);
             }}
@@ -191,11 +182,7 @@ export default function ProfileLevels() {
 
   return (
     <div>
-
-      <PageMeta
-        title="Green minds Admin | Profile Levels"
-        description={``}
-      />
+      <PageMeta title="Green minds Admin | Profile Levels" description={``} />
       <div className="md:px-10">
         <h2 className="font-medium text-2xl p-4 text-[#000000]">
           {t("levelNameLabel")}
@@ -210,13 +197,6 @@ export default function ProfileLevels() {
         ) : (
           <BasicTableOne data={ProfileLevels} columns={columns} />
         )}
-        <div className="my-6 w-full flex items-center justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
       </div>
 
       <ProfileLevelModal

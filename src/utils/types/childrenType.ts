@@ -3,61 +3,42 @@ export interface ChildrenParams {
   pageSize?: number;
 }
 
-export interface ChildrenList {
-  Id?: number;
+export interface Children {
   id?: number;
-  ChildrenNameAr: string;
-  ChildrenNameEn: string;
-  MaxPoints: string;
-  MinPoints: string;
-}
-
-export interface ProfileChildrensModalProps {
-  open: boolean;
-  loading: boolean;
-  onClose: () => void;
-  onSave: (data: {
-    ChildrenNameAr: string;
-    ChildrenNameEn: string;
-    MaxPoints: string;
-    MinPoints: string;
-  }) => void;
-  initialData?: {
-    ChildrenNameAr: string;
-    ChildrenNameEn: string;
-    MaxPoints: string;
-    MinPoints: string;
-  };
+  Name: string;
+  Email: string;
+  ParentPhoneNumber: string;
+  Phone?: string;
+  Password: string;
+  ConfirmPassword: string;
+  DateOfBirth: string;
+  gender: string;
 }
 
 export interface ChildrenApiResponse {
   StatusCode: number;
   Message: string;
   Data: {
-    Id: number;
-    ChildrenNameAr: string;
-    ChildrenNameEn: string;
-    MaxPoints: string;
-    MinPoints: string;
-  }[];
+    PageSize: number;
+    Total: number;
+    Items: {
+      Id: number;
+      Name: string;
+      Password: string;
+      ConfirmPassword: string;
+      ParentPhoneNumber: string;
+      Phone?: string;
+      Email: string;
+      DateOfBirth: string;
+      gender: string;
+    }[];
+  };
 }
 
 export interface ChildrenModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: {
-    id?: number;
-    ChildrenNameAr: string;
-    ChildrenNameEn: string;
-    MaxPoints: string;
-    MinPoints: string;
-  }) => Promise<void>;
-  initialData?: {
-    id: number;
-    ChildrenNameAr: string;
-    ChildrenNameEn: string;
-    MaxPoints: string;
-    MinPoints: string;
-  };
+  onSave: (data: Children) => Promise<void>;
+  initialData?: Children;
   loading?: boolean;
 }

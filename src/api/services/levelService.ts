@@ -1,8 +1,8 @@
-import { LevelList, LevelQueryParams } from "../../utils/types/levelType";
+import { LevelList } from "../../utils/types/levelType";
 import axiosInstance from "../axiosInstance";
 
-export const allLevelData = async (params?: LevelQueryParams) => {
-  const response = await axiosInstance.get("/Levels/GetAll", { params });
+export const allLevelData = async () => {
+  const response = await axiosInstance.get("/Levels/GetAll");
   return response.data;
 };
 

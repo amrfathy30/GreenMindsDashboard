@@ -29,3 +29,8 @@ export const ParentChildStats = async () => {
   const response = await axiosInstance.get("/Dashboard/parentChildStats");
   return response.data;
 };
+
+export const levelsStats = async () => {
+  const response = await axiosInstance.get("/Dashboard/levelsStats");
+  return response.data;
+};

@@ -4,18 +4,23 @@ import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne"
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
 import { EditIcon, RemoveIcon } from "../../../icons";
-import Pagination from "../../../components/common/Pagination";
 import AdminModal from "./AdminModal";
 import { useLanguage } from "../../../api/locales/LanguageContext";
-import { ParentList } from "../../../utils/types/parentType";
-
-export type Admin = {
-  id: number;
-  name: string;
-  email: string;
-  permissions: string[];
-  status?: string;
-};
+import { ShowToastSuccess } from "../../../components/common/ToastHelper";
+import {
+  AdminApiResponse,
+  AdminList,
+  UserTypeApiResponse,
+  UserTypeList,
+} from "../../../utils/types/adminType";
+import {
+  allAdminData,
+  createAdmin,
+  deleteAdmin,
+  updateAdmin,
+  UserTypes,
+} from "../../../api/services/adminService";
+import { TableLoading } from "../../../components/loading/TableLoading";
 
 export default function AdminsList({
   openAddModal,
@@ -24,12 +29,14 @@ export default function AdminsList({
   openAddModal?: boolean;
   setOpenAddModal?: (open: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
   const { t } = useLanguage();
-
+  const [tableLoading, setTableLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [editData, setEditData] = useState<ParentList | null>(null);
+  const [editData, setEditData] = useState<AdminList | null>(null);
 
   useEffect(() => {
     if (openAddModal) {
@@ -39,73 +46,166 @@ export default function AdminsList({
     }
   }, [openAddModal, setOpenAddModal]);
 
-  const [openAdminModal, setOpenAdminModal] = useState(false);
-  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  // adminList
+  const [adminList, setAdminList] = useState<AdminList[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setTableLoading(true);
+        const data: AdminApiResponse = await allAdminData();
 
-  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [adminList, setAdminList] = useState<Admin[]>([
-    {
-      id: 1,
-      name: "mohamed",
-      email: "mohamed@gmail.com",
-      status: "verified",
-      permissions: ["Parents", "Games"],
-    },
-    {
-      id: 2,
-      name: "mohamed",
-      email: "mohamed@gmail.com",
-      status: "verified",
-      permissions: ["Parents", "Games"],
-    },
-  ]);
+        setAdminList(
+          data.Data.map((item) => ({
+            id: item.Id,
+            Name: item.Name,
+            Email: item.Email,
+            Password: item.Password,
+            Type: item.Type,
+            TypeName: item.TypeName,
+            Phone: item.Phone,
+          })),
+        );
+      } catch (error: any) {
+        toast.error(error?.response?.data?.Message || t("operation_failed"));
+      } finally {
+        setTableLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [t]);
+
+  // userTypeList
+  const [userTypeList, setUserType] = useState<UserTypeList[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setTableLoading(true);
+        const data: UserTypeApiResponse = await UserTypes();
+
+        setUserType(
+          data.Data.map((item) => ({
+            Id: item.Id,
+            Name: item.Name,
+          })),
+        );
+      } catch (error: any) {
+        toast.error(error?.response?.data?.Message || t("operation_failed"));
+      } finally {
+        setTableLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [t]);
 
   const handleDelete = (id: number) => {
     setSelectedDeleteId(id);
     setOpenConfirm(true);
   };
 
-  const confirmDelete = () => {
-    if (selectedDeleteId !== null) {
-      setAdminList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
-      toast.success("The admin has been deleted successfully");
-    }
+  const confirmDelete = async () => {
+    if (!selectedDeleteId) return;
 
-    setSelectedDeleteId(null);
+    try {
+      setDeleteLoading(true);
+      const res = await deleteAdmin(selectedDeleteId);
+
+      ShowToastSuccess(res?.Message || t("ParentDeletedSuccessfully"));
+
+      setAdminList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("failed_delete_parent"));
+    } finally {
+      setDeleteLoading(false);
+      setOpenConfirm(false);
+      setSelectedDeleteId(null);
+    }
+  };
+
+  const handleSave = async (data: AdminList) => {
+    try {
+      if (
+        !data.Name?.trim() ||
+        data.Email === "" ||
+        data.Password === "" ||
+        data.Type === 0
+      ) {
+        toast.error(t("all_fields_required"));
+        return;
+      }
+
+      setModalLoading(true);
+
+      let res;
+      if (editData) {
+        const formData = new FormData();
+        formData.append("Name", data.Name);
+        formData.append("Email", data.Email);
+        formData.append("Phone", data.Phone || "");
+        formData.append("Type", data.Type.toString());
+        if (data.Password) formData.append("Password", data.Password);
+
+        res = await updateAdmin(formData, editData.id!);
+      } else {
+        res = await createAdmin({ ...data });
+      }
+
+      const listRes: AdminApiResponse = await allAdminData();
+
+      setAdminList(
+        listRes.Data.map((item) => ({
+          id: item.Id,
+          Name: item.Name || "",
+          Email: item.Email,
+          Password: item.Password,
+          Type: item.Type,
+        })),
+      );
+
+      ShowToastSuccess(
+        res?.Message || (editData ? t("success_update") : t("success_create")),
+      );
+      setOpenModal(false);
+      setEditData(null);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.Message || t("operation_failed"));
+    } finally {
+      setModalLoading(false);
+    }
   };
 
   const columns = [
     {
-      key: "name",
+      key: "Name",
       label: t("name"),
     },
     {
-      key: "email",
+      key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <div className="flex justify-center items-center gap-2">
-          <span>{row.email}</span>
-          <span
+        <div className="">
+          <span>{row.Email}</span>
+          {/* <span
             className={`text-sm ${
               row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
             }`}
           >
             {row.status === "verified" ? t("verified") : t("notVerified")}
-          </span>
+          </span> */}
         </div>
       ),
     },
     {
-      key: "LastRegister",
-      label: t("lastRegister"),
+      key: "Phone",
+      label: t("Phone"),
       render: (row: any) => (
-        <span className="text-[#757575]">{row.LastRegister}</span>
+        <span className="text-[#757575]">{row.Phone || "__"}</span>
       ),
     },
     {
-      key: "permissions",
-      label: t("permissions"),
+      key: "TypeName",
+      label: t("TypeName"),
     },
     {
       key: "actions",
@@ -113,12 +213,16 @@ export default function AdminsList({
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedAdmin(row);
-              setOpenAdminModal(true);
+            onClick={() => {
+              setEditData({
+                id: row.id,
+                Name: row.Name,
+                Email: row.Email,
+                Password: row.Password,
+                Type: row.Type,
+              });
+              setOpenModal(true);
             }}
-            aria-label={t("common.edit")}
           >
             <EditIcon className="w-8 h-8" />
           </button>
@@ -138,16 +242,14 @@ export default function AdminsList({
 
   return (
     <div>
-      <BasicTableOne data={adminList} columns={columns} />{" "}
-      <div className="my-6 w-full flex items-center justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
+      {tableLoading ? (
+        <TableLoading columnCount={5} />
+      ) : (
+        <BasicTableOne data={adminList} columns={columns} />
+      )}
       <ConfirmModal
         open={openConfirm}
+        loading={deleteLoading}
         onClose={() => setOpenConfirm(false)}
         onConfirm={confirmDelete}
         title={t("deleteAdmin")}
@@ -160,8 +262,9 @@ export default function AdminsList({
           setEditData(null);
         }}
         initialData={editData || undefined}
-        // onSave={handleSave}
-        // loading={modalLoading}
+        loading={modalLoading}
+        userTypeList={userTypeList}
+        onSave={handleSave}
       />
     </div>
   );

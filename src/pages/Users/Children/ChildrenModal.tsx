@@ -5,82 +5,67 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import Radio from "../../../components/form/input/Radio";
 import Label from "../../../components/form/Label";
-import { Children } from "./ChildrenList";
 import { useLanguage } from "../../../api/locales/LanguageContext";
-
-interface ChildModalProps {
-  open: boolean;
-  onClose: () => void;
-  initialData?: Children | null;
-  onSave: (data: Children) => void;
-}
+import { ChildrenModalProps } from "../../../utils/types/childrenType";
 
 export default function ChildrenModal({
   open,
   onClose,
-  initialData,
   onSave,
-}: ChildModalProps) {
+  loading,
+  initialData,
+}: ChildrenModalProps) {
   const { t } = useLanguage();
-
   const [selectedValue, setSelectedValue] = useState<string>("male");
 
   const handleChange = (value: string) => {
     setSelectedValue(value);
+    setFormData({ ...formData, gender: value });
   };
 
   const [formData, setFormData] = useState({
-    name_en: "",
-    name_ar: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirm_password: "",
-    parent_phone: "",
-    age: "",
-    gender: "male",
+    Name: "",
+    Email: "",
+    Password: "",
+    ConfirmPassword: "",
+    ParentPhoneNumber: "",
+    DateOfBirth: "",
+    gender: "",
   });
 
   useEffect(() => {
     if (initialData) {
+      setSelectedValue(initialData.gender || "male");
       setFormData({
-        name_en: initialData.name_en,
-        name_ar: initialData.name_ar,
-        email: initialData.email,
-        phone: initialData.phone,
-        password: initialData.password,
-        confirm_password: initialData.confirm_password,
-        parent_phone: initialData.parent_phone,
-        age: initialData.age,
+        Name: initialData.Name || "",
+        Email: initialData.Email || "",
+        Password: initialData.Password || "",
+        ConfirmPassword: initialData.ConfirmPassword || "",
+        ParentPhoneNumber:
+          initialData.ParentPhoneNumber || initialData.Phone || "",
+        DateOfBirth: initialData.DateOfBirth || "",
         gender: initialData.gender || "male",
       });
-      setSelectedValue(initialData.gender || "male");
     } else {
+      setSelectedValue("male");
       setFormData({
-        name_en: "",
-        name_ar: "",
-        email: "",
-        phone: "",
-        password: "",
-        confirm_password: "",
-        parent_phone: "",
-        age: "",
+        Name: "",
+        Email: "",
+        Password: "",
+        ConfirmPassword: "",
+        ParentPhoneNumber: "",
+        DateOfBirth: "",
         gender: "male",
       });
-      setSelectedValue("male");
     }
   }, [initialData, open]);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-
     onSave({
-      id: initialData?.id ?? Date.now(),
       ...formData,
-      gender: selectedValue,
+      id: initialData?.id,
     });
-
-    onClose();
   };
 
   return (
@@ -96,45 +81,58 @@ export default function ChildrenModal({
       >
         <div>
           <Input
-            id="name_en"
-            label={t("ChildrenNameEN")}
+            id="Name"
+            label={t("ChildrenName")}
             placeholder={t("EnterNameHere")}
+            value={formData.Name}
+            onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
           />
         </div>
         <div>
           <Input
-            id="name_ar"
-            label={t("ChildrenNameAR")}
-            placeholder={t("EnterNameHere")}
-          />
-        </div>
-        <div>
-          <Input
-            id="email"
+            id="Email"
             label={t("ChildrenEmail")}
             placeholder={t("EnterChildrenEmail")}
+            value={formData.Email}
+            onChange={(e) =>
+              setFormData({ ...formData, Email: e.target.value })
+            }
           />
         </div>
         <div>
           <Input
-            id="phone"
-            label={t("ChildrenPhone")}
-            placeholder={t("EnterChildrenPhone")}
+            id="ParentPhoneNumber"
+            label={t("ParentPhoneNumber")}
+            placeholder={t("EnterParentPhoneNumber")}
+            value={formData.ParentPhoneNumber}
+            onChange={(e) =>
+              setFormData({ ...formData, ParentPhoneNumber: e.target.value })
+            }
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
             <Input
-              id="password"
+              type="password"
+              id="Password"
               label={t("ChildrenPassword")}
               placeholder={t("EnterChildrenPassword")}
+              value={formData.Password}
+              onChange={(e) =>
+                setFormData({ ...formData, Password: e.target.value })
+              }
             />
           </div>
           <div>
             <Input
-              id="confirm_password"
+              type="password"
+              id="ConfirmPassword"
               label={t("ChildrenConfirmPassword")}
               placeholder={t("EnterChildrenConfirmPassword")}
+              value={formData.ConfirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, ConfirmPassword: e.target.value })
+              }
             />
           </div>
         </div>
@@ -163,23 +161,26 @@ export default function ChildrenModal({
           </div>
           <div>
             <Input
-              id="age"
+              id="DateOfBirth"
               label={t("Age")}
+              value={formData.DateOfBirth}
+              type="date"
               placeholder={t("EnterChildrenAge")}
+              onChange={(e) =>
+                setFormData({ ...formData, DateOfBirth: e.target.value })
+              }
             />
           </div>
         </div>
 
-        <div>
-          <Input
-            id="parent_phone"
-            label={t("ParentPhone")}
-            placeholder={t("EnterParentPhone")}
-          />
-        </div>
-
-        <Button className="mt-2">
-          {initialData ? t("UpdateChildren") : t("AddChildren")}
+        <Button type="submit" className="mt-2" disabled={loading}>
+          {loading
+            ? initialData
+              ? t("updating")
+              : t("saving")
+            : initialData
+              ? t("updateButton")
+              : t("saveButton")}
         </Button>
       </Form>
     </Modal>

@@ -3,58 +3,47 @@ import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
-import Checkbox from "../../../components/form/input/Checkbox";
-import { Admin } from "./AdminsList";
 import { useLanguage } from "../../../api/locales/LanguageContext";
-
-interface AdminModalProps {
-  open: boolean;
-  onClose: () => void;
-  initialData?: Admin | null;
-  onSave: (data: Admin) => void;
-}
+import { AdminsModalProps } from "../../../utils/types/adminType";
 
 export default function AdminModal({
   open,
   onClose,
-  initialData,
   onSave,
-}: AdminModalProps) {
+  loading,
+  userTypeList,
+  initialData,
+}: AdminsModalProps) {
   const { t } = useLanguage();
 
-  const [checked, setChecked] = useState(false);
-
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    permissions: [] as string[],
+    Name: "",
+    Email: "",
+    Password: "",
+    Type: 0,
   });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        name: initialData.name,
-        email: initialData.email,
-        permissions: initialData.permissions,
+        Name: initialData.Name,
+        Email: initialData.Email,
+        Password: initialData.Password,
+        Type: initialData.Type,
       });
     } else {
       setFormData({
-        name: "",
-        email: "",
-        permissions: [],
+        Name: "",
+        Email: "",
+        Password: "",
+        Type: 0,
       });
     }
   }, [initialData, open]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    onSave({
-      id: initialData?.id ?? Date.now(),
-      ...formData,
-    });
-
-    onClose();
+    onSave(formData);
   };
 
   return (
@@ -64,79 +53,77 @@ export default function AdminModal({
       className="max-w-xl mx-4"
       title={initialData ? t("EditAdmin") : t("AddNewAdmin")}
     >
-      <Form
+      <Form 
         onSubmit={onSubmit}
         className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
       >
         <div>
           <Input
-            id="name_En"
-            label={t("AdminNameEN")}
+            id="Name"
+            label={t("AdminName")}
             placeholder={t("EnterNameHere")}
+            value={formData.Name}
+            onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
           />
         </div>
         <div>
           <Input
-            id="name_ar"
-            label={t("AdminNameAR")}
-            placeholder={t("EnterNameHere")}
-          />
-        </div>
-        <div>
-          <Input
-            id="email"
+            id="Email"
             label={t("AdminEmail")}
             placeholder={t("EnterAdminEmail")}
+            value={formData.Email}
+            onChange={(e) =>
+              setFormData({ ...formData, Email: e.target.value })
+            }
           />
         </div>
-        <div className="">
-          <h2>{t("AdminPermissions")}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-3">
-            <Checkbox
-              label={"Permission 1"} // fallback in case you add it later
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-            <Checkbox
-              label={"Permission 1"}
-              checked={checked}
-              onChange={(newChecked) => setChecked(newChecked)}
-            />
-          </div>
+        <div>
+          <Input
+            id="Password"
+            type="password"
+            label={t("AdminPassword")}
+            placeholder={t("EnterAdminPassword")}
+            value={formData.Password}
+            onChange={(e) =>
+              setFormData({ ...formData, Password: e.target.value })
+            }
+          />
         </div>
 
-        <Button className="mt-2">
-          {initialData ? t("UpdateAdmin") : t("AddAdmin")}
+        <div>
+          <label className="block text-sm font-medium">{t("UserType")}</label>
+
+          <select
+            id="Type"
+            value={formData.Type}
+            onChange={(e) =>
+              setFormData({ ...formData, Type: Number(e.target.value) })
+            }
+            className="w-full rounded-lg border py-2.5 px-4"
+          >
+            <option value={0} disabled>
+              {t("select_UserType")}
+            </option>
+
+            {userTypeList?.map((type) => (
+              <option
+                key={type.Id}
+                value={type.Id}
+                className="dark:bg-[#1a222c]"
+              >
+                {type.Name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <Button type="submit" className="mt-2" disabled={loading}>
+          {loading
+            ? initialData
+              ? t("updating")
+              : t("saving")
+            : initialData
+              ? t("updateButton")
+              : t("saveButton")}
         </Button>
       </Form>
     </Modal>

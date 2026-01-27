@@ -1,14 +1,32 @@
+import { useLocation } from "react-router";
 import PageMeta from "../../../../components/common/PageMeta";
 import Taps from "./Taps/Taps";
+import { useLanguage } from "../../../../api/locales/LanguageContext";
 
 export default function ChildrenInfo() {
-  const childDetails = [
-    { label: "Name", value: "Ahmed" },
-    { label: "Phone", value: "0123456789" },
-    { label: "Email", value: "ahmed@gmail.com" },
-    { label: "Points", value: "3pts" },
-    { label: "Days", value: "3 streaks" },
-  ];
+  const { state } = useLocation();
+  const { t } = useLanguage();
+  const child = state?.child;
+  const childDetails = child
+    ? [
+        { label: "Name", value: child.Name || "__" },
+        {
+          label: "Phone",
+          value: child.ParentPhoneNumber || child.Phone || "__",
+        },
+        { label: "Email", value: child.Email || "__" },
+        { label: "Gender", value: child.gender || "__" },
+        { label: "Date Of Birth", value: child.DateOfBirth || "__" },
+      ]
+    : [];
+
+  if (!child) {
+    return (
+      <div className="p-8 text-center">
+        <h2 className="text-xl font-semibold">no data found</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="md:px-8 md:py-4">
@@ -22,7 +40,10 @@ export default function ChildrenInfo() {
           src="/images/child.png"
           alt="child-image"
         />
-        <h2 className="font-medium text-2xl text-[#000000]">Ahmed</h2>
+        <h2 className="font-medium text-2xl text-[#000000]">
+          {" "}
+          {child?.Name || t("NoName")}
+        </h2>
       </div>
 
       <div>

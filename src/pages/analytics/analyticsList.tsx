@@ -10,10 +10,13 @@ import UsersChart from "./components/UsersChart";
 import {
   AgeSector,
   GenderStats,
+  LevelStats,
   ParentChildStatsResponse,
+  TopRankedUser,
 } from "../../utils/types/analyticType";
 import {
   GenderPercentage,
+  levelsStats,
   ParentChildStats,
   TopRanksData,
   TotalGames,
@@ -141,15 +144,18 @@ export default function Analytics() {
   }, [t]);
 
   // TopRanks
-  const [topRanks, setTopRanks] = useState<number>(0);
+  const [topRanks, setTopRanks] = useState<TopRankedUser[]>([]);
   const [loadingTopRanks, setLoadingTopRanks] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoadingTopRanks(true);
-        const data: { StatusCode: number; Message: string; Data: number[] } =
-          await TopRanksData();
-        setTopRanks(data.Data.length ? data.Data[0] : 0);
+        const data: {
+          StatusCode: number;
+          Message: string;
+          Data: TopRankedUser[];
+        } = await TopRanksData();
+        setTopRanks(data.Data || []);
       } catch (error) {
         toast.error(t("failed_load_level"));
       } finally {
@@ -159,12 +165,31 @@ export default function Analytics() {
     fetchData();
   }, [t]);
 
+  // levelsStats
+  const [levelsStatsData, setLevelsStatsData] = useState<LevelStats[]>([]);
+  const [loadingLevelsStats, setLoadingLevelsStats] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoadingLevelsStats(true);
+        const data: {
+          StatusCode: number;
+          Message: string;
+          Data: LevelStats[];
+        } = await levelsStats();
+        setLevelsStatsData(data.Data || []);
+      } catch (error) {
+        toast.error(t("failed_load_level"));
+      } finally {
+        setLoadingLevelsStats(false);
+      }
+    };
+    fetchData();
+  }, [t]);
+
   return (
     <>
-      <PageMeta
-       title="Green minds Admin | Analytics"
-        description=""
-      />
+      <PageMeta title="Green minds Admin | Analytics" description="" />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-[#adf4b514]  h-[calc(100vh-48px)] dark:bg-neutral-800">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
@@ -203,10 +228,10 @@ export default function Analytics() {
             </div>
 
             <div className="col-span-1 md:col-span-3">
-              {loadingUsersByAgeSector ? (
+              {loadingLevelsStats ? (
                 <PointsDistributionSkeleton />
               ) : (
-                <PointsDistribution />
+                <PointsDistribution levelsStatsData={levelsStatsData} />
               )}
             </div>
             <div className="col-span-1 md:col-span-2">
