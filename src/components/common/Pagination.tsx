@@ -34,15 +34,15 @@ const Pagination: React.FC<PaginationProps> = ({
   const numberButtonClass =
     "w-10 h-10 flex items-center justify-center rounded-lg text-sm font-bold transition-all duration-300";
   const { t } = useLanguage();
-
+const activeColor = "#949fae";
   return (
     <div className="flex justify-center items-center gap-4 ">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`${navButtonClass} text-[#BDBDBD] hover:text-[#2196F3]`}
+        className={`${navButtonClass} text-[${activeColor}] hover:text-[#2196F3]`}
       >
-        <ArrowLeft size={16} strokeWidth={3} />
+        <ArrowLeft size={18} strokeWidth={2.5} />
         <span className="hidden sm:inline">{t("Previous")}</span>
       </button>
 
@@ -71,10 +71,10 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`${navButtonClass} text-[#616161] hover:text-[#00CC99] font-semibold`}
+        className={`${navButtonClass} text-[${activeColor}] hover:text-[#00CC99]`}
       >
         <span className="hidden sm:inline">{t("Next")}</span>
-        <ArrowRight size={16} strokeWidth={3} />
+        <ArrowRight size={18} strokeWidth={2.5} />
       </button>
     </div>
   );

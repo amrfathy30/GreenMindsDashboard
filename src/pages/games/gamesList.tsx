@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../api/locales/LanguageContext";
-import { getAllGames } from "../../api/services/gameService";
+import { getAllGames, getPagedGames } from "../../api/services/gameService";
 import PageMeta from "../../components/common/PageMeta";
 import GameCard from "./gameCard";
 import Pagination from "../../components/common/Pagination";
@@ -32,17 +32,28 @@ export default function GamesList() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const PAGE_SIZE = 8;
-  const fetchGames = async () => {
-    try {
-      setLoading(true);
-      const response = await getAllGames();
-      setGames(response.Data || []);
-    } catch (error) {
-      console.error("Failed to fetch games:", error);
-    } finally {
-      setLoading(false);
+const fetchGames = async () => {
+  try {
+    setLoading(true);
+    // نبعت رقم الصفحة الحالية وحجم الصفحة (مثلاً 8)
+    const response = await getPagedGames(currentPage, PAGE_SIZE);
+    
+    // ملاحظة: تأكدي من الـ Capitalization (Data و TotalCount)
+    setGames(response.Data || []); 
+
+    if (response.TotalCount) {
+      setTotalPages(Math.ceil(response.TotalCount / PAGE_SIZE));
     }
-  };
+  } catch (error) {
+    console.error("Failed to fetch games:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchGames();
+}, [currentPage]);
 
   useEffect(() => {
     fetchGames();
