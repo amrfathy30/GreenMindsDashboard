@@ -46,6 +46,18 @@ export const updateRolePermissions = async (
   return response.data;
 };
 
+export const updateRole = async (roleName: string, newName: string) => {
+  const response = await axiosInstance.post(`/AdminRoles/${roleName}`, {
+    RoleName: newName,
+  });
+  return response.data;
+};
+
+export const deleteRole = async (roleName: string) => {
+  const response = await axiosInstance.delete(`/AdminRoles/${roleName}`);
+  return response.data;
+};
+
 export const createRole = async (data: {
   RoleName?: string;
   Permissions: number[];

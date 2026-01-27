@@ -53,7 +53,7 @@ export default function SmtpSettingsModal({
 
   return (
     <Modal
-      title={t('smtpSettings')}
+      title={t("smtpSettings")}
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
@@ -145,7 +145,7 @@ export default function SmtpSettingsModal({
         </div>
 
         <Button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save"}
+          {loading ? t("saving") : t("saveButton")}
         </Button>
       </Form>
     </Modal>

@@ -26,4 +26,13 @@ export interface AddRoleModalProps {
     RoleName: string;
   };
   loading?: boolean;
+  editing?: boolean;
+}
+
+export interface AdminRolePermissionsProps {
+  permissions: { Id: number; DisplayName: string }[];
+  assignedPermissions: number[];
+  loading: boolean;
+  t: (key: string) => string;
+  onSave: (selected: number[]) => void;
 }

@@ -12,6 +12,7 @@ export default function AddRoleModal({
   onSave,
   initialData,
   loading,
+  editing = false,
 }: AddRoleModalProps) {
   const { t } = useLanguage();
 
@@ -36,7 +37,7 @@ export default function AddRoleModal({
       isOpen={open}
       onClose={onClose}
       className="max-w-xl mx-4"
-      title={t("add_admin_role")}
+      title={editing ? t("edit_admin_role") : t("add_admin_role")}
     >
       <Form
         onSubmit={onSubmit}
