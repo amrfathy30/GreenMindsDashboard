@@ -58,11 +58,13 @@ export default function AdminsList({
           data.Data.map((item) => ({
             id: item.Id,
             Name: item.Name,
+            UserName: item.UserName,
             Email: item.Email,
             Password: item.Password,
             Type: item.Type,
             TypeName: item.TypeName,
             Phone: item.Phone,
+            ConfirmPassword: item.ConfirmPassword,
           })),
         );
       } catch (error: any) {
@@ -127,28 +129,26 @@ export default function AdminsList({
     try {
       if (
         !data.Name?.trim() ||
-        data.Email === "" ||
-        data.Password === "" ||
-        data.Type === 0
+        !data.UserName?.trim() ||
+        !data.Email?.trim() ||
+        data.Type === 0 ||
+        (!editData && !data.Password)
       ) {
         toast.error(t("all_fields_required"));
+        return;
+      }
+      if (data.Password !== data.ConfirmPassword) {
+        toast.error(t("PasswordNotMatch"));
         return;
       }
 
       setModalLoading(true);
 
       let res;
-      if (editData) {
-        const formData = new FormData();
-        formData.append("Name", data.Name);
-        formData.append("Email", data.Email);
-        formData.append("Phone", data.Phone || "");
-        formData.append("Type", data.Type.toString());
-        if (data.Password) formData.append("Password", data.Password);
-
-        res = await updateAdmin(formData, editData.id!);
+      if (editData?.id) {
+        res = await updateAdmin(editData.id, data);
       } else {
-        res = await createAdmin({ ...data });
+        res = await createAdmin(data);
       }
 
       const listRes: AdminApiResponse = await allAdminData();
@@ -157,7 +157,10 @@ export default function AdminsList({
         listRes.Data.map((item) => ({
           id: item.Id,
           Name: item.Name || "",
+          UserName: item.UserName || "",
           Email: item.Email,
+          Phone: item.Phone,
+          ConfirmPassword: item.ConfirmPassword,
           Password: item.Password,
           Type: item.Type,
         })),
@@ -179,6 +182,10 @@ export default function AdminsList({
     {
       key: "Name",
       label: t("name"),
+    },
+    {
+      key: "UserName",
+      label: t("UserName"),
     },
     {
       key: "Email",

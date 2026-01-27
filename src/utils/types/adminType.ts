@@ -6,6 +6,8 @@ export interface AdminList {
   Type: number;
   TypeName?: string;
   Phone?: string;
+  UserName?: string;
+  ConfirmPassword?: string;
 }
 
 export interface UserTypeList {
@@ -24,6 +26,8 @@ export interface AdminsModalProps {
     Type: number;
     TypeName?: string;
     Phone?: string;
+    UserName?: string;
+    ConfirmPassword?: string;
   }) => void;
   initialData?: {
     Name: string;
@@ -32,6 +36,8 @@ export interface AdminsModalProps {
     Type: number;
     TypeName?: string;
     Phone?: string;
+    UserName?: string;
+    ConfirmPassword?: string;
   };
   userTypeList?: {
     Id: number;
@@ -59,5 +65,7 @@ export interface AdminApiResponse {
     Type: number;
     TypeName?: string;
     Phone?: string;
+    UserName?: string;
+    ConfirmPassword?: string;
   }[];
 }

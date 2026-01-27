@@ -1,5 +1,6 @@
 import {
   ChangePasswordRequest,
+  PersonalInfoRequest,
   ResetPasswordRequest,
 } from "../../utils/types/profileType";
 import axiosInstance from "../axiosInstance";
@@ -8,20 +9,13 @@ export const updatePassword = async (data: ChangePasswordRequest) => {
   const response = await axiosInstance.post("/Account/ResetPassword", data);
   return response.data;
 };
-// still wait
-export const UpdatePersonalInfo = async (data: FormData) => {
-  const response = await axiosInstance.post(
-    "/Account/UpdatePersonalInfo",
-    data,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    },
-  );
+
+export const updateProfile = async (data: PersonalInfoRequest, id: number) => {
+  const response = await axiosInstance.put(`/Account/${id}`, data, {
+    headers: { "Content-Type": "application/json" },
+  });
   return response.data;
 };
-
 
 export const ForgetPassReset = async (data: ResetPasswordRequest) => {
   const response = await axiosInstance.post("/Account/ForgetPassReset", data);

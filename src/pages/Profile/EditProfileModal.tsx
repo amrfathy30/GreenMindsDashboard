@@ -14,8 +14,10 @@ import {
   PersonalInfoRequest,
 } from "../../utils/types/profileType";
 import { toast } from "sonner";
-import { GetPersonalInfoById } from "../../api/services/profileService";
-import { updateAdmin } from "../../api/services/adminService";
+import {
+  GetPersonalInfoById,
+  updateProfile,
+} from "../../api/services/profileService";
 
 export default function EditProfileModal({
   open,
@@ -54,8 +56,6 @@ export default function EditProfileModal({
       toast.error(
         error?.response?.data?.Message || "Failed to load personal info",
       );
-    } finally {
-      // setLoading(false);
     }
   };
 
@@ -98,16 +98,17 @@ export default function EditProfileModal({
 
     try {
       setLoading(true);
-      const data = new FormData();
-      data.append("Name", formData.Name);
-      data.append("Email", formData.Email);
-      data.append("Phone", formData.Phone);
 
-      if (formData.AvatarImg) {
-        data.append("AvatarImg", formData.AvatarImg);
-      }
+      const payload: PersonalInfoRequest = {
+        id: adminId,
+        Name: formData.Name,
+        Email: formData.Email,
+        Phone: formData.Phone,
+        Password: "",
+        ConfirmPassword: "",
+      };
 
-      await updateAdmin(data, adminId);
+      await updateProfile(payload, adminId);
 
       toast.success("Profile updated successfully");
       onClose();

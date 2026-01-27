@@ -19,6 +19,9 @@ export default function AdminModal({
   const [formData, setFormData] = useState({
     Name: "",
     Email: "",
+    Phone: "",
+    UserName: "",
+    ConfirmPassword: "",
     Password: "",
     Type: 0,
   });
@@ -28,14 +31,20 @@ export default function AdminModal({
       setFormData({
         Name: initialData.Name,
         Email: initialData.Email,
-        Password: initialData.Password,
+        Phone: initialData.Phone ?? "",
+        UserName: initialData.UserName ?? "",
+        Password: initialData.Password ?? "",
+        ConfirmPassword: initialData.ConfirmPassword ?? "",
         Type: initialData.Type,
       });
     } else {
       setFormData({
         Name: "",
         Email: "",
+        Phone: "",
+        UserName: "",
         Password: "",
+        ConfirmPassword: "",
         Type: 0,
       });
     }
@@ -53,7 +62,7 @@ export default function AdminModal({
       className="max-w-xl mx-4"
       title={initialData ? t("EditAdmin") : t("AddNewAdmin")}
     >
-      <Form 
+      <Form
         onSubmit={onSubmit}
         className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
       >
@@ -64,6 +73,17 @@ export default function AdminModal({
             placeholder={t("EnterNameHere")}
             value={formData.Name}
             onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+          />
+        </div>
+        <div>
+          <Input
+            id="UserName"
+            label={t("AdminUserName")}
+            placeholder={t("EnterUserNameHere")}
+            value={formData.UserName}
+            onChange={(e) =>
+              setFormData({ ...formData, UserName: e.target.value })
+            }
           />
         </div>
         <div>
@@ -79,6 +99,17 @@ export default function AdminModal({
         </div>
         <div>
           <Input
+            id="Phone"
+            label={t("AdminPhone")}
+            placeholder={t("EnterAdminPhone")}
+            value={formData.Phone}
+            onChange={(e) =>
+              setFormData({ ...formData, Phone: e.target.value })
+            }
+          />
+        </div>
+        <div>
+          <Input
             id="Password"
             type="password"
             label={t("AdminPassword")}
@@ -86,6 +117,18 @@ export default function AdminModal({
             value={formData.Password}
             onChange={(e) =>
               setFormData({ ...formData, Password: e.target.value })
+            }
+          />
+        </div>
+        <div>
+          <Input
+            id="ConfirmPassword"
+            type="password"
+            label={t("AdminConfirmPassword")}
+            placeholder={t("EnterAdminPassword")}
+            value={formData.ConfirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, ConfirmPassword: e.target.value })
             }
           />
         </div>

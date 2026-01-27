@@ -26,12 +26,11 @@ export default function SmtpSettingsModal({
 
   const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-  if (open && initialData) {
-    setFormData(initialData);
-  }
-}, [open, initialData]);
-
+  useEffect(() => {
+    if (open && initialData) {
+      setFormData(initialData);
+    }
+  }, [open, initialData]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,7 +61,7 @@ useEffect(() => {
         className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
       >
         <Input
-          id="senderName"
+          id="SenderName"
           label="Display Name (اسم المرسل)"
           placeholder="Enter name here"
           value={formData.SenderName}
@@ -72,7 +71,7 @@ useEffect(() => {
         />
 
         <Input
-          id="senderEmail"
+          id="SenderEmail"
           label="SMTP Email (بريد الإرسال)"
           placeholder="Enter email here"
           value={formData.SenderEmail}
@@ -92,7 +91,7 @@ useEffect(() => {
         />
 
         <Input
-          id="password"
+          id="Password"
           label="App Password (كلمة سر التطبيق)"
           placeholder="*********"
           type="password"
@@ -103,7 +102,7 @@ useEffect(() => {
         />
 
         <Input
-          id="host"
+          id="Host"
           label="SMTP server (الخادم)"
           placeholder="smtp.gmail.com"
           value={formData.Host}
@@ -111,7 +110,7 @@ useEffect(() => {
         />
 
         <Input
-          id="port"
+          id="Port"
           label="Port (المنفذ)"
           placeholder="587"
           type="number"
@@ -121,18 +120,27 @@ useEffect(() => {
           }
         />
 
-        <Input
-          id="encryption"
-          label="Encryption (التشفير)"
-          placeholder="TLS/SSL"
-          value={formData.UseSsl ? "SSL/TLS" : "None"}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              UseSsl: e.target.value.toLowerCase().includes("ssl"),
-            })
-          }
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <Input
+            type="checkbox"
+            id="UseSsl"
+            label="Use SSL / TLS"
+            checked={formData.UseSsl}
+            onChange={(e) =>
+              setFormData({ ...formData, UseSsl: e.target.checked })
+            }
+          />
+
+          <Input
+            id="Enabled"
+            type="checkbox"
+            label="Enable SMTP"
+            checked={formData.Enabled}
+            onChange={(e) =>
+              setFormData({ ...formData, Enabled: e.target.checked })
+            }
+          />
+        </div>
 
         <Button type="submit" disabled={loading}>
           {loading ? "Saving..." : "Save"}
