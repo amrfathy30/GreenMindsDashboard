@@ -65,10 +65,18 @@ export default function Setting() {
                   <div className="flex items-center space-x-2">
                     <span>
                       {language === "en" ? (
-                        <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <svg
+                          width="20"
+                          height="20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
                           <g clip-path="url(#US_svg__a)">
-                            <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
-                              fill="#F0F0F0" />
+                            <path
+                              d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
+                              fill="#F0F0F0"
+                            />
                             <path
                               d="M11.477 12H24a12.01 12.01 0 0 0-.413-3.13H11.478V12Zm0-6.262h10.761a12.064 12.064 0 0 0-2.769-3.13h-7.992v3.13ZM12 24c2.824 0 5.42-.976 7.47-2.609H4.53A11.948 11.948 0 0 0 12 24ZM1.761 18.26h20.477a11.93 11.93 0 0 0 1.348-3.13H.413c.3 1.116.758 2.167 1.348 3.13Z"
                               fill="#D80027"
@@ -85,14 +93,26 @@ export default function Setting() {
                           </defs>
                         </svg>
                       ) : (
-                        <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <svg
+                          width="20"
+                          height="20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
                           <g clip-path="url(#EG_svg__a)">
-                            <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
-                              fill="#F0F0F0" />
-                            <path d="M12 0C6.84 0 2.442 3.256.746 7.826h22.507C21.558 3.256 17.16 0 12 0Z"
-                              fill="#D80027" />
-                            <path d="M12 24c5.16 0 9.558-3.256 11.253-7.826H.746C2.442 20.744 6.84 24 12 24Z"
-                              fill="#000" />
+                            <path
+                              d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
+                              fill="#F0F0F0"
+                            />
+                            <path
+                              d="M12 0C6.84 0 2.442 3.256.746 7.826h22.507C21.558 3.256 17.16 0 12 0Z"
+                              fill="#D80027"
+                            />
+                            <path
+                              d="M12 24c5.16 0 9.558-3.256 11.253-7.826H.746C2.442 20.744 6.84 24 12 24Z"
+                              fill="#000"
+                            />
                             <path
                               d="M16.174 10.696h-3.13a1.044 1.044 0 0 0-2.087 0h-3.13c0 .576.501 1.043 1.077 1.043H8.87c0 .576.467 1.044 1.043 1.044 0 .576.467 1.043 1.044 1.043h2.087c.576 0 1.043-.467 1.043-1.043.576 0 1.044-.468 1.044-1.044h-.035c.576 0 1.078-.467 1.078-1.043Z"
                               fill="#FF9811"
@@ -130,14 +150,26 @@ export default function Setting() {
                         className="flex border-b border-gray-200 dark:border-gray-800 items-center gap-3 px-3 py-2 font-medium text-gray-700 group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                       >
                         <span>
-                          <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <svg
+                            width="20"
+                            height="20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
                             <g clip-path="url(#EG_svg__a)">
-                              <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
-                                fill="#F0F0F0" />
-                              <path d="M12 0C6.84 0 2.442 3.256.746 7.826h22.507C21.558 3.256 17.16 0 12 0Z"
-                                fill="#D80027" />
-                              <path d="M12 24c5.16 0 9.558-3.256 11.253-7.826H.746C2.442 20.744 6.84 24 12 24Z"
-                                fill="#000" />
+                              <path
+                                d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
+                                fill="#F0F0F0"
+                              />
+                              <path
+                                d="M12 0C6.84 0 2.442 3.256.746 7.826h22.507C21.558 3.256 17.16 0 12 0Z"
+                                fill="#D80027"
+                              />
+                              <path
+                                d="M12 24c5.16 0 9.558-3.256 11.253-7.826H.746C2.442 20.744 6.84 24 12 24Z"
+                                fill="#000"
+                              />
                               <path
                                 d="M16.174 10.696h-3.13a1.044 1.044 0 0 0-2.087 0h-3.13c0 .576.501 1.043 1.077 1.043H8.87c0 .576.467 1.044 1.043 1.044 0 .576.467 1.043 1.044 1.043h2.087c.576 0 1.043-.467 1.043-1.043.576 0 1.044-.468 1.044-1.044h-.035c.576 0 1.078-.467 1.078-1.043Z"
                                 fill="#FF9811"
@@ -162,10 +194,18 @@ export default function Setting() {
                         className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                       >
                         <span>
-                          <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <svg
+                            width="20"
+                            height="20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
                             <g clip-path="url(#US_svg__a)">
-                              <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
-                                fill="#F0F0F0" />
+                              <path
+                                d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"
+                                fill="#F0F0F0"
+                              />
                               <path
                                 d="M11.477 12H24a12.01 12.01 0 0 0-.413-3.13H11.478V12Zm0-6.262h10.761a12.064 12.064 0 0 0-2.769-3.13h-7.992v3.13ZM12 24c2.824 0 5.42-.976 7.47-2.609H4.53A11.948 11.948 0 0 0 12 24ZM1.761 18.26h20.477a11.93 11.93 0 0 0 1.348-3.13H.413c.3 1.116.758 2.167 1.348 3.13Z"
                                 fill="#D80027"
@@ -217,8 +257,17 @@ export default function Setting() {
             className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
           >
             <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <UserCheckIcon/>
+              <UserCheckIcon />
               <span>{t("AdminRoles")}</span>
+            </div>
+          </Link>
+          <Link
+            to="/permissions-list"
+            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
+          >
+            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+              <UserCheckIcon />
+              <span>{t("Permissions")}</span>
             </div>
           </Link>
           {/* Login Streaks */}

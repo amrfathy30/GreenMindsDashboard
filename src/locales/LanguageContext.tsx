@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 type Language = "en" | "ar";
 
@@ -24,7 +30,7 @@ const translations = {
     delete: "Delete",
     all_fields_required: "All Fields Required",
     age_groups: "Age groups",
-    AdminRoles:'Admin Roles',
+    AdminRoles: "Admin Roles",
     from: "from",
     actions: "Actions",
     operation_failed: "Operation failed",
@@ -180,11 +186,12 @@ const translations = {
     title: "Title",
     points: "Points",
     "age group": "Age Group",
-   // Game translations
+    // Game translations
     games_admin: "Games - Admin",
     add_game: "Add Game",
     no_games_found: "No Data Found",
-    no_games_desc: "Game Section has no data yet, start by adding your first Game Now!",
+    no_games_desc:
+      "Game Section has no data yet, start by adding your first Game Now!",
     game_name_en: "Game Name (EN)",
     game_name_ar: "Game Name (AR)",
     game_description: "Description",
@@ -208,7 +215,8 @@ const translations = {
     fill_required_fields: "Please fill out the required fields correctly.",
     api_key_label: "API Key",
     enter_api_key_placeholder: "Enter API Key here",
-    upload_thumbnail_label: "Upload Game Thumbnail or Add the Game Thumbnail link",
+    upload_thumbnail_label:
+      "Upload Game Thumbnail or Add the Game Thumbnail link",
     android_link: "Android Link",
     ios_link: "iOS Link",
     api_link: "API Link",
@@ -222,7 +230,8 @@ const translations = {
     edit_avatar: "Edit Avatar",
     add_new_avatar: "Add New Avatar",
     no_avatars_found: "No Data Found",
-    no_avatars_desc: "Avatars Section has no data yet, start by adding your first Avatar Now!",
+    no_avatars_desc:
+      "Avatars Section has no data yet, start by adding your first Avatar Now!",
     manage_avatars_desc: "Manage your Avatars list easily.",
     upload_image_error: "Please upload an avatar image",
     select_age_error: "Please select an age group",
@@ -268,7 +277,14 @@ const translations = {
     passMatchError: "Passwords do not match",
     passUpdateSuccess: "Password updated successfully",
     resetEmailSuccess: "Reset email sent successfully",
-      },
+    // permission
+    Permission: "Permissions",
+    no_permissions_found: "no permissions found",
+    error_update_permission: "error update permission",
+    UpdatePermission: "Update Permission",
+    permissionName: "Permission Name",
+    permissions_updated_successfully: "permissions updated successfully",
+  },
   ar: {
     // sidebar
     videos: "فيديوهات",
@@ -380,7 +396,7 @@ const translations = {
     NameEn: "الاسم (إنجليزي)",
     UserName: "اسم المستخدم",
     age_groups: "الفئه العمريه",
-    AdminRoles:"صلاحيات الاداره",
+    AdminRoles: "صلاحيات الاداره",
     SeeMore: "عرض المزيد",
     EditParent: "تعديل ولي الأمر",
     AddNewParent: "إضافة ولي أمر جديد",
@@ -448,7 +464,8 @@ const translations = {
     games_admin: "إدارة الألعاب",
     add_game: "إضافة لعبة",
     no_games_found: "لا يوجد بيانات",
-    no_games_desc: "قسم الألعاب لا يحتوي على بيانات حالياً، ابدأ بإضافة لعبتك الأولى الآن!",
+    no_games_desc:
+      "قسم الألعاب لا يحتوي على بيانات حالياً، ابدأ بإضافة لعبتك الأولى الآن!",
     game_name_en: "اسم اللعبة (إنجليزي)",
     game_name_ar: "اسم اللعبة (عربي)",
     game_description: "الوصف",
@@ -486,7 +503,8 @@ const translations = {
     edit_avatar: "تعديل الصورة الرمزية",
     add_new_avatar: "إضافة صورة رمزية جديدة",
     no_avatars_found: "لا يوجد بيانات",
-    no_avatars_desc: "قسم الصور الرمزية لا يحتوي على بيانات حالياً، ابدأ بإضافة صورتك الأولى الآن!",
+    no_avatars_desc:
+      "قسم الصور الرمزية لا يحتوي على بيانات حالياً، ابدأ بإضافة صورتك الأولى الآن!",
     manage_avatars_desc: "قم بإدارة قائمة الصور الرمزية الخاصة بك بسهولة.",
     upload_image_error: "يرجى رفع صورة الرمز الشخصي",
     select_age_error: "يرجى اختيار الفئة العمرية",
@@ -505,7 +523,6 @@ const translations = {
     num_points: "عدد النقاط",
     add_video_btn: "إضافة فيديو",
     save_edit_btn: "حفظ التعديلات",
-    Editprofile:"تعديل الملف الشخصي",
     Logout:"تسجيل الخروج",
     // profile 
     changePassword: "تغيير كلمة المرور",
@@ -532,10 +549,21 @@ const translations = {
     passMatchError: "كلمات المرور غير متطابقة",
     passUpdateSuccess: "تم تحديث كلمة المرور بنجاح",
     resetEmailSuccess: "تم إرسال بريد إعادة التعيين بنجاح",
-  },
-};
+    Editprofile: "تعديل الملف الشخصي",
+    // permission
+    Permission: "الصلاحيات",
+    no_permissions_found: "لم يتم العثور على صلاحيات",
+    error_update_permission: "فشل في تحديث الصلاحية",
+    UpdatePermission: "تحديث الصلاحية",
+    permissionName: "اسم الصلاحية",
+    permissions_updated_successfully: "تم تحديث الصلاحية بنجاح",
+  
+}
+}
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined,
+);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(() => {
@@ -543,18 +571,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return saved === "ar" || saved === "en" ? saved : "en";
   });
   const isRTL = language === "ar";
-  
+
   useEffect(() => {
     localStorage.setItem("GM-language", language);
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
     document.documentElement.lang = language;
   }, [language, isRTL]);
-  const t = (key: string): string => translations[language][key as keyof typeof translations.en] || key;
-  return <LanguageContext.Provider value={{ language, setLanguage, isRTL, t }}>{children}</LanguageContext.Provider>;
+  const t = (key: string): string =>
+    translations[language][key as keyof typeof translations.en] || key;
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, isRTL, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }
 
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (context === undefined) throw new Error("useLanguage must be used within a LanguageProvider");
+  if (context === undefined)
+    throw new Error("useLanguage must be used within a LanguageProvider");
   return context;
 }
