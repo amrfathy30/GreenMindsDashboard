@@ -28,3 +28,12 @@ export const deleteGame = async (id: number) => {
   const response = await axiosInstance.delete(`/Games/${id}`);
   return response.data;
 };
+export const getPagedGames = async (page: number, pageSize: number) => {
+  const response = await axiosInstance.get(`/Games/paged`, {
+    params: {
+      page: page,
+      pageSize: pageSize
+    }
+  });
+  return response.data; 
+};

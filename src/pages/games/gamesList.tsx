@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useLanguage } from "../../locales/LanguageContext";
-import { getAllGames } from "../../api/services/gameService";
+
+import { getPagedGames } from "../../api/services/gameService";
 import PageMeta from "../../components/common/PageMeta";
 import GameCard from "./gameCard";
 import Pagination from "../../components/common/Pagination";
@@ -10,16 +10,9 @@ import GameModal from "./gameModal";
 import { PlusIcon } from "../../icons";
 import GameCardSkeleton from "../../components/loading/gameLoading";
 import EmptyState from "../../components/common/no-data-found";
+import { useLanguage } from "../../locales/LanguageContext";
 
 
-// const MOCK_GAMES = [
-//   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
-//   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
-//   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
-//   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
-//   { id: 1, title: "Tech Innovations 2023", description: "A showcase of the latest advancements in technology", image: "/images/gameImages/Image1.png" },
-//   { id: 2, title: "Kids Learn Demo", description: "Educational games for children", image: "/images/gameImages/Image2.png" },
-// ];
 const BASE_URL = "https://kidsapi.pulvent.com";
 export default function GamesList() {
   const { t, isRTL } = useLanguage();
@@ -30,19 +23,30 @@ export default function GamesList() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  // const [totalPages, setTotalPages] = useState(1);
-const totalPages =1
-  const fetchGames = async () => {
-    try {
-      setLoading(true);
-      const response = await getAllGames();
-      setGames(response.Data || []);
-    } catch (error) {
-      console.error("Failed to fetch games:", error);
-    } finally {
-      setLoading(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const PAGE_SIZE = 8;
+const fetchGames = async () => {
+  try {
+    setLoading(true);
+    // نبعت رقم الصفحة الحالية وحجم الصفحة (مثلاً 8)
+    const response = await getPagedGames(currentPage, PAGE_SIZE);
+    
+    // ملاحظة: تأكدي من الـ Capitalization (Data و TotalCount)
+    setGames(response.Data || []); 
+
+    if (response.TotalCount) {
+      setTotalPages(Math.ceil(response.TotalCount / PAGE_SIZE));
     }
-  };
+  } catch (error) {
+    console.error("Failed to fetch games:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchGames();
+}, [currentPage]);
 
   useEffect(() => {
     fetchGames();
