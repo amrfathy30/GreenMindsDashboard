@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChevronRight, Globe } from "lucide-react";
+import { ChevronRight, Globe, UserCheckIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import PageMeta from "../../components/common/PageMeta";
 import SmtpSettingsModal from "./SmtpSettingsModal";
@@ -212,7 +212,15 @@ export default function Setting() {
               <span>{t("ageGroups")}</span>
             </div>
           </Link>
-
+          <Link
+            to="/admin-roles"
+            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
+          >
+            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+              <UserCheckIcon/>
+              <span>{t("AdminRoles")}</span>
+            </div>
+          </Link>
           {/* Login Streaks */}
           {/* <Link
             to="/login-streaks"

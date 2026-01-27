@@ -15,6 +15,7 @@ import ChildrenInfo from "./pages/Users/Children/ChildrenInfo/ChildrenInfo";
 import ProfileLevels from "./pages/Setting/ProfileLevels/ProfileLevels";
 import LoginStreaks from "./pages/Setting/LoginStreaks/LoginStreaks";
 import { ProtectedRoute } from "./protected-route-wrapper";
+import AdminRoles from "./pages/Setting/AdminRoles/AdminRolesList";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/children-info" element={<ChildrenInfo />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/age-group" element={<AgeGroup />} />
+            <Route path="/admin-roles" element={<AdminRoles />} />
             <Route path="/profile-levels" element={<ProfileLevels />} />
             <Route path="/login-streaks" element={<LoginStreaks />} />
 
