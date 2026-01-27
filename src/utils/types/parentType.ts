@@ -16,6 +16,8 @@ export interface ParentList {
   ConfirmPassword: string;
   ParentPhoneNumber: string;
   Phone?: string;
+  GenderId: string;
+  DateOfBirth: string;
 }
 
 export interface ParentsModalProps {
@@ -33,6 +35,8 @@ export interface ParentsModalProps {
     ConfirmPassword: string;
     ParentPhoneNumber: string;
     Phone?: string;
+    GenderId: string;
+    DateOfBirth: string;
   }) => void;
   initialData?: {
     // Name_en: string;
@@ -45,6 +49,8 @@ export interface ParentsModalProps {
     ConfirmPassword: string;
     ParentPhoneNumber: string;
     Phone?: string;
+    GenderId: string;
+    DateOfBirth: string;
   };
 }
 
@@ -63,6 +69,8 @@ export interface ParentApiResponse {
       ConfirmPassword: string;
       ParentPhoneNumber: string;
       Phone?: string;
+      GenderId: string;
+      DateOfBirth: string;
     }[];
     Total: number;
     Page: number;

@@ -12,7 +12,7 @@ export interface Children {
   Password: string;
   ConfirmPassword: string;
   DateOfBirth: string;
-  gender: string;
+  GenderId: string;
 }
 
 export interface ChildrenApiResponse {
@@ -30,7 +30,7 @@ export interface ChildrenApiResponse {
       Phone?: string;
       Email: string;
       DateOfBirth: string;
-      gender: string;
+      GenderId: string;
     }[];
   };
 }

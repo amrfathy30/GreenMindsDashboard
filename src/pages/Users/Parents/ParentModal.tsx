@@ -5,6 +5,8 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { useLanguage } from "../../../locales/LanguageContext";
 import { ParentsModalProps } from "../../../utils/types/parentType";
+import Radio from "../../../components/form/input/Radio";
+import Label from "../../../components/form/Label";
 
 export default function ParentModal({
   open,
@@ -14,20 +16,27 @@ export default function ParentModal({
   initialData,
 }: ParentsModalProps) {
   const { t } = useLanguage();
+  const [selectedValue, setSelectedValue] = useState<string>("male");
 
+  const handleChange = (value: string) => {
+    setSelectedValue(value);
+    setFormData({ ...formData, GenderId: value });
+  };
   const [formData, setFormData] = useState({
-    // Name_en: "",
-    // Name_ar: "",
     Name: "",
     UserName: "",
     Email: "",
     Password: "",
     ConfirmPassword: "",
-    ParentPhoneNumber: "", 
+    ParentPhoneNumber: "",
+    GenderId: "",
+    DateOfBirth: "",
   });
 
   useEffect(() => {
     if (initialData) {
+      setSelectedValue(initialData.GenderId || "male");
+
       setFormData({
         Name: initialData.Name,
         // Name_en: initialData.Name_en,
@@ -37,6 +46,8 @@ export default function ParentModal({
         Password: initialData.Password,
         ConfirmPassword: initialData.ConfirmPassword,
         ParentPhoneNumber: initialData.ParentPhoneNumber,
+        GenderId: initialData.GenderId,
+        DateOfBirth: initialData.DateOfBirth,
       });
     } else {
       setFormData({
@@ -48,6 +59,8 @@ export default function ParentModal({
         Password: "",
         ConfirmPassword: "",
         ParentPhoneNumber: "",
+        GenderId: "",
+        DateOfBirth: "",
       });
     }
   }, [initialData, open]);
@@ -165,6 +178,41 @@ export default function ParentModal({
               }))
             }
           />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>
+            <Label>{t("Gender")}</Label>
+            <div className="flex items-center gap-3">
+              <Radio
+                id="male"
+                name="GenderId"
+                value="1"
+                checked={selectedValue === "male"}
+                label={t("Male")}
+                onChange={handleChange}
+              />
+              <Radio
+                id="female"
+                name="gender"
+                value="2"
+                checked={selectedValue === "female"}
+                label={t("Female")}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div>
+            <Input
+              id="DateOfBirth"
+              label={t("Age")}
+              value={formData.DateOfBirth}
+              type="date"
+              placeholder={t("EnterChildrenAge")}
+              onChange={(e) =>
+                setFormData({ ...formData, DateOfBirth: e.target.value })
+              }
+            />
+          </div>
         </div>
 
         <Button type="submit" className="mt-2" disabled={loading}>

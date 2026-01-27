@@ -72,6 +72,8 @@ export default function ParentsList({
             Password: item.Password,
             ConfirmPassword: item.ConfirmPassword,
             ParentPhoneNumber: item.ParentPhoneNumber,
+            GenderId: item.GenderId,
+            DateOfBirth: item.DateOfBirth,
           })),
         );
         setTotalPages(Math.ceil(data.Data.Total / data.Data.PageSize));
@@ -142,6 +144,8 @@ export default function ParentsList({
           ConfirmPassword: item.ConfirmPassword,
           ParentPhoneNumber: item.ParentPhoneNumber,
           Phone: item.Phone || item.ParentPhoneNumber,
+          GenderId: item.Phone || item.GenderId,
+          DateOfBirth: item.Phone || item.DateOfBirth,
         })),
       );
 
@@ -158,15 +162,6 @@ export default function ParentsList({
   };
 
   const columns = [
-    // {
-    //   key: "UserName",
-    //   label: t("UserName"),
-    //   render: (row: any) => (
-    //     <span className="text-[#757575] flex justify-center items-center">
-    //       {row.UserName || "__"}
-    //     </span>
-    //   ),
-    // },
     {
       key: "Name",
       label: t("Name"),
@@ -199,18 +194,6 @@ export default function ParentsList({
         </span>
       ),
     },
-    // {
-    //   key: "Children",
-    //   label: t("Children"),
-    //   render: (row: any) => (
-    //     <div className="flex justify-center items-center gap-1">
-    //       {row.childrenList.map((item: { name: string }, index: number) => (
-    //         <span key={index}>{item.name},</span>
-    //       ))}
-    //       ({row.childrenList.length})
-    //     </div>
-    //   ),
-    // },
     {
       key: "actions",
       label: t("Actions"),
@@ -222,12 +205,12 @@ export default function ParentsList({
                 Id: row.id,
                 Name: row.Name,
                 UserName: row.UserName,
-                // Name_ar: row.Name_ar,
-                // Name_en: row.Name_en,
                 Email: row.Email,
                 Password: row.Password,
                 ConfirmPassword: row.ConfirmPassword,
                 ParentPhoneNumber: row.ParentPhoneNumber,
+                GenderId: row.GenderId,
+                DateOfBirth: row.DateOfBirth,
               });
               setOpenModal(true);
             }}

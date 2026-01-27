@@ -64,10 +64,10 @@ export default function ChildrenList({
             Name: item.Name,
             Email: item.Email,
             Password: item.Password,
+            GenderId: item.GenderId,
             ConfirmPassword: item.ConfirmPassword,
             ParentPhoneNumber: item.ParentPhoneNumber,
             Phone: item.Phone,
-            gender: item.gender,
             DateOfBirth: item.DateOfBirth,
           })),
         );
@@ -117,7 +117,6 @@ export default function ChildrenList({
         !data.Name?.trim() ||
         !data.Email ||
         !data.DateOfBirth ||
-        !data.gender ||
         !data.Password ||
         !data.ConfirmPassword ||
         !data.ParentPhoneNumber
@@ -155,9 +154,9 @@ export default function ChildrenList({
           id: item.Id,
           Name: item.Name || "",
           Email: item.Email,
-          gender: item.gender,
           DateOfBirth: item.DateOfBirth,
           Password: item.Password,
+          GenderId: item.GenderId,
           ConfirmPassword: item.ConfirmPassword,
           ParentPhoneNumber: item.ParentPhoneNumber || item.Phone || "",
         })),
@@ -218,7 +217,7 @@ export default function ChildrenList({
                 Password: row.Password || "",
                 ConfirmPassword: row.ConfirmPassword || "",
                 ParentPhoneNumber: row.ParentPhoneNumber || "",
-                gender: row.gender || "male",
+                GenderId: row.GenderId || "male",
                 DateOfBirth: row.DateOfBirth || "",
               });
               setOpenModal(true);
