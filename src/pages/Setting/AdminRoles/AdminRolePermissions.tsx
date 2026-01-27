@@ -1,15 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/form/input/InputField";
-
-interface AdminRolePermissionsProps {
-  permissions: { Id: number; DisplayName: string }[];
-  assignedPermissions: number[];
-  loading: boolean;
-  t: (key: string) => string;
-  onSave: (selected: number[]) => void;
-}
+import { AdminRolePermissionsProps } from "../../../utils/types/permissionType";
 
 const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
   permissions,
@@ -55,7 +47,7 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
         <Button
           onClick={handleSave}
           type="submit"
-          className="mt-2"
+          className="mt-2 px-8"
           disabled={loading}
         >
           {loading ? t("updating") : t("updateButton")}

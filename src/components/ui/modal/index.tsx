@@ -9,6 +9,7 @@ interface ModalProps {
   showCloseButton?: boolean;
   isFullscreen?: boolean;
   dangerType?: boolean;
+  editing?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -16,6 +17,8 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   children,
   className,
+  editing = false,
+
   title,
   showCloseButton = true,
   isFullscreen = false,
@@ -72,8 +75,10 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className={` ${lang === "en" ? " left-0! rounded-tr-[124px]" : "  right-0! rounded-tl-[124px]"} flex items-center absolute top-0  w-[80%] bg-linear-to-r  -mt-8 md:-mt-10 p-4
-         ${dangerType ? "from-[#D10000] to-[#402E25]" : "from-[#009DD1] to-[#25B16F]"}`}
+          className={` ${lang === "en" ? " left-0! rounded-tr-[124px]" : " right-0! rounded-tl-[124px]"} 
+    flex items-center absolute top-0 w-[80%] bg-linear-to-r -mt-8 md:-mt-10 p-4
+    ${dangerType ? "from-[#D10000] to-[#402E25]" : editing ? "from-yellow-500 to-yellow-300" : "from-[#009DD1] to-[#25B16F]"}
+  `}
         >
           {dangerType && (
             <svg
