@@ -2,12 +2,21 @@ import type React from "react";
 import type { FC } from "react";
 
 interface InputProps {
-  type?: "text" | "number" | "email" | "password" | "date" | "time" | string;
+  type?:
+    | "text"
+    | "number"
+    | "email"
+    | "password"
+    | "date"
+    | "time"
+    | "checkbox"
+    | string;
   id?: string;
   name?: string;
   placeholder?: string;
   label?: string;
   value?: string | number;
+  checked?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   min?: string;
@@ -37,6 +46,7 @@ const Input: FC<InputProps> = ({
   success = false,
   error = false,
   required = false,
+  checked = false,
   hint,
   defaultValue,
 }) => {
@@ -72,8 +82,9 @@ const Input: FC<InputProps> = ({
         type={type}
         id={id}
         name={name}
+        checked={type === "checkbox" ? checked : undefined}
         placeholder={placeholder}
-        value={value}
+        value={type !== "checkbox" ? value : undefined}
         defaultValue={defaultValue}
         required={required}
         onChange={onChange}
@@ -81,7 +92,11 @@ const Input: FC<InputProps> = ({
         max={max}
         step={step}
         disabled={disabled}
-        className={inputClasses}
+        className={
+          type === "checkbox"
+            ? `h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 ${className}`
+            : inputClasses
+        }
       />
 
       {hint && (

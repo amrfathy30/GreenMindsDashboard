@@ -15,10 +15,8 @@ export const createAdmin = async (data: AdminList) => {
   return response.data;
 };
 
-export const updateAdmin = async (data: FormData, id: number) => {
-  const response = await axiosInstance.put(`/Account/${id}`, data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+export const updateAdmin = async (id: number, data: AdminList) => {
+  const response = await axiosInstance.put(`/Account/${id}`, data);
   return response.data;
 };
 

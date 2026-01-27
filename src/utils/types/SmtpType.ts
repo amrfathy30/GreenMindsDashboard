@@ -6,7 +6,7 @@ export interface SmtpList {
   Password: string;
   SenderEmail: string;
   SenderName: string;
-  Enabled: true;
+  Enabled: boolean;
 }
 
 export interface EditProfileModalProps {

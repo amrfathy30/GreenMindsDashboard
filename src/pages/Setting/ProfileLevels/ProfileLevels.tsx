@@ -100,10 +100,13 @@ export default function ProfileLevels() {
       setLoading(true);
 
       let res;
-      if (editData) {
-        res = await updateLevel({ ...data });
+      if (editData?.id) {
+        res = await updateLevel({
+          ...data,
+          id: editData.id,
+        });
       } else {
-        res = await createLevel({ ...data });
+        res = await createLevel(data);
       }
 
       const listRes: LevelApiResponse = await allLevelData();
@@ -158,6 +161,7 @@ export default function ProfileLevels() {
           <button
             onClick={() => {
               setEditData({
+                id: row.id,
                 MinPoints: row.MinPoints,
                 MaxPoints: row.MaxPoints,
                 NameEn: row.NameEn,

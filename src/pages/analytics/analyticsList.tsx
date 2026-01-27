@@ -162,7 +162,7 @@ export default function Analytics() {
         setLoadingTopRanks(false);
       }
     };
-    console.log(topRanks)
+    console.log(topRanks);
     fetchData();
   }, [t]);
 

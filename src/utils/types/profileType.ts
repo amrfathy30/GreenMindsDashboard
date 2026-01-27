@@ -22,11 +22,14 @@ export interface SendEmailRequest {
 
 export interface PersonalInfoRequest {
   Id?: number;
+  id?: number;
   Email: string;
   Phone: string;
   Name: string;
   AvatarImg?: File;
   AvatarUrl?: string;
+  Password?: string;
+  ConfirmPassword?: string;
   
   // TypeName: string;
   // CityId: string;
