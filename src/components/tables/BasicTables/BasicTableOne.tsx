@@ -40,8 +40,9 @@ export default function BasicTableOne({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl ">
-      <div className="max-w-full overflow-x-auto border dark:border-gray-600">
+    <div className="overflow-hidden rounded-xl border dark:border-gray-600">
+      <div className="overflow-x-auto w-full">
+        {" "}
         <Table className="border-0">
           <TableHeader className="border-b dark:border-gray-600 bg-linear-to-r from-primary to-secondary  capitalize">
             <TableRow>

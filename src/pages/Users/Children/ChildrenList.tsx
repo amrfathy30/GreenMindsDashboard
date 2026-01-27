@@ -117,8 +117,6 @@ export default function ChildrenList({
         !data.Name?.trim() ||
         !data.Email ||
         !data.DateOfBirth ||
-        !data.Password ||
-        !data.ConfirmPassword ||
         !data.ParentPhoneNumber
       ) {
         toast.error(t("all_fields_required"));

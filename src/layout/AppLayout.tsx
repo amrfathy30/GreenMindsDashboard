@@ -21,12 +21,11 @@ const LayoutContent: React.FC = () => {
         <AppSidebar />
         <Backdrop />
       </div>
-      <div
-        className={`flex-1 transition-all duration-300 ease-in-out ${
-          isExpanded ? "lg:ms-[320px]" : "lg:ms-[90px]"
-        } ${isMobileOpen ? "ms-0" : ""}
-        `}
-      >
+<div
+  className={`flex-1 transition-all duration-300 ease-in-out 
+    ${isExpanded ? "lg:ps-[320px]" : "lg:ps-[90px]"} 
+    ${isMobileOpen ? "ps-0" : ""} overflow-x-auto`}
+>
 
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
           <Outlet />

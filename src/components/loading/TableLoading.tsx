@@ -47,6 +47,7 @@ export const TableLoading = ({ columnCount=8, rowCount = 5 }: TableSkeletonProps
     </div>
   );
 };
+
 export const VideoTableSkeleton = ({ rows = 5 }) => {
   const { t } = useLanguage();
   return (
