@@ -293,7 +293,7 @@ const translations = {
     no_permissions_found: "no permissions found",
     error_update_permission: "error update permission",
     UpdatePermission: "Update Permission",
-    permissionName: "Permission Name",
+    permissionName: "Permission Display Name",
     permissions_updated_successfully: "permissions updated successfully",
   },
   ar: {
@@ -577,7 +577,7 @@ const translations = {
     no_permissions_found: "لم يتم العثور على صلاحيات",
     error_update_permission: "فشل في تحديث الصلاحية",
     UpdatePermission: "تحديث الصلاحية",
-    permissionName: "اسم الصلاحية",
+    permissionName: "اسم العرض للصلاحيه",
     permissions_updated_successfully: "تم تحديث الصلاحية بنجاح",
   
 }

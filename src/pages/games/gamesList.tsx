@@ -115,7 +115,7 @@ export default function GamesList() {
                 />
               ))}
         </div>
-        <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
+        <div className=" my-4 w-full flex items-center justify-center">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
