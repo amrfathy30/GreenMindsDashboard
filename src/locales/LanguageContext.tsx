@@ -254,6 +254,9 @@ const translations = {
     Logout: "Logout",
     // permission
     Permission: "Permissions",
+    RoleName: "Role Name",
+    add_admin_role: "add admin role",
+    failed_update_permissions: "failed update permissions",
     no_permissions_found: "no permissions found",
     error_update_permission: "error update permission",
     UpdatePermission: "Update Permission",
@@ -502,6 +505,9 @@ const translations = {
     Logout: "تسجيل الخروج",
     // permission
     Permission: "الصلاحيات",
+    RoleName: "اسم الدور",
+    add_admin_role: "اضافة صلاحيات الاداره",
+    failed_update_permissions: "فشل في تحديث الصلاحية",
     no_permissions_found: "لم يتم العثور على صلاحيات",
     error_update_permission: "فشل في تحديث الصلاحية",
     UpdatePermission: "تحديث الصلاحية",

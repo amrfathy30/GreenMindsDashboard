@@ -5,10 +5,10 @@ import Input from "../../../components/form/input/InputField";
 
 interface AdminRolePermissionsProps {
   permissions: { Id: number; DisplayName: string }[];
-  assignedPermissions: string[];
+  assignedPermissions: number[];
   loading: boolean;
   t: (key: string) => string;
-  onSave: (selected: string[]) => void;
+  onSave: (selected: number[]) => void;
 }
 
 const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
@@ -18,15 +18,15 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
   t,
   onSave,
 }) => {
-  const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
+  const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
 
   useEffect(() => {
     setSelectedPermissions(assignedPermissions || []);
   }, [assignedPermissions]);
 
-  const togglePermission = (perm: string) => {
+  const togglePermission = (id: number) => {
     setSelectedPermissions((prev) =>
-      prev.includes(perm) ? prev.filter((p) => p !== perm) : [...prev, perm],
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id],
     );
   };
 
@@ -34,26 +34,32 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
     onSave(selectedPermissions);
   };
 
-  if (loading) return <p className="text-gray-600">{t("loading")}...</p>;
   if (permissions.length === 0)
     return <p className="text-gray-600">{t("no_permissions_found")}</p>;
 
   return (
     <div className="mt-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
         {permissions.map((perm) => (
           <Input
             key={perm.Id}
             type="checkbox"
             label={perm.DisplayName}
-            checked={selectedPermissions.includes(perm.DisplayName)}
-            onChange={() => togglePermission(perm.DisplayName)}
+            checked={selectedPermissions.includes(perm.Id)}
+            onChange={() => togglePermission(perm.Id)}
           />
         ))}
       </div>
 
       <div className="mt-4">
-        <Button onClick={handleSave}>{t("save")}</Button>
+        <Button
+          onClick={handleSave}
+          type="submit"
+          className="mt-2"
+          disabled={loading}
+        >
+          {loading ? t("updating") : t("updateButton")}
+        </Button>
       </div>
     </div>
   );

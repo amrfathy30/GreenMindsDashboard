@@ -267,7 +267,7 @@ export default function Setting() {
           >
             <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
               <UserCheckIcon />
-              <span>{t("Permissions")}</span>
+              <span> {t("Permission")}</span>
             </div>
           </Link>
           {/* Login Streaks */}

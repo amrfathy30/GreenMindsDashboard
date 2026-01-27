@@ -66,6 +66,29 @@ const Input: FC<InputProps> = ({
       " bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-brand-500/20 dark:border-gray-700 dark:text-white";
   }
 
+  if (type === "checkbox") {
+    return (
+      <label
+        htmlFor={id}
+        className="flex items-center gap-2 text-sm font-medium text-black dark:text-gray-300 cursor-pointer"
+      >
+        <input
+          type="checkbox"
+          id={id}
+          name={name}
+          checked={checked}
+          onChange={onChange}
+          disabled={disabled}
+          className={`h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 ${className}`}
+        />
+        <span>
+          {label}
+          {required && <span className="text-error-500">*</span>}
+        </span>
+      </label>
+    );
+  }
+
   return (
     <div className="w-full">
       {label && (
@@ -82,9 +105,8 @@ const Input: FC<InputProps> = ({
         type={type}
         id={id}
         name={name}
-        checked={type === "checkbox" ? checked : undefined}
         placeholder={placeholder}
-        value={type !== "checkbox" ? value : undefined}
+        value={value}
         defaultValue={defaultValue}
         required={required}
         onChange={onChange}
@@ -92,11 +114,7 @@ const Input: FC<InputProps> = ({
         max={max}
         step={step}
         disabled={disabled}
-        className={
-          type === "checkbox"
-            ? `h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 ${className}`
-            : inputClasses
-        }
+        className={inputClasses}
       />
 
       {hint && (
