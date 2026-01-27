@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import Backdrop from "./Backdrop";
 import AppSidebar from "./AppSidebar";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
+import AppHeaderMobile from "./AppHeaderMobile";
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isMobileOpen } = useSidebar();
@@ -14,6 +15,9 @@ const LayoutContent: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             {/* <NotificationDropdown /> */}
       <div>
+        <div className="flex md:hidden">
+        <AppHeaderMobile />
+        </div>
         <AppSidebar />
         <Backdrop />
       </div>

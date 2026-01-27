@@ -240,7 +240,8 @@ const translations = {
     num_points: "Number of points",
     add_video_btn: "Add Video",
     save_edit_btn: "Save Edit",
-    Editprofile:"Edit profile"
+    Editprofile:"Edit profile",
+    Logout:"Logout",
   },
   ar: {
     // sidebar
@@ -477,7 +478,8 @@ const translations = {
     num_points: "عدد النقاط",
     add_video_btn: "إضافة فيديو",
     save_edit_btn: "حفظ التعديلات",
-    Editprofile:"تعديل الملف الشخصي"
+    Editprofile:"تعديل الملف الشخصي",
+    Logout:"تسجيل الخروج"
   },
 };
 

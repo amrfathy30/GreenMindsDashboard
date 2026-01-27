@@ -22,7 +22,7 @@ export default function UserDropdown() {
   const [openModalEditProfile, setOpenModalEditProfile] = useState(false);
 
   return (
-    <div className="relative border-y dark:border-gray-800 w-full py-2 px-6">
+    <div className="relative border-y dark:border-gray-800 w-full py-2 px-0 md:px-6 ">
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400 w-full"
