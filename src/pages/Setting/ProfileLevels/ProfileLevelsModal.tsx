@@ -17,8 +17,8 @@ export default function ProfileLevelsModal({
 
   const [MaxPoints, setMaxPoints] = useState<string>("");
   const [MinPoints, setMinPoints] = useState<string>("");
-  const [NameEn, setNameAr] = useState("");
-  const [NameAr, setNameEn] = useState("");
+  const [NameEn, setNameEn] = useState("");
+  const [NameAr, setNameAr] = useState("");
 
   useEffect(() => {
     if (initialData) {

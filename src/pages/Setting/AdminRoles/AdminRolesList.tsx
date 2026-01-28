@@ -130,7 +130,7 @@ export default function AdminRoles() {
 
         setAdminRoles(data.Data);
       } catch (error) {
-        toast.error(t("failed_load_age"));
+        toast.error(t("failed_load_data"));
       } finally {
         setLoading(false);
       }
@@ -146,7 +146,7 @@ export default function AdminRoles() {
         const data = await AllPermissions();
         setAllPermissions(Array.isArray(data.Data) ? data.Data : []);
       } catch {
-        toast.error(t("failed_load_permissions"));
+        toast.error(t("failed_load_data"));
       }
     };
 

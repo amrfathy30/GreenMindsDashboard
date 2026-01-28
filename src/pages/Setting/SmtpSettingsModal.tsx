@@ -13,6 +13,7 @@ export default function SmtpSettingsModal({
   open,
   onClose,
   initialData,
+  onSuccess,
 }: SmtpSettingsModalProps) {
   const { t } = useLanguage();
   const [formData, setFormData] = useState<SmtpList>({
@@ -38,15 +39,11 @@ export default function SmtpSettingsModal({
     e.preventDefault();
     try {
       setLoading(true);
-
-      // نسخ formData
       const payload: any = { ...formData };
-
-      // لو الـ Password فاضي نخليه موجود كحقل فاضي
       if (!payload.Password) payload.Password = "";
-
       await updateSmtp(payload);
-      toast.success("SMTP settings updated successfully");
+      toast.success(t("success_update"));
+      onSuccess?.();
       onClose();
     } catch (error: any) {
       toast.error(

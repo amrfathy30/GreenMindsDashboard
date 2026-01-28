@@ -11,7 +11,7 @@ export default function AdminModal({
   onClose,
   onSave,
   loading,
-  userTypeList,
+  adminRoles,
   initialData,
 }: AdminsModalProps) {
   const { t } = useLanguage();
@@ -121,6 +121,10 @@ export default function AdminModal({
                   setFormData({ ...formData, Password: e.target.value })
                 }
               />
+              <p className="text-xs text-gray-600 mt-2">
+                Password Should contain one at least of (a capital letter, small
+                letter, symbol, and number)
+              </p>
             </div>
             <div>
               <Input
@@ -151,7 +155,7 @@ export default function AdminModal({
               {t("select_UserType")}
             </option>
 
-            {userTypeList?.map((type) => (
+            {adminRoles?.map((type) => (
               <option
                 key={type.Id}
                 value={type.Id}

@@ -10,7 +10,7 @@ export interface AdminList {
   ConfirmPassword?: string;
 }
 
-export interface UserTypeList {
+export interface adminRoles {
   Id: number;
   Name: string;
 }
@@ -39,7 +39,7 @@ export interface AdminsModalProps {
     UserName?: string;
     ConfirmPassword?: string;
   };
-  userTypeList?: {
+  adminRoles?: {
     Id: number;
     Name: string;
   }[];

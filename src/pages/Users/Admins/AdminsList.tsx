@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
@@ -11,7 +12,6 @@ import {
   AdminApiResponse,
   AdminList,
   UserTypeApiResponse,
-  UserTypeList,
 } from "../../../utils/types/adminType";
 import {
   allAdminData,
@@ -21,6 +21,8 @@ import {
   UserTypes,
 } from "../../../api/services/adminService";
 import { TableLoading } from "../../../components/loading/TableLoading";
+import { allAdminRoles } from "../../../api/services/adminRolesService";
+import { AgeApiResponse } from "../../../utils/types/ageType";
 
 export default function AdminsList({
   openAddModal,
@@ -77,28 +79,20 @@ export default function AdminsList({
     fetchData();
   }, [t]);
 
-  // userTypeList
-  const [userTypeList, setUserType] = useState<UserTypeList[]>([]);
+  const [adminRoles, setAdminRoles] = useState<any[]>([]);
+  // fetchAdminRoles
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAdminRoles = async () => {
       try {
-        setTableLoading(true);
-        const data: UserTypeApiResponse = await UserTypes();
+        const data: AgeApiResponse = await allAdminRoles();
 
-        setUserType(
-          data.Data.map((item) => ({
-            Id: item.Id,
-            Name: item.Name,
-          })),
-        );
-      } catch (error: any) {
-        toast.error(error?.response?.data?.Message || t("operation_failed"));
-      } finally {
-        setTableLoading(false);
+        setAdminRoles(data.Data);
+      } catch (error) {
+        toast.error(t("failed_load_data"));
       }
     };
 
-    fetchData();
+    fetchAdminRoles();
   }, [t]);
 
   const handleDelete = (id: number) => {
@@ -117,7 +111,7 @@ export default function AdminsList({
 
       setAdminList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("failed_delete_parent"));
+      toast.error(error?.response?.data?.Message || t("failed_delete"));
     } finally {
       setDeleteLoading(false);
       setOpenConfirm(false);
@@ -269,7 +263,7 @@ export default function AdminsList({
         }}
         initialData={editData || undefined}
         loading={modalLoading}
-        userTypeList={userTypeList}
+        adminRoles={adminRoles}
         onSave={handleSave}
       />
     </div>

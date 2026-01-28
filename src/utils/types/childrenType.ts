@@ -42,3 +42,27 @@ export interface ChildrenModalProps {
   initialData?: Children;
   loading?: boolean;
 }
+export interface Child {
+  Id: number;
+  Name: string;
+  Email: string;
+  Phone: string;
+  ParentPhoneNumber?: string | null;
+  UserName?: string;
+  AvatarImg?: string;
+  DateOfBirth?: string;
+  GenderId: number;
+  ParentId?: number;
+  ParentName?: string | null;
+  RoleId?: number;
+  Type?: number;
+  TypeName?: string | null;
+  Summary?: string | null;
+  IsDelete?: boolean;
+}
+
+export interface ChildApiResponse {
+  StatusCode: number;
+  Message: string;
+  Data: Child;
+}

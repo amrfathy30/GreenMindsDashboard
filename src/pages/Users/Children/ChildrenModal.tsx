@@ -141,6 +141,10 @@ export default function ChildrenModal({
                 />
               </div>
             </div>
+            <p className="text-xs text-gray-600">
+              Password Should contain one at least of (a capital letter, small
+              letter, symbol, and number)
+            </p>
           </>
         )}
 

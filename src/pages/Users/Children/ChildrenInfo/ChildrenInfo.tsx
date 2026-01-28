@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import PageMeta from "../../../../components/common/PageMeta";
 import Taps from "./Taps/Taps";
@@ -5,11 +6,12 @@ import { useLanguage } from "../../../../locales/LanguageContext";
 import { toast } from "sonner";
 import { useParams } from "react-router";
 import { getChildrenById } from "../../../../api/services/childrenService";
+import { Child, ChildApiResponse } from "../../../../utils/types/childrenType";
 
 export default function ChildrenInfo() {
   const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
-  const [child, setChild] = useState<any>(null);
+  const [child, setChild] = useState<ChildApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,17 +31,30 @@ export default function ChildrenInfo() {
 
     fetchChild();
   }, [id, t]);
-
-  const childDetails = child
+  const childData: Child | undefined = child?.Data;
+  const childDetails = childData
     ? [
-        { label: "Name", value: child.Name || "__" },
+        { label: "Name", value: childData.Name || "__" },
         {
           label: "Phone",
-          value: child.ParentPhoneNumber || child.Phone || "__",
+          value: childData.ParentPhoneNumber || childData.Phone || "__",
         },
-        { label: "Email", value: child.Email || "__" },
-        { label: "Gender", value: child.GenderId === "1" ? "Male" : "Female" },
-        { label: "Date Of Birth", value: child.DateOfBirth || "__" },
+        { label: "Email", value: childData.Email || "__" },
+        {
+          label: "Gender",
+          value:
+            childData.GenderId === 1
+              ? t("Male")
+              : childData.GenderId === 2
+                ? t("Female")
+                : "__",
+        },
+        {
+          label: "Date Of Birth",
+          value: childData.DateOfBirth
+            ? new Date(childData.DateOfBirth).toLocaleDateString()
+            : "__",
+        },
       ]
     : [];
 
@@ -51,10 +66,10 @@ export default function ChildrenInfo() {
     );
   }
 
-  if (!child) {
+  if (!child || !child.Data) {
     return (
       <div className="text-center min-h-screen h-full flex justify-center items-center">
-        <h2 className="text-xl font-semibold h-full">{t("NoData")}</h2>
+        <h2 className="text-xl font-semibold">{t("NoData")}</h2>
       </div>
     );
   }
@@ -66,13 +81,21 @@ export default function ChildrenInfo() {
         description={``}
       />
       <div className="flex items-center gap-2">
-        <img
-          className="w-10 h-10 rounded-full"
-          src="/images/child.png"
-          alt="child-image"
-        />
+        {childData?.AvatarImg ? (
+          <img
+            className="w-10 h-10 rounded-full object-cover"
+            src={childData.AvatarImg}
+            alt="child-image"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        ) : (
+          <div className="w-10 h-10 rounded-full bg-gray-300" />
+        )}
+
         <h2 className="font-medium text-2xl text-[#000000]">
-          {child.Name || t("NoName")}
+          {childData?.Name || t("NoName")}
         </h2>
       </div>
 

@@ -92,8 +92,8 @@ export default function ProfileLevels() {
         toast.error(t("all_fields_required"));
         return;
       }
-      if (Number(data.MinPoints) >= Number(data.MaxPoints)) {
-        toast.error(t("max_less_min"));
+      if (Number(data.MinPoints) > Number(data.MaxPoints)) {
+        toast.error(t("min_less_max"));
         return;
       }
 

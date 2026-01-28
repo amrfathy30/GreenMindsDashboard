@@ -17,7 +17,7 @@ export default function TopRanked({
   return (
     <ComponentCard title={t("TopRanked")}>
       {topRanks.length === 0 ? (
-        <div className="text-gray-400 text-sm flex items-center w-full justify-center h-full py-6">
+        <div className="flex items-center justify-center w-full h-full text-gray-500 text-lg font-semibold">
           {t("NoData")}
         </div>
       ) : (
