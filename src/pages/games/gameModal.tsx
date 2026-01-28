@@ -8,7 +8,7 @@ import Input from "../../components/form/input/InputField";
 import TextArea from "../../components/form/input/TextArea";
 import { createGame, updateGame } from "../../api/services/gameService";
 import { allAgeData } from "../../api/services/ageService";
-import { toast } from "sonner"; // Import toast
+import { toast } from "sonner";
 
 interface GameModalProps {
   isOpen: boolean;
@@ -35,7 +35,7 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     ios: "",
     apiLink: "",
     apiKey: "",
-    ageGroup: "",
+    ageSectorId: "", 
   });
 
   useEffect(() => {
@@ -50,9 +50,7 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
       }
     };
 
-    if (isOpen) {
-      fetchAgeGroups();
-    }
+    if (isOpen) fetchAgeGroups();
   }, [isOpen]);
 
   useEffect(() => {
@@ -66,16 +64,15 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
         ios: gameData.IosLink || "",
         apiLink: gameData.ApiLink || "",
         apiKey: gameData.ApiKey || "",
-        ageGroup: gameData.AgeGroup || "",
+        ageSectorId: gameData.AgeSectorId?.toString() || "", 
       });
       setPreviewImage(gameData.ThumbnailUrl || null);
     } else if (!gameData && isOpen) {
-        // Reset form for "Add" mode
-        setFormDataState({
-            nameEn: "", nameAr: "", descEn: "", descAr: "",
-            android: "", ios: "", apiLink: "", apiKey: "", ageGroup: ""
-        });
-        setPreviewImage(null);
+      setFormDataState({
+        nameEn: "", nameAr: "", descEn: "", descAr: "",
+        android: "", ios: "", apiLink: "", apiKey: "", ageSectorId: ""
+      });
+      setPreviewImage(null);
     }
   }, [gameData, isOpen]);
 
@@ -88,10 +85,9 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     e.preventDefault();
     setFormError(false);
 
-    // Basic Validation
-    if (!formDataState.nameEn || !formDataState.nameAr) {
+    if (!formDataState.nameEn || !formDataState.nameAr || !formDataState.ageSectorId) {
       setFormError(true);
-      toast.error(t("please_fill_required_fields")); // Better than alert
+      toast.error(t("please_fill_required_fields"));
       return;
     }
 
@@ -104,37 +100,45 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     formData.append("IosLink", formDataState.ios);
     formData.append("ApiLink", formDataState.apiLink);
     formData.append("ApiKey", formDataState.apiKey);
-    formData.append("AgeGroup", formDataState.ageGroup);
+    formData.append("AgeSectorId", formDataState.ageSectorId);
 
     const file = fileInputRef.current?.files?.[0];
     if (file) {
       formData.append("Thumbnail", file);
     }
 
+    setLoading(true);
+    const toastId = toast.loading(type === 'edit' ? t("updating...") : t("saving..."));
+
     try {
-      setLoading(true);
       if (type === 'edit') {
-        if (gameData?.id) {
-          formData.append("Id", gameData.id.toString());
+        if (gameData?.Id || gameData?.id) {
+          formData.append("Id", (gameData.Id || gameData.id).toString());
         }
         await updateGame(formData);
-        toast.success(t("game_updated_successfully"));
+        toast.success(t("game_updated_successfully"), { id: toastId });
       } else {
         await createGame(formData);
-        toast.success(t("game_created_successfully"));
+        toast.success(t("game_created_successfully"), { id: toastId });
       }
-
       onSuccess();
       onClose();
     } catch (error: any) {
-      const msg = error.response?.data?.Message || error.message || "Operation failed";
-      toast.error(msg); // Replaced alert(msg)
-    } finally {
+  const serverErrors = error.response?.data?.Data;
+  let customMsg = "";
+
+  if (serverErrors && typeof serverErrors === 'object') {
+    const firstKey = Object.keys(serverErrors)[0];
+    customMsg = serverErrors[firstKey][0]; 
+  }
+
+  const finalMsg = customMsg || error.response?.data?.Message || t("something_went_wrong");
+
+  toast.error(finalMsg, { id: toastId });
+} finally {
       setLoading(false);
     }
   };
-
-  const handleUploadClick = () => fileInputRef.current?.click();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -146,6 +150,7 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
   };
 
   if (!isOpen) return null;
+
   return (
     <Modal
       isOpen={isOpen}
@@ -153,146 +158,61 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
       className="max-w-xl mx-4"
       title={type === 'edit' ? t("edit_game") : t("add_new_game")}
     >
-      <Form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-3 p-6 my-6  border rounded-2xl"
-      >
+      <Form onSubmit={handleSubmit} className="flex flex-col gap-3 p-6 my-6 border rounded-2xl">
+        <Input id="nameEn" label={t("game_name_en")} value={formDataState.nameEn} onChange={handleChange} required error={formError && !formDataState.nameEn} />
+        <Input id="nameAr" label={t("game_name_ar")} value={formDataState.nameAr} onChange={handleChange} required error={formError && !formDataState.nameAr} />
 
-        <Input
-            id="nameEn"
-            label={t("game_name_en")}
-            placeholder={t("enter_name_placeholder")}
-            value={formDataState.nameEn} 
-            onChange={handleChange}
-            required={true}
-            error={formError}
-          />
-
-        <Input
-            id="nameAr"
-            label={t("game_name_ar")}
-            placeholder={t("enter_name_placeholder")}
-            value={formDataState.nameAr} 
-            onChange={handleChange}
-            required={true}
-            error={formError}
-          />
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-black dark:text-gray-300">
-            {t("select_age_group")}
-          </label>
-<select 
-  id="ageGroup"
-  value={formDataState.ageGroup}
-  onChange={handleChange}
-  className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
->
-  <option value="" disabled>{t("select_age_group")}</option>
-  {ageGroups && ageGroups.map((group: any) => (
-    <option 
-      key={group.Id} 
-      value={group.DisplayName} 
-      className="dark:bg-[#1a222c]"
-    >
-      {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
-    </option>
-  ))}
-</select>
+          <label className="block text-sm font-medium text-black dark:text-gray-300">{t("select_age_group")}</label>
+          <select 
+            id="ageSectorId" 
+            value={formDataState.ageSectorId}
+            onChange={handleChange}
+            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
+          >
+            <option value="" disabled>{t("select_age_group")}</option>
+            {ageGroups && ageGroups.map((group: any) => (
+              <option key={group.Id} value={group.Id}> 
+                {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
+              </option>
+            ))}
+          </select>
+          {formError && !formDataState.ageSectorId && <p className="text-xs text-red-500">{t("required")}</p>}
         </div>
-        <div className="grid grid-cols-2 space-x-2 w-full">
-  <TextArea
-    id="descEn"
-    label={t("description_en")}
-    value={formDataState.descEn}
-    onChange={(val) => setFormDataState(prev => ({ ...prev, descEn: val }))}
-    required
-    error={formError}
-  />
-  <TextArea
-    id="descAr"
-    label={t("description_ar")}
-    value={formDataState.descAr}
-    onChange={(val) => setFormDataState(prev => ({ ...prev, descAr: val }))}
-    required
-    error={formError}
-  />
-</div>
+
+        <div className="grid grid-cols-2 gap-2 w-full">
+          <TextArea id="descEn" label={t("description_en")} value={formDataState.descEn} onChange={(val) => setFormDataState(prev => ({ ...prev, descEn: val }))} required />
+          <TextArea id="descAr" label={t("description_ar")} value={formDataState.descAr} onChange={(val) => setFormDataState(prev => ({ ...prev, descAr: val }))} required />
+        </div>
+
         <div className="grid grid-cols-1 gap-3">
-  {[
-    { label: t("android_link"), id: "android" },
-    { label: t("ios_link"), id: "ios" },
-    { label: t("api_link"), id: "apiLink" }, 
-  ].map((field) => (
-    <Input
-      key={field.id}
-      id={field.id}
-      label={field.label}
-      placeholder={t("enter_url_placeholder")}
-      value={formDataState[field.id as keyof typeof formDataState]} 
-      onChange={handleChange}
-      required 
-      error={formError}
-    />
-  ))}
-  
-  <Input
-    id="apiKey" 
-    label={t("api_key_label")}
-    placeholder={t("enter_api_key_placeholder")}
-    value={formDataState.apiKey}
-    onChange={handleChange}
-    required 
-    error={formError}
-  />
-</div>
+          {[{ label: t("android_link"), id: "android" }, { label: t("ios_link"), id: "ios" }, { label: t("api_link"), id: "apiLink" }].map((f) => (
+            <Input key={f.id} id={f.id} label={f.label} value={(formDataState as any)[f.id]} onChange={handleChange} required />
+          ))}
+          <Input id="apiKey" label={t("api_key_label")} value={formDataState.apiKey} onChange={handleChange} required />
+        </div>
+
         <div className="space-y-2">
-          <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
-            {t("upload_thumbnail_label")}
-          </label>
-          <div className="flex flex-col sm:flex-row items-center gap-4 ">
-            <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-100 border-gray-700">
-              {previewImage ? (
-                <img src={previewImage} alt="Preview" className="h-full w-full object-cover" />
-              ) : (
-                <ImageIcon size={26} className="text-gray-400" />
-              )}
+          <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">{t("upload_thumbnail_label")}</label>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
+              {previewImage ? <img src={previewImage} className="h-full w-full object-cover" /> : <ImageIcon size={26} className="text-gray-400" />}
             </div>
             <div className="w-full space-y-2">
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-              />
-
-              <button
-                type="button"
-                onClick={handleUploadClick}
-                className="flex items-center gap-2 group hover:opacity-80 transition-opacity"
-              >
-                <div className="text-[#25B16F]">
-                  <Upload size={18} strokeWidth={2.5} />
-                </div>
-                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
-                  {t("upload_button")}
-                </span>
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+              <button type="button" onClick={() => fileInputRef.current?.click()} className="flex items-center gap-2">
+                <Upload size={18} className="text-[#25B16F]" />
+                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">{t("upload_button")}</span>
               </button>
-              <Input 
-                id="thumbnail_url" 
-                placeholder={t("thumbnail_url_placeholder")}
-                defaultValue={gameData?.thumbnailUrl || ""} 
-                error={formError}
-              />
             </div>
           </div>
         </div>
 
-
-        <Button className="mt-2" type="submit">{type === 'edit' ? t("updateButton") : t("saveButton")}</Button>
+        <Button className="mt-2" type="submit" disabled={loading}>
+          {loading ? t("loading...") : (type === 'edit' ? t("updateButton") : t("saveButton"))}
+        </Button>
       </Form>
     </Modal>
-
   );
 };
 

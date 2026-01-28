@@ -25,7 +25,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
   const [selectedAgeSector, setSelectedAgeSector] = useState("");
   const [errors, setErrors] = useState<{ image?: string; ageSector?: string }>({});
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false); // حالة التحميل
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchAgeGroups = async () => {
@@ -74,7 +74,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      toast.error(t("please_check_required_fields")); // تنبيه بدلاً من alert
+      toast.error(t("please_check_required_fields")); 
       return; 
     }
 
