@@ -32,12 +32,12 @@ export default function ChildrenList({
   const { t } = useLanguage();
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<Children | null>(null);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     if (openAddModal) {
@@ -237,19 +237,21 @@ export default function ChildrenList({
   ];
 
   return (
-    <div>
+    <div className="">
       {tableLoading ? (
         <TableLoading columnCount={5} />
       ) : (
-        <BasicTableOne data={childrenList} columns={columns} />
+        <div className="flex flex-col min-h-[calc(100vh-200px)]">
+          <BasicTableOne data={childrenList} columns={columns} />
+          <div className="mt-auto my-6 w-full flex items-center justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </div>
+        </div>
       )}
-      <div className="my-6 w-full flex items-center justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
 
       <ConfirmModal
         open={openConfirm}

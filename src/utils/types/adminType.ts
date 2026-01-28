@@ -57,6 +57,8 @@ export interface UserTypeApiResponse {
 export interface AdminApiResponse {
   StatusCode: number;
   Message: string;
+  PageSize: number;
+  Total: number;
   Data: {
     Id: number;
     Name: string;

@@ -8,21 +8,17 @@ import { EditIcon, RemoveIcon } from "../../../icons";
 import AdminModal from "./AdminModal";
 import { useLanguage } from "../../../locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
-import {
-  AdminApiResponse,
-  AdminList,
-  UserTypeApiResponse,
-} from "../../../utils/types/adminType";
+import { AdminApiResponse, AdminList } from "../../../utils/types/adminType";
 import {
   allAdminData,
   createAdmin,
   deleteAdmin,
   updateAdmin,
-  UserTypes,
 } from "../../../api/services/adminService";
 import { TableLoading } from "../../../components/loading/TableLoading";
 import { allAdminRoles } from "../../../api/services/adminRolesService";
 import { AgeApiResponse } from "../../../utils/types/ageType";
+import Pagination from "../../../components/common/Pagination";
 
 export default function AdminsList({
   openAddModal,
@@ -32,6 +28,8 @@ export default function AdminsList({
   setOpenAddModal?: (open: boolean) => void;
 }) {
   const { t } = useLanguage();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -144,7 +142,10 @@ export default function AdminsList({
         res = await createAdmin(data);
       }
 
-      const listRes: AdminApiResponse = await allAdminData();
+      const listRes: AdminApiResponse = await allAdminData({
+        page: currentPage,
+        pageSize: 10,
+      });
 
       setAdminList(
         listRes.Data.map((item) => ({
@@ -162,6 +163,8 @@ export default function AdminsList({
       ShowToastSuccess(
         res?.Message || (editData ? t("success_update") : t("success_create")),
       );
+      setTotalPages(Math.ceil(listRes.Total / listRes.PageSize));
+
       setOpenModal(false);
       setEditData(null);
     } catch (error: any) {
@@ -245,8 +248,18 @@ export default function AdminsList({
       {tableLoading ? (
         <TableLoading columnCount={5} />
       ) : (
-        <BasicTableOne data={adminList} columns={columns} />
+        <div className="flex flex-col min-h-[calc(100vh-200px)]">
+          <BasicTableOne data={adminList} columns={columns} />
+          <div className="mt-auto my-6 w-full flex items-center justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </div>
+        </div>
       )}
+
       <ConfirmModal
         open={openConfirm}
         loading={deleteLoading}
