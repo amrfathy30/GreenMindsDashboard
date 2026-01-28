@@ -129,6 +129,7 @@ const translations = {
     DeleteChild: "Delete Child",
     AreYouSureDeleteChild: "Are you sure you want to delete this child?",
     ChildDeletedSuccessfully: "The child has been deleted successfully",
+    DeletedSuccessfully: "Deleted successfully",
     AddNewChildren: "Add New Child",
     EditChildren: "Edit Child",
     ChildrenNameEN: "Child Name (EN)",
@@ -297,6 +298,16 @@ const translations = {
     enterPhone: "Enter phone here",
     profileUpdated: "Profile updated successfully",
     loadInfoFailed: "Failed to load personal info",
+    // login
+    LoginToYourAccount: "Login to your Account",
+    Email: "Email",
+    InfoGmailCom: "info@gmail.com",
+    EnterYourPassword: "Enter your password",
+    Login: "Login",
+    PleaseEnterAValidEmail: "Please enter a valid email",
+    LoginSuccessful: "Login successful",
+    InvalidEmailOrPassword: "Invalid email or password",
+    SomethingWentWrongPleaseTryAgain: "Something went wrong, please try again",
     //change Password
     oldPassword: "Old Password",
     newPassword: "New Password",
@@ -438,6 +449,7 @@ const translations = {
     DeleteParent: "حذف ولي الأمر",
     AreYouSureDeleteParent: "هل أنت متأكد أنك تريد حذف هذا الولي؟",
     ParentDeletedSuccessfully: "تم حذف ولي الأمر بنجاح",
+    DeletedSuccessfully: "تم الحذف بنجاح",
     NameAr: "الاسم (عربي)",
     NameEn: "الاسم (إنجليزي)",
     UserName: "اسم المستخدم",
@@ -498,7 +510,7 @@ const translations = {
     AddChildren: "إضافة أطفال",
     UpdateChildren: "تحديث الأطفال",
     success_create: "تم الانشاء بنجاح",
-    success_update: "تم التتحديث المستوي بنجاح",
+    success_update: "تم التحديث بنجاح",
 
     // setting
     setting: "الإعدادات",
@@ -599,6 +611,21 @@ const translations = {
     enterPhone: "أدخل رقم الهاتف هنا",
     profileUpdated: "تم تحديث الملف الشخصي بنجاح",
     loadInfoFailed: "فشل تحميل البيانات الشخصية",
+    // login
+
+    LoginToYourAccount: "سجّل الدخول إلى حسابك",
+    Email: "البريد الإلكتروني",
+    InfoGmailCom: "info@gmail.com",
+    EnterYourPassword: "أدخل كلمة المرور الخاصة بك",
+    Login: "تسجيل الدخول",
+    AllFieldsAreRequired: "جميع الحقول مطلوبة",
+    PleaseEnterAValidEmail: "يرجى إدخال بريد إلكتروني صحيح",
+    PasswordMustBeAtLeast8Characters:
+      "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+    LoginSuccessful: "تم تسجيل الدخول بنجاح",
+    InvalidEmailOrPassword: "بريد إلكتروني أو كلمة مرور غير صحيحة",
+    SomethingWentWrongPleaseTryAgain:
+      "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى",
     //change Password
     oldPassword: "كلمة المرور القديمة",
     newPassword: "كلمة المرور الجديدة",
@@ -623,9 +650,6 @@ const translations = {
     EnterNewPasswordConfirmationHere: "أعد إدخال كلمة المرور الجديدة هنا",
     Save: "حفظ",
     Saving: "جارٍ الحفظ...",
-    PasswordMustBeAtLeast8Characters:
-      "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
-    AllFieldsAreRequired: "جميع الحقول مطلوبة",
     PasswordsDoNotMatch: "كلمتا المرور غير متطابقتين",
     PasswordUpdatedSuccessfully: "تم تحديث كلمة المرور بنجاح",
     FailedToUpdatePassword: "فشل في تحديث كلمة المرور",

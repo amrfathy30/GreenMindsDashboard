@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
@@ -6,99 +7,119 @@ import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 import { adminLogin } from "../../api/services/authService";
 import { useLanguage } from "../../locales/LanguageContext";
+import { toast } from "sonner";
+import { ShowToastSuccess } from "../common/ToastHelper";
 
 export default function SignInForm() {
-  const {  isRTL} = useLanguage();
-  const navigate = useNavigate()
+  const { t } = useLanguage();
+  const lang = localStorage.getItem("GM-language");
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     const checkExistingAuth = async () => {
-      const token = localStorage.getItem('GMadminToken');
-      if(token){
-        navigate('/videos');
+      const token = localStorage.getItem("GMadminToken");
+      if (token) {
+        navigate("/videos");
       }
     };
 
     checkExistingAuth();
-  }, []);
+  }, [navigate]);
 
-  // const validateEmail = (email: string) => {
-  //   return String(email)
-  //     .toLowerCase()
-  //     .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-  // };
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast.error(t("AllFieldsAreRequired"));
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error(t("PleaseEnterAValidEmail"));
+      return;
+    }
+
+    if (password.length < 8) {
+      toast.error(t("PasswordMustBeAtLeast8Characters"));
+      return;
+    }
+
     setLoading(true);
-    setError('');
-    // if (!validateEmail(email)) {
-    //   setError('Please Enter a valid email')
-    //   setLoading(false)
-    //   return;
-    // }
 
     try {
       const response = await adminLogin({ email, password });
-      setLoading(false)
-      if (response.StatusCode == 200) {
-        console.log(response)
-         localStorage.setItem('GMadminToken', response.Data?.token );
-         localStorage.setItem('GMadminData', JSON.stringify(response.Data));
 
-        window.location.href='/videos'
-      }
-      else {
-        setError(isRTL?"بريد الكتروني غير صحيح او كلمه مرور غير صحيحه":"Invalid email or password")
-      }
+      if (response?.StatusCode === 200) {
+        ShowToastSuccess(t("LoginSuccessful"));
 
+        localStorage.setItem("GMadminToken", response.Data?.Token?.token);
+        localStorage.setItem("GMadminData", JSON.stringify(response.Data));
+
+        setTimeout(() => {
+          window.location.href = "/videos";
+        }, 1000);
+      } else {
+        toast.error(response?.Message || t("InvalidEmailOrPassword"));
+      }
     } catch (err: any) {
-      setError(err)
-    }
+      const apiMessage =
+        err?.response?.data?.Message || t("SomethingWentWrongPleaseTryAgain");
 
+      toast.error(apiMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex flex-col flex-1">
-
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="text-center mb-2 font-semibold text-[#525252] text-title-sm dark:text-white/90 sm:text-title-md">
-              Login to your Account
+              {t("LoginToYourAccount")}
             </h1>
           </div>
           <div>
-
-<div>{error}</div>
             <form onSubmit={handleOnSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
-                    Email <span className="text-error-500">*</span>{" "}
+                    {t("Email")} <span className="text-error-500">*</span>
                   </Label>
-                  <Input placeholder="info@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
+                  <Input
+                    placeholder={t("InfoGmailCom")}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>
-                    Password <span className="text-error-500">*</span>{" "}
+                    {t("Password")} <span className="text-error-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={password} onChange={e => setPassword(e.target.value)}
+                      placeholder={t("EnterYourPassword")}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                      className={`absolute z-30 -translate-y-1/2 cursor-pointer ${lang === "en" ? "right-4" : "left-4"}  top-1/2`}
                     >
                       {showPassword ? (
                         <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
@@ -108,39 +129,20 @@ export default function SignInForm() {
                     </span>
                   </div>
                 </div>
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Checkbox checked={isChecked} onChange={setIsChecked} />
-                    <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
-                      Keep me logged in
-                    </span>
-                  </div>
-                  <Link
-                    to="/reset-password"
-                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                  >
-                    Forgot password?
-                  </Link>
-                </div> */}
                 <div>
-                  <Button className="w-full" variant="primaryGrid" size="lg" type="submit" disabled={!(email && password)} loading={loading}>
-                    Login
+                  <Button
+                    className="w-full"
+                    variant="primaryGrid"
+                    size="lg"
+                    type="submit"
+                    disabled={!email || !password || loading}
+                    loading={loading}
+                  >
+                    {t("Login")}
                   </Button>
                 </div>
               </div>
             </form>
-
-            {/* <div className="mt-5">
-              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Don&apos;t have an account? {""}
-                <Link
-                  to="/signup"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                >
-                  Sign Up
-                </Link>
-              </p>
-            </div> */}
           </div>
         </div>
       </div>
