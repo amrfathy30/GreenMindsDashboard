@@ -8,116 +8,135 @@ import Input from "../../components/form/input/InputField";
 import TextArea from "../../components/form/input/TextArea";
 import { createGame, updateGame } from "../../api/services/gameService";
 import { allAgeData } from "../../api/services/ageService";
+import { toast } from "sonner"; // Import toast
 
 interface GameModalProps {
   isOpen: boolean;
   onClose: () => void;
   gameData?: any;
-  type: 'add' | 'edit'
+  type: 'add' | 'edit';
   onSuccess: () => void;
 }
 
-const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type,onSuccess }) => {
+const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, onSuccess }) => {
   const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(gameData?.image || null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState(false);
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
- 
-const [formDataState, setFormDataState] = useState({
-  nameEn: "",
-  nameAr: "",
-  descEn: "",
-  descAr: "",
-  android: "",
-  ios: "",
-  apiLink: "",
-  apiKey: "",
-  ageGroup: "",
-});
-useEffect(() => {
-  const fetchAgeGroups = async () => {
-    try {
-      const response = await allAgeData();
-      if (response && response.Data) {
-        setAgeGroups(response.Data); 
-      }
-    } catch (error) {
-      console.error("Failed to fetch age groups", error);
-    }
-  };
 
-  if (isOpen) {
-    fetchAgeGroups();
-  }
-}, [isOpen]);
-useEffect(() => {
-  if (gameData && isOpen) {
-    setFormDataState({
-      nameEn: gameData.GameNameEn || "", 
-      nameAr: gameData.GameNameAr || "",
-      descEn: gameData.DescriptionEn || "",
-      descAr: gameData.DescriptionAr || "",
-      android: gameData.AndroidLink || "",
-      ios: gameData.IosLink || "",
-      apiLink: gameData.ApiLink || "",
-      apiKey: gameData.ApiKey || "",
-      ageGroup: gameData.AgeGroup || "",
-    });
-    setPreviewImage(gameData.ThumbnailUrl || null);
-  }
-}, [gameData, isOpen]);
+  const [formDataState, setFormDataState] = useState({
+    nameEn: "",
+    nameAr: "",
+    descEn: "",
+    descAr: "",
+    android: "",
+    ios: "",
+    apiLink: "",
+    apiKey: "",
+    ageGroup: "",
+  });
+
+  useEffect(() => {
+    const fetchAgeGroups = async () => {
+      try {
+        const response = await allAgeData();
+        if (response && response.Data) {
+          setAgeGroups(response.Data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch age groups", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchAgeGroups();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (gameData && isOpen) {
+      setFormDataState({
+        nameEn: gameData.GameNameEn || "",
+        nameAr: gameData.GameNameAr || "",
+        descEn: gameData.DescriptionEn || "",
+        descAr: gameData.DescriptionAr || "",
+        android: gameData.AndroidLink || "",
+        ios: gameData.IosLink || "",
+        apiLink: gameData.ApiLink || "",
+        apiKey: gameData.ApiKey || "",
+        ageGroup: gameData.AgeGroup || "",
+      });
+      setPreviewImage(gameData.ThumbnailUrl || null);
+    } else if (!gameData && isOpen) {
+        // Reset form for "Add" mode
+        setFormDataState({
+            nameEn: "", nameAr: "", descEn: "", descAr: "",
+            android: "", ios: "", apiLink: "", apiKey: "", ageGroup: ""
+        });
+        setPreviewImage(null);
+    }
+  }, [gameData, isOpen]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormDataState((prev) => ({ ...prev, [id]: value }));
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setFormError(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError(false);
 
-  if (!formDataState.nameEn || !formDataState.nameAr) {
-    setFormError(true);
-    return;
-  }
-  const formData = new FormData();
-  formData.append("GameNameEn", formDataState.nameEn);
-  formData.append("GameNameAr", formDataState.nameAr);
-  formData.append("DescriptionEn", formDataState.descEn);
-  formData.append("DescriptionAr", formDataState.descAr);
-  formData.append("AndroidLink", formDataState.android);
-  formData.append("IosLink", formDataState.ios);
-  formData.append("ApiLink", formDataState.apiLink);
-  formData.append("ApiKey", formDataState.apiKey);
-  formData.append("AgeGroup", formDataState.ageGroup);
-
-  const file = fileInputRef.current?.files?.[0];
-  if (file) {
-    formData.append("Thumbnail", file);
-  }
-
-  try {
-    if (type === 'edit') {
-      if (gameData?.id) {
-        formData.append("Id", gameData.id.toString());
-      }
-      await updateGame(formData);
-    } else {
-      await createGame(formData);
+    // Basic Validation
+    if (!formDataState.nameEn || !formDataState.nameAr) {
+      setFormError(true);
+      toast.error(t("please_fill_required_fields")); // Better than alert
+      return;
     }
-    
-    onSuccess(); 
-    onClose();   
-  } catch (error: any) {
-    setFormError(true);
-    const msg = error.response?.data?.message || "Error occurred";
-    alert(msg);
-  }
-};
-const handleUploadClick = () => fileInputRef.current?.click();
 
-const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formData = new FormData();
+    formData.append("GameNameEn", formDataState.nameEn);
+    formData.append("GameNameAr", formDataState.nameAr);
+    formData.append("DescriptionEn", formDataState.descEn);
+    formData.append("DescriptionAr", formDataState.descAr);
+    formData.append("AndroidLink", formDataState.android);
+    formData.append("IosLink", formDataState.ios);
+    formData.append("ApiLink", formDataState.apiLink);
+    formData.append("ApiKey", formDataState.apiKey);
+    formData.append("AgeGroup", formDataState.ageGroup);
+
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
+      formData.append("Thumbnail", file);
+    }
+
+    try {
+      setLoading(true);
+      if (type === 'edit') {
+        if (gameData?.id) {
+          formData.append("Id", gameData.id.toString());
+        }
+        await updateGame(formData);
+        toast.success(t("game_updated_successfully"));
+      } else {
+        await createGame(formData);
+        toast.success(t("game_created_successfully"));
+      }
+
+      onSuccess();
+      onClose();
+    } catch (error: any) {
+      const msg = error.response?.data?.Message || error.message || "Operation failed";
+      toast.error(msg); // Replaced alert(msg)
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUploadClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -125,7 +144,8 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       reader.readAsDataURL(file);
     }
   };
- if (!isOpen) return null;
+
+  if (!isOpen) return null;
   return (
     <Modal
       isOpen={isOpen}
