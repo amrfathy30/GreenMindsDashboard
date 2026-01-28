@@ -90,7 +90,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
       formData.append("Image", fileInputRef.current.files[0]);
     }
 
-    setIsSubmitting(true);
+    // setIsSubmitting(true);
     const toastId = toast.loading(type === 'edit' ? t("updating...") : t("saving..."));
 
     try {
@@ -108,7 +108,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
       const errorMsg = error.response?.data?.Message || t("something_went_wrong");
       toast.error(errorMsg, { id: toastId });
     } finally {
-      setIsSubmitting(false);
+      // setIsSubmitting(false);
     }
   };
 
