@@ -33,7 +33,7 @@ export default function App() {
               <Route path="/avatars" element={<AvatarsList />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/children-info" element={<ChildrenInfo />} />
+              <Route path="/children-info/:id" element={<ChildrenInfo />} />
               <Route path="/setting" element={<Setting />} />
               <Route path="/age-group" element={<AgeGroup />} />
               <Route path="/admin-roles" element={<AdminRoles />} />

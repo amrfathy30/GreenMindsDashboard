@@ -16,12 +16,13 @@ export default function ParentModal({
   initialData,
 }: ParentsModalProps) {
   const { t } = useLanguage();
-  const [selectedValue, setSelectedValue] = useState<string>("male");
+  const [selectedValue, setSelectedValue] = useState<string>("1");
 
   const handleChange = (value: string) => {
     setSelectedValue(value);
     setFormData({ ...formData, GenderId: value });
   };
+
   const [formData, setFormData] = useState({
     Name: "",
     UserName: "",
@@ -33,26 +34,33 @@ export default function ParentModal({
     DateOfBirth: "",
   });
 
+  const formatDateForInput = (date: string) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     if (initialData) {
-      setSelectedValue(initialData.GenderId || "male");
+      const formattedDate = initialData.DateOfBirth
+        ? formatDateForInput(initialData.DateOfBirth)
+        : "";
 
+      setSelectedValue(initialData.GenderId || "1");
       setFormData({
         Name: initialData.Name,
-        // Name_en: initialData.Name_en,
-        // Name_ar: initialData.Name_ar,
         UserName: initialData.UserName,
         Email: initialData.Email,
         Password: initialData.Password,
         ConfirmPassword: initialData.ConfirmPassword,
         ParentPhoneNumber: initialData.ParentPhoneNumber,
         GenderId: initialData.GenderId,
-        DateOfBirth: initialData.DateOfBirth,
+        DateOfBirth: formattedDate,
       });
     } else {
       setFormData({
-        // Name_en: "",
-        // Name_ar: "",
         UserName: "",
         Name: "",
         Email: "",
@@ -81,28 +89,6 @@ export default function ParentModal({
         onSubmit={onSubmit}
         className="flex flex-col gap-3 p-4 my-6 border rounded-2xl"
       >
-        {/* <div>
-          <Input
-            id="Name_en"
-            label={t("ParentNameEN")}
-            placeholder={t("EnterNameHere")}
-            value={formData.Name_en}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, Name_en: e.target.value }))
-            }
-          />
-        </div>
-        <div>
-          <Input
-            id="Name_ar"
-            label={t("ParentNameAR")}
-            placeholder={t("EnterNameHere")}
-            value={formData.Name_ar}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, Name_ar: e.target.value }))
-            }
-          />
-        </div> */}
         <div>
           <Input
             id="Name"
@@ -119,7 +105,7 @@ export default function ParentModal({
           <Input
             id="UserName"
             label={t("UserName")}
-            placeholder={t("EnterUserNameHere")}
+            placeholder={t("UserName")}
             value={formData.UserName}
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, UserName: e.target.value }))
@@ -141,7 +127,7 @@ export default function ParentModal({
           <Input
             id="ParentPhoneNumber"
             label={t("PhoneNumber")}
-            placeholder={t("EnterPhoneNumber")}
+            placeholder={t("PhoneNumber")}
             value={formData.ParentPhoneNumber}
             onChange={(e) =>
               setFormData((prev) => ({
@@ -151,34 +137,37 @@ export default function ParentModal({
             }
           />
         </div>
-
-        <div>
-          <Input
-            id="Password"
-            label={t("Password")}
-            type="password"
-            placeholder={t("EnterParentPassword")}
-            value={formData.Password}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, Password: e.target.value }))
-            }
-          />
-        </div>
-        <div>
-          <Input
-            id="ConfirmPassword"
-            label={t("ConfirmPassword")}
-            type="password"
-            placeholder={t("EnterParentConfirmPassword")}
-            value={formData.ConfirmPassword}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                ConfirmPassword: e.target.value,
-              }))
-            }
-          />
-        </div>
+        {!initialData && (
+          <>
+            <div>
+              <Input
+                id="Password"
+                label={t("Password")}
+                type="password"
+                placeholder={t("Password")}
+                value={formData.Password}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, Password: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <Input
+                id="ConfirmPassword"
+                label={t("ConfirmPassword")}
+                type="password"
+                placeholder={t("ConfirmPassword")}
+                value={formData.ConfirmPassword}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    ConfirmPassword: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
             <Label>{t("Gender")}</Label>
@@ -187,15 +176,15 @@ export default function ParentModal({
                 id="male"
                 name="GenderId"
                 value="1"
-                checked={selectedValue === "male"}
+                checked={selectedValue === "1"}
                 label={t("Male")}
                 onChange={handleChange}
               />
               <Radio
                 id="female"
-                name="gender"
+                name="GenderId"
                 value="2"
-                checked={selectedValue === "female"}
+                checked={selectedValue === "2"}
                 label={t("Female")}
                 onChange={handleChange}
               />
@@ -207,7 +196,6 @@ export default function ParentModal({
               label={t("Age")}
               value={formData.DateOfBirth}
               type="date"
-              placeholder={t("EnterChildrenAge")}
               onChange={(e) =>
                 setFormData({ ...formData, DateOfBirth: e.target.value })
               }

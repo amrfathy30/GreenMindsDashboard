@@ -16,6 +16,11 @@ export const updateChildren = async (data: Children, id: number) => {
   return response.data;
 };
 
+export const getChildrenById = async (id: number) => {
+  const response = await axiosInstance.get(`/Children/${id}`);
+  return response.data;
+};
+
 export const deleteChildren = async (id: number) => {
   const response = await axiosInstance.delete(`/Account/${id}`);
   return response.data;

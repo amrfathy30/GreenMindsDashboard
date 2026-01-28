@@ -108,31 +108,34 @@ export default function AdminModal({
             }
           />
         </div>
-        <div>
-          <Input
-            id="Password"
-            type="password"
-            label={t("AdminPassword")}
-            placeholder={t("EnterAdminPassword")}
-            value={formData.Password}
-            onChange={(e) =>
-              setFormData({ ...formData, Password: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <Input
-            id="ConfirmPassword"
-            type="password"
-            label={t("AdminConfirmPassword")}
-            placeholder={t("EnterAdminPassword")}
-            value={formData.ConfirmPassword}
-            onChange={(e) =>
-              setFormData({ ...formData, ConfirmPassword: e.target.value })
-            }
-          />
-        </div>
-
+        {!initialData && (
+          <>
+            <div>
+              <Input
+                id="Password"
+                type="password"
+                label={t("AdminPassword")}
+                placeholder={t("EnterAdminPassword")}
+                value={formData.Password}
+                onChange={(e) =>
+                  setFormData({ ...formData, Password: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <Input
+                id="ConfirmPassword"
+                type="password"
+                label={t("AdminConfirmPassword")}
+                placeholder={t("EnterAdminPassword")}
+                value={formData.ConfirmPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, ConfirmPassword: e.target.value })
+                }
+              />
+            </div>
+          </>
+        )}
         <div>
           <label className="block text-sm font-medium">{t("UserType")}</label>
 
