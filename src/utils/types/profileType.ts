@@ -26,6 +26,7 @@ export interface PersonalInfoRequest {
   Email: string;
   Phone: string;
   Name: string;
+  UserName?: string;
   AvatarImg?: File;
   AvatarUrl?: string;
   Password?: string;
