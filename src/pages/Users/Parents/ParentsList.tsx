@@ -98,7 +98,7 @@ export default function ParentsList({
 
       setParentList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("failed_delete_parent"));
+      toast.error(error?.response?.data?.Message || t("failed_delete"));
     } finally {
       setDeleteLoading(false);
       setOpenConfirm(false);

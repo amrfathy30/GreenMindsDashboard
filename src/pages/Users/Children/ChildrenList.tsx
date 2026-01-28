@@ -197,7 +197,7 @@ export default function ChildrenList({
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
           <Link
-            to="/children-info"
+            to={`/children-info/${row.id}`}
             className="mt-2"
             state={{ child: row }}
             onClick={(e) => e.stopPropagation()}

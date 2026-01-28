@@ -17,5 +17,6 @@ export interface EditProfileModalProps {
 export interface SmtpSettingsModalProps {
   open: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
   initialData?: SmtpList;
 }

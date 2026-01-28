@@ -1,4 +1,4 @@
-import { Children, ChildrenParams } from "../../utils/types/childrenType";
+import { ChildApiResponse, Children, ChildrenParams } from "../../utils/types/childrenType";
 import axiosInstance from "../axiosInstance";
 
 export const allChildrenData = async (params?: ChildrenParams) => {
@@ -16,7 +16,9 @@ export const updateChildren = async (data: Children, id: number) => {
   return response.data;
 };
 
-export const getChildrenById = async (id: number) => {
+export const getChildrenById = async (
+  id: number,
+): Promise<ChildApiResponse> => {
   const response = await axiosInstance.get(`/Children/${id}`);
   return response.data;
 };

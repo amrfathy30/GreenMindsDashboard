@@ -145,66 +145,88 @@ export default function PointsDistribution({
     },
   };
 
+  const hasData =
+    levelsStatsData &&
+    levelsStatsData.length > 0 &&
+    levelsStatsData.some((lvl) => lvl.UsersCount > 0);
+
   return (
     <ComponentCard title={t("PointsDistribution")}>
       <div className="max-w-full overflow-x-auto custom-scrollbar">
         <div ref={containerRef} className="relative w-full h-[400px]">
-          <Chart options={options} series={series} type="donut" height="100%" />
-
-          {/* Center Money Icon */}
-          {pieCenter && pieSize && (
-            <div
-              className="absolute pointer-events-none flex items-center justify-center rounded-full shadow-xl"
-              style={{
-                width: `${pieSize.w - 30}px`,
-                height: `${pieSize.w - 30}px`,
-                left: `${pieCenter.x}px`,
-                top: `${pieCenter.y}px`,
-                transform: "translate(-47%, -51%)",
-              }}
-            >
-              <img className="w-14 h-14" src="/images/money.png" alt="money" />
+          {!hasData ? (
+            <div className="flex items-center justify-center w-full h-full text-gray-500 text-lg font-semibold">
+              {t("NoData")}
             </div>
+          ) : (
+            <>
+              <Chart
+                options={options}
+                series={series}
+                type="donut"
+                height="100%"
+              />
+
+              {/* Center Money Icon */}
+              {pieCenter && pieSize && (
+                <div
+                  className="absolute pointer-events-none flex items-center justify-center rounded-full shadow-xl"
+                  style={{
+                    width: `${pieSize.w - 30}px`,
+                    height: `${pieSize.w - 30}px`,
+                    left: `${pieCenter.x}px`,
+                    top: `${pieCenter.y}px`,
+                    transform: "translate(-47%, -51%)",
+                  }}
+                >
+                  <img
+                    className="w-14 h-14"
+                    src="/images/money.png"
+                    alt="money"
+                  />
+                </div>
+              )}
+
+              {/* CUSTOM HTML LABELS */}
+              {coords.map((pos) => (
+                <div
+                  key={pos.index}
+                  className="absolute pointer-events-none flex flex-col items-center"
+                  style={{
+                    left: `${pos.x}px`,
+                    top: `${pos.y}px`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <div
+                    className="text-sm font-black whitespace-nowrap"
+                    style={{ color: colors[pos.index] }}
+                  >
+                    {series[pos.index]}
+                    {t("points")}
+                  </div>
+                  <svg
+                    width="65"
+                    height="2"
+                    viewBox="0 0 65 2"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 1H34.9746H65"
+                      stroke="#CDCDCD"
+                      stroke-width="2"
+                      stroke-dasharray="2 2"
+                    />
+                  </svg>
+
+                  <div className=" text-[12px] font-bold text-black dark:text-white whitespace-nowrap">
+                    {labels[pos.index]}
+                  </div>
+                </div>
+              ))}
+            </>
           )}
-
-          {/* CUSTOM HTML LABELS */}
-          {coords.map((pos) => (
-            <div
-              key={pos.index}
-              className="absolute pointer-events-none flex flex-col items-center"
-              style={{
-                left: `${pos.x}px`,
-                top: `${pos.y}px`,
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <div
-                className="text-sm font-black whitespace-nowrap"
-                style={{ color: colors[pos.index] }}
-              >
-                {series[pos.index]}
-                {t("points")}
-              </div>
-              <svg
-                width="65"
-                height="2"
-                viewBox="0 0 65 2"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 1H34.9746H65"
-                  stroke="#CDCDCD"
-                  stroke-width="2"
-                  stroke-dasharray="2 2"
-                />
-              </svg>
-
-              <div className=" text-[12px] font-bold text-black dark:text-white whitespace-nowrap">
-                {labels[pos.index]}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </ComponentCard>

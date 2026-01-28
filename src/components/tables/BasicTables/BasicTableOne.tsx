@@ -50,7 +50,7 @@ export default function BasicTableOne({
                 <TableCell
                   key={col.key}
                   isHeader
-                  className="px-5 py-3 text-start text-lg text-white"
+                  className="px-5 py-3 text-start text-base text-white"
                 >
                   {col.label}
                 </TableCell>
@@ -75,7 +75,7 @@ export default function BasicTableOne({
                       <TableCell
                         key={col.key}
                         onClick={() => handleRowClick(row)}
-                        className="cursor-pointer text-start text-lg px-5 py-2 font-normal dark:text-white"
+                        className="cursor-pointer text-start text-base px-5 py-2 font-normal dark:text-white"
                       >
                         {col.render ? col.render(row) : row[col.key]}
                       </TableCell>

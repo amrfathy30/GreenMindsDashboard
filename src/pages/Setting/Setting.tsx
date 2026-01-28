@@ -21,20 +21,20 @@ export default function Setting() {
 
   const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
 
-  useEffect(() => {
-    const fetchSmtp = async () => {
-      try {
-        const res = await allSmtpData();
-        if (res?.Data?.length > 0) {
-          setSmtpData(res.Data[0]);
-        }
-      } catch (error: any) {
-        toast.error(
-          error?.response?.data?.Message || "Failed to load SMTP settings",
-        );
+  const fetchSmtp = async () => {
+    try {
+      const res = await allSmtpData();
+      if (res?.Data?.length > 0) {
+        setSmtpData(res.Data[0]);
       }
-    };
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.Message || "Failed to load SMTP settings",
+      );
+    }
+  };
 
+  useEffect(() => {
     fetchSmtp();
   }, []);
 
@@ -296,6 +296,7 @@ export default function Setting() {
 
       <SmtpSettingsModal
         open={openModal}
+        onSuccess={fetchSmtp} 
         onClose={() => setOpenModal(false)}
         initialData={
           smtpData || {
