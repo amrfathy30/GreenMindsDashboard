@@ -6,7 +6,7 @@ import { Modal } from "../../components/ui/modal";
 import Form from "../../components/form/Form";
 import { createAvatar, updateAvatar } from "../../api/services/avatarService";
 import { allAgeData } from "../../api/services/ageService";
-import toast from "react-hot-toast"; 
+import { toast } from "sonner"; 
 
 const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
 
@@ -14,25 +14,24 @@ interface AvatarModalProps {
   isOpen: boolean;
   onClose: () => void;
   avatarData?: any;
-  type: 'add' | 'edit'
+  type: 'add' | 'edit';
+  onSuccess?: () => void; 
 }
 
-const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, type }) => {
+const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, type, onSuccess }) => {
   const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [selectedAgeSector, setSelectedAgeSector] = useState("");
   const [errors, setErrors] = useState<{ image?: string; ageSector?: string }>({});
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
-
+  const [isSubmitting, setIsSubmitting] = useState(false); // حالة التحميل
 
   useEffect(() => {
     const fetchAgeGroups = async () => {
       try {
         const response = await allAgeData();
-        if (response?.Data) {
-          setAgeGroups(response.Data);
-        }
+        if (response?.Data) setAgeGroups(response.Data);
       } catch (error) {
         console.error("Failed to fetch age groups", error);
       }
@@ -66,7 +65,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
     }
   };
 
- const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let newErrors: { image?: string; ageSector?: string } = {};
     
@@ -75,39 +74,41 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      toast.error(t("please_check_required_fields")); // تنبيه بدلاً من alert
       return; 
     }
 
     const formData = new FormData();
-    formData.append("Name", "Avatar" + Date.now()); 
+    formData.append("Name", "Avatar_" + Date.now()); 
     formData.append("AgeSectorId", selectedAgeSector);
     formData.append("IsActive", "true");
     formData.append("IsDefault", "false");
-
-    formData.append("RequiredLevelId",avatarData?.Id|| avatarData?.RequiredLevelId?.toString()); 
-    formData.append("RequiredPoints", avatarData?.RequiredPoints?.toString() || "0");  
+    formData.append("RequiredLevelId", avatarData?.RequiredLevelId || "1"); 
+    formData.append("RequiredPoints", avatarData?.RequiredPoints || "0");  
 
     if (fileInputRef.current?.files?.[0]) {
       formData.append("Image", fileInputRef.current.files[0]);
     }
 
-    const loadingToast = toast.loading(type === 'edit' ? t("updating...") : t("saving..."));
+    setIsSubmitting(true);
+    const toastId = toast.loading(type === 'edit' ? t("updating...") : t("saving..."));
 
     try {
-
       if (type === 'edit') {
         formData.append("Id", avatarData.Id || avatarData.id);
         await updateAvatar(formData);
-        toast.success(t("avatar_updated_success"), { id: loadingToast });
+        toast.success(t("avatar_updated_success"), { id: toastId });
       } else {
         await createAvatar(formData); 
-        toast.success(t("avatar_added_success"), { id: loadingToast });
+        toast.success(t("avatar_added_success"), { id: toastId });
       }
+      onSuccess?.(); 
       onClose(); 
     } catch (error: any) {
-      console.error("Server Error Detail:", error.response?.data);
-      const errorMsg = error.response?.data?.message || error.response?.data?.Message || t("something_went_wrong");
-      toast.error(`${t("error")}: ${errorMsg}`, { id: loadingToast });
+      const errorMsg = error.response?.data?.Message || t("something_went_wrong");
+      toast.error(errorMsg, { id: toastId });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
