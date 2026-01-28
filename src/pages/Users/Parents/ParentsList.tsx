@@ -235,49 +235,51 @@ export default function ParentsList({
       {tableLoading ? (
         <TableLoading columnCount={5} />
       ) : (
-        <BasicTableOne
-          data={parentList}
-          columns={columns}
-          expandable={{
-            title: t("Children"),
-            canExpand: (row) => row.childrenList?.length > 0,
-            renderExpandedRows: (row) =>
-              row.childrenList.map((child: any, index: number) => (
-                <div
-                  key={index}
-                  className="justify-between items-center grid grid-cols-6"
-                >
-                  <span className="font-semibold">{child.name}</span>
-                  <span className="font-semibold text-center">
-                    {child.phone}
-                  </span>
-                  <span className="font-semibold text-center">
-                    {child.email}
-                  </span>
-                  <span className="font-semibold text-center">
-                    {child.points}
-                  </span>
-                  <span className="font-semibold text-center">
-                    {child.streaks}
-                  </span>
-                  <Link
-                    to="/children-info"
-                    className="text-[#25B16F] font-semibold hover:underline text-end"
+        <div className="flex flex-col min-h-[calc(100vh-200px)]">
+          <BasicTableOne
+            data={parentList}
+            columns={columns}
+            expandable={{
+              title: t("Children"),
+              canExpand: (row) => row.childrenList?.length > 0,
+              renderExpandedRows: (row) =>
+                row.childrenList.map((child: any, index: number) => (
+                  <div
+                    key={index}
+                    className="justify-between items-center grid grid-cols-6"
                   >
-                    {t("SeeMore") || "See more"}
-                  </Link>
-                </div>
-              )),
-          }}
-        />
+                    <span className="font-semibold">{child.name}</span>
+                    <span className="font-semibold text-center">
+                      {child.phone}
+                    </span>
+                    <span className="font-semibold text-center">
+                      {child.email}
+                    </span>
+                    <span className="font-semibold text-center">
+                      {child.points}
+                    </span>
+                    <span className="font-semibold text-center">
+                      {child.streaks}
+                    </span>
+                    <Link
+                      to="/children-info"
+                      className="text-[#25B16F] font-semibold hover:underline text-end"
+                    >
+                      {t("SeeMore") || "See more"}
+                    </Link>
+                  </div>
+                )),
+            }}
+          />
+          <div className="mt-auto my-6 w-full flex items-center justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </div>
+        </div>
       )}
-      <div className="my-6 w-full flex items-center justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
 
       <ConfirmModal
         open={openConfirm}
