@@ -79,12 +79,12 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
     }
 
     const formData = new FormData();
-    formData.append("Name", "Avatar_" + Date.now()); 
+    formData.append("Name", "Avatar" + Date.now()); 
     formData.append("AgeSectorId", selectedAgeSector);
     formData.append("IsActive", "true");
     formData.append("IsDefault", "false");
 
-    formData.append("RequiredLevelId", avatarData?.RequiredLevelId?.toString() || "1"); 
+    formData.append("RequiredLevelId",avatarData?.Id|| avatarData?.RequiredLevelId?.toString()); 
     formData.append("RequiredPoints", avatarData?.RequiredPoints?.toString() || "0");  
 
     if (fileInputRef.current?.files?.[0]) {

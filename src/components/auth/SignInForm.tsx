@@ -66,7 +66,7 @@ export default function SignInForm() {
         ShowToastSuccess(t("LoginSuccessful"));
 
         localStorage.setItem("GMadminToken", response.Data?.Token?.token);
-        localStorage.setItem("GMadminData", JSON.stringify(response.Data));
+        localStorage.setItem("GMadminData", JSON.stringify(response.Data?.Token));
 
         setTimeout(() => {
           window.location.href = "/videos";

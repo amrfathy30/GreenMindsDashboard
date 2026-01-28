@@ -45,7 +45,7 @@ export default function VideosList() {
     try {
       setLoading(true);
       const [videosRes, agesRes] = await Promise.all([
-        allVideosData({ page: currentPage, pageSize: 10 }),
+        allVideosData({ page: currentPage, pageSize: 6 }),
         allAgeData()
       ]);
 
