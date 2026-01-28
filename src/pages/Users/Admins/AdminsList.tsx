@@ -113,7 +113,7 @@ export default function AdminsList({
       setDeleteLoading(true);
       const res = await deleteAdmin(selectedDeleteId);
 
-      ShowToastSuccess(res?.Message || t("ParentDeletedSuccessfully"));
+      ShowToastSuccess(res?.Message || t("DeletedSuccessfully"));
 
       setAdminList((prev) => prev.filter((a) => a.id !== selectedDeleteId));
     } catch (error: any) {
