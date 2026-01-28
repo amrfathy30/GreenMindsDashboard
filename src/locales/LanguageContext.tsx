@@ -164,6 +164,21 @@ const translations = {
     EnterParentPhone: "Enter Parent Phone",
     AddChildren: "Add Child",
     UpdateChildren: "Update Child",
+
+    OtpSentMessage: "A one time password (otp) has been sent to your email.",
+    OTP: "OTP",
+    EnterOtpHere: "Enter OTP here",
+    NewPassword: "New Password",
+    EnterNewPasswordHere: "Enter new password here",
+    NewPasswordConfirmation: "New password Confirmation",
+    EnterNewPasswordConfirmationHere: "Enter new password confirmation here",
+    Save: "Save",
+    Saving: "Saving...",
+    PasswordMustBeAtLeast8Characters: "Password must be at least 8 characters",
+    AllFieldsAreRequired: "All fields are required",
+    PasswordsDoNotMatch: "Passwords do not match",
+    PasswordUpdatedSuccessfully: "Password updated successfully",
+    FailedToUpdatePassword: "Failed to update password",
     // setting
     setting: "Settings",
     language: "Language",
@@ -269,9 +284,9 @@ const translations = {
     num_points: "Number of points",
     add_video_btn: "Add Video",
     save_edit_btn: "Save Edit",
-    Editprofile:"Edit profile",
-    Logout:"Logout",
-    // profile 
+    Editprofile: "Edit profile",
+    Logout: "Logout",
+    // profile
     changePassword: "Change Password",
     resetPassword: "Reset Password",
     backToEdit: "Back to edit",
@@ -572,8 +587,8 @@ const translations = {
     num_points: "عدد النقاط",
     add_video_btn: "إضافة فيديو",
     save_edit_btn: "حفظ التعديلات",
-    Logout:"تسجيل الخروج",
-    // profile 
+    Logout: "تسجيل الخروج",
+    // profile
     changePassword: "تغيير كلمة المرور",
     resetPassword: "إعادة تعيين كلمة المرور",
     backToEdit: "العودة للتعديل",
@@ -599,6 +614,21 @@ const translations = {
     passUpdateSuccess: "تم تحديث كلمة المرور بنجاح",
     resetEmailSuccess: "تم إرسال بريد إعادة التعيين بنجاح",
     Editprofile: "تعديل الملف الشخصي",
+    OtpSentMessage: "تم إرسال كلمة مرور لمرة واحدة (OTP) إلى بريدك الإلكتروني.",
+    OTP: "كلمة المرور لمرة واحدة",
+    EnterOtpHere: "أدخل كلمة المرور هنا",
+    NewPassword: "كلمة المرور الجديدة",
+    EnterNewPasswordHere: "أدخل كلمة المرور الجديدة هنا",
+    NewPasswordConfirmation: "تأكيد كلمة المرور الجديدة",
+    EnterNewPasswordConfirmationHere: "أعد إدخال كلمة المرور الجديدة هنا",
+    Save: "حفظ",
+    Saving: "جارٍ الحفظ...",
+    PasswordMustBeAtLeast8Characters:
+      "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+    AllFieldsAreRequired: "جميع الحقول مطلوبة",
+    PasswordsDoNotMatch: "كلمتا المرور غير متطابقتين",
+    PasswordUpdatedSuccessfully: "تم تحديث كلمة المرور بنجاح",
+    FailedToUpdatePassword: "فشل في تحديث كلمة المرور",
     // permission
     Permission: "الصلاحيات",
     edit: "تعديل",
@@ -617,9 +647,8 @@ const translations = {
     UpdatePermission: "تحديث الصلاحية",
     permissionName: "اسم العرض للصلاحيه",
     permissions_updated_successfully: "تم تحديث الصلاحية بنجاح",
-  
-}
-}
+  },
+};
 
 const LanguageContext = createContext<LanguageContextType | undefined>(
   undefined,
