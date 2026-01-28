@@ -10,10 +10,10 @@ import { getAvatarsPaged, deleteAvatar } from "../../api/services/avatarService"
 import AvatarSkeleton from "../../components/loading/avatarLoading";
 import EmptyState from "../../components/common/no-data-found";
 import { PlusIcon } from "../../icons";
+import toast from "react-hot-toast";
 
-
-
-export default function GamesList() {
+const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
+export default function AvatarList() {
   const { t } = useLanguage();
   const [avatars, setAvatars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,15 +34,22 @@ const loadAvatars = async () => {
     setLoading(true);
     try {
       const response = await getAvatarsPaged(currentPage, pageSize);
-      setAvatars(response.data);
-      setTotalPages(Math.ceil(response.totalCount / pageSize));
+      
+      const apiResponse = response.data || response;
+      const dataContainer = apiResponse.Data || apiResponse.data;
+      
+      const fetchedItems = dataContainer?.Items || [];
+      const totalCount = dataContainer?.Total || 0;
+
+      setAvatars(fetchedItems);
+      setTotalPages(Math.ceil(totalCount / pageSize));
     } catch (error) {
       console.error("Failed to fetch avatars", error);
+      setAvatars([]);
     } finally {
       setLoading(false);
     }
-  };
-
+};
   useEffect(() => {
     loadAvatars();
   }, [currentPage]);
@@ -51,15 +58,20 @@ const loadAvatars = async () => {
     setSelectedAvatar(avatar);
     setIsDeleteModalOpen(true);
   };
-  const handleConfirmDelete = async () => {
+const handleConfirmDelete = async () => {
+    const loadingToast = toast.loading(t("deleting...")); 
     try {
-      await deleteAvatar(selectedAvatar.id);
+      await deleteAvatar(selectedAvatar.Id || selectedAvatar.id);
+      
       loadAvatars(); 
       setIsDeleteModalOpen(false);
+      
+      toast.success(t("deleted_successfully"), { id: loadingToast }); 
     } catch (error) {
-      console.error("Delete failed");
+
+      toast.error(t("delete_failed"), { id: loadingToast }); 
     }
-  };
+};
   return (
     <>
       <PageMeta
@@ -92,14 +104,14 @@ const loadAvatars = async () => {
           ))
         ) : avatars && avatars.length > 0 ? (
           avatars.map((avatar: any) => (
-            <AvatarCard
-              key={avatar.id}
-              ageGroup={avatar.ageSector?.name || "N/A"}
-              image={avatar.imagePath || avatar.image}
-              onEdit={() => handleEditClick(avatar)}
-              onDelete={() => handleDeleteClick(avatar)}
-            />
-          ))
+  <AvatarCard
+    key={avatar.Id}
+    ageGroup={avatar.AgeSectorName || "N/A"} 
+    image={avatar.ImageUrl ? `${IMAGE_BASE_URL}${avatar.ImageUrl}` : ""}
+    onEdit={() => handleEditClick(avatar)}
+    onDelete={() => handleDeleteClick(avatar)}
+  />
+))
         ) : (''
         )}
         </div>
