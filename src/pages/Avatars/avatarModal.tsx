@@ -94,12 +94,6 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
     const loadingToast = toast.loading(type === 'edit' ? t("updating...") : t("saving..."));
 
     try {
-      const config = {
-        headers: {
-          'X-Client-Type': 'Web', 
-          'Content-Type': 'multipart/form-data',
-        }
-      };
 
       if (type === 'edit') {
         formData.append("Id", avatarData.Id || avatarData.id);
