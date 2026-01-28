@@ -25,7 +25,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
   const [selectedAgeSector, setSelectedAgeSector] = useState("");
   const [errors, setErrors] = useState<{ image?: string; ageSector?: string }>({});
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchAgeGroups = async () => {
