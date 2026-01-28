@@ -66,9 +66,9 @@ export default function PermissionsList() {
   };
 
   return (
-    <div className="">
+    <>
       <PageMeta title="Green minds Admin | Permissions " description={``} />
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED] min-h-[calc(100vh-48px)]">
         <div className=" mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("Permission")}
@@ -86,7 +86,11 @@ export default function PermissionsList() {
                 key={perm.Id}
                 className="flex items-center justify-between border p-3 bg-white rounded-xl"
               >
-                <span className="line-clamp-1">{perm.DisplayName}</span>
+                <div className="flex flex-col w-[90%]">
+                <span className="line-clamp-1 text-sm truncate">{perm.DisplayName}</span>
+                <span className="line-clamp-1 text-xs text-green-700">{perm.Key}</span>
+                  </div>
+                
                 <button onClick={() => openEditModal(perm)}>
                   <EditIcon className="w-6 h-6" />
                 </button>
@@ -108,6 +112,6 @@ export default function PermissionsList() {
           loading={saving}
         />
       )}
-    </div>
+    </>
   );
 }

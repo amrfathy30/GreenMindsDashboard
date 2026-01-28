@@ -4,6 +4,7 @@ export interface PermissionApiResponse {
   Data: {
     Id: number;
     DisplayName: string;
+    Key:string
   }[];
 }
 

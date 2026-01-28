@@ -162,7 +162,7 @@ const translations = {
     AdminPhone: "Admin Phone",
     AdminUserName: "Admin User Name",
     AdminName: "Admin Name",
-    TypeName: "Type Name",
+    TypeName: "Role",
     EnterChildrenAge: "Enter Child Age",
     EnterParentPhone: "Enter Parent Phone",
     AddChildren: "Add Child",

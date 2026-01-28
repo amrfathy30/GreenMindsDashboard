@@ -26,7 +26,7 @@ const AppHeader: React.FC = () => {
     <header className="sticky top-0 flex flex-col w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-[#1e1e1e] lg:border-b">
       <div className="flex flex-col items-center justify-between ">
         <div
-          className={`flex-col items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+          className={`flex-col items-center justify-between w-full gap-4 md:gap-0 px-5 py-4 md:py-0 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <UserDropdown />
 

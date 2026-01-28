@@ -208,7 +208,7 @@ export default function AdminsList({
     },
     {
       key: "TypeName",
-      label: t("TypeName"),
+      label: t("UserType"),
     },
     {
       key: "actions",
