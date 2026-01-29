@@ -18,21 +18,22 @@ export default function GamesList() {
   const [games, setGames] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
-  const PAGE_SIZE = 8;
+
 
   const fetchGames = async () => {
     try {
       setLoading(true);
-      const response = await getPagedGames(currentPage, PAGE_SIZE);
+      const response = await getPagedGames(currentPage, pageSize);
       const gamesData = Array.isArray(response.Data?.Items) ? response.Data.Items : [];
       setGames(gamesData);
       if (response.Data?.Total) {
-        setTotalPages(Math.ceil(response.Data.Total / PAGE_SIZE));
+        setTotalPages(Math.ceil(response.Data.Total / pageSize));
       }
     } catch (error) {
       console.error("Failed to fetch games:", error);
@@ -44,7 +45,7 @@ export default function GamesList() {
 
   useEffect(() => {
     fetchGames();
-  }, [currentPage]);
+  }, [currentPage,pageSize]);
 
   const handleEditClick = (game: any) => {
     setSelectedGame(game);
@@ -60,7 +61,7 @@ export default function GamesList() {
     <>
       <PageMeta title="Green minds Admin | Games" description="Manage your games list easily." />
 
-      <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
+      <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
         
         <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -79,7 +80,7 @@ export default function GamesList() {
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {loading
-              ? Array.from({ length: PAGE_SIZE }).map((_, index) => (
+              ? Array.from({ length: pageSize }).map((_, index) => (
                   <GameCardSkeleton key={index} />
                 ))
               : games?.map((game) => (
@@ -98,13 +99,7 @@ export default function GamesList() {
                 ))}
           </div>
         </div>
-        <div className="shrink-0 py-4 px-5 border-t border-[#D9D9D9] dark:border-gray-700 bg-[#EDEDED] dark:bg-neutral-800 flex items-center justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
       </div>
 
   

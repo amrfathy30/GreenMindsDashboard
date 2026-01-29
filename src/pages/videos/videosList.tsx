@@ -175,7 +175,7 @@ export default function VideosList() {
             </table>
           </div>
         )}
-        <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/5 mt-auto">
+        <div className="mt-auto">
           <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
         </div>
       </div>

@@ -94,7 +94,7 @@ export default function ChildrenInfo() {
           <div className="w-10 h-10 rounded-full bg-gray-300" />
         )}
 
-        <h2 className="font-medium text-2xl text-[#000000]">
+        <h2 className="font-medium text-2xl text-[#000000] dark:text-white">
           {childData?.Name || t("NoName")}
         </h2>
       </div>
@@ -103,10 +103,10 @@ export default function ChildrenInfo() {
         {childDetails.map((detail, index) => (
           <div
             key={index}
-            className="border shadow drop-shadow-xl rounded-xl p-3"
+            className="border dark:border-gray-700 shadow drop-shadow-xl rounded-xl p-3"
           >
-            <h2 className="font-semibold">{detail.label}</h2>
-            <h3>{detail.value}</h3>
+            <h2 className="font-semibold dark:text-white">{detail.label}</h2>
+            <h3 className="dark:text-white">{detail.value}</h3>
           </div>
         ))}
       </div>

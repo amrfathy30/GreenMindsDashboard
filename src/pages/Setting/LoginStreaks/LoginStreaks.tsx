@@ -24,6 +24,7 @@ export default function LoginStreaks() {
   ]);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
   const totalPages = 10;
 
   const [openModal, setOpenModal] = useState(false);
@@ -94,10 +95,10 @@ export default function LoginStreaks() {
               setOpenModal(true);
             }}
           >
-            <EditIcon className="w-8 h-8" />
+            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
           <button onClick={() => handleDelete(row.id)}>
-            <RemoveIcon className="w-8 h-8" />
+            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
         </div>
       ),
@@ -121,13 +122,8 @@ export default function LoginStreaks() {
           </AddButton>
         </div>
         <BasicTableOne data={LoginStreaks} columns={columns} />
-        <div className="my-6 w-full flex items-center justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
+      
       </div>
 
       <LoginStreaksModal

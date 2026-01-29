@@ -31,7 +31,20 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const { t, isRTL } = useLanguage();
   const [localPageSize, setLocalPageSize] = useState(pageSize || 6);
-
+  const [error, setError] = useState("");
+  const handleChange = (e:any) => {
+    const val = Number(e.target.value);
+    setLocalPageSize(val);
+  
+    // Validation Logic
+    if (val < 4) {
+      setError("Min: 4");
+    } else if (val > 20) {
+      setError("Max: 20");
+    } else {
+      setError("");
+    }
+  };
   useEffect(() => {
     setLocalPageSize(pageSize || 6);
   }, [pageSize]);
@@ -52,26 +65,31 @@ const Pagination: React.FC<PaginationProps> = ({
   const activeColor = "#949fae";
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center items-center gap-4 md:gap-6 w-full py-2">
-      {onPageSizeChange && (
-        <div className="flex items-center gap-2 bg-white dark:bg-neutral-700 px-3 h-10 rounded-lg border border-gray-100 dark:border-gray-600 order-2 lg:order-1">
-          <span className="text-xs font-medium text-gray-400 dark:text-gray-300">{t("Show")}:</span>
+    <div className="relative flex flex-col px-2 md:px-4 lg:flex-row justify-center items-center gap-4 md:gap-6 w-full py-0 my-3">
+
+        <div className="absolute end-2 md:end-4 flex flex-col items-start order-2 lg:order-1">
+        <p className="text-xs text-red-600">{error}</p>
+          <div className="flex items-center bg-white dark:bg-neutral-700 px-3 py-1 h-10 rounded-lg border border-gray-100 dark:border-gray-600 gap-2">
+            <span className="text-xs font-medium text-gray-400 dark:text-gray-300">{t("Show_per_page")}:</span>
           <input
             type="number"
             min="4"
             max="20"
             value={localPageSize}
-            onChange={(e) => setLocalPageSize(Number(e.target.value))}
-            className="w-10 text-center text-sm font-bold bg-transparent border-none focus:ring-0 dark:text-white p-0"
+            onChange={(e) => handleChange(e)}
+            className="w-10 text-center text-sm font-bold bg-transparent border border-[#D9D9D9] rounded-md dark:border-gray-800 focus:ring-0 focus:outline-0 dark:text-white p-0"
           />
+          </div>
+
+         
         </div>
-      )}
+
 
       <div className="flex items-center justify-center gap-2 md:gap-4 order-1 lg:order-2 w-full lg:w-auto">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`${navButtonClass} text-[${activeColor}] hover:text-[#2196F3]`}
+          className={`${navButtonClass} text-[${activeColor}] dark:text-white hover:text-[#2196F3]`}
         >
           {isRTL ? <ArrowRight size={18} /> : <ArrowLeft size={18} />}
           <span className="hidden sm:inline">{t("Previous")}</span>
@@ -100,7 +118,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`${navButtonClass} text-[${activeColor}] hover:text-[#00CC99]`}
+          className={`${navButtonClass} text-[${activeColor}] dark:text-white hover:text-[#00CC99]`}
         >
           <span className="hidden sm:inline">{t("Next")}</span>
           {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}

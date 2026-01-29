@@ -17,13 +17,13 @@ export default function AvatarList() {
   const { t } = useLanguage();
   const [avatars, setAvatars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const pageSize = 8;
 
   const handleEditClick = (avatar: any) => {
     setSelectedAvatar(avatar);
@@ -44,7 +44,6 @@ const loadAvatars = async () => {
       setAvatars(fetchedItems);
       setTotalPages(Math.ceil(totalCount / pageSize));
     } catch (error) {
-      console.error("Failed to fetch avatars", error);
       setAvatars([]);
     } finally {
       setLoading(false);
@@ -52,7 +51,7 @@ const loadAvatars = async () => {
 };
   useEffect(() => {
     loadAvatars();
-  }, [currentPage]);
+  }, [currentPage,pageSize]);
 
   const handleDeleteClick = (avatar: any) => {
     setSelectedAvatar(avatar);
@@ -79,7 +78,7 @@ return (
         description=""
       />
 
-      <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
+      <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
         
         <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -102,7 +101,7 @@ return (
             <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
           ) : null}
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
             {loading ? (
               Array.from({ length: 8 }).map((_, index) => (
                 <AvatarSkeleton key={index} />
@@ -124,14 +123,7 @@ return (
             )}
           </div>
         </div>
-
-        <div className="shrink-0 py-4 px-5 border-t border-[#D9D9D9] dark:border-gray-700 bg-[#EDEDED] dark:bg-neutral-800 flex items-center justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
       </div>
 
       <AvatarModal

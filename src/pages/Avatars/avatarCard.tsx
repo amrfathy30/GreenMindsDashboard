@@ -21,18 +21,17 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ image, name, level, ageGroup, o
   });
 
   return (
-    <div className="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-xl shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e]">
+    <div className="relative flex rounded-2xl gap-4 border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-xl shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e]">
   
-      <div className="relative mb-4 h-[140px] w-full overflow-hidden rounded-xl flex items-center justify-center border bg-gray-50 dark:bg-gray-700/30 dark:border-gray-600">
-        <img src={image} className="h-[90px] w-[90px] rounded-full object-cover border-2 border-white shadow-md" alt={name} />
+      <div className="relative shrink-0 h-[90px] w-[90px]  overflow-hidden rounded-xl flex items-center justify-center border bg-gray-50 dark:bg-gray-700/30 dark:border-gray-700">
+        <img src={image} className="h-full w-full rounded-xl object-cover " alt={name} />
       </div>
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between gap-2 relative" ref={menuRef}>
-          <h3 className="text-base font-bold text-gray-900 dark:text-white truncate">
+      <div className="space-y-2 flex flex-col justify-between items-start w-[calc(100%-123px)] flex-1">
+        <div className="flex w-full items-center justify-between gap-2 relative" ref={menuRef}>
+          <h3 className="text-md font-bold text-gray-900 dark:text-white truncate">
             {name || "Unnamed Avatar"}
           </h3>
-
           <div className="relative">
             <button 
               onClick={(e) => {

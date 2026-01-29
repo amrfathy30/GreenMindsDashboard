@@ -1,6 +1,6 @@
 const GameCardSkeleton = () => {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-[#1e1e1e] animate-pulse h-full min-h-[300px]">
+    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-[#1e1e1e] animate-pulse h-full min-h-[250px]">
       
       <div className="relative mb-4 h-[68%] w-full rounded-xl bg-gray-200 dark:bg-gray-700"></div>
 
@@ -12,8 +12,7 @@ const GameCardSkeleton = () => {
         </div>
 
         <div className="space-y-2 mt-2">
-          <div className="h-3 w-full rounded bg-gray-100 dark:bg-gray-800"></div>
-          <div className="h-3 w-4/5 rounded bg-gray-100 dark:bg-gray-800"></div>
+          <div className="h-2 w-full rounded bg-gray-100 dark:bg-gray-800"></div>
         </div>
       </div>
     </div>

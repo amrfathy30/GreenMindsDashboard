@@ -349,6 +349,7 @@ const translations = {
     UpdatePermission: "Update Permission",
     permissionName: "Permission Display Name",
     permissions_updated_successfully: "permissions updated successfully",
+    Show_per_page:"Items per pge"
   },
   ar: {
     // sidebar
@@ -689,6 +690,7 @@ const translations = {
     UpdatePermission: "تحديث الصلاحية",
     permissionName: "اسم العرض للصلاحيه",
     permissions_updated_successfully: "تم تحديث الصلاحية بنجاح",
+    Show_per_page:"العدد في الصفحه"
   },
 };
 

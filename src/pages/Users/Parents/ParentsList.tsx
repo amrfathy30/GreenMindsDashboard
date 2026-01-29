@@ -28,6 +28,7 @@ export default function ParentsList({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [pageSize, setPageSize] = useState(12);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -60,7 +61,7 @@ export default function ParentsList({
         setTableLoading(true);
         const data: ParentApiResponse = await allParentData({
           page: currentPage,
-          pageSize: 10,
+          pageSize: pageSize,
         });
 
         setParentList(
@@ -85,7 +86,7 @@ export default function ParentsList({
     };
 
     fetchParent();
-  }, [currentPage, t]);
+  }, [currentPage,pageSize, t]);
 
   const confirmDelete = async () => {
     if (!selectedDeleteId) return;
@@ -215,7 +216,7 @@ export default function ParentsList({
               setOpenModal(true);
             }}
           >
-            <EditIcon className="w-8 h-8" />
+            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
           <button
             onClick={(e) => {
@@ -223,7 +224,7 @@ export default function ParentsList({
               handleDelete(row.id);
             }}
           >
-            <RemoveIcon className="w-8 h-8" />
+            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
         </div>
       ),
@@ -271,12 +272,9 @@ export default function ParentsList({
                 )),
             }}
           />
-          <div className="mt-auto my-6 w-full flex items-center justify-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+          <div className="mt-auto">
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
+    
           </div>
         </div>
       )}

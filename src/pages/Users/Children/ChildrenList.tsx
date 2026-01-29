@@ -33,6 +33,7 @@ export default function ChildrenList({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [pageSize, setPageSize] = useState(12);
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<Children | null>(null);
   const [tableLoading, setTableLoading] = useState(true);
@@ -55,7 +56,7 @@ export default function ChildrenList({
         setTableLoading(true);
         const data: ChildrenApiResponse = await allChildrenData({
           page: currentPage,
-          pageSize: 10,
+          pageSize: pageSize,
         });
 
         setChildrenList(
@@ -80,7 +81,7 @@ export default function ChildrenList({
     };
 
     fetchParent();
-  }, [currentPage, t]);
+  }, [currentPage, pageSize,t]);
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -203,7 +204,7 @@ export default function ChildrenList({
             onClick={(e) => e.stopPropagation()}
           >
             <button>
-              <EyeIcon className="w-7 h-7 text-black/60" />
+              <EyeIcon className="w-7 h-7 text-black/60 dark:text-[#999999]" />
             </button>
           </Link>
           <button
@@ -221,7 +222,7 @@ export default function ChildrenList({
               setOpenModal(true);
             }}
           >
-            <EditIcon className="w-8 h-8" />
+            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
           <button
             onClick={(e) => {
@@ -229,7 +230,7 @@ export default function ChildrenList({
               handleDelete(row.id);
             }}
           >
-            <RemoveIcon className="w-8 h-8" />
+            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
         </div>
       ),
@@ -243,12 +244,9 @@ export default function ChildrenList({
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={childrenList} columns={columns} />
-          <div className="mt-auto my-6 w-full flex items-center justify-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+          <div className="mt-auto">
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
+    
           </div>
         </div>
       )}

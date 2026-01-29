@@ -162,10 +162,10 @@ export default function AgeGroupList() {
               setOpenModalAge(true);
             }}
           >
-            <EditIcon className="w-8 h-8" />
+            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
           <button onClick={() => handleDelete(row.id)}>
-            <RemoveIcon className="w-8 h-8" />
+            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
         </div>
       ),

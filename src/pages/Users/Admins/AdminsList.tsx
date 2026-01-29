@@ -30,6 +30,7 @@ export default function AdminsList({
   const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [pageSize, setPageSize] = useState(12);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -227,7 +228,7 @@ export default function AdminsList({
               setOpenModal(true);
             }}
           >
-            <EditIcon className="w-8 h-8" />
+            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
           <button
             onClick={(e) => {
@@ -236,7 +237,7 @@ export default function AdminsList({
             }}
             aria-label={t("common.delete")}
           >
-            <RemoveIcon className="w-8 h-8" />
+            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
         </div>
       ),
@@ -250,13 +251,8 @@ export default function AdminsList({
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={adminList} columns={columns} />
-          <div className="mt-auto my-6 w-full flex items-center justify-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
-          </div>
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
+      
         </div>
       )}
 

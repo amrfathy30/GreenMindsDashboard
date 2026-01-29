@@ -171,13 +171,13 @@ export default function ProfileLevels() {
             }}
             aria-label={t("common.edit")}
           >
-            <EditIcon className="w-8 h-8" />
+            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
           <button
             onClick={() => handleDelete(row.id)}
             aria-label={t("common.delete")}
           >
-            <RemoveIcon className="w-8 h-8" />
+            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
           </button>
         </div>
       ),

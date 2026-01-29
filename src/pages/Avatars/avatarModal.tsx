@@ -30,7 +30,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
     levelId: "",
   });
 
-  const [errors, setErrors] = useState<any>({}); 
+
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
   const [levels, setLevels] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,7 +62,6 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
     } else if (isOpen) {
       setFormData({ name: "", ageSectorId: "", levelId: "" });
       setPreviewImage(null);
-      setErrors({}); 
     }
   }, [avatarData, isOpen]);
 
