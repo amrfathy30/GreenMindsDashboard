@@ -23,16 +23,11 @@ export default function VideoPreviewModal({ isOpen, onClose, video }: VideoPrevi
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
-  const modalBackdropRef = useRef<HTMLDivElement>(null);
-  
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [volume, setVolume] = useState(1);
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
-  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [iframeLoading, setIframeLoading] = useState(true);
 
   useEffect(() => {
@@ -47,18 +42,14 @@ export default function VideoPreviewModal({ isOpen, onClose, video }: VideoPrevi
       setCurrentTime(0);
       setShowControls(true);
       setVolume(1);
-      setPlaybackSpeed(1);
       setIframeLoading(true);
       if (videoRef.current) {
         videoRef.current.volume = 1;
         videoRef.current.playbackRate = 1;
+        videoRef.current.load();
       }
     }
-  }, [isOpen]);
-
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === modalBackdropRef.current) onClose();
-  };
+  }, [isOpen, video?.VideoUrl]);
 
   const togglePlayPause = () => {
     if (!videoRef.current) return;
@@ -90,14 +81,12 @@ export default function VideoPreviewModal({ isOpen, onClose, video }: VideoPrevi
   };
 
   const handleSpeedChange = (speed: number) => {
-    setPlaybackSpeed(speed);
     if (videoRef.current) videoRef.current.playbackRate = speed;
-    setShowSettingsMenu(false);
   };
 
   const toggleFullscreen = () => {
     if (!videoContainerRef.current) return;
-    if (!document.fullscreenElement) videoContainerRef.current.requestFullscreen().catch(err => console.error(err));
+    if (!document.fullscreenElement) videoContainerRef.current.requestFullscreen();
     else document.exitFullscreen();
   };
 
@@ -118,6 +107,7 @@ export default function VideoPreviewModal({ isOpen, onClose, video }: VideoPrevi
 
   const buildUrl = (url: string | null | undefined, baseUrl: string): string | null => {
     if (!url || url.trim() === "") return null;
+    if (url.includes("localhost:7135")) return `${baseUrl}/${url.split("localhost:7135/")[1]}`;
     if (url.startsWith('http')) return url;
     return `${baseUrl}/${url.startsWith('/') ? url.substring(1) : url}`;
   };
@@ -128,97 +118,56 @@ export default function VideoPreviewModal({ isOpen, onClose, video }: VideoPrevi
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isFullscreen={true} showCloseButton={false}>
-      <div ref={modalBackdropRef} className="absolute inset-0 flex items-center justify-center bg-stone-800/20 backdrop-blur-sm" onClick={handleBackdropClick}>
-        <div ref={videoContainerRef} className="relative w-200 max-w-6xl aspect-video rounded-[31px] overflow-hidden shadow-2xl bg-black border-none" onMouseMove={() => setShowControls(true)} onMouseLeave={() => isPlaying && setShowControls(false)} onClick={(e) => e.stopPropagation()}>
+      <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={(e) => e.target === e.currentTarget && onClose()}>
+        <div ref={videoContainerRef} className="relative w-full max-w-5xl aspect-video rounded-2xl md:rounded-[31px] overflow-hidden bg-black shadow-2xl mx-2 md:mx-4" onMouseMove={() => setShowControls(true)}>
           {videoSrc ? (
             youtubeId ? (
-              <div className="relative w-full h-full">
-                {iframeLoading && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-10">
-                    <Loader2 className="w-12 h-12 text-[#25B16F] animate-spin mb-4" />
-                  </div>
-                )}
-                <iframe className="w-full h-full aspect-video" src={`https://www.youtube.com/embed/${youtubeId}?rel=0`} title="YT" frameBorder="0" allowFullScreen onLoad={() => setIframeLoading(false)}></iframe>
+              <div className="relative w-full h-full z-0">
+                {iframeLoading && <div className="absolute inset-0 flex items-center justify-center bg-black z-10"><Loader2 className="w-10 h-10 text-[#25B16F] animate-spin" /></div>}
+                <iframe className="w-full h-full relative z-0" src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen onLoad={() => setIframeLoading(false)}></iframe>
               </div>
             ) : (
-              <video ref={videoRef} className="w-full h-full object-cover cursor-pointer" poster={thumbnailSrc} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} onEnded={() => setIsPlaying(false)} onClick={togglePlayPause}>
-                <source src={videoSrc} type="video/mp4" />
-              </video>
+              <video key={videoSrc} ref={videoRef} src={videoSrc || ""} className="w-full h-full object-cover cursor-pointer" poster={thumbnailSrc} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} onEnded={() => setIsPlaying(false)} onClick={togglePlayPause} crossOrigin="anonymous" />
             )
-          ) : (
-            <img src={thumbnailSrc} className="w-full h-full object-cover" alt="" />
-          )}
+          ) : <img src={thumbnailSrc} className="w-full h-full object-cover" alt="" />}
           
-          <div className={`absolute inset-0 flex flex-col justify-between py-12 px-10 bg-gradient-to-t from-black/40 via-transparent to-black/10 transition-opacity duration-300 ${showControls && !youtubeId ? 'opacity-100' : 'opacity-0'} ${youtubeId ? 'pointer-events-none' : ''}`}>
-            <div className="text-center text-white">
-              <h2 className="text-4xl font-bold mb-2 font-lalezar">{video.TitleAr}</h2>
-              <p className="text-xl opacity-90 font-medium font-inter">{video.TitleEn}</p>
+          <div className={`absolute inset-0 flex flex-col justify-between py-6 md:py-12 px-4 md:px-10 bg-gradient-to-t from-black/60 via-transparent to-black/20 transition-opacity duration-300 ${showControls && !youtubeId ? 'opacity-100' : 'opacity-0'} pointer-events-none`}>
+            <div className="text-center text-white pointer-events-none">
+              <h2 className="text-2xl md:text-4xl font-bold font-lalezar">{video.TitleAr}</h2>
+              <p className="text-sm md:text-xl opacity-90 font-medium">{video.TitleEn}</p>
             </div>
             
             {videoSrc && !youtubeId && (
-              <div className="flex items-center justify-center gap-14">
-                <button onClick={() => skip(-10)} className="relative w-20 h-20 transition-transform hover:scale-110"><img src="/images/video-thumb/back.svg" className="w-full h-full" alt="" /></button>
-                <button onClick={togglePlayPause} className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-all transform hover:scale-105">
-                  {isPlaying ? <Pause size={48} fill="white" className="text-white" /> : <Play size={48} fill="white" className="text-white ml-2" />}
+              <div className="flex items-center justify-center gap-10 md:gap-20 pointer-events-auto">
+                <button onClick={() => skip(-10)} className="w-14 h-14 md:w-24 md:h-24 transition-transform hover:scale-110">
+                  <img src="/images/video-thumb/back.svg" className="w-full h-full" alt="" />
                 </button>
-                <button onClick={() => skip(10)} className="relative w-20 h-20 transition-transform hover:scale-110"><img src="/images/video-thumb/forward.svg" className="w-full h-full" alt="" /></button>
+                <button onClick={togglePlayPause} className="flex items-center justify-center transition-transform hover:scale-110">
+                  {isPlaying ? <Pause size={28} className="md:size-[42px] text-white" fill="white" /> : <Play size={28} className="md:size-[42px] text-white ml-1" fill="white" />}
+                </button>
+                <button onClick={() => skip(10)} className="w-14 h-14 md:w-24 md:h-24 transition-transform hover:scale-110">
+                  <img src="/images/video-thumb/forward.svg" className="w-full h-full" alt="" />
+                </button>
               </div>
             )}
 
             {videoSrc && !youtubeId && (
-              <div style={{ backgroundColor: 'rgba(45, 45, 45, 0.5)', backdropFilter: 'blur(9.81px)' }} className="w-full p-4 rounded-[31px] flex items-center gap-5 shadow-lg border border-white/10">
-                
-                <button onClick={togglePlayPause} className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                  {isPlaying ? <Pause size={24} fill="black" className="text-black" /> : <Play size={24} fill="black" className={`text-black ${isRTL ? 'mr-1' : 'ml-1'}`} />}
+              <div style={{ backgroundColor: 'rgba(45, 45, 45, 0.5)', backdropFilter: 'blur(9.81px)' }} className="w-full p-2 md:p-4 rounded-2xl md:rounded-[31px] flex flex-wrap items-center gap-3 md:gap-5 border border-white/10 shadow-lg pointer-events-auto">
+                <button onClick={togglePlayPause} className="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0">
+                  {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" className={isRTL ? 'mr-0.5' : 'ml-0.5'} />}
                 </button>
-
-                <div className="flex flex-1 items-center gap-4">
-                  <span className="text-white text-base min-w-[40px]">{formatTime(isRTL ? duration - currentTime : currentTime)}</span>
-                  <div ref={progressRef} className="flex-1 h-[6px] bg-white/30 rounded-full relative cursor-pointer" onClick={handleProgressClick}>
-                    <div 
-                      className={`absolute top-0 h-full bg-white rounded-full ${isRTL ? 'right-0' : 'left-0'}`} 
-                      style={{ width: `${(currentTime / duration) * 100}%` }} 
-                    />
+                <div className="flex flex-1 items-center gap-2 md:gap-4">
+                  <span className="text-white text-xs md:text-base">{formatTime(isRTL ? duration - currentTime : currentTime)}</span>
+                  <div ref={progressRef} className="flex-1 h-1 md:h-1.5 bg-white/30 rounded-full relative cursor-pointer" onClick={handleProgressClick}>
+                    <div className={`absolute top-0 h-full bg-white rounded-full ${isRTL ? 'right-0' : 'left-0'}`} style={{ width: `${(currentTime / duration) * 100}%` }} />
                   </div>
-                  <span className="text-white text-base min-w-[40px]">{formatTime(isRTL ? currentTime : duration - currentTime)}</span>
+                  <span className="text-white text-xs md:text-base">{formatTime(isRTL ? currentTime : duration - currentTime)}</span>
                 </div>
-
-                <div className="flex items-center gap-6 px-4">
-                  <Maximize className="text-white cursor-pointer hover:opacity-70" size={24} onClick={toggleFullscreen} />
-                  
-                  <div className="relative" onMouseEnter={() => setShowSettingsMenu(true)} onMouseLeave={() => setShowSettingsMenu(false)}>
-                    <Settings className="text-white cursor-pointer hover:opacity-70" size={24} />
-                    <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 transition-all duration-200 ${showSettingsMenu ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                      <div className="bg-black/90 backdrop-blur-md rounded-lg p-2 shadow-lg min-w-[160px]">
-                        {[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map(speed => (
-                          <button key={speed} onClick={() => handleSpeedChange(speed)} className={`w-full text-left px-3 py-2 rounded-md text-sm ${playbackSpeed === speed ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10'}`}>{speed === 1 ? 'عادي' : `${speed}x`}</button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="relative flex items-center gap-2" onMouseEnter={() => setShowVolumeSlider(true)} onMouseLeave={() => setShowVolumeSlider(false)}>
-                    <Volume2 className="text-white cursor-pointer" size={24} />
-                    <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 transition-all duration-200 ${showVolumeSlider ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                      <div className="bg-black/80 backdrop-blur-md rounded-lg p-3 shadow-lg flex flex-col items-center gap-2">
-                        <input 
-                          type="range" 
-                          min="0" 
-                          max="1" 
-                          step="0.01" 
-                          value={volume} 
-                          onChange={handleVolumeChange} 
-                          className="w-24 h-1 appearance-none cursor-pointer rounded-full" 
-                          style={{ background: `linear-gradient(to right, white ${volume * 100}%, rgba(255,255,255,0.3) ${volume * 100}%)` }} 
-                        />
-                        <span className="text-white text-[10px] font-bold select-none">
-                          {Math.round(volume * 100)}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3 md:gap-6 px-2">
+                  <Maximize className="text-white cursor-pointer hover:opacity-70" size={20} onClick={toggleFullscreen} />
+                  <div className="relative group"><Settings className="text-white cursor-pointer" size={20} /><div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black/90 rounded-lg p-1 min-w-[100px] shadow-xl">{[0.5, 1, 1.5, 2].map(s => <button key={s} onClick={() => handleSpeedChange(s)} className="w-full text-white text-xs py-1 hover:bg-white/10">{s}x</button>)}</div></div>
+                  <div className="relative group"><Volume2 className="text-white cursor-pointer" size={20} /><div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black/90 p-2 rounded-lg"><input type="range" min="0" max="1" step="0.1" value={volume} onChange={handleVolumeChange} className="w-20 h-1 appearance-none bg-white/30 rounded-full" /></div></div>
                 </div>
-
               </div>
             )}
           </div>
