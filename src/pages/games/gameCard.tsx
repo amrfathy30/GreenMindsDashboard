@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MoreVertical} from "lucide-react"; 
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useLanguage } from "../../locales/LanguageContext";
 
 interface GameCardProps {
   image: string;
@@ -11,6 +12,7 @@ interface GameCardProps {
 }
 
 const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,onDelete }) => {
+  const { t } = useLanguage();
   const [showMenu, setShowMenu] = useState(false);
    const menuRef = useClickOutside(() => {
       setShowMenu(false);
@@ -44,7 +46,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
           onEdit();
         }}
             className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700" >
-              Edit
+              {t("edit")}
             </button>
             <button 
               onClick={(e) => {
@@ -53,7 +55,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
               }}
               className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-red-50"
             >
-              Delete
+              {t("delete")}
             </button>
           </div>
         )}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { getPagedGames } from "../../api/services/gameService";
 import PageMeta from "../../components/common/PageMeta";
 import GameCard from "./gameCard";
@@ -13,6 +12,7 @@ import EmptyState from "../../components/common/no-data-found";
 import { useLanguage } from "../../locales/LanguageContext";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
+
 export default function GamesList() {
   const { t, isRTL } = useLanguage();
   const [games, setGames] = useState<any[]>([]);
@@ -29,12 +29,8 @@ export default function GamesList() {
     try {
       setLoading(true);
       const response = await getPagedGames(currentPage, PAGE_SIZE);
-
-      const gamesData = Array.isArray(response.Data?.Items)
-        ? response.Data.Items
-        : [];
+      const gamesData = Array.isArray(response.Data?.Items) ? response.Data.Items : [];
       setGames(gamesData);
-
       if (response.Data?.Total) {
         setTotalPages(Math.ceil(response.Data.Total / PAGE_SIZE));
       }
@@ -50,10 +46,6 @@ export default function GamesList() {
     fetchGames();
   }, [currentPage]);
 
-  useEffect(() => {
-    fetchGames();
-  }, []);
-
   const handleEditClick = (game: any) => {
     setSelectedGame(game);
     setIsEditModalOpen(true);
@@ -66,56 +58,47 @@ export default function GamesList() {
 
   return (
     <>
-      <PageMeta
-        title="Green minds Admin | Games"
-        description="Manage your games list easily."
-      />
+      <PageMeta title="Green minds Admin | Games" description="Manage your games list easily." />
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 min-h-[calc(100vh-48px)]  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+      <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
+        
+        <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("games_admin")}
           </h2>
-          <Button
-            size="sm"
-            variant="primaryGrid"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <div className="text-white">
-              <PlusIcon />
-            </div>
+          <Button size="sm" variant="primaryGrid" onClick={() => setIsModalOpen(true)}>
+            <div className="text-white"><PlusIcon /></div>
             {t("add_game")}
           </Button>
         </div>
-        {games?.length == 0 && !loading ? (
-          <EmptyState
-            title={t("no_games_found")}
-            description={t("no_games_desc")}
-          />
-        ) : (
-          ""
-        )}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
-          {loading
-            ? Array.from({ length: 6 }).map((_, index) => (
-                <GameCardSkeleton key={index} />
-              ))
-            : games?.map((game) => (
-                <GameCard
-                  key={game.Id || game.id}
-                  title={isRTL ? game.GameNameAr : game.GameNameEn}
-                  description={isRTL ? game.DescriptionEn : game.DescriptionAr}
-                  image={
-                    game.ThumbnailUrl?.startsWith("http")
-                      ? game.ThumbnailUrl
-                      : `${BASE_URL}/${game.ThumbnailUrl}` || game.image
-                  }
-                  onEdit={() => handleEditClick(game)}
-                  onDelete={() => handleDeleteClick(game)}
-                />
-              ))}
+
+        <div className="flex-grow overflow-y-auto px-5 py-6">
+          {games?.length === 0 && !loading ? (
+            <EmptyState title={t("no_games_found")} description={t("no_games_desc")} />
+          ) : null}
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {loading
+              ? Array.from({ length: PAGE_SIZE }).map((_, index) => (
+                  <GameCardSkeleton key={index} />
+                ))
+              : games?.map((game) => (
+                  <GameCard
+                    key={game.Id || game.id}
+                    title={isRTL ? game.GameNameAr : game.GameNameEn}
+                    description={isRTL ? game.DescriptionEn : game.DescriptionAr}
+                    image={
+                      game.ThumbnailUrl?.startsWith("http")
+                        ? game.ThumbnailUrl
+                        : `${BASE_URL}/${game.ThumbnailUrl}`
+                    }
+                    onEdit={() => handleEditClick(game)}
+                    onDelete={() => handleDeleteClick(game)}
+                  />
+                ))}
+          </div>
         </div>
-        <div className=" my-4 w-full flex items-center justify-center">
+        <div className="shrink-0 py-4 px-5 border-t border-[#D9D9D9] dark:border-gray-700 bg-[#EDEDED] dark:bg-neutral-800 flex items-center justify-center">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -124,26 +107,10 @@ export default function GamesList() {
         </div>
       </div>
 
-      <GameModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        type="add"
-        onSuccess={fetchGames}
-      />
-      <GameModal
-        key={selectedGame?.id || "add"}
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        gameData={selectedGame}
-        type="edit"
-        onSuccess={fetchGames}
-      />
-      <DeleteGameModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        gameId={selectedGame?.Id || selectedGame?.id}
-        onSuccess={fetchGames}
-      />
+  
+      <GameModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type="add" onSuccess={fetchGames} />
+      <GameModal key={selectedGame?.id || "add"} isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} gameData={selectedGame} type="edit" onSuccess={fetchGames} />
+      <DeleteGameModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} gameId={selectedGame?.Id || selectedGame?.id} onSuccess={fetchGames} />
     </>
   );
 }

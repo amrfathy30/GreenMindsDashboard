@@ -72,15 +72,16 @@ const handleConfirmDelete = async () => {
       toast.error(t("delete_failed"), { id: loadingToast }); 
     }
 };
-  return (
+return (
     <>
       <PageMeta
         title="Green minds Admin | Avatars"
         description=""
       />
 
-<div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800  min-h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+      <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
+        
+        <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("avatars_admin")}
           </h2>
@@ -89,34 +90,42 @@ const handleConfirmDelete = async () => {
             variant="primaryGrid"
             onClick={() => setIsModalOpen(true)}
           >
-              <div className="text-white">
+            <div className="text-white">
               <PlusIcon />
             </div>
             {t("add_avatar")}
           </Button>
         </div>
-        {avatars?.length == 0 && !loading ? <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")}/> : ""}
-   
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-[80%] px-5">
-          {loading ? (
-          Array.from({ length: 6 }).map((_, index) => (
-            <AvatarSkeleton key={index} />
-          ))
-        ) : avatars && avatars.length > 0 ? (
-          avatars.map((avatar: any) => (
-  <AvatarCard
-    key={avatar.Id}
-    ageGroup={avatar.AgeSectorName || "N/A"} 
-    image={avatar.ImageUrl ? `${IMAGE_BASE_URL}${avatar.ImageUrl}` : ""}
-    onEdit={() => handleEditClick(avatar)}
-    onDelete={() => handleDeleteClick(avatar)}
-  />
-))
-        ) : (''
-        )}
+
+        <div className="flex-grow overflow-y-auto px-5 py-6">
+          {avatars?.length == 0 && !loading ? (
+            <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
+          ) : null}
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {loading ? (
+              Array.from({ length: 8 }).map((_, index) => (
+                <AvatarSkeleton key={index} />
+              ))
+            ) : avatars && avatars.length > 0 ? (
+              avatars.map((avatar: any) => (
+                <AvatarCard
+                  key={avatar.Id}
+                  name={avatar.Name}
+                  level={avatar.RequiredLevelName || avatar.LevelName || "N/A"}
+                  ageGroup={avatar.AgeSectorName || "N/A"}
+                  image={avatar.ImageUrl ? (avatar.ImageUrl.startsWith('http') ? avatar.ImageUrl : `${IMAGE_BASE_URL}${avatar.ImageUrl}`) : ""}
+                  onEdit={() => handleEditClick(avatar)}
+                  onDelete={() => handleDeleteClick(avatar)}
+                />
+              ))
+            ) : (
+              <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
+            )}
+          </div>
         </div>
 
-        <div className="absolute bottom-0 my-4 w-full flex items-center justify-center">
+        <div className="shrink-0 py-4 px-5 border-t border-[#D9D9D9] dark:border-gray-700 bg-[#EDEDED] dark:bg-neutral-800 flex items-center justify-center">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -127,15 +136,18 @@ const handleConfirmDelete = async () => {
 
       <AvatarModal
         isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          loadAvatars(); 
-        }}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={loadAvatars}
         type="add"
       />
+
       <AvatarModal
         isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedAvatar(null);
+        }}
+        onSuccess={loadAvatars}
         avatarData={selectedAvatar}
         type="edit"
       />
@@ -144,7 +156,7 @@ const handleConfirmDelete = async () => {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         title={t("delete_avatar")}
-       description={t("confirm_delete_avatar")}
+        description={t("confirm_delete_avatar")}
       />
     </>
   );
