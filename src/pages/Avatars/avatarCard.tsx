@@ -10,9 +10,11 @@ interface AvatarCardProps {
   ageGroup: string;
   onEdit: () => void;
   onDelete: () => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
-const AvatarCard: React.FC<AvatarCardProps> = ({ image, name, level, ageGroup, onEdit, onDelete }) => {
+const AvatarCard: React.FC<AvatarCardProps> = ({ image, name, level, ageGroup, onEdit, onDelete,canEdit = true, canDelete = true }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { t } = useLanguage();
 
@@ -45,18 +47,22 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ image, name, level, ageGroup, o
 
             {showMenu && (
               <div className="absolute right-0 top-full mt-1 z-50 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-2xl dark:border-gray-700 dark:bg-gray-800">
+                {canEdit && (
                 <button 
                   onClick={(e) => { e.stopPropagation(); onEdit(); setShowMenu(false); }}
                   className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   {t("edit")}
                 </button>
+                )}
+                {canDelete && (
                 <button 
                   onClick={(e) => { e.stopPropagation(); onDelete(); setShowMenu(false); }}
                   className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-red-50"
                 >
                  {t("delete")}
                 </button>
+                )}
               </div>
             )}
           </div>

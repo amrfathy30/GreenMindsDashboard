@@ -24,6 +24,14 @@ export default function AvatarList() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const adminData = JSON.parse(localStorage.getItem('GMadminData') || '{}');
+  const permissions = adminData?.permissions || [];
+  const userType = adminData?.Type;
+
+  const canAdd = userType === 2 || permissions.includes("Avatars_Create"); 
+  const canEdit = userType === 2 || permissions.includes("Avatars_Update");
+  const canDelete = userType === 2 || permissions.includes("Avatars_Delete");
+  const canView = userType === 2 || permissions.includes("Avatars_GetPaged");
 
   const handleEditClick = (avatar: any) => {
     setSelectedAvatar(avatar);
@@ -71,6 +79,13 @@ const handleConfirmDelete = async () => {
       toast.error(t("delete_failed"), { id: loadingToast }); 
     }
 };
+if (!canView) {
+    return (
+      <div className="flex-grow flex items-center justify-center min-h-[calc(100vh-60px)]">
+        <EmptyState title={t("access_denied")} description={t("not_authorized_to_view_this_page")} />
+      </div>
+    );
+  }
 return (
     <>
       <PageMeta
@@ -84,6 +99,7 @@ return (
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("avatars_admin")}
           </h2>
+          {canAdd && (
           <Button
             size="sm"
             variant="primaryGrid"
@@ -94,6 +110,7 @@ return (
             </div>
             {t("add_avatar")}
           </Button>
+          )}
         </div>
 
         <div className="flex-grow overflow-y-auto px-5 py-6">
@@ -114,6 +131,8 @@ return (
                   level={avatar.RequiredLevelName || avatar.LevelName || "N/A"}
                   ageGroup={avatar.AgeSectorName || "N/A"}
                   image={avatar.ImageUrl ? (avatar.ImageUrl.startsWith('http') ? avatar.ImageUrl : `${IMAGE_BASE_URL}${avatar.ImageUrl}`) : ""}
+                  canEdit={canEdit}
+                  canDelete={canDelete}
                   onEdit={() => handleEditClick(avatar)}
                   onDelete={() => handleDeleteClick(avatar)}
                 />
@@ -126,14 +145,14 @@ return (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
       </div>
 
-      <AvatarModal
+      {canAdd && <AvatarModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={loadAvatars}
         type="add"
-      />
+      />}
 
-      <AvatarModal
+      {canEdit && <AvatarModal
         isOpen={isEditModalOpen}
         onClose={() => {
           setIsEditModalOpen(false);
@@ -142,14 +161,14 @@ return (
         onSuccess={loadAvatars}
         avatarData={selectedAvatar}
         type="edit"
-      />
-      <ConfirmModal
+      />}
+      {canDelete && <ConfirmModal
         open={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         title={t("delete_avatar")}
         description={t("confirm_delete_avatar")}
-      />
+      />}
     </>
   );
 }

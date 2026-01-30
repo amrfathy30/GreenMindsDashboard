@@ -78,7 +78,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ isOpen, onClose, avatarData, 
     e.preventDefault();
     
 
-    const nameRegex = /^[a-zA-Z\u0600-\u06FF\s]+$/; 
+    const nameRegex = /^[a-zA-Z\u0600-\u06FF/0-9\s]+$/; 
     if (!nameRegex.test(formData.name)) {
       toast.error(t("name_error_letters")); 
       return;

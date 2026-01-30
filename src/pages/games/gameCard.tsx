@@ -9,9 +9,11 @@ interface GameCardProps {
   description: string;
   onEdit: () => void;
   onDelete: () => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,onDelete }) => {
+const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,onDelete,canEdit = true, canDelete = true }) => {
   const { t } = useLanguage();
   const [showMenu, setShowMenu] = useState(false);
    const menuRef = useClickOutside(() => {
@@ -40,6 +42,7 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
 
         {showMenu && (
           <div className="absolute right-2 bottom-12 z-10 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            {canEdit && (
             <button 
             onClick={(e) => {
           e.stopPropagation(); 
@@ -48,6 +51,8 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
             className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700" >
               {t("edit")}
             </button>
+            )}
+            {canDelete && (
             <button 
               onClick={(e) => {
                 e.stopPropagation();
@@ -57,6 +62,10 @@ const GameCard: React.FC<GameCardProps> = ({ image, title, description,onEdit,on
             >
               {t("delete")}
             </button>
+            )}
+            {!canEdit && !canDelete && (
+          <div className="px-3 py-2 text-xs text-gray-400">{t("no_permissions")}</div>
+        )}
           </div>
         )}
         </div>
