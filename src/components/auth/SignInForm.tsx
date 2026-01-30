@@ -65,7 +65,6 @@ export default function SignInForm() {
       if (response?.StatusCode === 200) {
         ShowToastSuccess(t("LoginSuccessful"));
 
-        localStorage.setItem("allData", JSON.stringify(response.Data));
         localStorage.setItem("GMadminToken", response.Data?.Token?.token);
         localStorage.setItem(
           "GMadminData",

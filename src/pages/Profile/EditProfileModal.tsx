@@ -14,17 +14,20 @@ import {
   PersonalInfoRequest,
 } from "../../utils/types/profileType";
 import { toast } from "sonner";
-import { GetPersonalInfoById, updateProfile } from "../../api/services/profileService";
+import {
+  GetPersonalInfoById,
+  updateProfile,
+} from "../../api/services/profileService";
 import { useLanguage } from "../../locales/LanguageContext";
+import { useAdmin } from "../../context/AdminContext";
+import { ShowToastSuccess } from "../../components/common/ToastHelper";
+import ProfileSkeleton from "../../components/loading/ProfileSkeleton";
 
 export default function EditProfileModal({
   open,
   onClose,
 }: EditProfileModalProps) {
-  const { t} = useLanguage();
-  const adminData: any = localStorage.getItem("GMadminData");
-  const GMadminData: any = JSON.parse(adminData);
-  const adminId = GMadminData?.UserId;
+  const { t } = useLanguage();
 
   const [loading, setLoading] = useState(false);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoRequest | null>(
@@ -35,10 +38,13 @@ export default function EditProfileModal({
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [avatar, setAvatar] = useState("/images/user.png");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { updateAdmin, admin } = useAdmin();
+  const adminId = admin?.UserId;
+  const [loadingData, setLoadingData] = useState(false);
 
   const fetchPersonalInfo = async () => {
     try {
-      // setLoading(true);
+      setLoadingData(true);
 
       const res = await GetPersonalInfoById(adminId);
 
@@ -56,6 +62,8 @@ export default function EditProfileModal({
       toast.error(
         error?.response?.data?.Message || "Failed to load personal info",
       );
+    } finally {
+      setLoadingData(false);
     }
   };
 
@@ -98,6 +106,16 @@ export default function EditProfileModal({
     e.preventDefault();
 
     try {
+      if (
+        !formData.Name?.trim() ||
+        !formData.UserName?.trim() ||
+        !formData.Phone ||
+        !formData.Email?.trim()
+      ) {
+        toast.error(t("all_fields_required"));
+        return;
+      }
+
       setLoading(true);
 
       const payload: PersonalInfoRequest = {
@@ -106,16 +124,28 @@ export default function EditProfileModal({
         Email: formData.Email,
         Phone: formData.Phone,
         UserName: formData.UserName,
+        Type: 2,
         Password: "",
         ConfirmPassword: "",
       };
 
       await updateProfile(payload, adminId);
 
-      toast.success("Profile updated successfully");
+      const updatedAdminData = {
+        ...admin,
+        Name: payload.Name,
+        Email: payload.Email,
+        Phone: payload.Phone,
+        UserName: payload.UserName,
+        AvatarUrl: avatar,
+      };
+
+      updateAdmin(updatedAdminData);
+
+      ShowToastSuccess(t("ProfileUpdatedSuccessfully"));
       onClose();
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || "Update failed");
+      toast.error(error?.response?.data?.Message || t("UpdateFailed"));
     } finally {
       setLoading(false);
     }
@@ -158,6 +188,8 @@ export default function EditProfileModal({
         />
       ) : showResetPassword ? (
         <ResetPasswordModal />
+      ) : loadingData ? (
+        <ProfileSkeleton />
       ) : (
         <Form
           onSubmit={onSubmit}
@@ -216,7 +248,9 @@ export default function EditProfileModal({
             label={t("UserName")}
             placeholder={t("UserName")}
             value={formData.UserName}
-            onChange={(e) => setFormData({ ...formData, UserName: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, UserName: e.target.value })
+            }
           />
 
           <Input

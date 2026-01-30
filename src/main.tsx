@@ -9,16 +9,19 @@ import { ThemeProvider } from "./context/ThemeContext.tsx";
 import { Toaster } from "sonner";
 
 import { LanguageProvider } from "./locales/LanguageContext.tsx";
+import { AdminProvider } from "./context/AdminContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <LanguageProvider>
-      <ThemeProvider>
-        <AppWrapper>
-          <App />
-          <Toaster richColors position="top-right" />
-        </AppWrapper>
-      </ThemeProvider>
-    </LanguageProvider>
-
+    <AdminProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <AppWrapper>
+            <App />
+            <Toaster richColors position="top-right" />
+          </AppWrapper>
+        </ThemeProvider>
+      </LanguageProvider>
+    </AdminProvider>
+    ,
   </StrictMode>,
 );
