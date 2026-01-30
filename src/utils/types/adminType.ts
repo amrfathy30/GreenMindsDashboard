@@ -69,5 +69,6 @@ export interface AdminApiResponse {
     Phone?: string;
     UserName?: string;
     ConfirmPassword?: string;
+    EmailVerified: boolean;
   }[];
 }

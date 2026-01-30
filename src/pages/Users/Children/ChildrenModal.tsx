@@ -110,8 +110,8 @@ export default function ChildrenModal({
             }
           />
         </div>
-        {!initialData && (
-          <>
+        {/* {!initialData && (
+          <> */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <div>
                 <Input
@@ -145,8 +145,8 @@ export default function ChildrenModal({
               Password Should contain one at least of (a capital letter, small
               letter, symbol, and number)
             </p>
-          </>
-        )}
+          {/* </>
+        )} */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>

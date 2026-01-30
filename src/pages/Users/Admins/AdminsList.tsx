@@ -66,6 +66,7 @@ export default function AdminsList({
             TypeName: item.TypeName,
             Phone: item.Phone,
             ConfirmPassword: item.ConfirmPassword,
+            EmailVerified: item.EmailVerified,
           })),
         );
       } catch (error: any) {
@@ -188,15 +189,15 @@ export default function AdminsList({
       key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <div className="">
-          <span>{row.Email}</span>
-          {/* <span
+        <div className="flex items-center gap-2">
+          <span>{row.Email || "__"}</span>
+          <span
             className={`text-sm ${
-              row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
+              row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
             }`}
           >
-            {row.status === "verified" ? t("verified") : t("notVerified")}
-          </span> */}
+            {row.EmailVerified ? t("Verified") : t("NotVerified")}
+          </span>
         </div>
       ),
     },
@@ -251,8 +252,13 @@ export default function AdminsList({
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={adminList} columns={columns} />
-          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
-      
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
+          />
         </div>
       )}
 

@@ -70,6 +70,7 @@ export default function ParentsList({
             Name: item.Name,
             UserName: item.UserName,
             Email: item.Email,
+            EmailVerified: item.EmailVerified,
             Password: item.Password,
             ConfirmPassword: item.ConfirmPassword,
             ParentPhoneNumber: item.ParentPhoneNumber,
@@ -86,7 +87,7 @@ export default function ParentsList({
     };
 
     fetchParent();
-  }, [currentPage,pageSize, t]);
+  }, [currentPage, pageSize, t]);
 
   const confirmDelete = async () => {
     if (!selectedDeleteId) return;
@@ -143,6 +144,7 @@ export default function ParentsList({
           Email: item.Email,
           Password: item.Password,
           ConfirmPassword: item.ConfirmPassword,
+          EmailVerified: item.EmailVerified,
           ParentPhoneNumber: item.ParentPhoneNumber,
           Phone: item.Phone || item.ParentPhoneNumber,
           GenderId: item.Phone || item.GenderId,
@@ -175,13 +177,13 @@ export default function ParentsList({
       label: t("email"),
       render: (row: any) => (
         <div className="flex items-center gap-2">
-          <span>{row.Email}</span>
+          <span>{row.Email || "__"}</span>
           <span
             className={`text-sm ${
-              row.status === "verified" ? "text-[#25B16F]" : "text-[#E51C1C]"
+              row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
             }`}
           >
-            {row.status === "verified" ? t("Verified") : t("NotVerified")}
+            {row.EmailVerified ? t("Verified") : t("NotVerified")}
           </span>
         </div>
       ),
@@ -273,8 +275,13 @@ export default function ParentsList({
             }}
           />
           <div className="mt-auto">
-          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
-    
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              pageSize={pageSize}
+              onPageSizeChange={setPageSize}
+            />
           </div>
         </div>
       )}

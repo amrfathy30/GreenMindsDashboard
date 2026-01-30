@@ -108,38 +108,41 @@ export default function AdminModal({
             }
           />
         </div>
-        {!initialData && (
-          <>
-            <div>
-              <Input
-                id="Password"
-                type="password"
-                label={t("AdminPassword")}
-                placeholder={t("EnterAdminPassword")}
-                value={formData.Password}
-                onChange={(e) =>
-                  setFormData({ ...formData, Password: e.target.value })
-                }
-              />
-              <p className="text-xs text-gray-600 mt-2">
-                Password Should contain one at least of (a capital letter, small
-                letter, symbol, and number)
-              </p>
-            </div>
-            <div>
-              <Input
-                id="ConfirmPassword"
-                type="password"
-                label={t("AdminConfirmPassword")}
-                placeholder={t("EnterAdminPassword")}
-                value={formData.ConfirmPassword}
-                onChange={(e) =>
-                  setFormData({ ...formData, ConfirmPassword: e.target.value })
-                }
-              />
-            </div>
-          </>
-        )}
+        {/* {!initialData && (
+          <> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>
+            <Input
+              id="Password"
+              type="password"
+              label={t("AdminPassword")}
+              placeholder={t("EnterAdminPassword")}
+              value={formData.Password}
+              onChange={(e) =>
+                setFormData({ ...formData, Password: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <Input
+              id="ConfirmPassword"
+              type="password"
+              label={t("AdminConfirmPassword")}
+              placeholder={t("EnterAdminPassword")}
+              value={formData.ConfirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, ConfirmPassword: e.target.value })
+              }
+            />
+          </div>
+        </div>
+        <p className="text-xs text-gray-600">
+          Password Should contain one at least of (a capital letter, small
+          letter, symbol, and number)
+        </p>
+
+        {/* </>
+        )} */}
         <div>
           <label className="block text-sm font-medium">{t("UserType")}</label>
 
