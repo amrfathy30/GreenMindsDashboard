@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/form/input/InputField";
 import { AdminRolePermissionsProps } from "../../../utils/types/permissionType";
+import PermissionsSkeleton from "../../../components/loading/PermissionsSkeleton";
 
 const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
   permissions,
   assignedPermissions,
   loading,
+  pageLoading,
   t,
   onSave,
 }) => {
@@ -26,8 +28,17 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
     onSave(selectedPermissions);
   };
 
-  if (permissions.length === 0)
+  if (pageLoading) {
+    return (
+      <div className="mt-4">
+        <PermissionsSkeleton />
+      </div>
+    );
+  }
+
+  if (permissions.length === 0) {
     return <p className="text-gray-600">{t("no_permissions_found")}</p>;
+  }
 
   return (
     <div className="mt-4">
