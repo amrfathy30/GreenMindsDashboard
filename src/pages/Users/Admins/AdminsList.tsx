@@ -16,9 +16,12 @@ import {
   updateAdmin,
 } from "../../../api/services/adminService";
 import { TableLoading } from "../../../components/loading/TableLoading";
-import { allAdminRoles } from "../../../api/services/adminRolesService";
+import {
+  AddAdminRole,
+  allAdminRoles,
+} from "../../../api/services/adminRolesService";
 import { AgeApiResponse } from "../../../utils/types/ageType";
-import Pagination from "../../../components/common/Pagination";
+import { hasPermission } from "../../../utils/permissions/permissions";
 
 export default function AdminsList({
   openAddModal,
@@ -28,9 +31,6 @@ export default function AdminsList({
   setOpenAddModal?: (open: boolean) => void;
 }) {
   const { t } = useLanguage();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [pageSize, setPageSize] = useState(12);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -66,7 +66,7 @@ export default function AdminsList({
             TypeName: item.TypeName,
             Phone: item.Phone,
             ConfirmPassword: item.ConfirmPassword,
-            EmailVerified: item.EmailVerified,
+            // EmailVerified: item.EmailVerified,
           })),
         );
       } catch (error: any) {
@@ -138,16 +138,24 @@ export default function AdminsList({
       setModalLoading(true);
 
       let res;
+      let createdAdminId: number | undefined;
+
       if (editData?.id) {
         res = await updateAdmin(editData.id, data);
+
+        if (data.roleName && data.roleName !== editData.roleName) {
+          await AddAdminRole(data.roleName, String(editData.id));
+        }
       } else {
         res = await createAdmin(data);
+        createdAdminId = res?.Data?.Id;
+
+        if (createdAdminId && data.roleName) {
+          await AddAdminRole(data.roleName, String(createdAdminId));
+        }
       }
 
-      const listRes: AdminApiResponse = await allAdminData({
-        page: currentPage,
-        pageSize: 10,
-      });
+      const listRes: AdminApiResponse = await allAdminData();
 
       setAdminList(
         listRes.Data.map((item) => ({
@@ -159,22 +167,37 @@ export default function AdminsList({
           ConfirmPassword: item.ConfirmPassword,
           Password: item.Password,
           Type: item.Type,
+          TypeName: data.roleName,
         })),
       );
 
       ShowToastSuccess(
         res?.Message || (editData ? t("success_update") : t("success_create")),
       );
-      setTotalPages(Math.ceil(listRes.Total / listRes.PageSize));
 
       setOpenModal(false);
       setEditData(null);
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("operation_failed"));
+      const errData = error?.response?.data;
+
+      if (errData?.Data) {
+        const messages: string[] = [];
+        for (const key in errData.Data) {
+          if (Array.isArray(errData.Data[key])) {
+            messages.push(...errData.Data[key]);
+          }
+        }
+        toast.error(messages.join("\n"));
+      } else {
+        toast.error(errData?.Message || t("operation_failed"));
+      }
     } finally {
       setModalLoading(false);
     }
   };
+
+  const canEditAdmin = hasPermission("Account_Update");
+  const canDeleteAdmin = hasPermission("Account_Delete");
 
   const columns = [
     {
@@ -191,13 +214,6 @@ export default function AdminsList({
       render: (row: any) => (
         <div className="flex items-center gap-2">
           <span>{row.Email || "__"}</span>
-          <span
-            className={`text-sm ${
-              row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
-            }`}
-          >
-            {row.EmailVerified ? t("Verified") : t("NotVerified")}
-          </span>
         </div>
       ),
     },
@@ -217,29 +233,33 @@ export default function AdminsList({
       label: t("actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
-          <button
-            onClick={() => {
-              setEditData({
-                id: row.id,
-                Name: row.Name,
-                Email: row.Email,
-                Password: row.Password,
-                Type: row.Type,
-              });
-              setOpenModal(true);
-            }}
-          >
-            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(row.id);
-            }}
-            aria-label={t("common.delete")}
-          >
-            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
+          {canEditAdmin && (
+            <button
+              onClick={() => {
+                setEditData({
+                  id: row.id,
+                  Name: row.Name,
+                  Email: row.Email,
+                  Password: row.Password,
+                  Type: row.Type,
+                });
+                setOpenModal(true);
+              }}
+            >
+              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
+          {canDeleteAdmin && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(row.id);
+              }}
+              aria-label={t("common.delete")}
+            >
+              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
         </div>
       ),
     },
@@ -252,13 +272,6 @@ export default function AdminsList({
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={adminList} columns={columns} />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            pageSize={pageSize}
-            onPageSizeChange={setPageSize}
-          />
         </div>
       )}
 

@@ -38,6 +38,8 @@ const translations = {
     updateButton: "Update",
     Previous: "Previous",
     Next: "Next",
+    GamesNotAvailable: "Games is not available yet",
+    VideosNotAvailable: "Videos is not available yet",
     saving: "Saving...",
     updating: "Updating...",
     // age group
@@ -152,6 +154,7 @@ const translations = {
     Male: "Male",
     Female: "Female",
     Age: "Age",
+    LevelNumber: "Level Number",
     UserType: "Admin Role",
     select_UserType: "Select Admin Role",
     AdminConfirmPassword: "Admin Confirm Password",
@@ -206,6 +209,8 @@ const translations = {
     success_create: "created successfully",
     SeeAll: "See All",
     TopRanked: "Top Ranked",
+    PasswordContain:
+      "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
 
     // Video translations
@@ -353,6 +358,14 @@ const translations = {
     permissionName: "Permission Display Name",
     permissions_updated_successfully: "permissions updated successfully",
     Show_per_page: "Items per pge",
+
+    GreenMindsAdmin: "Green minds Admin",
+    ChildrenInformation: "Children Information",
+    Phone: "Phone",
+    ChildImage: "Child image",
+    NoName: "No name",
+    Loading: "Loading...",
+    OperationFailed: "Operation failed",
   },
   ar: {
     // sidebar
@@ -376,6 +389,10 @@ const translations = {
     updateButton: "تحديث",
     saving: "جارٍ الحفظ...",
     updating: "جارٍ التحديث...",
+    GamesNotAvailable: "الألعاب غير متاحة بعد",
+    VideosNotAvailable: "الفيديوهات غير متاحة بعد",
+    LevelNumber: "رقم المستوى",
+
     // age group
 
     age_groups_name: "اسم الفئات العمرية",
@@ -526,6 +543,8 @@ const translations = {
     UpdateChildren: "تحديث الأطفال",
     success_create: "تم الانشاء بنجاح",
     success_update: "تم التحديث بنجاح",
+    PasswordContain:
+      "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل مما يلي: (حرف كبير، حرف صغير، رمز، ورقم)",
 
     // setting
     setting: "الإعدادات",
@@ -697,6 +716,14 @@ const translations = {
     permissionName: "اسم العرض للصلاحيه",
     permissions_updated_successfully: "تم تحديث الصلاحية بنجاح",
     Show_per_page: "العدد في الصفحه",
+
+    GreenMindsAdmin: "لوحة تحكم غرين مايندز",
+    ChildrenInformation: "معلومات الطفل",
+    Phone: "الهاتف",
+    ChildImage: "صورة الطفل",
+    NoName: "لا يوجد اسم",
+    Loading: "جارٍ التحميل...",
+    OperationFailed: "فشلت العملية",
   },
 };
 

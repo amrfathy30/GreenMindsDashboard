@@ -18,6 +18,10 @@ import {
 } from "../../../api/services/parentService";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
+import {
+  // fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
 
 export default function ParentsList({
   openAddModal,
@@ -73,7 +77,8 @@ export default function ParentsList({
             EmailVerified: item.EmailVerified,
             Password: item.Password,
             ConfirmPassword: item.ConfirmPassword,
-            ParentPhoneNumber: item.ParentPhoneNumber,
+            Phone: item.Phone,
+            ParentPhoneNumber: item.Phone,
             GenderId: item.GenderId,
             DateOfBirth: item.DateOfBirth,
           })),
@@ -145,10 +150,9 @@ export default function ParentsList({
           Password: item.Password,
           ConfirmPassword: item.ConfirmPassword,
           EmailVerified: item.EmailVerified,
-          ParentPhoneNumber: item.ParentPhoneNumber,
-          Phone: item.Phone || item.ParentPhoneNumber,
-          GenderId: item.Phone || item.GenderId,
-          DateOfBirth: item.Phone || item.DateOfBirth,
+          ParentPhoneNumber: item.Phone,
+          GenderId: item.GenderId,
+          DateOfBirth: item.DateOfBirth,
         })),
       );
 
@@ -163,6 +167,12 @@ export default function ParentsList({
       setModalLoading(false);
     }
   };
+  // useEffect(() => {
+  //   fetchUserPermissions();
+  // }, []);
+
+  const canEdit = hasPermission("Parents_UpdateParent");
+  const canDelete = hasPermission("Parents_DeleteParent");
 
   const columns = [
     {
@@ -202,32 +212,36 @@ export default function ParentsList({
       label: t("Actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
-          <button
-            onClick={() => {
-              setEditData({
-                Id: row.id,
-                Name: row.Name,
-                UserName: row.UserName,
-                Email: row.Email,
-                Password: row.Password,
-                ConfirmPassword: row.ConfirmPassword,
-                ParentPhoneNumber: row.ParentPhoneNumber,
-                GenderId: row.GenderId,
-                DateOfBirth: row.DateOfBirth,
-              });
-              setOpenModal(true);
-            }}
-          >
-            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(row.id);
-            }}
-          >
-            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
+          {canEdit && (
+            <button
+              onClick={() => {
+                setEditData({
+                  Id: row.id,
+                  Name: row.Name,
+                  UserName: row.UserName,
+                  Email: row.Email,
+                  Password: row.Password,
+                  ConfirmPassword: row.ConfirmPassword,
+                  ParentPhoneNumber: row.ParentPhoneNumber,
+                  GenderId: row.GenderId,
+                  DateOfBirth: row.DateOfBirth,
+                });
+                setOpenModal(true);
+              }}
+            >
+              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(row.id);
+              }}
+            >
+              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
         </div>
       ),
     },

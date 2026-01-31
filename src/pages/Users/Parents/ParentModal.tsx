@@ -168,10 +168,7 @@ export default function ParentModal({
             />
           </div>
         </div>
-        <p className="text-xs text-gray-600">
-          Password Should contain one at least of (a capital letter, small
-          letter, symbol, and number)
-        </p>
+        <p className="text-xs text-gray-600">{t("PasswordContain")}</p>
         {/* </>
         )} */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

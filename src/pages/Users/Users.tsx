@@ -4,6 +4,7 @@ import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
 import ChildrenList from "./Children/ChildrenList";
 import { useLanguage } from "../../locales/LanguageContext";
+import { hasPermission } from "../../utils/permissions/permissions";
 
 export default function Users() {
   const { t } = useLanguage();
@@ -33,6 +34,15 @@ export default function Users() {
         setOpenAddModal={setOpenAddChildModal}
       />
     ),
+  };
+
+  const canAdd = {
+    tab1: hasPermission("Users_CreateUserWithType"),
+    tab2:
+      hasPermission("Parents_CreateUserWithType") ||
+      hasPermission("Parents_CreateParent"),
+
+    tab3: hasPermission("Children_CreateChild"),
   };
 
   const addButtonText = {
@@ -89,13 +99,15 @@ export default function Users() {
             </button>
           </div>
 
-          <button
-            onClick={handleAdd}
-            className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
-          >
-            <Plus />
-            {addButtonText[activeTab]}
-          </button>
+          {canAdd[activeTab] && (
+            <button
+              onClick={handleAdd}
+              className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
+            >
+              <Plus />
+              {addButtonText[activeTab]}
+            </button>
+          )}
         </div>
 
         <div>{tabContent[activeTab]}</div>

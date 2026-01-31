@@ -12,6 +12,11 @@ export const AllPermissions = async () => {
   return response.data;
 };
 
+export const GetMyPermissions = async () => {
+  const response = await axiosInstance.get("/Account/MyRolesAndPermissions");
+  return response.data;
+};
+
 export const updatePermissions = async (permission: {
   Id: number;
   DisplayName: string;
@@ -50,6 +55,13 @@ export const updateRole = async (roleName: string, newName: string) => {
   const response = await axiosInstance.post(`/AdminRoles/${roleName}`, {
     RoleName: newName,
   });
+  return response.data;
+};
+
+export const AddAdminRole = async (roleName: string, userId: string) => {
+  const response = await axiosInstance.post(
+    `/AdminRoles/users/${userId}/roles/${roleName}`,
+  );
   return response.data;
 };
 

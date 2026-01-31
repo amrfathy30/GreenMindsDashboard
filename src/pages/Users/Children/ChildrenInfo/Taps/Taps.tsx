@@ -1,8 +1,11 @@
 import { JSX, useState } from "react";
 import Video from "./Video";
 import Games from "./Games";
+import { useLanguage } from "../../../../../locales/LanguageContext";
 
 export default function Taps() {
+  const { t } = useLanguage();
+
   const [activeTab, setActiveTab] = useState<"tab1" | "tab2">("tab1");
 
   const tabContent: Record<"tab1" | "tab2", JSX.Element> = {
@@ -22,7 +25,7 @@ export default function Taps() {
             }`}
             onClick={() => setActiveTab("tab1")}
           >
-            Videos
+            {t("videos")}
           </button>
           <button
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
@@ -32,7 +35,7 @@ export default function Taps() {
             }`}
             onClick={() => setActiveTab("tab2")}
           >
-            Games
+            {t("games")}
           </button>
         </div>
       </div>

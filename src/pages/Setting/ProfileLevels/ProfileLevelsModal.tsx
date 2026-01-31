@@ -17,6 +17,7 @@ export default function ProfileLevelsModal({
 
   const [MaxPoints, setMaxPoints] = useState<string>("");
   const [MinPoints, setMinPoints] = useState<string>("");
+  const [LevelNumber, setLevelNumber] = useState<string>("");
   const [NameEn, setNameEn] = useState("");
   const [NameAr, setNameAr] = useState("");
 
@@ -24,11 +25,13 @@ export default function ProfileLevelsModal({
     if (initialData) {
       setMaxPoints(initialData.MaxPoints.toString());
       setMinPoints(initialData.MinPoints.toString());
+      setLevelNumber(initialData.LevelNumber.toString());
       setNameAr(initialData.NameAr);
       setNameEn(initialData.NameEn);
     } else {
       setMaxPoints("");
       setMinPoints("");
+      setLevelNumber("");
       setNameAr("");
       setNameEn("");
     }
@@ -36,7 +39,7 @@ export default function ProfileLevelsModal({
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSave({ MinPoints, MaxPoints, NameEn, NameAr });
+    onSave({ MinPoints, MaxPoints, NameEn, NameAr,LevelNumber });
   };
 
   return (
@@ -72,6 +75,17 @@ export default function ProfileLevelsModal({
           />
         </div>
 
+        <div>
+          <Input
+            id="LevelNumber"
+            label={t("LevelNumber")}
+            placeholder={t("LevelNumber")}
+            type="number"
+            required
+            value={LevelNumber}
+            onChange={(e) => setLevelNumber(e.target.value)}
+          />
+        </div>
         <div>
           <Input
             id="MinPoints"

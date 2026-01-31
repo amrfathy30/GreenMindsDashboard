@@ -23,7 +23,8 @@ export default function AdminModal({
     UserName: "",
     ConfirmPassword: "",
     Password: "",
-    Type: 0,
+    Type: 2,
+    roleName: "",
   });
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function AdminModal({
         UserName: initialData.UserName ?? "",
         Password: initialData.Password ?? "",
         ConfirmPassword: initialData.ConfirmPassword ?? "",
+        roleName: initialData.roleName ?? "",
         Type: initialData.Type,
       });
     } else {
@@ -45,7 +47,8 @@ export default function AdminModal({
         UserName: "",
         Password: "",
         ConfirmPassword: "",
-        Type: 0,
+        roleName: "",
+        Type: 2,
       });
     }
   }, [initialData, open]);
@@ -79,7 +82,7 @@ export default function AdminModal({
           <Input
             id="UserName"
             label={t("AdminUserName")}
-            placeholder={t("EnterUserNameHere")}
+            placeholder={t("AdminUserName")}
             value={formData.UserName}
             onChange={(e) =>
               setFormData({ ...formData, UserName: e.target.value })
@@ -136,10 +139,7 @@ export default function AdminModal({
             />
           </div>
         </div>
-        <p className="text-xs text-gray-600">
-          Password Should contain one at least of (a capital letter, small
-          letter, symbol, and number)
-        </p>
+        <p className="text-xs text-gray-600">{t("PasswordContain")}</p>
 
         {/* </>
         )} */}
@@ -147,24 +147,19 @@ export default function AdminModal({
           <label className="block text-sm font-medium">{t("UserType")}</label>
 
           <select
-            id="Type"
-            value={formData.Type}
-            onChange={(e) =>
-              setFormData({ ...formData, Type: Number(e.target.value) })
-            }
+            id="roleName"
+            value={formData.roleName}
+            onChange={(e) => {
+              setFormData({ ...formData, roleName: e.target.value });
+            }}
             className="w-full rounded-lg border py-2.5 px-4"
           >
-            <option value={0} disabled>
+            <option value="" disabled>
               {t("select_UserType")}
             </option>
-
-            {adminRoles?.map((type) => (
-              <option
-                key={type.Id}
-                value={type.Id}
-                className="dark:bg-[#1a222c]"
-              >
-                {type.Name}
+            {adminRoles?.map((role) => (
+              <option key={role.Id} value={role.Name}>
+                {role.Name}
               </option>
             ))}
           </select>

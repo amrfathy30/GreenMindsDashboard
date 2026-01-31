@@ -23,7 +23,7 @@ export default function ChildrenInfo() {
         const data = await getChildrenById(Number(id));
         setChild(data);
       } catch (error: any) {
-        toast.error(error?.response?.data?.Message || t("operation_failed"));
+        toast.error(error?.response?.data?.Message || t("OperationFailed"));
       } finally {
         setLoading(false);
       }
@@ -31,17 +31,19 @@ export default function ChildrenInfo() {
 
     fetchChild();
   }, [id, t]);
+
   const childData: Child | undefined = child?.Data;
+
   const childDetails = childData
     ? [
-        { label: "Name", value: childData.Name || "__" },
+        { label: t("Name"), value: childData.Name || "__" },
         {
-          label: "Phone",
+          label: t("Phone"),
           value: childData.ParentPhoneNumber || childData.Phone || "__",
         },
-        { label: "Email", value: childData.Email || "__" },
+        { label: t("Email"), value: childData.Email || "__" },
         {
-          label: "Gender",
+          label: t("Gender"),
           value:
             childData.GenderId === 1
               ? t("Male")
@@ -50,7 +52,7 @@ export default function ChildrenInfo() {
                 : "__",
         },
         {
-          label: "Date Of Birth",
+          label: t("DateOfBirth"),
           value: childData.DateOfBirth
             ? new Date(childData.DateOfBirth).toLocaleDateString()
             : "__",
@@ -61,7 +63,7 @@ export default function ChildrenInfo() {
   if (loading) {
     return (
       <div className="p-8 text-center">
-        <h2 className="text-xl font-semibold">{t("loading")}</h2>
+        <h2 className="text-xl font-semibold">{t("Loading")}</h2>
       </div>
     );
   }
@@ -74,18 +76,18 @@ export default function ChildrenInfo() {
     );
   }
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("ChildrenInformation")}`;
+
   return (
     <div className="md:px-8 md:py-4">
-      <PageMeta
-        title="Green minds Admin | Children Information"
-        description={``}
-      />
+      <PageMeta title={pageTitle} description="" />
+
       <div className="flex items-center gap-2">
         {childData?.AvatarImg ? (
           <img
             className="w-10 h-10 rounded-full object-cover"
             src={childData.AvatarImg}
-            alt="child-image"
+            alt={t("ChildImage")}
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
@@ -106,7 +108,7 @@ export default function ChildrenInfo() {
             className="border dark:border-gray-700 shadow drop-shadow-xl rounded-xl p-3"
           >
             <h2 className="font-semibold dark:text-white">{detail.label}</h2>
-            <h3 className="dark:text-white">{detail.value}</h3>
+            <h3 className="dark:text-white truncate">{detail.value}</h3>
           </div>
         ))}
       </div>

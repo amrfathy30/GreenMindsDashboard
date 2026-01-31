@@ -39,6 +39,7 @@ export default function ProfileLevels() {
             NameAr: item.NameAr,
             MinPoints: item.MinPoints,
             MaxPoints: item.MaxPoints,
+            LevelNumber: item.LevelNumber,
           })),
         );
       } catch (error) {
@@ -86,6 +87,7 @@ export default function ProfileLevels() {
       if (
         !data.NameEn?.trim() ||
         !data.NameAr?.trim() ||
+        data.LevelNumber === "" ||
         data.MinPoints === "" ||
         data.MaxPoints === ""
       ) {
@@ -116,6 +118,7 @@ export default function ProfileLevels() {
           id: item.Id,
           MaxPoints: item.MaxPoints,
           MinPoints: item.MinPoints,
+          LevelNumber: item.LevelNumber,
           NameEn: item.NameEn?.toString() || "",
           NameAr: item.NameAr?.toString() || "",
         })),
@@ -146,6 +149,10 @@ export default function ProfileLevels() {
       render: (row: any) => <span>{row.NameAr || "__"}</span>,
     },
     {
+      key: "LevelNumber",
+      label: t("LevelNumber"),
+    },
+    {
       key: "MinPoints",
       label: t("minPoints"),
     },
@@ -163,6 +170,7 @@ export default function ProfileLevels() {
               setEditData({
                 id: row.id,
                 MinPoints: row.MinPoints,
+                LevelNumber: row.LevelNumber,
                 MaxPoints: row.MaxPoints,
                 NameEn: row.NameEn,
                 NameAr: row.NameAr,
