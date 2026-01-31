@@ -12,6 +12,7 @@ export interface Children {
   Password: string;
   ConfirmPassword: string;
   DateOfBirth: string;
+  EmailVerified?: boolean;
   GenderId: string;
 }
 
@@ -30,6 +31,7 @@ export interface ChildrenApiResponse {
       Phone?: string;
       Email: string;
       DateOfBirth: string;
+      EmailVerified?: boolean;
       GenderId: string;
     }[];
   };
@@ -51,6 +53,7 @@ export interface Child {
   UserName?: string;
   AvatarImg?: string;
   DateOfBirth?: string;
+  EmailVerified?: boolean;
   GenderId: number;
   ParentId?: number;
   ParentName?: string | null;

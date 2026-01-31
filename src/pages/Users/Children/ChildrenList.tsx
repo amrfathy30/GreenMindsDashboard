@@ -70,6 +70,7 @@ export default function ChildrenList({
             ParentPhoneNumber: item.ParentPhoneNumber,
             Phone: item.Phone,
             DateOfBirth: item.DateOfBirth,
+            EmailVerified: item.EmailVerified,
           })),
         );
         setTotalPages(Math.ceil(data.Data.Total / data.Data.PageSize));
@@ -81,7 +82,7 @@ export default function ChildrenList({
     };
 
     fetchParent();
-  }, [currentPage, pageSize,t]);
+  }, [currentPage, pageSize, t]);
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -181,7 +182,20 @@ export default function ChildrenList({
     {
       key: "Email",
       label: t("email"),
+      render: (row: any) => (
+        <div className="flex items-center gap-2">
+          <span>{row.Email || "__"}</span>
+          <span
+            className={`text-sm ${
+              row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
+            }`}
+          >
+            {row.EmailVerified ? t("Verified") : t("NotVerified")}
+          </span>
+        </div>
+      ),
     },
+
     {
       key: "Phone",
       label: t("ParentPhone"),
@@ -245,8 +259,13 @@ export default function ChildrenList({
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={childrenList} columns={columns} />
           <div className="mt-auto">
-          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
-    
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              pageSize={pageSize}
+              onPageSizeChange={setPageSize}
+            />
           </div>
         </div>
       )}

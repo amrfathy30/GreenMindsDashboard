@@ -136,42 +136,44 @@ export default function ParentModal({
               }))
             }
           />
-          <p className="text-xs text-gray-600 mt-2">
-            Password Should contain one at least of (a capital letter, small
-            letter, symbol, and number)
-          </p>
         </div>
-        {!initialData && (
-          <>
-            <div>
-              <Input
-                id="Password"
-                label={t("Password")}
-                type="password"
-                placeholder={t("Password")}
-                value={formData.Password}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, Password: e.target.value }))
-                }
-              />
-            </div>
-            <div>
-              <Input
-                id="ConfirmPassword"
-                label={t("ConfirmPassword")}
-                type="password"
-                placeholder={t("ConfirmPassword")}
-                value={formData.ConfirmPassword}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    ConfirmPassword: e.target.value,
-                  }))
-                }
-              />
-            </div>
-          </>
-        )}
+        {/* {!initialData && (
+          <> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>
+            <Input
+              id="Password"
+              label={t("Password")}
+              type="password"
+              placeholder={t("Password")}
+              value={formData.Password}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, Password: e.target.value }))
+              }
+            />
+          </div>
+          <div>
+            <Input
+              id="ConfirmPassword"
+              label={t("ConfirmPassword")}
+              type="password"
+              placeholder={t("ConfirmPassword")}
+              value={formData.ConfirmPassword}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  ConfirmPassword: e.target.value,
+                }))
+              }
+            />
+          </div>
+        </div>
+        <p className="text-xs text-gray-600">
+          Password Should contain one at least of (a capital letter, small
+          letter, symbol, and number)
+        </p>
+        {/* </>
+        )} */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
             <Label>{t("Gender")}</Label>
