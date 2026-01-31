@@ -260,6 +260,8 @@ const translations = {
     api_link: "API Link",
     delete_game_title: "Delete Game",
     confirm_delete_game: "Are you sure you want to delete this game?",
+    not_authorized_to_view_this_page: "Sorry, you are not authorized to view this page.",
+    access_denied: "Access Denied",
     //Avatar Translation
     avatars_admin: "Avatars - Admin",
     add_avatar: "Add Avatar",
@@ -585,6 +587,8 @@ const translations = {
     api_link: "رابط الـ API",
     delete_game_title: "حذف اللعبة",
     confirm_delete_game: "هل أنت متأكد من أنك تريد حذف هذه اللعبة؟",
+    not_authorized_to_view_this_page: "عفواً، ليس لديك صلاحية لعرض هذه الصفحة.",
+     access_denied: "تم رفض الوصول",
     //Avatar Translation
     avatars_admin: "إدارة الصور الرمزية",
     add_avatar: "إضافة صورة رمزية",

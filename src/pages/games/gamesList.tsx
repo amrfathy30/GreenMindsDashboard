@@ -24,8 +24,14 @@ export default function GamesList() {
   const [selectedGame, setSelectedGame] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  const adminData = JSON.parse(localStorage.getItem('GMadminData') || '{}');
+  const permissions = adminData?.permissions || [];
+  const userType = adminData?.Type;
 
-
+  const canAdd = userType === 2 || permissions.includes("Games_Create"); 
+  const canEdit = userType === 2 || permissions.includes("Games_Update");
+  const canDelete = userType === 2 || permissions.includes("Games_Delete");
+  const canView = userType === 2 || permissions.includes("Games_GetPaged");
   const fetchGames = async () => {
     try {
       setLoading(true);
@@ -56,6 +62,16 @@ export default function GamesList() {
     setSelectedGame(game);
     setIsDeleteModalOpen(true);
   };
+if (!canView) {
+  return (
+    <div className="flex-grow flex items-center justify-center">
+      <EmptyState 
+        title={t("access_denied")} 
+        description={t("not_authorized_to_view_this_page")} 
+      />
+    </div>
+  );
+}
 
   return (
     <>
@@ -67,10 +83,12 @@ export default function GamesList() {
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("games_admin")}
           </h2>
-          <Button size="sm" variant="primaryGrid" onClick={() => setIsModalOpen(true)}>
-            <div className="text-white"><PlusIcon /></div>
-            {t("add_game")}
-          </Button>
+          {canAdd && (
+            <Button size="sm" variant="primaryGrid" onClick={() => setIsModalOpen(true)}>
+              <div className="text-white"><PlusIcon /></div>
+              {t("add_game")}
+            </Button>
+          )}
         </div>
 
         <div className="flex-grow overflow-y-auto px-5 py-6">
@@ -93,6 +111,8 @@ export default function GamesList() {
                         ? game.ThumbnailUrl
                         : `${BASE_URL}/${game.ThumbnailUrl}`
                     }
+                    canEdit={canEdit}
+                    canDelete={canDelete}
                     onEdit={() => handleEditClick(game)}
                     onDelete={() => handleDeleteClick(game)}
                   />
@@ -103,9 +123,32 @@ export default function GamesList() {
       </div>
 
   
-      <GameModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type="add" onSuccess={fetchGames} />
-      <GameModal key={selectedGame?.id || "add"} isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} gameData={selectedGame} type="edit" onSuccess={fetchGames} />
-      <DeleteGameModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} gameId={selectedGame?.Id || selectedGame?.id} onSuccess={fetchGames} />
+      {canAdd && (
+        <GameModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+          type="add" 
+          onSuccess={fetchGames} 
+        />
+      )}
+      {canEdit && (
+        <GameModal 
+          key={selectedGame?.id || "edit"} 
+          isOpen={isEditModalOpen} 
+          onClose={() => setIsEditModalOpen(false)} 
+          gameData={selectedGame} 
+          type="edit" 
+          onSuccess={fetchGames} 
+        />
+      )}
+      {canDelete && (
+        <DeleteGameModal 
+          isOpen={isDeleteModalOpen} 
+          onClose={() => setIsDeleteModalOpen(false)} 
+          gameId={selectedGame?.Id || selectedGame?.id} 
+          onSuccess={fetchGames} 
+        />
+      )}
     </>
   );
 }
