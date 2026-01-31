@@ -31,13 +31,13 @@ export default function SignInForm() {
     checkExistingAuth();
   }, [navigate]);
 
-  const validateEmail = (email: string) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      );
-  };
+  // const validateEmail = (email: string) => {
+  //   return String(email)
+  //     .toLowerCase()
+  //     .match(
+  //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  //     );
+  // };
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,10 +47,10 @@ export default function SignInForm() {
       return;
     }
 
-    if (!validateEmail(email)) {
-      toast.error(t("PleaseEnterAValidEmail"));
-      return;
-    }
+    // if (!validateEmail(email)) {
+    //   toast.error(t("PleaseEnterAValidEmail"));
+    //   return;
+    // }
 
     if (password.length < 8) {
       toast.error(t("PasswordMustBeAtLeast8Characters"));
