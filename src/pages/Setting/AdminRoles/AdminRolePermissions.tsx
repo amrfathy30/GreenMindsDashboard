@@ -3,6 +3,8 @@ import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/form/input/InputField";
 import { AdminRolePermissionsProps } from "../../../utils/types/permissionType";
 import PermissionsSkeleton from "../../../components/loading/PermissionsSkeleton";
+import EmptyState from "../../../components/common/no-data-found";
+import { hasPermission } from "../../../utils/permissions/permissions";
 
 const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
   permissions,
@@ -28,6 +30,19 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
     onSave(selectedPermissions);
   };
 
+  const canView = hasPermission("AdminPermissions_GetAllPermissions");
+
+  if (!canView && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
+
   if (pageLoading) {
     return (
       <div className="mt-4">
@@ -47,7 +62,7 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
           <Input
             key={perm.Id}
             type="checkbox"
-            label={perm.DisplayName}
+            label={perm.Key}
             checked={selectedPermissions.includes(perm.Id)}
             onChange={() => togglePermission(perm.Id)}
           />

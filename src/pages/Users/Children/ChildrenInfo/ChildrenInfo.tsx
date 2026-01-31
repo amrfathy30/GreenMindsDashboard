@@ -7,16 +7,31 @@ import { toast } from "sonner";
 import { useParams } from "react-router";
 import { getChildrenById } from "../../../../api/services/childrenService";
 import { Child, ChildApiResponse } from "../../../../utils/types/childrenType";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../../utils/permissions/permissions";
+import EmptyState from "../../../../components/common/no-data-found";
 
 export default function ChildrenInfo() {
   const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
+  const childId = id ? Number(id) : undefined;
+
   const [child, setChild] = useState<ChildApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+  const canView = hasPermission("Children_GetChild");
 
   useEffect(() => {
     const fetchChild = async () => {
       if (!id) return;
+      if (!canView) {
+        setLoading(false);
+        return;
+      }
 
       try {
         setLoading(true);
@@ -68,15 +83,26 @@ export default function ChildrenInfo() {
     );
   }
 
-  if (!child || !child.Data) {
+  if (!childId) {
     return (
-      <div className="text-center min-h-screen h-full flex justify-center items-center">
+      <div className="text-center min-h-screen flex items-center justify-center">
         <h2 className="text-xl font-semibold">{t("NoData")}</h2>
       </div>
     );
   }
 
   const pageTitle = `${t("GreenMindsAdmin")} | ${t("ChildrenInformation")}`;
+
+  if (!canView && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="md:px-8 md:py-4">
@@ -114,7 +140,7 @@ export default function ChildrenInfo() {
       </div>
 
       <div className="mt-8">
-        <Taps />
+        <Taps id={childId} />
       </div>
     </div>
   );

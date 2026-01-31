@@ -9,7 +9,7 @@ import { adminLogin } from "../../api/services/authService";
 import { useLanguage } from "../../locales/LanguageContext";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../common/ToastHelper";
-// import { fetchUserPermissions } from "../../utils/permissions/permissions";
+import { fetchUserPermissions } from "../../utils/permissions/permissions";
 
 export default function SignInForm() {
   const { t } = useLanguage();
@@ -32,13 +32,13 @@ export default function SignInForm() {
     checkExistingAuth();
   }, [navigate]);
 
-  // const validateEmail = (email: string) => {
-  //   return String(email)
-  //     .toLowerCase()
-  //     .match(
-  //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  //     );
-  // };
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,10 +48,10 @@ export default function SignInForm() {
       return;
     }
 
-    // if (!validateEmail(email)) {
-    //   toast.error(t("PleaseEnterAValidEmail"));
-    //   return;
-    // }
+    if (!validateEmail(email)) {
+      toast.error(t("PleaseEnterAValidEmail"));
+      return;
+    }
 
     if (password.length < 8) {
       toast.error(t("PasswordMustBeAtLeast8Characters"));
@@ -79,11 +79,12 @@ export default function SignInForm() {
           JSON.stringify(response.Data?.Token),
         );
 
-        // await fetchUserPermissions();
+        await fetchUserPermissions();
 
-        setTimeout(() => {
-          window.location.href = "/videos";
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.href = "/videos";
+        // }, 1000);
+        navigate("/videos");
       } else {
         toast.error(response?.Message || t("InvalidEmailOrPassword"));
       }

@@ -21,7 +21,11 @@ import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
 import { Link } from "react-router";
 import { EyeIcon } from "lucide-react";
-import { hasPermission } from "../../../utils/permissions/permissions";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function ChildrenList({
   openAddModal,
@@ -40,6 +44,14 @@ export default function ChildrenList({
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canView = hasPermission("Children_GetChildren");
+  const canEdit = hasPermission("Children_UpdateChild");
+  const canDelete = hasPermission("Children_DeleteChild");
+  const canShow = hasPermission("Children_GetChild");
 
   useEffect(() => {
     if (openAddModal) {
@@ -54,6 +66,10 @@ export default function ChildrenList({
   useEffect(() => {
     const fetchParent = async () => {
       try {
+        if (!canView) {
+          setTableLoading(false);
+          return;
+        }
         setTableLoading(true);
         const data: ChildrenApiResponse = await allChildrenData({
           page: currentPage,
@@ -65,6 +81,7 @@ export default function ChildrenList({
             id: item.Id,
             Name: item.Name,
             Email: item.Email,
+            UserName: item.UserName,
             Password: item.Password,
             GenderId: item.GenderId,
             ConfirmPassword: item.ConfirmPassword,
@@ -118,6 +135,7 @@ export default function ChildrenList({
     try {
       if (
         !data.Name?.trim() ||
+        !data.UserName?.trim() ||
         !data.Email ||
         !data.DateOfBirth ||
         !data.ParentPhoneNumber
@@ -154,6 +172,7 @@ export default function ChildrenList({
         listRes.Data.Items.map((item) => ({
           id: item.Id,
           Name: item.Name || "",
+          UserName: item.UserName || "",
           Email: item.Email,
           DateOfBirth: item.DateOfBirth,
           Password: item.Password,
@@ -176,14 +195,15 @@ export default function ChildrenList({
     }
   };
 
-  const canEdit = hasPermission("Children_UpdateChild");
-  const canDelete = hasPermission("Children_DeleteChild");
-  const canShow = hasPermission("Children_GetChildrenLookup");
-
   const columns = [
     {
       key: "Name",
       label: t("Name"),
+    },
+    {
+      key: "UserName",
+      label: t("UserName"),
+      render: (row: any) => <span>{row.UserName || "__"}</span>,
     },
     {
       key: "Email",
@@ -207,11 +227,11 @@ export default function ChildrenList({
       label: t("ParentPhone"),
       render: (row: any) => <span>{row.Phone || "__"}</span>,
     },
-    {
-      key: "DateOfBirth",
-      label: t("DateOfBirth"),
-      render: (row: any) => <span>{row.DateOfBirth || "__"}</span>,
-    },
+    // {
+    //   key: "DateOfBirth",
+    //   label: t("DateOfBirth"),
+    //   render: (row: any) => <span>{row.DateOfBirth || "__"}</span>,
+    // },
     {
       key: "actions",
       label: t("Actions"),
@@ -236,6 +256,7 @@ export default function ChildrenList({
                   id: row.id,
                   Name: row.Name || "",
                   Email: row.Email || "",
+                  UserName: row.UserName || "",
                   Password: row.Password || "",
                   ConfirmPassword: row.ConfirmPassword || "",
                   ParentPhoneNumber: row.ParentPhoneNumber || "",
@@ -262,6 +283,17 @@ export default function ChildrenList({
       ),
     },
   ];
+
+  if (!canView && !tableLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="">

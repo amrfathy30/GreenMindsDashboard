@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
 import ChildrenList from "./Children/ChildrenList";
 import { useLanguage } from "../../locales/LanguageContext";
-import { hasPermission } from "../../utils/permissions/permissions";
+import { fetchUserPermissions, hasPermission } from "../../utils/permissions/permissions";
 
 export default function Users() {
   const { t } = useLanguage();
@@ -35,6 +35,11 @@ export default function Users() {
       />
     ),
   };
+  
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
 
   const canAdd = {
     tab1: hasPermission("Users_CreateUserWithType"),

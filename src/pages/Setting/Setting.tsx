@@ -11,6 +11,10 @@ import { useLanguage } from "../../locales/LanguageContext";
 import { SmtpList } from "../../utils/types/SmtpType";
 import { allSmtpData } from "../../api/services/SmtpService";
 import { toast } from "sonner";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../utils/permissions/permissions";
 
 export default function Setting() {
   const [open, setOpen] = useState(false);
@@ -19,9 +23,18 @@ export default function Setting() {
   const [openModal, setOpenModal] = useState(false);
   const closeDropdown = () => setOpen(false);
 
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+  const canEditSmtp = hasPermission("Smtp_Update");
+  const canView = hasPermission("Smtp_Get");
+
   const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
 
   const fetchSmtp = async () => {
+    if (!canView) {
+      return;
+    }
     try {
       const res = await allSmtpData();
       if (res?.Data?.length > 0) {
@@ -232,15 +245,17 @@ export default function Setting() {
           </div>
 
           {/* SMTP Settings */}
-          <div
-            onClick={() => setOpenModal(true)}
-            className="flex justify-between items-center border-b border-gray-300 dark:border-gray-600  pb-3 px-4 cursor-pointer"
-          >
-            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <MessageSettings className="w-5 h-5 dark:brightness-300" />
-              <span>{t("smtpSettings")}</span>
+          {canEditSmtp && (
+            <div
+              onClick={() => setOpenModal(true)}
+              className="flex justify-between items-center border-b border-gray-300 dark:border-gray-600  pb-3 px-4 cursor-pointer"
+            >
+              <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+                <MessageSettings className="w-5 h-5 dark:brightness-300" />
+                <span>{t("smtpSettings")}</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Age Groups */}
           <Link
@@ -261,6 +276,7 @@ export default function Setting() {
               <span>{t("AdminRoles")}</span>
             </div>
           </Link>
+
           <Link
             to="/permissions-list"
             className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
@@ -270,6 +286,7 @@ export default function Setting() {
               <span> {t("Permission")}</span>
             </div>
           </Link>
+
           {/* Profile Levels */}
           <Link
             to="/profile-levels"

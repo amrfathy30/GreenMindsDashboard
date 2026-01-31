@@ -19,15 +19,37 @@ import {
 import { useLanguage } from "../../../locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function ProfileLevels() {
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
 
   const [ProfileLevels, setProfileLevels] = useState<LevelList[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState<LevelList | null>(null);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canView = hasPermission("Levels_GetAll");
+  const canCreate = hasPermission("Levels_Create");
+  const canEdit = hasPermission("Levels_Create");
+  const canDelete = hasPermission("Levels_Delete");
 
   useEffect(() => {
     const fetchLevels = async () => {
+      if (!canView) {
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const data: LevelApiResponse = await allLevelData();
@@ -51,12 +73,6 @@ export default function ProfileLevels() {
 
     fetchLevels();
   }, [t]);
-
-  const [openModal, setOpenModal] = useState(false);
-  const [editData, setEditData] = useState<LevelList | null>(null);
-
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
 
   const handleDelete = (id: number) => {
     setSelectedDeleteId(id);
@@ -165,32 +181,47 @@ export default function ProfileLevels() {
       label: t("actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
-          <button
-            onClick={() => {
-              setEditData({
-                id: row.id,
-                MinPoints: row.MinPoints,
-                LevelNumber: row.LevelNumber,
-                MaxPoints: row.MaxPoints,
-                NameEn: row.NameEn,
-                NameAr: row.NameAr,
-              });
-              setOpenModal(true);
-            }}
-            aria-label={t("common.edit")}
-          >
-            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
-          <button
-            onClick={() => handleDelete(row.id)}
-            aria-label={t("common.delete")}
-          >
-            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
+          {canEdit && (
+            <button
+              onClick={() => {
+                setEditData({
+                  id: row.id,
+                  MinPoints: row.MinPoints,
+                  LevelNumber: row.LevelNumber,
+                  MaxPoints: row.MaxPoints,
+                  NameEn: row.NameEn,
+                  NameAr: row.NameAr,
+                });
+                setOpenModal(true);
+              }}
+              aria-label={t("common.edit")}
+            >
+              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={() => handleDelete(row.id)}
+              aria-label={t("common.delete")}
+            >
+              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
         </div>
       ),
     },
   ];
+
+  if (!canView && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -200,9 +231,11 @@ export default function ProfileLevels() {
           {t("levelNameLabel")}
         </h2>
         <div className="flex justify-end my-4">
-          <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
-            {t("add_level")}
-          </AddButton>
+          {canCreate && (
+            <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
+              {t("add_level")}
+            </AddButton>
+          )}
         </div>
         {loading ? (
           <TableLoading columnCount={5} />

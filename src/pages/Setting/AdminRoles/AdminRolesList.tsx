@@ -21,6 +21,11 @@ import AddRoleModal from "./AddRoleModal";
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { MoreDotIcon } from "../../../icons";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function AdminRoles() {
   const [loading, setLoading] = useState(true);
@@ -37,6 +42,19 @@ export default function AdminRoles() {
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [roleToEdit, setRoleToEdit] = useState<any>(null);
 
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canCreateRole = hasPermission("AdminRoles_CreateRole");
+  const canUpdateRoleAndPermissions = hasPermission(
+    "AdminRoles_UpdateRoleAndPermissions",
+  );
+  const canViewRoles = hasPermission("AdminRoles_GetAllRoles");
+  const canViewPermissions = hasPermission(
+    "AdminPermissions_GetAllPermissions",
+  );
+  const canDeleteRole = hasPermission("AdminRoles_DeleteRole");
   const handleEditRole = (role: any) => {
     setRoleToEdit(role);
     setEditRoleModalOpen(true);
@@ -124,6 +142,10 @@ export default function AdminRoles() {
   // fetchAdminRoles
   useEffect(() => {
     const fetchAdminRoles = async () => {
+      if (!canViewRoles) {
+        return;
+      }
+
       try {
         setLoading(true);
         const data: AgeApiResponse = await allAdminRoles();
@@ -142,6 +164,10 @@ export default function AdminRoles() {
   // fetchAllPermissions
   useEffect(() => {
     const fetchAllPermissions = async () => {
+      if (!canViewPermissions) {
+        return;
+      }
+
       try {
         const data = await AllPermissions();
         setAllPermissions(Array.isArray(data.Data) ? data.Data : []);
@@ -197,6 +223,17 @@ export default function AdminRoles() {
     }
   };
 
+  if (!canViewRoles && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <PageMeta title="Green minds Admin | Admin Roles" description={``} />
@@ -206,9 +243,11 @@ export default function AdminRoles() {
             {t("AdminRoles")}
           </h2>
 
-          <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
-            {t("add_admin_role")}
-          </AddButton>
+          {canCreateRole && (
+            <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
+              {t("add_admin_role")}
+            </AddButton>
+          )}
         </div>
         <div className="px-5">
           {/* Tab Headers */}
@@ -246,24 +285,28 @@ export default function AdminRoles() {
                     <div
                       className={`${lang === "en" ? "right-0" : "left-0"} absolute  mt-1 w-32 bg-white border rounded shadow-lg z-10`}
                     >
-                      <button
-                        onClick={() => {
-                          handleEditRole(role);
-                          setOpenDropdown(null);
-                        }}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                      >
-                        {t("edit")}
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleDelete(role.Id);
-                          setOpenDropdown(null);
-                        }}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500"
-                      >
-                        {t("delete")}
-                      </button>
+                      {canUpdateRoleAndPermissions && (
+                        <button
+                          onClick={() => {
+                            handleEditRole(role);
+                            setOpenDropdown(null);
+                          }}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        >
+                          {t("edit")}
+                        </button>
+                      )}
+                      {canDeleteRole && (
+                        <button
+                          onClick={() => {
+                            handleDelete(role.Id);
+                            setOpenDropdown(null);
+                          }}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500"
+                        >
+                          {t("delete")}
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>

@@ -19,9 +19,10 @@ import {
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
 import {
-  // fetchUserPermissions,
+  fetchUserPermissions,
   hasPermission,
 } from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function ParentsList({
   openAddModal,
@@ -38,6 +39,13 @@ export default function ParentsList({
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<ParentList | null>(null);
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canView = hasPermission("Parents_GetParents");
+  const canEdit = hasPermission("Parents_UpdateParent");
+  const canDelete = hasPermission("Parents_DeleteParent");
 
   useEffect(() => {
     if (openAddModal) {
@@ -61,6 +69,10 @@ export default function ParentsList({
 
   useEffect(() => {
     const fetchParent = async () => {
+      if (!canView) {
+        setTableLoading(false);
+        return;
+      }
       try {
         setTableLoading(true);
         const data: ParentApiResponse = await allParentData({
@@ -167,12 +179,6 @@ export default function ParentsList({
       setModalLoading(false);
     }
   };
-  // useEffect(() => {
-  //   fetchUserPermissions();
-  // }, []);
-
-  const canEdit = hasPermission("Parents_UpdateParent");
-  const canDelete = hasPermission("Parents_DeleteParent");
 
   const columns = [
     {
@@ -246,6 +252,17 @@ export default function ParentsList({
       ),
     },
   ];
+
+  if (!canView && !tableLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

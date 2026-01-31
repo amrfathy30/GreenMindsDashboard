@@ -2,15 +2,16 @@ import { JSX, useState } from "react";
 import Video from "./Video";
 import Games from "./Games";
 import { useLanguage } from "../../../../../locales/LanguageContext";
+import { TapsProps } from "../../../../../utils/types/childrenType";
 
-export default function Taps() {
+export default function Taps({ id }: TapsProps) {
   const { t } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<"tab1" | "tab2">("tab1");
 
   const tabContent: Record<"tab1" | "tab2", JSX.Element> = {
-    tab1: <Video />,
-    tab2: <Games />,
+    tab1: <Video id={id} />,
+    tab2: <Games id={id} />,
   };
 
   return (

@@ -19,14 +19,33 @@ import { AgeApiResponse, AgeGroup } from "../../../utils/types/ageType";
 import { TableLoading } from "../../../components/loading/TableLoading";
 import { useLanguage } from "../../../locales/LanguageContext";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function AgeGroupList() {
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
   const [ageGroups, setAgeGroups] = useState<AgeGroup[]>([]);
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canView = hasPermission("AgeSectors_GetAll");
+  const canCreate = hasPermission("AgeSectors_Create");
+  const canEdit = hasPermission("Age Update");
+  const canDelete = hasPermission("AgeSectors_Delete");
 
   useEffect(() => {
     const fetchAgeGroups = async () => {
+      if (!canView) {
+        setLoading(false);
+
+        return;
+      }
+
       try {
         setLoading(true);
         const data: AgeApiResponse = await allAgeData();
@@ -151,52 +170,65 @@ export default function AgeGroupList() {
       label: t("actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
-          <button
-            onClick={() => {
-              setEditData({
-                FromAge: row.FromAge,
-                ToAge: row.ToAge,
-                id: row.id,
-                DisplayName: row.DisplayName,
-              });
-              setOpenModalAge(true);
-            }}
-          >
-            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
-          <button onClick={() => handleDelete(row.id)}>
-            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
+          {canEdit && (
+            <button
+              onClick={() => {
+                setEditData({
+                  FromAge: row.FromAge,
+                  ToAge: row.ToAge,
+                  id: row.id,
+                  DisplayName: row.DisplayName,
+                });
+                setOpenModalAge(true);
+              }}
+            >
+              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
+          {canDelete && (
+            <button onClick={() => handleDelete(row.id)}>
+              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
         </div>
       ),
     },
   ];
 
+  if (!canView && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
-        <PageMeta
-        title="Green minds Admin | Age Group"
-        description={``}
-      />
+      <PageMeta title="Green minds Admin | Age Group" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("age_groups")}
           </h2>
-
-          <AddButton
-            startIcon={<Plus />}
-            onClick={() => {
-              setEditData(null);
-              setOpenModalAge(true);
-            }}
-          >
-            {t("add_age_groups")}
-          </AddButton>
+          {canCreate && (
+            <AddButton
+              startIcon={<Plus />}
+              onClick={() => {
+                setEditData(null);
+                setOpenModalAge(true);
+              }}
+            >
+              {t("add_age_groups")}
+            </AddButton>
+          )}
         </div>
         <div className="px-5">
           {loading ? (
-            <TableLoading  columnCount={3} />
+            <TableLoading columnCount={3} />
           ) : (
             <BasicTableOne data={ageGroups} columns={columns} />
           )}

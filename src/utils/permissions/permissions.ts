@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GetMyPermissions } from "../../api/services/adminRolesService";
 
 export const fetchUserPermissions = async () => {
   try {
     const response = await GetMyPermissions();
-    const permissions: string[] = response.data?.Permissions || [];
-    // localStorage.setItem("GMadminPermissions", JSON.stringify(permissions));
+    const permissions: string[] =
+      response?.Data?.Permissions?.map((p: any) => p.PermessionName) || [];
+    localStorage.setItem("GMadminPermissions", JSON.stringify(permissions));
     return permissions;
   } catch (err) {
     console.error("Failed to fetch user permissions", err);
