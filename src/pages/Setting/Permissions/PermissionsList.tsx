@@ -10,6 +10,7 @@ import UpdatePermissionModal from "./UpdatePermissionModal";
 import { EditIcon } from "../../../icons";
 import { toast } from "sonner";
 import { PermissionsSkeletonList } from "../../../components/loading/PermissionSkeleton";
+import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 
 export default function PermissionsList() {
   const { t } = useLanguage();
@@ -49,7 +50,7 @@ export default function PermissionsList() {
     try {
       setSaving(true);
       await updatePermissions({ Id: data.id, DisplayName: data.DisplayName });
-      toast.success(t("permissions_updated_successfully"));
+      ShowToastSuccess(t("permissions_updated_successfully"));
 
       setPermissions((prev) =>
         prev.map((p) =>

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { SmtpList, SmtpSettingsModalProps } from "../../utils/types/SmtpType";
 import { updateSmtp } from "../../api/services/SmtpService";
 import { useLanguage } from "../../locales/LanguageContext";
+import { ShowToastSuccess } from "../../components/common/ToastHelper";
 
 export default function SmtpSettingsModal({
   open,
@@ -42,7 +43,7 @@ export default function SmtpSettingsModal({
       const payload: any = { ...formData };
       if (!payload.Password) payload.Password = "";
       await updateSmtp(payload);
-      toast.success(t("success_update"));
+      ShowToastSuccess(t("success_update"));
       onSuccess?.();
       onClose();
     } catch (error: any) {

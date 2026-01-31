@@ -13,7 +13,6 @@ import Analytics from "./pages/analytics/analyticsList";
 import AvatarsList from "./pages/Avatars/avatarsList";
 import ChildrenInfo from "./pages/Users/Children/ChildrenInfo/ChildrenInfo";
 import ProfileLevels from "./pages/Setting/ProfileLevels/ProfileLevels";
-import LoginStreaks from "./pages/Setting/LoginStreaks/LoginStreaks";
 import { ProtectedRoute } from "./protected-route-wrapper";
 import AdminRoles from "./pages/Setting/AdminRoles/AdminRolesList";
 import PermissionsList from "./pages/Setting/Permissions/PermissionsList";
@@ -38,7 +37,6 @@ export default function App() {
               <Route path="/age-group" element={<AgeGroup />} />
               <Route path="/admin-roles" element={<AdminRoles />} />
               <Route path="/profile-levels" element={<ProfileLevels />} />
-              <Route path="/login-streaks" element={<LoginStreaks />} />
               <Route path="/permissions-list" element={<PermissionsList />} />
             </Route>
           </Route>

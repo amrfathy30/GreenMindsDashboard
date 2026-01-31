@@ -21,6 +21,7 @@ import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { TableLoading } from "../../../components/loading/TableLoading";
 import { Link } from "react-router";
 import { EyeIcon } from "lucide-react";
+import { hasPermission } from "../../../utils/permissions/permissions";
 
 export default function ChildrenList({
   openAddModal,
@@ -158,7 +159,8 @@ export default function ChildrenList({
           Password: item.Password,
           GenderId: item.GenderId,
           ConfirmPassword: item.ConfirmPassword,
-          ParentPhoneNumber: item.ParentPhoneNumber || item.Phone || "",
+          ParentPhoneNumber: item.Phone || "",
+          Phone: item.Phone || "",
         })),
       );
 
@@ -173,6 +175,10 @@ export default function ChildrenList({
       setModalLoading(false);
     }
   };
+
+  const canEdit = hasPermission("Children_UpdateChild");
+  const canDelete = hasPermission("Children_DeleteChild");
+  const canShow = hasPermission("Children_GetChildrenLookup");
 
   const columns = [
     {
@@ -211,41 +217,47 @@ export default function ChildrenList({
       label: t("Actions"),
       render: (row: any) => (
         <div className="flex justify-center items-center gap-2">
-          <Link
-            to={`/children-info/${row.id}`}
-            className="mt-2"
-            state={{ child: row }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button>
-              <EyeIcon className="w-7 h-7 text-black/60 dark:text-[#999999]" />
+          {canShow && (
+            <Link
+              to={`/children-info/${row.id}`}
+              className="mt-2"
+              state={{ child: row }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button>
+                <EyeIcon className="w-7 h-7 text-black/60 dark:text-[#999999]" />
+              </button>
+            </Link>
+          )}
+          {canEdit && (
+            <button
+              onClick={() => {
+                setEditData({
+                  id: row.id,
+                  Name: row.Name || "",
+                  Email: row.Email || "",
+                  Password: row.Password || "",
+                  ConfirmPassword: row.ConfirmPassword || "",
+                  ParentPhoneNumber: row.ParentPhoneNumber || "",
+                  GenderId: row.GenderId || "male",
+                  DateOfBirth: row.DateOfBirth || "",
+                });
+                setOpenModal(true);
+              }}
+            >
+              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
             </button>
-          </Link>
-          <button
-            onClick={() => {
-              setEditData({
-                id: row.id,
-                Name: row.Name || "",
-                Email: row.Email || "",
-                Password: row.Password || "",
-                ConfirmPassword: row.ConfirmPassword || "",
-                ParentPhoneNumber: row.ParentPhoneNumber || "",
-                GenderId: row.GenderId || "male",
-                DateOfBirth: row.DateOfBirth || "",
-              });
-              setOpenModal(true);
-            }}
-          >
-            <EditIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(row.id);
-            }}
-          >
-            <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
-          </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(row.id);
+              }}
+            >
+              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+            </button>
+          )}
         </div>
       ),
     },

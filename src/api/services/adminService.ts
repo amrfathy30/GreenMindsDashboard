@@ -1,9 +1,8 @@
 import { AdminList } from "../../utils/types/adminType";
-import { ChildrenParams } from "../../utils/types/childrenType";
 import axiosInstance from "../axiosInstance";
 
-export const allAdminData = async (params?: ChildrenParams) => {
-  const response = await axiosInstance.get("/Users/admins", { params });
+export const allAdminData = async () => {
+  const response = await axiosInstance.get("/Users/admins");
   return response.data;
 };
 export const UserTypes = async () => {

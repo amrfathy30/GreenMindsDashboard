@@ -5,6 +5,7 @@ export interface AdminList {
   Password: string;
   Type: number;
   TypeName?: string;
+  roleName?: string;
   Phone?: string;
   UserName?: string;
   ConfirmPassword?: string;
@@ -25,6 +26,7 @@ export interface AdminsModalProps {
     Password: string;
     Type: number;
     TypeName?: string;
+    roleName?: string;
     Phone?: string;
     UserName?: string;
     ConfirmPassword?: string;
@@ -35,6 +37,7 @@ export interface AdminsModalProps {
     Password: string;
     Type: number;
     TypeName?: string;
+    roleName?: string;
     Phone?: string;
     UserName?: string;
     ConfirmPassword?: string;
@@ -66,9 +69,10 @@ export interface AdminApiResponse {
     Password: string;
     Type: number;
     TypeName?: string;
+    roleName?: string;
     Phone?: string;
     UserName?: string;
     ConfirmPassword?: string;
-    EmailVerified: boolean;
+    // EmailVerified: boolean;
   }[];
 }

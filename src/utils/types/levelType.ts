@@ -5,6 +5,7 @@ export interface LevelList {
   NameEn: string;
   MaxPoints: string;
   MinPoints: string;
+  LevelNumber: string;
 }
 
 export interface ProfileLevelsModalProps {
@@ -16,12 +17,14 @@ export interface ProfileLevelsModalProps {
     NameEn: string;
     MaxPoints: string;
     MinPoints: string;
+    LevelNumber: string;
   }) => void;
   initialData?: {
     NameAr: string;
     NameEn: string;
     MaxPoints: string;
     MinPoints: string;
+    LevelNumber: string;
   };
 }
 
@@ -34,6 +37,7 @@ export interface LevelApiResponse {
     NameEn: string;
     MaxPoints: string;
     MinPoints: string;
+    LevelNumber: string;
   }[];
 }
 
@@ -46,6 +50,7 @@ export interface LevelModalProps {
     NameEn: string;
     MaxPoints: string;
     MinPoints: string;
+    LevelNumber: string;
   }) => Promise<void>;
   initialData?: {
     id: number;
@@ -53,6 +58,7 @@ export interface LevelModalProps {
     NameEn: string;
     MaxPoints: string;
     MinPoints: string;
+    LevelNumber: string;
   };
   loading?: boolean;
 }

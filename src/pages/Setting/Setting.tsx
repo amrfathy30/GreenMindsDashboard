@@ -270,17 +270,6 @@ export default function Setting() {
               <span> {t("Permission")}</span>
             </div>
           </Link>
-          {/* Login Streaks */}
-          {/* <Link
-            to="/login-streaks"
-            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer dark:text-white"
-          >
-            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <ListView className="w-5 h-5  dark:brightness-300" />
-              <span>{t("loginStreaks")}</span>
-            </div>
-          </Link> */}
-
           {/* Profile Levels */}
           <Link
             to="/profile-levels"
@@ -296,7 +285,7 @@ export default function Setting() {
 
       <SmtpSettingsModal
         open={openModal}
-        onSuccess={fetchSmtp} 
+        onSuccess={fetchSmtp}
         onClose={() => setOpenModal(false)}
         initialData={
           smtpData || {

@@ -189,7 +189,7 @@ export default function AdminRoles() {
 
       await fetchActiveAdminRoles();
 
-      toast.success(t("permissions_updated_successfully"));
+      ShowToastSuccess(t("permissions_updated_successfully"));
     } catch {
       toast.error(t("failed_update_permissions"));
     } finally {

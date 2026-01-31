@@ -9,6 +9,7 @@ import { adminLogin } from "../../api/services/authService";
 import { useLanguage } from "../../locales/LanguageContext";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../common/ToastHelper";
+// import { fetchUserPermissions } from "../../utils/permissions/permissions";
 
 export default function SignInForm() {
   const { t } = useLanguage();
@@ -65,11 +66,20 @@ export default function SignInForm() {
       if (response?.StatusCode === 200) {
         ShowToastSuccess(t("LoginSuccessful"));
 
+        localStorage.setItem(
+          "GMadminPermissions",
+          JSON.stringify(response.Data?.Permissions || []),
+        );
+
+        localStorage.setItem("AllDataGMadmin", JSON.stringify(response.Data));
+
         localStorage.setItem("GMadminToken", response.Data?.Token?.token);
         localStorage.setItem(
           "GMadminData",
           JSON.stringify(response.Data?.Token),
         );
+
+        // await fetchUserPermissions();
 
         setTimeout(() => {
           window.location.href = "/videos";
