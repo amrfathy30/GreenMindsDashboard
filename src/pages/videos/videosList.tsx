@@ -40,13 +40,18 @@ export default function VideosList() {
   const [selectedVideo, setSelectedVideo] = useState<VideoType | null>(null);
 
   const adminData = JSON.parse(localStorage.getItem('GMadminData') || '{}');
-  const permissions = adminData?.permissions || [];
-  const userType = adminData?.Type;
-  const canAdd = userType === 2 || permissions.includes("Videos_Create"); 
-  const canEdit = userType === 2 || permissions.includes("Videos_Update");
-  const canDelete = userType === 2 || permissions.includes("Videos_Delete");
+  const permissions: string[] = adminData?.Permissions || adminData?.permissions || [];
+  
+  const canView = permissions.includes("Videos_GetPaged");
+  const canAdd = permissions.includes("Videos_Create");
+  const canEdit = permissions.includes("Videos_Update");
+  const canDelete = permissions.includes("Videos_Delete");
 
   const fetchInitialData = async () => {
+    if (!canView) {
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const [videosRes, agesRes] = await Promise.all([
@@ -106,6 +111,14 @@ export default function VideosList() {
     }
   };
 
+  if (!canView && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState title={t("access_denied")} description={t("no_permission_view_videos")} />
+      </div>
+    );
+  }
+
   return (
     <>
       <PageMeta title="Green minds Admin | Videos" description={``} />
@@ -132,7 +145,9 @@ export default function VideosList() {
                   <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">{t("title")}</th>
                   <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">{t("points")}</th>
                   <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">{t("age group")}</th>
-                  <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">{t("actions")}</th>
+                  {(canEdit || canDelete) && (
+                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">{t("actions")}</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -163,12 +178,14 @@ export default function VideosList() {
                         })()}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <div className="flex justify-center gap-2 md:gap-3">
-                        {canEdit && <button onClick={() => { setSelectedVideo(video); setIsEditOpen(true); }} className="hover:scale-110"><img src="/images/video-thumb/Edit.svg" className="w-5 h-5 md:w-6 md:h-6 dark:invert" alt="" /></button>}
-                        {canDelete && <button onClick={() => { setSelectedVideo(video); setIsDeleteOpen(true); }} className="hover:scale-110"><img src="/images/video-thumb/Remove.svg" className="w-5 h-5 md:w-6 md:h-6 dark:invert" alt="" /></button>}
-                      </div>
-                    </td>
+                    {(canEdit || canDelete) && (
+                      <td className="px-4 py-3 text-center">
+                        <div className="flex justify-center gap-2 md:gap-3">
+                          {canEdit && <button onClick={() => { setSelectedVideo(video); setIsEditOpen(true); }} className="hover:scale-110"><img src="/images/video-thumb/Edit.svg" className="w-5 h-5 md:w-6 md:h-6 dark:invert" alt="" /></button>}
+                          {canDelete && <button onClick={() => { setSelectedVideo(video); setIsDeleteOpen(true); }} className="hover:scale-110"><img src="/images/video-thumb/Remove.svg" className="w-5 h-5 md:w-6 md:h-6 dark:invert" alt="" /></button>}
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
