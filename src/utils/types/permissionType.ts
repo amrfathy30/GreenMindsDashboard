@@ -4,7 +4,7 @@ export interface PermissionApiResponse {
   Data: {
     Id: number;
     DisplayName: string;
-    Key:string
+    Key: string;
   }[];
 }
 
@@ -34,6 +34,7 @@ export interface AdminRolePermissionsProps {
   permissions: { Id: number; DisplayName: string }[];
   assignedPermissions: number[];
   loading: boolean;
+  pageLoading?: boolean;
   t: (key: string) => string;
   onSave: (selected: number[]) => void;
 }

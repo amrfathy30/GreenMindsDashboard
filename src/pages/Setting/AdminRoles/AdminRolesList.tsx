@@ -276,6 +276,7 @@ export default function AdminRoles() {
             permissions={allPermissions}
             assignedPermissions={assignedPermissionIds}
             loading={saving}
+            pageLoading={loading}
             t={t}
             onSave={handleSavePermissions}
           />

@@ -87,10 +87,14 @@ export default function PermissionsList() {
                 className="flex items-center justify-between border p-3 bg-white rounded-xl"
               >
                 <div className="flex flex-col w-[90%]">
-                <span className="line-clamp-1 text-sm truncate">{perm.DisplayName}</span>
-                <span className="line-clamp-1 text-xs text-green-700">{perm.Key}</span>
-                  </div>
-                
+                  <span className="line-clamp-1 text-sm truncate">
+                    {perm.DisplayName}
+                  </span>
+                  <span className="line-clamp-1 text-xs text-green-700">
+                    {perm.Key}
+                  </span>
+                </div>
+
                 <button onClick={() => openEditModal(perm)}>
                   <EditIcon className="w-6 h-6" />
                 </button>
