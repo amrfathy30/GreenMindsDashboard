@@ -4,12 +4,14 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 import EditProfileModal from "../../pages/Profile/EditProfileModal";
 import { useSidebar } from "../../context/SidebarContext";
 import { useLanguage } from "../../locales/LanguageContext";
+import { useAdmin } from "../../context/AdminContext";
 export default function UserDropdown() {
-  const { t, isRTL} = useLanguage();
-  const { isMobileOpen,isExpanded} = useSidebar();
+  const { t, isRTL } = useLanguage();
+  const { isMobileOpen, isExpanded } = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
-  const adminData:any=localStorage.getItem('GMadminData')
-  const GMadminData:any= JSON.parse(adminData)
+  // const adminData:any=localStorage.getItem('GMadminData')
+  // const GMadminData:any= JSON.parse(adminData)
+  const { admin } = useAdmin();
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -27,31 +29,49 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400 w-full"
       >
-
         <div className="flex justify-between items-center w-full">
           <div className="flex items-center">
             <div className="me-3 overflow-hidden rounded-full h-11 w-11 invert-0 dark:invert">
               <img src="/images/user.png" alt="User" />
             </div>
-            {isExpanded||isMobileOpen?   <div className="flex flex-col items-start">
-              <span className="block me-1 font-medium text-theme-sm">{GMadminData?.Name}</span>
-              <span className="block me-1 font-medium text-theme-sm">{GMadminData?.Email}</span>
-            </div>:""
-          }          </div>
+            {isExpanded || isMobileOpen ? (
+              <div className="flex flex-col items-start">
+                <span className="block me-1 font-medium text-theme-sm">
+                  {admin?.Name}
+                </span>
+                <span className="block me-1 font-medium text-theme-sm">
+                  {admin?.Email}
+                </span>
+              </div>
+            ) : (
+              ""
+            )}{" "}
+          </div>
 
-          <svg width="19" height="4" viewBox="0 0 19 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.8125 1.875C2.8125 2.12364 2.71373 2.3621 2.53791 2.53791C2.3621 2.71373 2.12364 2.8125 1.875 2.8125C1.62636 2.8125 1.3879 2.71373 1.21209 2.53791C1.03627 2.3621 0.9375 2.12364 0.9375 1.875C0.9375 1.62636 1.03627 1.3879 1.21209 1.21209C1.3879 1.03627 1.62636 0.9375 1.875 0.9375C2.12364 0.9375 2.3621 1.03627 2.53791 1.21209C2.71373 1.3879 2.8125 1.62636 2.8125 1.875ZM10.3125 1.875C10.3125 2.12364 10.2137 2.3621 10.0379 2.53791C9.8621 2.71373 9.62364 2.8125 9.375 2.8125C9.12636 2.8125 8.8879 2.71373 8.71209 2.53791C8.53627 2.3621 8.4375 2.12364 8.4375 1.875C8.4375 1.62636 8.53627 1.3879 8.71209 1.21209C8.8879 1.03627 9.12636 0.9375 9.375 0.9375C9.62364 0.9375 9.8621 1.03627 10.0379 1.21209C10.2137 1.3879 10.3125 1.62636 10.3125 1.875ZM17.8125 1.875C17.8125 2.12364 17.7137 2.3621 17.5379 2.53791C17.3621 2.71373 17.1236 2.8125 16.875 2.8125C16.6264 2.8125 16.3879 2.71373 16.2121 2.53791C16.0363 2.3621 15.9375 2.12364 15.9375 1.875C15.9375 1.62636 16.0363 1.3879 16.2121 1.21209C16.3879 1.03627 16.6264 0.9375 16.875 0.9375C17.1236 0.9375 17.3621 1.03627 17.5379 1.21209C17.7137 1.3879 17.8125 1.62636 17.8125 1.875Z" stroke="#1FAE7F" stroke-opacity="0.5" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" />
+          <svg
+            width="19"
+            height="4"
+            viewBox="0 0 19 4"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2.8125 1.875C2.8125 2.12364 2.71373 2.3621 2.53791 2.53791C2.3621 2.71373 2.12364 2.8125 1.875 2.8125C1.62636 2.8125 1.3879 2.71373 1.21209 2.53791C1.03627 2.3621 0.9375 2.12364 0.9375 1.875C0.9375 1.62636 1.03627 1.3879 1.21209 1.21209C1.3879 1.03627 1.62636 0.9375 1.875 0.9375C2.12364 0.9375 2.3621 1.03627 2.53791 1.21209C2.71373 1.3879 2.8125 1.62636 2.8125 1.875ZM10.3125 1.875C10.3125 2.12364 10.2137 2.3621 10.0379 2.53791C9.8621 2.71373 9.62364 2.8125 9.375 2.8125C9.12636 2.8125 8.8879 2.71373 8.71209 2.53791C8.53627 2.3621 8.4375 2.12364 8.4375 1.875C8.4375 1.62636 8.53627 1.3879 8.71209 1.21209C8.8879 1.03627 9.12636 0.9375 9.375 0.9375C9.62364 0.9375 9.8621 1.03627 10.0379 1.21209C10.2137 1.3879 10.3125 1.62636 10.3125 1.875ZM17.8125 1.875C17.8125 2.12364 17.7137 2.3621 17.5379 2.53791C17.3621 2.71373 17.1236 2.8125 16.875 2.8125C16.6264 2.8125 16.3879 2.71373 16.2121 2.53791C16.0363 2.3621 15.9375 2.12364 15.9375 1.875C15.9375 1.62636 16.0363 1.3879 16.2121 1.21209C16.3879 1.03627 16.6264 0.9375 16.875 0.9375C17.1236 0.9375 17.3621 1.03627 17.5379 1.21209C17.7137 1.3879 17.8125 1.62636 17.8125 1.875Z"
+              stroke="#1FAE7F"
+              stroke-opacity="0.5"
+              stroke-width="1.875"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
-
         </div>
       </button>
 
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className={`absolute ${isRTL?"left-[-50%] w-[220px]":"right-[-50%] w-[160px]"}  bottom-0 flex  flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark`}
+        className={`absolute ${isRTL ? "left-[-50%] w-[220px]" : "right-[-50%] w-[160px]"}  bottom-0 flex  flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark`}
       >
-
         <ul className="flex flex-col border-b border-gray-200 dark:border-gray-800">
           <li>
             <DropdownItem
@@ -78,7 +98,7 @@ export default function UserDropdown() {
                   fill=""
                 />
               </svg>
-             <span className="flex"> {t('Editprofile')}</span>
+              <span className="flex"> {t("Editprofile")}</span>
             </DropdownItem>
           </li>
         </ul>

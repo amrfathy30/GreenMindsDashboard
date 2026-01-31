@@ -31,6 +31,7 @@ export interface PersonalInfoRequest {
   AvatarUrl?: string;
   Password?: string;
   ConfirmPassword?: string;
+  Type?: number;
   
   // TypeName: string;
   // CityId: string;

@@ -211,6 +211,7 @@ const translations = {
     // Video translations
     video_added: "Video added successfully",
     video_updated: "Video updated successfully",
+    ProfileUpdatedSuccessfully: "Profile updated successfully",
     video_deleted: "Video deleted successfully",
     failed_load_videos: "Failed to load videos",
     add_video_title: "Add Video",
@@ -349,7 +350,7 @@ const translations = {
     UpdatePermission: "Update Permission",
     permissionName: "Permission Display Name",
     permissions_updated_successfully: "permissions updated successfully",
-    Show_per_page:"Items per pge"
+    Show_per_page: "Items per pge",
   },
   ar: {
     // sidebar
@@ -536,6 +537,7 @@ const translations = {
     // Video translations
     video_added: "تم إضافة الفيديو بنجاح",
     video_updated: "تم تحديث الفيديو بنجاح",
+    ProfileUpdatedSuccessfully: "تم تحديث الملف الشخصي بنجاح",
     video_deleted: "تم حذف الفيديو بنجاح",
     failed_load_videos: "فشل تحميل الفيديوهات",
     add_video_title: "إضافة فيديو ",
@@ -690,7 +692,7 @@ const translations = {
     UpdatePermission: "تحديث الصلاحية",
     permissionName: "اسم العرض للصلاحيه",
     permissions_updated_successfully: "تم تحديث الصلاحية بنجاح",
-    Show_per_page:"العدد في الصفحه"
+    Show_per_page: "العدد في الصفحه",
   },
 };
 
