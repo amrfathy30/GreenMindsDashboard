@@ -9,7 +9,7 @@ import { adminLogin } from "../../api/services/authService";
 import { useLanguage } from "../../locales/LanguageContext";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../common/ToastHelper";
-import { fetchUserPermissions } from "../../utils/permissions/permissions";
+import { fetchUserPermissions, hasPermission } from "../../utils/permissions/permissions";
 
 export default function SignInForm() {
   const { t } = useLanguage();
@@ -40,6 +40,23 @@ export default function SignInForm() {
       );
   };
 
+  // <Route path="/avatars" element={<AvatarsList />} />
+  // <Route path="/analytics" element={<Analytics />} />
+  // <Route path="/users" element={<Users />} />
+  // <Route path="/children-info/:id" element={<ChildrenInfo />} />
+  // <Route path="/setting" element={<Setting />} />
+  // <Route path="/age-group" element={<AgeGroup />} />
+  // <Route path="/admin-roles" element={<AdminRoles />} />
+  // <Route path="/profile-levels" element={<ProfileLevels />} />
+  // <Route path="/permissions-list" element={<PermissionsList />} />
+  
+  const getAdminRoute = (permissions: any) => {
+    if (permissions.includes("Videos_GetPaged"))
+      return '/videos'
+    else if (permissions.includes("Games_GetPaged"))
+      return '/games'
+    else return '/' // Add No permissions page
+  }
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -84,7 +101,8 @@ export default function SignInForm() {
         // setTimeout(() => {
         //   window.location.href = "/videos";
         // }, 1000);
-        navigate("/videos");
+        const adminRoute = getAdminRoute(response.Data?.Permissions || [])
+        navigate(adminRoute);
       } else {
         toast.error(response?.Message || t("InvalidEmailOrPassword"));
       }

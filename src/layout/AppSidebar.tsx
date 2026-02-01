@@ -11,11 +11,13 @@ import {
   AvatarIcon,
 } from "../icons";
 import { useLanguage } from "../locales/LanguageContext";
+import { hasPermission } from "../utils/permissions/permissions";
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path: string;
+  hasPermission?: boolean
 };
 
 const AppSidebar: React.FC = () => {
@@ -28,31 +30,37 @@ const AppSidebar: React.FC = () => {
       icon: <VideoIcon />,
       name: t("videos"),
       path: "/videos",
+      hasPermission: hasPermission("Videos_GetPaged")
     },
     {
       icon: <GameIcon />,
       name: t("games"),
       path: "/games",
+      hasPermission:true
     },
     {
       icon: <AvatarIcon />,
       name: t("avatars"),
       path: "/avatars",
+      hasPermission:true
     },
     {
       icon: <AnalyticsIcon />,
       name: t("analytics"),
       path: "/analytics",
+      hasPermission:true
     },
     {
       icon: <SettingsIcon />,
       name: t("settings"),
       path: "/setting",
+      hasPermission:true
     },
     {
       icon: <UserCircleIcon />,
       name: t("users"),
       path: "/users",
+      hasPermission:true
     },
   ];
   // Keyboard shortcut for search focus
@@ -75,20 +83,19 @@ const AppSidebar: React.FC = () => {
   const renderMenuItems = (items: NavItem[]) => (
     <ul className="flex flex-col gap-1 ps-5">
       {items.map((nav) => (
+        nav?.hasPermission &&
         <li key={nav.name} className="h-[50px]">
           {/* Changed from button to Link for reliable routing */}
           <Link
             to={nav.path}
-            className={`menu-item group h-full ${
-              isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
-            }`}
+            className={`menu-item group h-full ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
+              }`}
           >
             <span
-              className={`menu-item-icon-size ${
-                isActive(nav.path)
+              className={`menu-item-icon-size ${isActive(nav.path)
                   ? "text-white dark:text-black"
                   : "text-black dark:text-white"
-              }`}
+                }`}
             >
               {nav.icon}
             </span>
@@ -97,6 +104,7 @@ const AppSidebar: React.FC = () => {
             )}
           </Link>
         </li>
+
       ))}
     </ul>
   );

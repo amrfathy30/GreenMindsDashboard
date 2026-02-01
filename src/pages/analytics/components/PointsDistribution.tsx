@@ -10,6 +10,8 @@ export default function PointsDistribution({
 }: {
   levelsStatsData: LevelStats[];
 }) {
+  const baseColors = ["#FF4906", "#39CEF3", "#72CA3D", "#F7B500", "#9B51E0"];
+
   const { t } = useLanguage();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,6 @@ export default function PointsDistribution({
       ? levelsStatsData.map((_, i) => baseColors[i % baseColors.length])
       : ["#E5E5E5"];
 
-  const baseColors = ["#FF4906", "#39CEF3", "#72CA3D", "#F7B500", "#9B51E0"];
 
   const updatePositions = () => {
     if (!containerRef.current) return;
@@ -170,7 +171,7 @@ export default function PointsDistribution({
               {/* Center Money Icon */}
               {pieCenter && pieSize && (
                 <div
-                  className="absolute pointer-events-none flex items-center justify-center rounded-full shadow-xl"
+                  className="absolute pointer-events-none flex items-center justify-center "
                   style={{
                     width: `${pieSize.w - 30}px`,
                     height: `${pieSize.w - 30}px`,

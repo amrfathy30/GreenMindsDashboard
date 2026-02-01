@@ -121,16 +121,16 @@ export default function VideosList() {
     }
   };
 
-  if (!canView && !loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <EmptyState
-          title={t("access_denied")}
-          description={t("not_authorized_to_view_this_page_videos")}
-        />
-      </div>
-    );
-  }
+  // if (!canView && !loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-[400px]">
+  //       <EmptyState
+  //         title={t("access_denied")}
+  //         description={t("not_authorized_to_view_this_page_videos")}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

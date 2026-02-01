@@ -16,6 +16,7 @@ import ProfileLevels from "./pages/Setting/ProfileLevels/ProfileLevels";
 import { ProtectedRoute } from "./protected-route-wrapper";
 import AdminRoles from "./pages/Setting/AdminRoles/AdminRolesList";
 import PermissionsList from "./pages/Setting/Permissions/PermissionsList";
+import { hasPermission } from "./utils/permissions/permissions";
 
 export default function App() {
   return (
@@ -27,7 +28,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
           <Route element={<AppLayout />}>
             <Route element={<ProtectedRoute />}>
-              <Route path="/videos" element={<VideosList />} />
+             {hasPermission("Videos_GetPaged")&& <Route path="/videos" element={<VideosList />} />}
               <Route path="/games" element={<GamesList />} />
               <Route path="/avatars" element={<AvatarsList />} />
               <Route path="/analytics" element={<Analytics />} />
