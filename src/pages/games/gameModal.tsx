@@ -186,10 +186,10 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
         </div>
 
         <div className="grid grid-cols-1 gap-3">
-          {[{ label: t("android_link"), id: "android" }, { label: t("ios_link"), id: "ios" }, { label: t("api_link"), id: "apiLink" }].map((f) => (
+          {[{ label: t("android_link"), id: "android" }, { label: t("ios_link"), id: "ios" }, { label: t("app_link"), id: "appLink" }].map((f) => (
             <Input key={f.id} id={f.id} label={f.label} value={(formDataState as any)[f.id]} onChange={handleChange} required />
           ))}
-          <Input id="apiKey" label={t("api_key_label")} value={formDataState.apiKey} onChange={handleChange} required />
+          {/* <Input id="apiKey" label={t("api_key_label")} value={formDataState.apiKey} onChange={handleChange} required /> */}
         </div>
 
         <div className="space-y-2">
