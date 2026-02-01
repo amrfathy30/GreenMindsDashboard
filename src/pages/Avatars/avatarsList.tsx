@@ -10,7 +10,7 @@ import { getAvatarsPaged, deleteAvatar } from "../../api/services/avatarService"
 import AvatarSkeleton from "../../components/loading/avatarLoading";
 import EmptyState from "../../components/common/no-data-found";
 import { PlusIcon } from "../../icons";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
 export default function AvatarList() {
@@ -114,9 +114,6 @@ return (
         </div>
 
         <div className="flex-grow overflow-y-auto px-5 py-6">
-          {avatars?.length == 0 && !loading ? (
-            <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
-          ) : null}
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
             {loading ? (
@@ -138,7 +135,9 @@ return (
                 />
               ))
             ) : (
+              <div className="col-span-full flex justify-center items-center py-20">
               <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
+            </div>
             )}
           </div>
         </div>
