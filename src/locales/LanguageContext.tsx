@@ -265,7 +265,8 @@ const translations = {
     api_link: "API Link",
     delete_game_title: "Delete Game",
     confirm_delete_game: "Are you sure you want to delete this game?",
-    not_authorized_to_view_this_page: "Sorry, you are not authorized to view this page.",
+    not_authorized_to_view_this_page:
+      "Sorry, you are not authorized to view this page.",
     access_denied: "Access Denied",
     //Avatar Translation
     avatars_admin: "Avatars - Admin",
@@ -346,6 +347,7 @@ const translations = {
     failed_create_role: "Failed to create Role",
     failed_update_role: "Failed to update Role",
     edit: "Edit",
+    no_permission_view: "You do not have permission to access this feature.",
     confirm_delete_Role: "Are you sure you want to delete this Role?",
     delete_Role: "Delete Role",
     RoleName: "Role Name",
@@ -607,7 +609,7 @@ const translations = {
     delete_game_title: "حذف اللعبة",
     confirm_delete_game: "هل أنت متأكد من أنك تريد حذف هذه اللعبة؟",
     not_authorized_to_view_this_page: "عفواً، ليس لديك صلاحية لعرض هذه الصفحة.",
-     access_denied: "تم رفض الوصول",
+    access_denied: "تم رفض الوصول",
     //Avatar Translation
     avatars_admin: "إدارة الصور الرمزية",
     add_avatar: "إضافة صورة رمزية",
@@ -707,6 +709,7 @@ const translations = {
     confirm_delete_Role: "هل أنت متأكد من أنك تريد حذف هذه الدور؟",
     delete_Role: "حذف الدور",
     RoleName: "اسم الدور",
+    no_permission_view: "ليس لديك الصلاحية للوصول إلى هذه الخاصية",
     add_admin_role: "اضافة دور",
     edit_admin_role: "تعديل الدور",
     failed_update_permissions: "فشل في تحديث الصلاحية",

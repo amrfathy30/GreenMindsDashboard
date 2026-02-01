@@ -7,6 +7,7 @@ export interface Children {
   id?: number;
   Name: string;
   Email: string;
+  UserName: string;
   ParentPhoneNumber: string;
   Phone?: string;
   Password: string;
@@ -30,6 +31,7 @@ export interface ChildrenApiResponse {
       ParentPhoneNumber: string;
       Phone?: string;
       Email: string;
+      UserName: string;
       DateOfBirth: string;
       EmailVerified?: boolean;
       GenderId: string;
@@ -68,4 +70,35 @@ export interface ChildApiResponse {
   StatusCode: number;
   Message: string;
   Data: Child;
+}
+
+export interface ChildVideo {
+  Id: number;
+  TitleEn: string;
+  TitleAr: string;
+  VideoUrl: string;
+  ThumbnailUrl: string;
+  NumberOfPoints: number;
+  AgeSectorId: number;
+  AgeSectorName: string;
+}
+
+export interface ChildGame {
+  Id: number;
+  DescriptionAr: string;
+  DescriptionEn: string;
+  GameNameAr: string;
+  GameNameEn: string;
+  ThumbnailUrl: string;
+  NumberOfPoints: number;
+}
+
+export interface ApiResponse<T> {
+  StatusCode: number;
+  Message: string;
+  Data: T;
+}
+
+export interface TapsProps {
+  id: number;
 }

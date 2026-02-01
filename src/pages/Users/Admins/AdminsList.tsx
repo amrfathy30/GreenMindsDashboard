@@ -21,7 +21,11 @@ import {
   allAdminRoles,
 } from "../../../api/services/adminRolesService";
 import { AgeApiResponse } from "../../../utils/types/ageType";
-import { hasPermission } from "../../../utils/permissions/permissions";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function AdminsList({
   openAddModal,
@@ -40,6 +44,15 @@ export default function AdminsList({
   const [editData, setEditData] = useState<AdminList | null>(null);
 
   useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canViewAdmin = hasPermission("Account_GetAdmins");
+  const canViewAdminRoles = hasPermission("AdminRoles_GetAllRoles");
+  const canEditAdmin = hasPermission("Account_Update");
+  const canDeleteAdmin = hasPermission("Account_Delete");
+
+  useEffect(() => {
     if (openAddModal) {
       setEditData(null);
       setOpenModal(true);
@@ -49,8 +62,13 @@ export default function AdminsList({
 
   // adminList
   const [adminList, setAdminList] = useState<AdminList[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewAdmin) {
+        setTableLoading(false);
+        return;
+      }
       try {
         setTableLoading(true);
         const data: AdminApiResponse = await allAdminData();
@@ -83,6 +101,9 @@ export default function AdminsList({
   // fetchAdminRoles
   useEffect(() => {
     const fetchAdminRoles = async () => {
+      if (!canViewAdminRoles) {
+        return;
+      }
       try {
         const data: AgeApiResponse = await allAdminRoles();
 
@@ -196,9 +217,6 @@ export default function AdminsList({
     }
   };
 
-  const canEditAdmin = hasPermission("Account_Update");
-  const canDeleteAdmin = hasPermission("Account_Delete");
-
   const columns = [
     {
       key: "Name",
@@ -223,10 +241,6 @@ export default function AdminsList({
       render: (row: any) => (
         <span className="text-[#757575]">{row.Phone || "__"}</span>
       ),
-    },
-    {
-      key: "TypeName",
-      label: t("UserType"),
     },
     {
       key: "actions",
@@ -264,6 +278,17 @@ export default function AdminsList({
       ),
     },
   ];
+
+  if (!canViewAdmin && !tableLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -1,4 +1,6 @@
-import { useState,useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useEffect } from "react";
 import { useLanguage } from "../../locales/LanguageContext";
 import PageMeta from "../../components/common/PageMeta";
 import AvatarCard from "./avatarCard";
@@ -6,11 +8,18 @@ import Pagination from "../../components/common/Pagination";
 import Button from "../../components/ui/button/Button";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import AvatarModal from "./avatarModal";
-import { getAvatarsPaged, deleteAvatar } from "../../api/services/avatarService";
+import {
+  getAvatarsPaged,
+  deleteAvatar,
+} from "../../api/services/avatarService";
 import AvatarSkeleton from "../../components/loading/avatarLoading";
 import EmptyState from "../../components/common/no-data-found";
 import { PlusIcon } from "../../icons";
 import toast from "react-hot-toast";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../utils/permissions/permissions";
 
 const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
 export default function AvatarList() {
@@ -24,98 +33,101 @@ export default function AvatarList() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const adminData = JSON.parse(localStorage.getItem('GMadminData') || '{}');
-  const permissions = adminData?.permissions || [];
-  const userType = adminData?.Type;
 
-  const canAdd = userType === 2 || permissions.includes("Avatars_Create"); 
-  const canEdit = userType === 2 || permissions.includes("Avatars_Update");
-  const canDelete = userType === 2 || permissions.includes("Avatars_Delete");
-  const canView = userType === 2 || permissions.includes("Avatars_GetPaged");
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+  const canAdd = hasPermission("Avatars_Create");
+  const canEdit = hasPermission("Avatars_Update");
+  const canDelete = hasPermission("Avatars_Delete");
+  const canView = hasPermission("Avatars_GetPaged");
 
   const handleEditClick = (avatar: any) => {
     setSelectedAvatar(avatar);
     setIsEditModalOpen(true);
   };
 
-const loadAvatars = async () => {
+  const loadAvatars = async () => {
     setLoading(true);
     try {
       const response = await getAvatarsPaged(currentPage, pageSize);
-      
+
       const apiResponse = response.data || response;
       const dataContainer = apiResponse.Data || apiResponse.data;
-      
+
       const fetchedItems = dataContainer?.Items || [];
       const totalCount = dataContainer?.Total || 0;
 
       setAvatars(fetchedItems);
       setTotalPages(Math.ceil(totalCount / pageSize));
-    } catch (error) {
+    } catch (error: any) {
       setAvatars([]);
     } finally {
       setLoading(false);
     }
-};
+  };
   useEffect(() => {
     loadAvatars();
-  }, [currentPage,pageSize]);
+  }, [currentPage, pageSize]);
 
   const handleDeleteClick = (avatar: any) => {
     setSelectedAvatar(avatar);
     setIsDeleteModalOpen(true);
   };
-const handleConfirmDelete = async () => {
-    const loadingToast = toast.loading(t("deleting...")); 
+  const handleConfirmDelete = async () => {
+    const loadingToast = toast.loading(t("deleting..."));
     try {
       await deleteAvatar(selectedAvatar.Id || selectedAvatar.id);
-      
-      loadAvatars(); 
-      setIsDeleteModalOpen(false);
-      
-      toast.success(t("deleted_successfully"), { id: loadingToast }); 
-    } catch (error) {
 
-      toast.error(t("delete_failed"), { id: loadingToast }); 
+      loadAvatars();
+      setIsDeleteModalOpen(false);
+
+      toast.success(t("deleted_successfully"), { id: loadingToast });
+    } catch (error) {
+      toast.error(t("delete_failed"), { id: loadingToast });
     }
-};
-if (!canView) {
+  };
+
+  if (!canView) {
     return (
-      <div className="flex-grow flex items-center justify-center min-h-[calc(100vh-60px)]">
-        <EmptyState title={t("access_denied")} description={t("not_authorized_to_view_this_page")} />
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
       </div>
     );
   }
-return (
+
+  return (
     <>
-      <PageMeta
-        title="Green minds Admin | Avatars"
-        description=""
-      />
+      <PageMeta title="Green minds Admin | Avatars" description="" />
 
       <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
-        
         <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("avatars_admin")}
           </h2>
           {canAdd && (
-          <Button
-            size="sm"
-            variant="primaryGrid"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <div className="text-white">
-              <PlusIcon />
-            </div>
-            {t("add_avatar")}
-          </Button>
+            <Button
+              size="sm"
+              variant="primaryGrid"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <div className="text-white">
+                <PlusIcon />
+              </div>
+              {t("add_avatar")}
+            </Button>
           )}
         </div>
 
         <div className="flex-grow overflow-y-auto px-5 py-6">
           {avatars?.length == 0 && !loading ? (
-            <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
+            <EmptyState
+              title={t("no_avatars_found")}
+              description={t("no_avatars_desc")}
+            />
           ) : null}
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
@@ -130,7 +142,13 @@ return (
                   name={avatar.Name}
                   level={avatar.RequiredLevelName || avatar.LevelName || "N/A"}
                   ageGroup={avatar.AgeSectorName || "N/A"}
-                  image={avatar.ImageUrl ? (avatar.ImageUrl.startsWith('http') ? avatar.ImageUrl : `${IMAGE_BASE_URL}${avatar.ImageUrl}`) : ""}
+                  image={
+                    avatar.ImageUrl
+                      ? avatar.ImageUrl.startsWith("http")
+                        ? avatar.ImageUrl
+                        : `${IMAGE_BASE_URL}${avatar.ImageUrl}`
+                      : ""
+                  }
                   canEdit={canEdit}
                   canDelete={canDelete}
                   onEdit={() => handleEditClick(avatar)}
@@ -138,37 +156,52 @@ return (
                 />
               ))
             ) : (
-              <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
+              <EmptyState
+                title={t("no_avatars_found")}
+                description={t("no_avatars_desc")}
+              />
             )}
           </div>
         </div>
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} pageSize={pageSize} onPageSizeChange={setPageSize} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          pageSize={pageSize}
+          onPageSizeChange={setPageSize}
+        />
       </div>
 
-      {canAdd && <AvatarModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={loadAvatars}
-        type="add"
-      />}
+      {canAdd && (
+        <AvatarModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={loadAvatars}
+          type="add"
+        />
+      )}
 
-      {canEdit && <AvatarModal
-        isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setSelectedAvatar(null);
-        }}
-        onSuccess={loadAvatars}
-        avatarData={selectedAvatar}
-        type="edit"
-      />}
-      {canDelete && <ConfirmModal
-        open={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title={t("delete_avatar")}
-        description={t("confirm_delete_avatar")}
-      />}
+      {canEdit && (
+        <AvatarModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedAvatar(null);
+          }}
+          onSuccess={loadAvatars}
+          avatarData={selectedAvatar}
+          type="edit"
+        />
+      )}
+      {canDelete && (
+        <ConfirmModal
+          open={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleConfirmDelete}
+          title={t("delete_avatar")}
+          description={t("confirm_delete_avatar")}
+        />
+      )}
     </>
   );
 }

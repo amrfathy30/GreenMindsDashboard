@@ -32,9 +32,26 @@ import {
   TopRankedSkeleton,
   TotalSkeleton,
 } from "../../components/loading/AnalyticChartSkeleton";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../utils/permissions/permissions";
+import EmptyState from "../../components/common/no-data-found";
 
 export default function Analytics() {
   const { t } = useLanguage();
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canViewLevels = hasPermission("Dashboard_LevelsStats");
+  const canViewGender = hasPermission("Dashboard_GenderPercentage");
+  const canViewAge = hasPermission("Dashboard_UsersByAgeSector");
+  const canViewVideos = hasPermission("Dashboard_TotalVideos");
+  const canViewGames = hasPermission("Dashboard_TotalGames");
+  const canViewRank = hasPermission("Dashboard_TopRanks");
+  const canViewParentChildStats = hasPermission("Dashboard_ParentChildStats");
+
   // parentChildStats
   const [parentChildStats, setParentChildStats] = useState<{
     TotalParents: number;
@@ -45,6 +62,10 @@ export default function Analytics() {
   const [loadingParentChildStats, setLoadingParentChildStats] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewParentChildStats) {
+        setLoadingParentChildStats(false);
+        return;
+      }
       try {
         setLoadingParentChildStats(true);
         const data: ParentChildStatsResponse = await ParentChildStats();
@@ -65,6 +86,10 @@ export default function Analytics() {
   const [loadingGender, setLoadingGender] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewGender) {
+        setLoadingGender(false);
+        return;
+      }
       try {
         setLoadingGender(true);
         const data: {
@@ -89,6 +114,10 @@ export default function Analytics() {
   const [loadingUsersByAgeSector, setLoadingUsersByAgeSector] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewAge) {
+        setLoadingUsersByAgeSector(false);
+        return;
+      }
       try {
         setLoadingUsersByAgeSector(true);
         const data: { StatusCode: number; Message: string; Data: AgeSector[] } =
@@ -110,6 +139,10 @@ export default function Analytics() {
   const [loadingTotalVideos, setLoadingTotalVideos] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewVideos) {
+        setLoadingTotalVideos(false);
+        return;
+      }
       try {
         setLoadingTotalVideos(true);
         const data: { StatusCode: number; Message: string; Data: number } =
@@ -129,6 +162,10 @@ export default function Analytics() {
   const [loadingTotalGames, setLoadingTotalGames] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewGames) {
+        setLoadingTotalGames(false);
+        return;
+      }
       try {
         setLoadingTotalGames(true);
         const data: { StatusCode: number; Message: string; Data: number } =
@@ -148,6 +185,10 @@ export default function Analytics() {
   const [loadingTopRanks, setLoadingTopRanks] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewRank) {
+        setLoadingTopRanks(false);
+        return;
+      }
       try {
         setLoadingTopRanks(true);
         const data: {
@@ -162,7 +203,6 @@ export default function Analytics() {
         setLoadingTopRanks(false);
       }
     };
-    console.log(topRanks);
     fetchData();
   }, [t]);
 
@@ -171,6 +211,10 @@ export default function Analytics() {
   const [loadingLevelsStats, setLoadingLevelsStats] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
+      if (!canViewLevels) {
+        setLoadingLevelsStats(false);
+        return;
+      }
       try {
         setLoadingLevelsStats(true);
         const data: {
@@ -187,6 +231,24 @@ export default function Analytics() {
     };
     fetchData();
   }, [t]);
+
+  if (
+    !canViewLevels &&
+    !canViewGender &&
+    !canViewAge &&
+    !canViewGames &&
+    !canViewRank &&
+    !canViewVideos
+  ) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -239,7 +301,7 @@ export default function Analytics() {
               {loadingTopRanks ? (
                 <TopRankedSkeleton />
               ) : (
-                <TopRanked topRanks={topRanks}  />
+                <TopRanked topRanks={topRanks} />
               )}
             </div>
           </div>

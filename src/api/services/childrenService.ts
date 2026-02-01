@@ -1,4 +1,11 @@
-import { ChildApiResponse, Children, ChildrenParams } from "../../utils/types/childrenType";
+import {
+  ApiResponse,
+  ChildApiResponse,
+  ChildGame,
+  Children,
+  ChildrenParams,
+  ChildVideo,
+} from "../../utils/types/childrenType";
 import axiosInstance from "../axiosInstance";
 
 export const allChildrenData = async (params?: ChildrenParams) => {
@@ -13,6 +20,20 @@ export const createChildren = async (data: Children) => {
 
 export const updateChildren = async (data: Children, id: number) => {
   const response = await axiosInstance.put(`/Children/${id}`, data);
+  return response.data;
+};
+
+export const ChildGames = async (
+  userId: number,
+): Promise<ApiResponse<ChildGame[]>> => {
+  const response = await axiosInstance.get(`/Games/byUser/${userId}`);
+  return response.data;
+};
+
+export const ChildVideos = async (
+  userId: number,
+): Promise<ApiResponse<ChildVideo[]>> => {
+  const response = await axiosInstance.get(`/Videos/byUser/${userId}`);
   return response.data;
 };
 

@@ -130,10 +130,10 @@ const AppSidebar: React.FC = () => {
           </Link>
 
           {/* Pass the ref correctly as a prop */}
-          <SearchSection inputRef={inputRef} />
+          {/* <SearchSection inputRef={inputRef} /> */}
         </div>
 
-        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar mt-10">
           <nav className="mb-6">
             <div className="flex flex-col gap-4">
               <div>{renderMenuItems(navItems)}</div>

@@ -16,7 +16,7 @@ export default function ChildrenModal({
   initialData,
 }: ChildrenModalProps) {
   const { t } = useLanguage();
-  const [selectedValue, setSelectedValue] = useState<string>("male");
+  const [selectedValue, setSelectedValue] = useState<string>("1");
 
   const handleChange = (value: string) => {
     setSelectedValue(value);
@@ -26,6 +26,7 @@ export default function ChildrenModal({
   const [formData, setFormData] = useState({
     Name: "",
     Email: "",
+    UserName: "",
     Password: "",
     ConfirmPassword: "",
     ParentPhoneNumber: "",
@@ -35,27 +36,29 @@ export default function ChildrenModal({
 
   useEffect(() => {
     if (initialData) {
-      setSelectedValue(initialData.GenderId || "male");
+      setSelectedValue(initialData.GenderId || "1");
       setFormData({
         Name: initialData.Name || "",
         Email: initialData.Email || "",
+        UserName: initialData.UserName || "",
         Password: initialData.Password || "",
         ConfirmPassword: initialData.ConfirmPassword || "",
         ParentPhoneNumber:
           initialData.ParentPhoneNumber || initialData.Phone || "",
         DateOfBirth: initialData.DateOfBirth || "",
-        GenderId: initialData.GenderId || "male",
+        GenderId: initialData.GenderId || "1",
       });
     } else {
       setSelectedValue("male");
       setFormData({
         Name: "",
+        UserName: "",
         Email: "",
         Password: "",
         ConfirmPassword: "",
         ParentPhoneNumber: "",
         DateOfBirth: "",
-        GenderId: "male",
+        GenderId: "1",
       });
     }
   }, [initialData, open]);
@@ -86,6 +89,17 @@ export default function ChildrenModal({
             placeholder={t("EnterNameHere")}
             value={formData.Name}
             onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+          />
+        </div>
+        <div>
+          <Input
+            id="UserName"
+            label={t("UserName")}
+            placeholder={t("UserName")}
+            value={formData.UserName}
+            onChange={(e) =>
+              setFormData({ ...formData, UserName: e.target.value })
+            }
           />
         </div>
         <div>
@@ -152,16 +166,16 @@ export default function ChildrenModal({
               <Radio
                 id="male"
                 name="GenderId"
-                value="male"
-                checked={selectedValue === "male"}
+                value="1"
+                checked={selectedValue === "1"}
                 label={t("Male")}
                 onChange={handleChange}
               />
               <Radio
                 id="female"
                 name="gender"
-                value="female"
-                checked={selectedValue === "female"}
+                value="2"
+                checked={selectedValue === "2"}
                 label={t("Female")}
                 onChange={handleChange}
               />

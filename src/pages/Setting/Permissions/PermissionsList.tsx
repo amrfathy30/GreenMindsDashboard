@@ -11,6 +11,11 @@ import { EditIcon } from "../../../icons";
 import { toast } from "sonner";
 import { PermissionsSkeletonList } from "../../../components/loading/PermissionSkeleton";
 import { ShowToastSuccess } from "../../../components/common/ToastHelper";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../../utils/permissions/permissions";
+import EmptyState from "../../../components/common/no-data-found";
 
 export default function PermissionsList() {
   const { t } = useLanguage();
@@ -24,9 +29,19 @@ export default function PermissionsList() {
   >(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    fetchUserPermissions();
+  }, []);
+
+  const canEdit = hasPermission("AdminPermissions_UpdatePermissionDisplayName");
+  const canView = hasPermission("AdminPermissions_GetAllPermissions");
 
   useEffect(() => {
     const fetchPermissions = async () => {
+      if (!canView) {
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const data: PermissionApiResponse = await AllPermissions();
@@ -66,6 +81,17 @@ export default function PermissionsList() {
     }
   };
 
+  if (!canView && !loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <PageMeta title="Green minds Admin | Permissions " description={``} />
@@ -96,9 +122,11 @@ export default function PermissionsList() {
                   </span>
                 </div>
 
-                <button onClick={() => openEditModal(perm)}>
-                  <EditIcon className="w-6 h-6" />
-                </button>
+                {canEdit && (
+                  <button onClick={() => openEditModal(perm)}>
+                    <EditIcon className="w-6 h-6" />
+                  </button>
+                )}
               </div>
             ))}
           </div>
