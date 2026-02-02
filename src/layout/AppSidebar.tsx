@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router"; 
+import { Link, useLocation, useNavigate } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import AppHeader from "./AppHeader";
 import {
@@ -114,7 +114,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed  flex flex-col  justify-between lg:mt-0 top-0  left-0 bg-white dark:bg-[#1e1e1e] dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 shadow-xl
+      className={`fixed  flex flex-col  justify-between lg:mt-0 top-0  left-0 bg-white dark:bg-[#1e1e1e] dark:border-gray-800 text-gray-900 h-screen overflow-auto transition-all duration-300 ease-in-out z-50 border-r border-gray-200 shadow-xl
         ${isExpanded || isMobileOpen ? "w-[320px]" : "w-[90px]"}
         ${isMobileOpen ? "translate-x-0" : isRTL ? "translate-x-full" : "-translate-x-full"}
         ${isRTL ? "right-0" : "left-0"}
@@ -143,7 +143,7 @@ const AppSidebar: React.FC = () => {
           </Link>
 
           {/* Pass the ref correctly as a prop */}
-          <div className="w-full px-6">
+          <div className="w-full px-6 mt-4 md:mt-0">
             <SearchSection inputRef={inputRef} />
           </div>
         </div>
