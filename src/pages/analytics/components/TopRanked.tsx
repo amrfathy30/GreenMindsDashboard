@@ -39,17 +39,19 @@ export default function TopRanked({
                 </h2>
               </div>
             </div>
-            <img
-              className="w-8 h-8 object-cover"
-              src={
-                index === 0
-                  ? "/images/first.png"
-                  : index === 1
-                    ? "/images/second.png"
-                    : "/images/third.png"
-              }
-              alt="rank"
-            />
+            {index < 3 && (
+              <img
+                className="w-8 h-8 object-cover"
+                src={
+                  index === 0
+                    ? "/images/first.png"
+                    : index === 1
+                      ? "/images/second.png"
+                      : "/images/third.png"
+                }
+                alt="rank"
+              />
+            )}
           </div>
         ))
       )}

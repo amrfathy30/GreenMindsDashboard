@@ -24,7 +24,7 @@ export default function UserDropdown() {
   function closeDropdown() {
     setIsOpen(false);
   }
-  
+
   useEffect(() => {
     fetchUserPermissions();
   }, []);
@@ -36,11 +36,13 @@ export default function UserDropdown() {
     <div className="relative border-y dark:border-gray-800 w-full py-2 px-0 md:px-6">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
-          <div className="me-3 overflow-hidden rounded-full h-11 w-11 invert-0 dark:invert">
+          <div
+            className={`me-3 overflow-hidden rounded-full ${isExpanded ? "h-10 w-10" : "h-5 w-5"} invert-0 dark:invert`}
+          >
             <img src="/images/user.png" alt="User" />
           </div>
           {isExpanded || isMobileOpen ? (
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start text-black dark:text-white">
               <span className="block me-1 font-medium text-theme-sm">
                 {admin?.Name}
               </span>
@@ -81,7 +83,16 @@ export default function UserDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className={`absolute ${isRTL ? "left-[-50%] w-[220px]" : "right-[-50%] w-[160px]"}  bottom-0 flex  flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark`}
+        className={`absolute bottom-0 flex flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-white
+  ${
+    isRTL
+      ? isExpanded
+        ? "left-[-220px] w-[220px]"
+        : "left-[-160px] w-[160px]"
+      : isExpanded
+        ? "right-[-220px] w-[220px]"
+        : "right-[-160px] w-[160px]"
+  }`}
       >
         <ul className="flex flex-col border-b border-gray-200 dark:border-gray-800">
           <li>
@@ -91,10 +102,10 @@ export default function UserDropdown() {
                 setOpenModalEditProfile(true);
               }}
               tag="a"
-              className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+              className="flex items-center gap-3 px-3 py-2 font-medium text-black rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-black dark:text-black dark:hover:bg-gray-100 dark:hover:text-black dark:hover:rounded-2xl"
             >
               <svg
-                className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
+                className="fill-gray-500 group-hover:fill-black dark:fill-black dark:group-hover:fill-black"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
