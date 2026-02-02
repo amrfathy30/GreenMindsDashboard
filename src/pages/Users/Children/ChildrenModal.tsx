@@ -119,9 +119,10 @@ export default function ChildrenModal({
             label={t("ParentPhoneNumber")}
             placeholder={t("ParentPhoneNumber")}
             value={formData.ParentPhoneNumber}
-            onChange={(e) =>
-              setFormData({ ...formData, ParentPhoneNumber: e.target.value })
-            }
+            onChange={(e) => {
+              const onlyNumbers = e.target.value.replace(/\D/g, "");
+              setFormData({ ...formData, ParentPhoneNumber: onlyNumbers });
+            }}
           />
         </div>
         {/* {!initialData && (

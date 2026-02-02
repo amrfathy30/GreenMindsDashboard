@@ -6,6 +6,7 @@ interface InputProps {
     | "text"
     | "number"
     | "email"
+    | "tel"
     | "password"
     | "date"
     | "time"

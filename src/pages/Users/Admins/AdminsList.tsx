@@ -80,11 +80,8 @@ export default function AdminsList({
             UserName: item.UserName,
             Email: item.Email,
             Password: item.Password,
-            Type: item.Type,
-            TypeName: item.TypeName,
             Phone: item.Phone,
             ConfirmPassword: item.ConfirmPassword,
-            // EmailVerified: item.EmailVerified,
           })),
         );
       } catch (error: any) {
@@ -145,12 +142,17 @@ export default function AdminsList({
       if (
         !data.Name?.trim() ||
         !data.UserName?.trim() ||
-        !data.Email?.trim() ||
-        data.Type === 0
+        !data.Email?.trim() 
       ) {
         toast.error(t("all_fields_required"));
         return;
       }
+
+      if (!editData?.id && data.Password.length < 8) {
+        toast.error(t("PasswordMustBeAtLeast8Characters"));
+        return;
+      }
+
       if (data.Password !== data.ConfirmPassword) {
         toast.error(t("PasswordNotMatch"));
         return;
@@ -187,8 +189,6 @@ export default function AdminsList({
           Phone: item.Phone,
           ConfirmPassword: item.ConfirmPassword,
           Password: item.Password,
-          Type: item.Type,
-          TypeName: data.roleName,
         })),
       );
 
@@ -201,13 +201,17 @@ export default function AdminsList({
     } catch (error: any) {
       const errData = error?.response?.data;
 
-      if (errData?.Data) {
+      if (Array.isArray(errData?.Data)) {
+        toast.error(errData.Data.join("\n"));
+      } else if (errData?.Data && typeof errData.Data === "object") {
         const messages: string[] = [];
+
         for (const key in errData.Data) {
           if (Array.isArray(errData.Data[key])) {
             messages.push(...errData.Data[key]);
           }
         }
+
         toast.error(messages.join("\n"));
       } else {
         toast.error(errData?.Message || t("operation_failed"));
@@ -254,8 +258,9 @@ export default function AdminsList({
                   id: row.id,
                   Name: row.Name,
                   Email: row.Email,
+                  Phone: row.Phone,
                   Password: row.Password,
-                  Type: row.Type,
+                  UserName: row.UserName,
                 });
                 setOpenModal(true);
               }}

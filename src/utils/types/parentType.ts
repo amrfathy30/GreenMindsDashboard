@@ -11,11 +11,12 @@ export interface ParentList {
   Email: string;
   Password: string;
   ConfirmPassword: string;
-  ParentPhoneNumber: string;
+  ParentPhoneNumber?: string;
   Phone?: string;
   GenderId: string;
   DateOfBirth: string;
   EmailVerified?: boolean;
+  PhoneNumber?: string;
 }
 
 export interface ParentsModalProps {
@@ -28,8 +29,9 @@ export interface ParentsModalProps {
     Email: string;
     Password: string;
     ConfirmPassword: string;
-    ParentPhoneNumber: string;
+    ParentPhoneNumber?: string;
     Phone?: string;
+    PhoneNumber?: string;
     GenderId: string;
     DateOfBirth: string;
     EmailVerified?: boolean;
@@ -40,8 +42,9 @@ export interface ParentsModalProps {
     Email: string;
     Password: string;
     ConfirmPassword: string;
-    ParentPhoneNumber: string;
+    ParentPhoneNumber?: string;
     Phone?: string;
+    PhoneNumber?: string;
     GenderId: string;
     DateOfBirth: string;
     EmailVerified?: boolean;
@@ -59,7 +62,7 @@ export interface ParentApiResponse {
       Email: string;
       Password: string;
       ConfirmPassword: string;
-      ParentPhoneNumber: string;
+      ParentPhoneNumber?: string;
       Phone?: string;
       GenderId: string;
       DateOfBirth: string;

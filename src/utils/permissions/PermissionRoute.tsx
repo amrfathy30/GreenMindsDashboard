@@ -1,6 +1,6 @@
 import { JSX } from "react";
-import NotFound from "../../pages/OtherPage/NotFound";
 import { hasPermission } from "./permissions";
+import UnAuthorized from "../../pages/OtherPage/UnAuthorized";
 
 export const PermissionRoute = ({
   permission,
@@ -10,7 +10,7 @@ export const PermissionRoute = ({
   element: JSX.Element;
 }) => {
   if (!hasPermission(permission)) {
-    return <NotFound />;
+    return <UnAuthorized />;
   }
   return element;
 };

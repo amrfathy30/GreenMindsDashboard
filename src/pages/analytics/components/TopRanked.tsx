@@ -5,11 +5,11 @@ export default function TopRanked({
   topRanks,
 }: {
   topRanks: {
-    userId: number;
-    userName: string;
-    totalPoints: number;
-    levelId: number;
-    levelName: string;
+    UserId: number;
+    UserName: string;
+    TotalPoints: number;
+    LevelId: number;
+    LevelName: string;
   }[];
 }) {
   const { t } = useLanguage();
@@ -23,7 +23,7 @@ export default function TopRanked({
       ) : (
         topRanks.slice(0, 5).map((user, index) => (
           <div
-            key={user.userId}
+            key={user.UserId}
             className="flex justify-between items-center gap-1 mb-6"
           >
             <div className="flex items-center gap-2">
@@ -33,9 +33,9 @@ export default function TopRanked({
                 alt="child-image"
               />
               <div>
-                <h2 className="text-sm dark:text-white">{user.userName}</h2>
+                <h2 className="text-sm dark:text-white">{user.UserName}</h2>
                 <h2 className="text-sm text-[#8E9ABB]">
-                  {user.totalPoints} points
+                  {user.TotalPoints} points
                 </h2>
               </div>
             </div>

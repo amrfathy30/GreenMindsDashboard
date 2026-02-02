@@ -189,7 +189,23 @@ export default function ChildrenList({
       setOpenModal(false);
       setEditData(null);
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("operation_failed"));
+      const errData = error?.response?.data;
+
+      if (Array.isArray(errData?.Data)) {
+        toast.error(errData.Data.join("\n"));
+      } else if (errData?.Data && typeof errData.Data === "object") {
+        const messages: string[] = [];
+
+        for (const key in errData.Data) {
+          if (Array.isArray(errData.Data[key])) {
+            messages.push(...errData.Data[key]);
+          }
+        }
+
+        toast.error(messages.join("\n"));
+      } else {
+        toast.error(errData?.Message || t("operation_failed"));
+      }
     } finally {
       setModalLoading(false);
     }

@@ -89,7 +89,6 @@ export default function ParentsList({
             EmailVerified: item.EmailVerified,
             Password: item.Password,
             ConfirmPassword: item.ConfirmPassword,
-            Phone: item.Phone,
             ParentPhoneNumber: item.Phone,
             GenderId: item.GenderId,
             DateOfBirth: item.DateOfBirth,
@@ -104,7 +103,7 @@ export default function ParentsList({
     };
 
     fetchParent();
-  }, [currentPage, pageSize, t]);
+  }, [canView, currentPage, pageSize, t]);
 
   const confirmDelete = async () => {
     if (!selectedDeleteId) return;
@@ -131,9 +130,8 @@ export default function ParentsList({
         !data.UserName?.trim() ||
         !data.Name?.trim() ||
         data.Email === "" ||
-        data.Password === "" ||
-        data.ConfirmPassword === "" ||
-        data.ParentPhoneNumber === ""
+        data.ParentPhoneNumber === "" ||
+        data.DateOfBirth === ""
       ) {
         toast.error(t("all_fields_required"));
         return;
@@ -159,8 +157,8 @@ export default function ParentsList({
           Name: item.Name || "",
           UserName: item.UserName || "",
           Email: item.Email,
-          Password: item.Password,
-          ConfirmPassword: item.ConfirmPassword,
+          Password: "",
+          ConfirmPassword: "",
           EmailVerified: item.EmailVerified,
           ParentPhoneNumber: item.Phone,
           GenderId: item.GenderId,
@@ -205,14 +203,15 @@ export default function ParentsList({
       ),
     },
     {
-      key: "Phone",
-      label: t("ParentPhone"),
-      render: (row: any) => (
-        <span className="text-[#757575] flex justify-center items-center">
-          {row.Phone || "__"}
-        </span>
-      ),
-    },
+  key: "Phone",
+  label: t("ParentPhone"),
+  render: (row: any) => (
+    <span className="text-[#757575] flex justify-center items-center">
+      {row.ParentPhoneNumber || "__"}
+    </span>
+  ),
+},
+
     {
       key: "actions",
       label: t("Actions"),
@@ -226,8 +225,8 @@ export default function ParentsList({
                   Name: row.Name,
                   UserName: row.UserName,
                   Email: row.Email,
-                  Password: row.Password,
-                  ConfirmPassword: row.ConfirmPassword,
+                  Password: "",
+                  ConfirmPassword: "",
                   ParentPhoneNumber: row.ParentPhoneNumber,
                   GenderId: row.GenderId,
                   DateOfBirth: row.DateOfBirth,
