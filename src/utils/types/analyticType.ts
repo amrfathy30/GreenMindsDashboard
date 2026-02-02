@@ -23,11 +23,11 @@ export interface LevelStats {
 }
 
 export interface TopRankedUser {
-  userId: number;
-  userName: string;
-  totalPoints: number;
-  levelId: number;
-  levelName: string;
+  UserId: number;
+  UserName: string;
+  TotalPoints: number;
+  LevelId: number;
+  LevelName: string;
 }
 
 export interface AgeSector {
