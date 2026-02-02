@@ -18,6 +18,7 @@ const AppHeader: React.FC = () => {
 
   const handleLogOut = () => {
     localStorage.removeItem("GMadminData");
+    localStorage.removeItem("GMadminPermissions");
     localStorage.removeItem("GMadminToken");
     window.location.href = "/";
   };
