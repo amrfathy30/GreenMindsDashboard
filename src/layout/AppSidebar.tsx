@@ -17,7 +17,7 @@ type NavItem = {
   name: string;
   icon: React.ReactNode;
   path: string;
-  hasPermission?: boolean
+  hasPermission?: boolean;
 };
 
 const AppSidebar: React.FC = () => {
@@ -30,37 +30,37 @@ const AppSidebar: React.FC = () => {
       icon: <VideoIcon />,
       name: t("videos"),
       path: "/videos",
-      hasPermission: hasPermission("Videos_GetPaged")
+      hasPermission: hasPermission("Videos_GetPaged"),
     },
     {
       icon: <GameIcon />,
       name: t("games"),
       path: "/games",
-      hasPermission:true
+      hasPermission: true,
     },
     {
       icon: <AvatarIcon />,
       name: t("avatars"),
       path: "/avatars",
-      hasPermission:true
+      hasPermission: true,
     },
     {
       icon: <AnalyticsIcon />,
       name: t("analytics"),
       path: "/analytics",
-      hasPermission:true
+      hasPermission: true,
     },
     {
       icon: <SettingsIcon />,
       name: t("settings"),
       path: "/setting",
-      hasPermission:true
+      hasPermission: true,
     },
     {
       icon: <UserCircleIcon />,
       name: t("users"),
       path: "/users",
-      hasPermission:true
+      hasPermission: true,
     },
   ];
   // Keyboard shortcut for search focus
@@ -82,30 +82,33 @@ const AppSidebar: React.FC = () => {
 
   const renderMenuItems = (items: NavItem[]) => (
     <ul className="flex flex-col gap-1 ps-5">
-      {items.map((nav) => (
-        nav?.hasPermission &&
-        <li key={nav.name} className="h-[50px]">
-          {/* Changed from button to Link for reliable routing */}
-          <Link
-            to={nav.path}
-            className={`menu-item group h-full ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
-              }`}
-          >
-            <span
-              className={`menu-item-icon-size ${isActive(nav.path)
-                  ? "text-white dark:text-black"
-                  : "text-black dark:text-white"
+      {items.map(
+        (nav) =>
+          nav?.hasPermission && (
+            <li key={nav.name} className="h-[50px]">
+              {/* Changed from button to Link for reliable routing */}
+              <Link
+                to={nav.path}
+                className={`menu-item group h-full ${
+                  isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                 }`}
-            >
-              {nav.icon}
-            </span>
-            {(isExpanded || isMobileOpen) && (
-              <span className="menu-item-text ">{nav.name}</span>
-            )}
-          </Link>
-        </li>
-
-      ))}
+              >
+                <span
+                  className={`menu-item-icon-size ${
+                    isActive(nav.path)
+                      ? "text-white dark:text-black"
+                      : "text-black dark:text-white"
+                  }`}
+                >
+                  {nav.icon}
+                </span>
+                {(isExpanded || isMobileOpen) && (
+                  <span className="menu-item-text ">{nav.name}</span>
+                )}
+              </Link>
+            </li>
+          ),
+      )}
     </ul>
   );
 
@@ -138,10 +141,10 @@ const AppSidebar: React.FC = () => {
           </Link>
 
           {/* Pass the ref correctly as a prop */}
-          {/* <SearchSection inputRef={inputRef} /> */}
+          <SearchSection inputRef={inputRef} />
         </div>
 
-        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar mt-10">
+        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
           <nav className="mb-6">
             <div className="flex flex-col gap-4">
               <div>{renderMenuItems(navItems)}</div>
@@ -162,11 +165,12 @@ const PAGES = [
   { name: "Avatars", path: "/avatars" },
   { name: "Analytics", path: "/analytics" },
   { name: "Users", path: "/users" },
-  { name: "Children Info", path: "/children-info" },
+  // { name: "Children Info", path: "/children-info/:id" },
   { name: "Settings", path: "/setting" },
+  { name: "Admin Roles", path: "/admin-roles" },
+  { name: "Permissions List", path: "/permissions-list" },
   { name: "Age Group", path: "/age-group" },
   { name: "Profile Levels", path: "/profile-levels" },
-  { name: "Login Streaks", path: "/login-streaks" },
 ];
 
 const SearchSection = ({
