@@ -21,7 +21,8 @@ type NavItem = {
 };
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen } = useSidebar();
+  const { isExpanded, isMobileOpen, setIsMobileOpen } = useSidebar();
+
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const { isRTL, t } = useLanguage();
@@ -92,6 +93,7 @@ const AppSidebar: React.FC = () => {
                 className={`menu-item group h-full ${
                   isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                 }`}
+                onClick={() => setIsMobileOpen(false)}
               >
                 <span
                   className={`menu-item-icon-size ${
