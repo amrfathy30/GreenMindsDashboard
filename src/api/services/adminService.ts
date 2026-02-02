@@ -2,16 +2,15 @@ import { AdminList } from "../../utils/types/adminType";
 import axiosInstance from "../axiosInstance";
 
 export const allAdminData = async () => {
-  const response = await axiosInstance.get("/Users/admins");
-  return response.data;
-};
-export const UserTypes = async () => {
-  const response = await axiosInstance.get("/Users/UserTypes");
+  const response = await axiosInstance.get("/Account/admins");
   return response.data;
 };
 
 export const createAdmin = async (data: AdminList) => {
-  const response = await axiosInstance.post("/Users/CreateUserWithType", data);
+  const response = await axiosInstance.post(
+    "/Account/CreateUserWithType",
+    data,
+  );
   return response.data;
 };
 

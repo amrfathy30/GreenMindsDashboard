@@ -37,7 +37,7 @@ export default function AdminModal({
         Password: initialData.Password ?? "",
         ConfirmPassword: initialData.ConfirmPassword ?? "",
         roleName: initialData.roleName ?? "",
-        Type: initialData.Type,
+        Type: initialData.Type ?? 2,
       });
     } else {
       setFormData({
@@ -103,12 +103,14 @@ export default function AdminModal({
         <div>
           <Input
             id="Phone"
+            type="tel"
             label={t("AdminPhone")}
             placeholder={t("EnterAdminPhone")}
             value={formData.Phone}
-            onChange={(e) =>
-              setFormData({ ...formData, Phone: e.target.value })
-            }
+            onChange={(e) => {
+              const onlyNumbers = e.target.value.replace(/\D/g, "");
+              setFormData({ ...formData, Phone: onlyNumbers });
+            }}
           />
         </div>
         {/* {!initialData && (

@@ -16,7 +16,7 @@ export default function ParentModal({
   initialData,
 }: ParentsModalProps) {
   const { t } = useLanguage();
-  const [selectedValue, setSelectedValue] = useState<string>("1");
+  const [selectedValue, setSelectedValue] = useState<string>("");
 
   const handleChange = (value: string) => {
     setSelectedValue(value);
@@ -48,14 +48,14 @@ export default function ParentModal({
         ? formatDateForInput(initialData.DateOfBirth)
         : "";
 
-      setSelectedValue(initialData.GenderId || "1");
+      setSelectedValue(initialData.GenderId || "");
       setFormData({
         Name: initialData.Name,
         UserName: initialData.UserName,
         Email: initialData.Email,
         Password: initialData.Password,
         ConfirmPassword: initialData.ConfirmPassword,
-        ParentPhoneNumber: initialData.ParentPhoneNumber,
+        ParentPhoneNumber: initialData.ParentPhoneNumber ?? "",
         GenderId: initialData.GenderId,
         DateOfBirth: formattedDate,
       });
@@ -126,15 +126,13 @@ export default function ParentModal({
         <div>
           <Input
             id="ParentPhoneNumber"
-            label={t("PhoneNumber")}
-            placeholder={t("PhoneNumber")}
+            label={t("ParentPhoneNumber")}
+            placeholder={t("ParentPhoneNumber")}
             value={formData.ParentPhoneNumber}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                ParentPhoneNumber: e.target.value,
-              }))
-            }
+            onChange={(e) => {
+              const onlyNumbers = e.target.value.replace(/\D/g, "");
+              setFormData({ ...formData, ParentPhoneNumber: onlyNumbers });
+            }}
           />
         </div>
         {/* {!initialData && (

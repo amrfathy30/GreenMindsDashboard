@@ -16,7 +16,7 @@ import ProfileLevels from "./pages/Setting/ProfileLevels/ProfileLevels";
 import { ProtectedRoute } from "./protected-route-wrapper";
 import AdminRoles from "./pages/Setting/AdminRoles/AdminRolesList";
 import PermissionsList from "./pages/Setting/Permissions/PermissionsList";
-import { hasPermission } from "./utils/permissions/permissions";
+import { PermissionRoute } from "./utils/permissions/PermissionRoute";
 
 export default function App() {
   return (
@@ -28,17 +28,89 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
           <Route element={<AppLayout />}>
             <Route element={<ProtectedRoute />}>
-             {hasPermission("Videos_GetPaged")&& <Route path="/videos" element={<VideosList />} />}
-              <Route path="/games" element={<GamesList />} />
-              <Route path="/avatars" element={<AvatarsList />} />
-              <Route path="/analytics" element={<Analytics />} />
+              <Route
+                path="/videos"
+                element={
+                  <PermissionRoute
+                    permission="Videos_GetPaged"
+                    element={<VideosList />}
+                  />
+                }
+              />
+
+              <Route
+                path="/games"
+                element={
+                  <PermissionRoute
+                    permission="Games_GetPaged"
+                    element={<GamesList />}
+                  />
+                }
+              />
+
+              <Route
+                path="/avatars"
+                element={
+                  <PermissionRoute
+                    permission="Avatars_GetPaged"
+                    element={<AvatarsList />}
+                  />
+                }
+              />
+
+              <Route
+                path="/children-info/:id"
+                element={
+                  <PermissionRoute
+                    permission="Children_GetChild"
+                    element={<ChildrenInfo />}
+                  />
+                }
+              />
+
+              <Route
+                path="/admin-roles"
+                element={
+                  <PermissionRoute
+                    permission="AdminRoles_GetAllRoles"
+                    element={<AdminRoles />}
+                  />
+                }
+              />
+
+              <Route
+                path="/profile-levels"
+                element={
+                  <PermissionRoute
+                    permission="Levels_GetAll"
+                    element={<ProfileLevels />}
+                  />
+                }
+              />
+
+              <Route
+                path="/permissions-list"
+                element={
+                  <PermissionRoute
+                    permission="AdminPermissions_GetAllPermissions"
+                    element={<PermissionsList />}
+                  />
+                }
+              />
+
+              <Route
+                path="/age-group"
+                element={
+                  <PermissionRoute
+                    permission="AgeSectors_GetAll"
+                    element={<AgeGroup />}
+                  />
+                }
+              />
+
               <Route path="/users" element={<Users />} />
-              <Route path="/children-info/:id" element={<ChildrenInfo />} />
+              <Route path="/analytics" element={<Analytics />} />
               <Route path="/setting" element={<Setting />} />
-              <Route path="/age-group" element={<AgeGroup />} />
-              <Route path="/admin-roles" element={<AdminRoles />} />
-              <Route path="/profile-levels" element={<ProfileLevels />} />
-              <Route path="/permissions-list" element={<PermissionsList />} />
             </Route>
           </Route>
         </Routes>

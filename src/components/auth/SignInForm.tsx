@@ -9,7 +9,7 @@ import { adminLogin } from "../../api/services/authService";
 import { useLanguage } from "../../locales/LanguageContext";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../common/ToastHelper";
-import { fetchUserPermissions, hasPermission } from "../../utils/permissions/permissions";
+import { fetchUserPermissions } from "../../utils/permissions/permissions";
 
 export default function SignInForm() {
   const { t } = useLanguage();
