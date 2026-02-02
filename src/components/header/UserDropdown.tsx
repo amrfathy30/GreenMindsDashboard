@@ -1,29 +1,27 @@
 import { useEffect, useState } from "react";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { Dropdown } from "../ui/dropdown/Dropdown";
 import EditProfileModal from "../../pages/Profile/EditProfileModal";
 import { useSidebar } from "../../context/SidebarContext";
-import { useLanguage } from "../../locales/LanguageContext";
 import { useAdmin } from "../../context/AdminContext";
 import {
   fetchUserPermissions,
   hasPermission,
 } from "../../utils/permissions/permissions";
+import { EditIcon } from "../../icons";
 export default function UserDropdown() {
-  const { t, isRTL } = useLanguage();
+  // const { t, isRTL } = useLanguage();
   const { isMobileOpen, isExpanded } = useSidebar();
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   // const adminData:any=localStorage.getItem('GMadminData')
   // const GMadminData:any= JSON.parse(adminData)
   const { admin } = useAdmin();
 
-  function toggleDropdown() {
-    setIsOpen(!isOpen);
-  }
+  // function toggleDropdown() {
+  //   setIsOpen(!isOpen);
+  // }
 
-  function closeDropdown() {
-    setIsOpen(false);
-  }
+  // function closeDropdown() {
+  //   setIsOpen(false);
+  // }
 
   useEffect(() => {
     fetchUserPermissions();
@@ -57,10 +55,11 @@ export default function UserDropdown() {
 
         {canEdit && (
           <button
-            onClick={toggleDropdown}
+            // onClick={toggleDropdown}
+            onClick={() => setOpenModalEditProfile(true)}
             className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400 h-10"
           >
-            <svg
+            {/* <svg
               width="19"
               height="4"
               viewBox="0 0 19 4"
@@ -75,12 +74,13 @@ export default function UserDropdown() {
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
-            </svg>
+            </svg> */}
+            <EditIcon className="w-6 h-6" />
           </button>
         )}
       </div>
 
-      <Dropdown
+      {/* <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
         className={`absolute z-9999 bottom-0 flex flex-col rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-white
@@ -123,7 +123,7 @@ export default function UserDropdown() {
             </DropdownItem>
           </li>
         </ul>
-      </Dropdown>
+      </Dropdown> */}
       <EditProfileModal
         open={openModalEditProfile}
         onClose={() => setOpenModalEditProfile(false)}
