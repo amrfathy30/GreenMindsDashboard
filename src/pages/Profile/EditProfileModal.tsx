@@ -195,7 +195,7 @@ export default function EditProfileModal({
           onSubmit={onSubmit}
           className="flex flex-col gap-3 p-6 my-6  border rounded-2xl"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex md:items-center justify-between flex-col md:flex-row gap-4">
             <div className="flex items-center gap-4">
               <div className="relative">
                 <img
