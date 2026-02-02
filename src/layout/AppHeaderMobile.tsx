@@ -14,7 +14,6 @@ const AppHeaderMobile: React.FC = () => {
     }
   };
 
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -76,19 +75,14 @@ const AppHeaderMobile: React.FC = () => {
           </button>
 
           <Link to="/" className="lg:hidden">
-          <img
-                src="/images/logo/Greenmindslogo.png"
-                alt="Logo"
-                width={40}
-                height={40}
-              />
+            <img
+              src="/images/logo/Greenmindslogo.png"
+              alt="Logo"
+              width={40}
+              height={40}
+            />
           </Link>
-
-        
-
-   
         </div>
-
       </div>
     </header>
   );
