@@ -10,13 +10,15 @@ import { useLanguage } from "../../locales/LanguageContext";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../common/ToastHelper";
 import { fetchUserPermissions } from "../../utils/permissions/permissions";
+import { useAdmin } from "../../context/AdminContext";
 
 export default function SignInForm() {
   const { t } = useLanguage();
   const lang = localStorage.getItem("GM-language");
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const { updateAdmin } = useAdmin();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,14 +51,12 @@ export default function SignInForm() {
   // <Route path="/admin-roles" element={<AdminRoles />} />
   // <Route path="/profile-levels" element={<ProfileLevels />} />
   // <Route path="/permissions-list" element={<PermissionsList />} />
-  
+
   const getAdminRoute = (permissions: any) => {
-    if (permissions.includes("Videos_GetPaged"))
-      return '/videos'
-    else if (permissions.includes("Games_GetPaged"))
-      return '/games'
-    else return '/' // Add No permissions page
-  }
+    if (permissions.includes("Videos_GetPaged")) return "/videos";
+    else if (permissions.includes("Games_GetPaged")) return "/games";
+    else return "/"; // Add No permissions page
+  };
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -88,20 +88,16 @@ export default function SignInForm() {
           JSON.stringify(response.Data?.Permissions || []),
         );
 
-        localStorage.setItem("AllDataGMadmin", JSON.stringify(response.Data));
-
         localStorage.setItem("GMadminToken", response.Data?.Token?.token);
         localStorage.setItem(
           "GMadminData",
           JSON.stringify(response.Data?.Token),
         );
+        updateAdmin(response.Data?.Token);
 
         await fetchUserPermissions();
 
-        // setTimeout(() => {
-        //   window.location.href = "/videos";
-        // }, 1000);
-        const adminRoute = getAdminRoute(response.Data?.Permissions || [])
+        const adminRoute = getAdminRoute(response.Data?.Permissions || []);
         navigate(adminRoute);
       } else {
         toast.error(response?.Message || t("InvalidEmailOrPassword"));
