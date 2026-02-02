@@ -261,7 +261,7 @@ export default function ChildrenList({
               onClick={(e) => e.stopPropagation()}
             >
               <button>
-                <EyeIcon className="w-7 h-7 text-black/60 dark:text-[#999999]" />
+                <EyeIcon className="w-6 h-6 text-black/60 dark:text-[#999999]" />
               </button>
             </Link>
           )}
@@ -282,7 +282,7 @@ export default function ChildrenList({
                 setOpenModal(true);
               }}
             >
-              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+              <EditIcon className="w-6 h-6 invert-0 dark:invert" />
             </button>
           )}
           {canDelete && (
@@ -292,7 +292,7 @@ export default function ChildrenList({
                 handleDelete(row.id);
               }}
             >
-              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+              <RemoveIcon className="w-6 h-6 invert-0 dark:invert" />
             </button>
           )}
         </div>

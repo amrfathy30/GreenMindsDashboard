@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router"; 
+import { Link, useLocation, useNavigate } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import AppHeader from "./AppHeader";
 import {
@@ -143,7 +143,7 @@ const AppSidebar: React.FC = () => {
           </Link>
 
           {/* Pass the ref correctly as a prop */}
-          <div className="w-full px-6">
+          <div className="w-full px-6 mt-4 md:mt-0">
             <SearchSection inputRef={inputRef} />
           </div>
         </div>

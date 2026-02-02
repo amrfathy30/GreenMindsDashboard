@@ -183,7 +183,7 @@ export default function ParentsList({
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="text-[#757575] ">{row.Name || "__"}</span>
+        <span className="text-[#757575] dark:text-white">{row.Name || "__"}</span>
       ),
     },
     {
@@ -203,14 +203,14 @@ export default function ParentsList({
       ),
     },
     {
-  key: "Phone",
-  label: t("ParentPhone"),
-  render: (row: any) => (
-    <span className="text-[#757575] flex justify-center items-center">
-      {row.ParentPhoneNumber || "__"}
-    </span>
-  ),
-},
+      key: "Phone",
+      label: t("ParentPhone"),
+      render: (row: any) => (
+        <span className="text-[#757575] dark:text-white flex justify-center items-center">
+          {row.ParentPhoneNumber || "__"}
+        </span>
+      ),
+    },
 
     {
       key: "actions",
@@ -234,7 +234,7 @@ export default function ParentsList({
                 setOpenModal(true);
               }}
             >
-              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+              <EditIcon className="w-6 h-6 invert-0 dark:invert" />
             </button>
           )}
           {canDelete && (
@@ -244,7 +244,7 @@ export default function ParentsList({
                 handleDelete(row.id);
               }}
             >
-              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+              <RemoveIcon className="w-6 h-6 invert-0 dark:invert" />
             </button>
           )}
         </div>

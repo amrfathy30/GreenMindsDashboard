@@ -796,3 +796,16 @@ span.flatpickr-weekday,
 .simplebar-scrollbar.simplebar-visible:before {
   @apply opacity-100;
 }
+
+/* scroll bar */
+::-webkit-scrollbar {
+  @apply w-[5px] h-3;
+}
+
+::-webkit-scrollbar-track {
+  @apply rounded-full bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary rounded-full;
+}
