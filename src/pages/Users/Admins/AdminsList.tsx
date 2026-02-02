@@ -243,7 +243,7 @@ export default function AdminsList({
       key: "Phone",
       label: t("PhoneNumber"),
       render: (row: any) => (
-        <span className="text-[#757575]">{row.Phone || "__"}</span>
+        <span className="text-[#757575] dark:text-white">{row.Phone || "__"}</span>
       ),
     },
     {
@@ -265,7 +265,7 @@ export default function AdminsList({
                 setOpenModal(true);
               }}
             >
-              <EditIcon className="w-8 h-8 invert-0 dark:invert" />
+              <EditIcon className="w-6 h-6 invert-0 dark:invert" />
             </button>
           )}
           {canDeleteAdmin && (
@@ -276,7 +276,7 @@ export default function AdminsList({
               }}
               aria-label={t("common.delete")}
             >
-              <RemoveIcon className="w-8 h-8 invert-0 dark:invert" />
+              <RemoveIcon className="w-6 h-6 invert-0 dark:invert" />
             </button>
           )}
         </div>

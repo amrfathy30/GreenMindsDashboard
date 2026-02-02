@@ -4,7 +4,10 @@ import AdminsList from "./Admins/AdminsList";
 import ParentsList from "./Parents/ParentsList";
 import ChildrenList from "./Children/ChildrenList";
 import { useLanguage } from "../../locales/LanguageContext";
-import { fetchUserPermissions, hasPermission } from "../../utils/permissions/permissions";
+import {
+  fetchUserPermissions,
+  hasPermission,
+} from "../../utils/permissions/permissions";
 
 export default function Users() {
   const { t } = useLanguage();
@@ -35,11 +38,10 @@ export default function Users() {
       />
     ),
   };
-  
+
   useEffect(() => {
     fetchUserPermissions();
   }, []);
-
 
   const canAdd = {
     tab1: hasPermission("Users_CreateUserWithType"),
@@ -73,7 +75,7 @@ export default function Users() {
         <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8 ">
           <div className="flex items-center gap-4">
             <button
-              className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
+              className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
                 activeTab === "tab1"
                   ? "bg-linear-to-r from-primary to-secondary text-white"
                   : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
@@ -83,7 +85,7 @@ export default function Users() {
               {t("adminsTab")}
             </button>
             <button
-              className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
+              className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
                 activeTab === "tab2"
                   ? "bg-linear-to-r from-primary to-secondary text-white"
                   : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
@@ -93,7 +95,7 @@ export default function Users() {
               {t("parentsTab")}
             </button>
             <button
-              className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
+              className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
                 activeTab === "tab3"
                   ? "bg-linear-to-r from-primary to-secondary text-white"
                   : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
@@ -107,9 +109,9 @@ export default function Users() {
           {canAdd[activeTab] && (
             <button
               onClick={handleAdd}
-              className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium hover:bg-[#25B16F] hover:text-white transition duration-200"
+              className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium text-base hover:bg-[#25B16F] hover:text-white transition duration-200"
             >
-              <Plus />
+              <Plus className="w-5 h-5"/>
               {addButtonText[activeTab]}
             </button>
           )}
