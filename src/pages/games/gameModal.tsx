@@ -33,8 +33,9 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     descAr: "",
     android: "",
     ios: "",
-    apiLink: "",
-    apiKey: "",
+    appLink: "",
+    // apiLink: "",
+    // apiKey: "",
     ageSectorId: "", 
   });
 
@@ -62,15 +63,14 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
         descAr: gameData.DescriptionAr || "",
         android: gameData.AndroidLink || "",
         ios: gameData.IosLink || "",
-        apiLink: gameData.ApiLink || "",
-        apiKey: gameData.ApiKey || "",
+        appLink: gameData.AppLink || "",  
         ageSectorId: gameData.AgeSectorId?.toString() || "", 
       });
       setPreviewImage(gameData.ThumbnailUrl || null);
     } else if (!gameData && isOpen) {
       setFormDataState({
         nameEn: "", nameAr: "", descEn: "", descAr: "",
-        android: "", ios: "", apiLink: "", apiKey: "", ageSectorId: ""
+        android: "", ios: "", appLink: "", ageSectorId: ""
       });
       setPreviewImage(null);
     }
@@ -98,8 +98,9 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     formData.append("DescriptionAr", formDataState.descAr);
     formData.append("AndroidLink", formDataState.android);
     formData.append("IosLink", formDataState.ios);
-    formData.append("ApiLink", formDataState.apiLink);
-    formData.append("ApiKey", formDataState.apiKey);
+    // formData.append("ApiLink", formDataState.apiLink);
+    // formData.append("ApiKey", formDataState.apiKey);
+    formData.append("AppLink", formDataState.appLink);
     formData.append("AgeSectorId", formDataState.ageSectorId);
 
     const file = fileInputRef.current?.files?.[0];
