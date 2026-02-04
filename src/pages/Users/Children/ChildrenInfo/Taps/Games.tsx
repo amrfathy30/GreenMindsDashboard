@@ -48,7 +48,7 @@ export default function Games({ id }: TapsProps) {
       <div className="flex-grow overflow-y-auto p-4">
         {loadingGames ? (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {Array.from({ length: 5 }).map((_, index) => (
+            {Array.from({ length: 4 }).map((_, index) => (
               <GameCardSkeleton key={index} />
             ))}
           </div>

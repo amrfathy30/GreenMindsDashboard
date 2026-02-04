@@ -11,13 +11,13 @@ export default function GenderChart({
   const { t } = useLanguage();
   if (!genderPercentage || genderPercentage.length === 0) return null;
 
-  const male = genderPercentage.find((g) => g.GenderId === null)?.Count || 0;
-  const female = genderPercentage.find((g) => g.GenderId === 1)?.Count || 0;
+  const male = genderPercentage.find((g) => g.GenderId === 1)?.Count || 0;
+  const female = genderPercentage.find((g) => g.GenderId === 2)?.Count || 0;
 
   const malePercentage =
-    genderPercentage.find((g) => g.GenderId === null)?.Percentage || 0;
-  const femalePercentage =
     genderPercentage.find((g) => g.GenderId === 1)?.Percentage || 0;
+  const femalePercentage =
+    genderPercentage.find((g) => g.GenderId === 2)?.Percentage || 0;
 
   const series = [male, female];
 

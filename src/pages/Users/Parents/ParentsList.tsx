@@ -89,7 +89,7 @@ export default function ParentsList({
             EmailVerified: item.EmailVerified,
             Password: item.Password,
             ConfirmPassword: item.ConfirmPassword,
-            ParentPhoneNumber: item.Phone,
+            PhoneNumber: item.PhoneNumber,
             GenderId: item.GenderId,
             DateOfBirth: item.DateOfBirth,
           })),
@@ -130,7 +130,6 @@ export default function ParentsList({
         !data.UserName?.trim() ||
         !data.Name?.trim() ||
         data.Email === "" ||
-        data.ParentPhoneNumber === "" ||
         data.DateOfBirth === ""
       ) {
         toast.error(t("all_fields_required"));
@@ -160,7 +159,7 @@ export default function ParentsList({
           Password: "",
           ConfirmPassword: "",
           EmailVerified: item.EmailVerified,
-          ParentPhoneNumber: item.Phone,
+          PhoneNumber: item.PhoneNumber,
           GenderId: item.GenderId,
           DateOfBirth: item.DateOfBirth,
         })),
@@ -178,12 +177,48 @@ export default function ParentsList({
     }
   };
 
+  const calculateAge = (dateOfBirth: string) => {
+    if (!dateOfBirth) return "__";
+
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
+  const getGenderLabel = (genderId: string | number, t: any) => {
+    if (String(genderId) === "1") return t("Male");
+    if (String(genderId) === "2") return t("Female");
+    return "__";
+  };
+
   const columns = [
     {
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">{row.Name || "__"}</span>
+        <span className="text-[#757575] dark:text-white">
+          {row.Name || "__"}
+        </span>
+      ),
+    },
+    {
+      key: "UserName",
+      label: t("UserName"),
+      render: (row: any) => (
+        <span className="text-[#757575] dark:text-white">
+          {row.UserName || "__"}
+        </span>
       ),
     },
     {
@@ -207,7 +242,25 @@ export default function ParentsList({
       label: t("ParentPhone"),
       render: (row: any) => (
         <span className="text-[#757575] dark:text-white flex justify-center items-center">
-          {row.ParentPhoneNumber || "__"}
+          {row.PhoneNumber || "__"}
+        </span>
+      ),
+    },
+    {
+      key: "Gender",
+      label: t("Gender"),
+      render: (row: any) => (
+        <span className="text-[#757575] dark:text-white">
+          {getGenderLabel(row.GenderId, t)}
+        </span>
+      ),
+    },
+    {
+      key: "Age",
+      label: t("Age"),
+      render: (row: any) => (
+        <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
+          {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
         </span>
       ),
     },
@@ -227,7 +280,7 @@ export default function ParentsList({
                   Email: row.Email,
                   Password: "",
                   ConfirmPassword: "",
-                  ParentPhoneNumber: row.ParentPhoneNumber,
+                  PhoneNumber: row.PhoneNumber,
                   GenderId: row.GenderId,
                   DateOfBirth: row.DateOfBirth,
                 });

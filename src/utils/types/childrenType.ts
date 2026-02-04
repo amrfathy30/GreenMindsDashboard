@@ -8,13 +8,12 @@ export interface Children {
   Name: string;
   Email: string;
   UserName: string;
-  ParentPhoneNumber: string;
-  Phone?: string;
+  PhoneNumber: string;
   Password: string;
   ConfirmPassword: string;
   DateOfBirth: string;
   EmailVerified?: boolean;
-  GenderId: string;
+  GenderId: number;
 }
 
 export interface ChildrenApiResponse {
@@ -28,13 +27,12 @@ export interface ChildrenApiResponse {
       Name: string;
       Password: string;
       ConfirmPassword: string;
-      ParentPhoneNumber: string;
-      Phone?: string;
+      PhoneNumber: string;
       Email: string;
       UserName: string;
       DateOfBirth: string;
       EmailVerified?: boolean;
-      GenderId: string;
+      GenderId: number;
     }[];
   };
 }
@@ -50,8 +48,7 @@ export interface Child {
   Id: number;
   Name: string;
   Email: string;
-  Phone: string;
-  ParentPhoneNumber?: string | null;
+  PhoneNumber?: string | null;
   UserName?: string;
   AvatarImg?: string;
   DateOfBirth?: string;

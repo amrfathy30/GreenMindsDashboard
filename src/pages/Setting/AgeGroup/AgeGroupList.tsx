@@ -35,7 +35,7 @@ export default function AgeGroupList() {
 
   const canView = hasPermission("AgeSectors_GetAll");
   const canCreate = hasPermission("AgeSectors_Create");
-  const canEdit = hasPermission("Age Update");
+  const canEdit = hasPermission("AgeSectors_Update");
   const canDelete = hasPermission("AgeSectors_Delete");
 
   useEffect(() => {

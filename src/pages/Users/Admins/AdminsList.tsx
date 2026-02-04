@@ -80,8 +80,11 @@ export default function AdminsList({
             UserName: item.UserName,
             Email: item.Email,
             Password: item.Password,
-            Phone: item.Phone,
+            PhoneNumber: item.PhoneNumber,
             ConfirmPassword: item.ConfirmPassword,
+            GenderId: item.GenderId,
+            DateOfBirth: item.DateOfBirth,
+            RolesNames: item.RolesNames ?? [],
           })),
         );
       } catch (error: any) {
@@ -139,11 +142,7 @@ export default function AdminsList({
 
   const handleSave = async (data: AdminList) => {
     try {
-      if (
-        !data.Name?.trim() ||
-        !data.UserName?.trim() ||
-        !data.Email?.trim() 
-      ) {
+      if (!data.Name?.trim() || !data.UserName?.trim() || !data.Email?.trim()) {
         toast.error(t("all_fields_required"));
         return;
       }
@@ -186,9 +185,12 @@ export default function AdminsList({
           Name: item.Name || "",
           UserName: item.UserName || "",
           Email: item.Email,
-          Phone: item.Phone,
+          PhoneNumber: item.PhoneNumber,
           ConfirmPassword: item.ConfirmPassword,
           Password: item.Password,
+          GenderId: item.GenderId,
+          DateOfBirth: item.DateOfBirth,
+          RolesNames: item.RolesNames || [],
         })),
       );
 
@@ -221,6 +223,31 @@ export default function AdminsList({
     }
   };
 
+  const calculateAge = (dateOfBirth: string) => {
+    if (!dateOfBirth) return "__";
+
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
+  const getGenderLabel = (genderId: string | number, t: any) => {
+    if (String(genderId) === "1") return t("Male");
+    if (String(genderId) === "2") return t("Female");
+    return "__";
+  };
+
   const columns = [
     {
       key: "Name",
@@ -240,12 +267,42 @@ export default function AdminsList({
       ),
     },
     {
-      key: "Phone",
-      label: t("PhoneNumber"),
+      key: "RolesNames",
+      label: t("RolesNames"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">{row.Phone || "__"}</span>
+        <div className="flex items-center gap-2">
+          <span>{row.RolesNames?.[0] ?? "__"}</span>
+        </div>
       ),
     },
+    {
+      key: "PhoneNumber",
+      label: t("PhoneNumber"),
+      render: (row: any) => (
+        <span className="text-[#757575] dark:text-white">
+          {row.PhoneNumber || "__"}
+        </span>
+      ),
+    },
+    {
+      key: "Gender",
+      label: t("Gender"),
+      render: (row: any) => (
+        <span className="text-[#757575] dark:text-white">
+          {getGenderLabel(row.GenderId, t)}
+        </span>
+      ),
+    },
+    {
+      key: "Age",
+      label: t("Age"),
+      render: (row: any) => (
+        <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
+          {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
+        </span>
+      ),
+    },
+
     {
       key: "actions",
       label: t("actions"),
@@ -258,7 +315,7 @@ export default function AdminsList({
                   id: row.id,
                   Name: row.Name,
                   Email: row.Email,
-                  Phone: row.Phone,
+                  PhoneNumber: row.PhoneNumber,
                   Password: row.Password,
                   UserName: row.UserName,
                 });
