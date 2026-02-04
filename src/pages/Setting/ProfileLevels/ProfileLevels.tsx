@@ -71,6 +71,7 @@ export default function ProfileLevels() {
             LevelNumber: item.LevelNumber,
           })),
         );
+        setTotalPages(Math.ceil(data.Total / data.PageSize));
       } catch (error) {
         toast.error(t("failed_load_level"));
       } finally {
