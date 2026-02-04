@@ -251,21 +251,21 @@ export default function AdminRoles() {
         </div>
         <div className="px-5">
           {/* Tab Headers */}
-          <div className="flex border-b border-gray-200">
+          <div className="flex border-b border-gray-200 overflow-x-auto">
             {adminRoles.map((role, index) => (
               <div
                 key={role.Id}
-                className="relative flex items-center dropdown-wrapper"
+                className="relative flex items-center dropdown-wrapper flex-shrink-0"
               >
                 <button
                   onClick={() => setActiveTab(index)}
-                  className={`py-2 px-4 text-sm font-medium transition-colors duration-200 focus:outline-none
-          ${
-            activeTab === index
-              ? "border-b-2 border-primary text-primary"
-              : "text-gray-500 hover:text-gray-700"
-          }`}
+                  className={`py-2 px-4 text-sm font-medium transition-colors duration-200 focus:outline-none ${
+                    activeTab === index
+                      ? "border-b-2 border-primary text-primary"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                 >
+                  {" "}
                   {role?.Name}
                 </button>
 

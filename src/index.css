@@ -799,7 +799,7 @@ span.flatpickr-weekday,
 
 /* scroll bar */
 ::-webkit-scrollbar {
-  @apply w-[5px] h-3;
+  @apply w-[5px] h-[5px];
 }
 
 ::-webkit-scrollbar-track {

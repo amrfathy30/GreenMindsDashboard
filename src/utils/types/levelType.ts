@@ -8,6 +8,11 @@ export interface LevelList {
   LevelNumber: string;
 }
 
+export interface LevelParams {
+  page?: number;
+  pageSize?: number;
+}
+
 export interface ProfileLevelsModalProps {
   open: boolean;
   loading: boolean;
@@ -31,6 +36,8 @@ export interface ProfileLevelsModalProps {
 export interface LevelApiResponse {
   StatusCode: number;
   Message: string;
+  PageSize: number;
+  Total: number;
   Data: {
     Id: number;
     NameAr: string;

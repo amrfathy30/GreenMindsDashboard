@@ -268,6 +268,7 @@ const translations = {
     not_authorized_to_view_this_page:
       "Sorry, you are not authorized to view this page.",
     access_denied: "Access Denied",
+    years: "Years",
     //Avatar Translation
     avatars_admin: "Avatars - Admin",
     add_avatar: "Add Avatar",
@@ -610,6 +611,7 @@ const translations = {
     confirm_delete_game: "هل أنت متأكد من أنك تريد حذف هذه اللعبة؟",
     not_authorized_to_view_this_page: "عفواً، ليس لديك صلاحية لعرض هذه الصفحة.",
     access_denied: "تم رفض الوصول",
+    years: "سنوات",
     //Avatar Translation
     avatars_admin: "إدارة الصور الرمزية",
     add_avatar: "إضافة صورة رمزية",

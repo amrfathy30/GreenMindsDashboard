@@ -11,7 +11,6 @@ export interface ParentList {
   Email: string;
   Password: string;
   ConfirmPassword: string;
-  ParentPhoneNumber?: string;
   Phone?: string;
   GenderId: string;
   DateOfBirth: string;
@@ -29,7 +28,6 @@ export interface ParentsModalProps {
     Email: string;
     Password: string;
     ConfirmPassword: string;
-    ParentPhoneNumber?: string;
     Phone?: string;
     PhoneNumber?: string;
     GenderId: string;
@@ -42,7 +40,6 @@ export interface ParentsModalProps {
     Email: string;
     Password: string;
     ConfirmPassword: string;
-    ParentPhoneNumber?: string;
     Phone?: string;
     PhoneNumber?: string;
     GenderId: string;
@@ -62,7 +59,7 @@ export interface ParentApiResponse {
       Email: string;
       Password: string;
       ConfirmPassword: string;
-      ParentPhoneNumber?: string;
+      PhoneNumber?: string;
       Phone?: string;
       GenderId: string;
       DateOfBirth: string;

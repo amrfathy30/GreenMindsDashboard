@@ -32,10 +32,17 @@ export default function TopRanked({
                 src="/images/child.png"
                 alt="child-image"
               />
-              <div>
-                <h2 className="text-sm dark:text-white">{user.UserName}</h2>
+
+              <div className="max-w-[150px] overflow-hidden">
+                <h2
+                  className="text-sm dark:text-white truncate"
+                  title={user.UserName}
+                >
+                  {user.UserName}
+                </h2>
+
                 <h2 className="text-sm text-[#8E9ABB]">
-                  {user.TotalPoints} points
+                  {user.TotalPoints} {t("points")}
                 </h2>
               </div>
             </div>

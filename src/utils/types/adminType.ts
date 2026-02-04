@@ -4,9 +4,12 @@ export interface AdminList {
   Email: string;
   Password: string;
   roleName?: string;
-  Phone?: string;
+  PhoneNumber?: string;
   UserName?: string;
   ConfirmPassword?: string;
+  RolesNames?: string[];
+  DateOfBirth?: string;
+  GenderId?: number;
 }
 
 export interface adminRoles {
@@ -23,19 +26,23 @@ export interface AdminsModalProps {
     Email: string;
     Password: string;
     roleName?: string;
-    Phone?: string;
+    PhoneNumber?: string;
     UserName?: string;
     ConfirmPassword?: string;
+    DateOfBirth?: string;
+    GenderId?: number;
   }) => void;
   initialData?: {
     Name: string;
     Email: string;
     Password: string;
     roleName?: string;
-    Phone?: string;
+    PhoneNumber?: string;
     Type?: number;
     UserName?: string;
     ConfirmPassword?: string;
+    DateOfBirth?: string;
+    GenderId?: number;
   };
   adminRoles?: {
     Id: number;
@@ -62,9 +69,11 @@ export interface AdminApiResponse {
     Name: string;
     Email: string;
     Password: string;
-    // roleName?: string;
-    Phone?: string;
+    RolesNames?: string[];
+    PhoneNumber?: string;
     UserName?: string;
     ConfirmPassword?: string;
+    GenderId?: number;
+    DateOfBirth?: string;
   }[];
 }

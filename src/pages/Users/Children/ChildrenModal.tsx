@@ -16,12 +16,6 @@ export default function ChildrenModal({
   initialData,
 }: ChildrenModalProps) {
   const { t } = useLanguage();
-  const [selectedValue, setSelectedValue] = useState<string>("1");
-
-  const handleChange = (value: string) => {
-    setSelectedValue(value);
-    setFormData({ ...formData, GenderId: value });
-  };
 
   const [formData, setFormData] = useState({
     Name: "",
@@ -29,34 +23,43 @@ export default function ChildrenModal({
     UserName: "",
     Password: "",
     ConfirmPassword: "",
-    ParentPhoneNumber: "",
+    PhoneNumber: "",
     DateOfBirth: "",
     GenderId: "",
   });
 
+  const formatDateForInput = (date: string) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     if (initialData) {
-      setSelectedValue(initialData.GenderId || "1");
+      const formattedDate = initialData.DateOfBirth
+        ? formatDateForInput(initialData.DateOfBirth)
+        : "";
+
       setFormData({
         Name: initialData.Name || "",
         Email: initialData.Email || "",
         UserName: initialData.UserName || "",
         Password: initialData.Password || "",
         ConfirmPassword: initialData.ConfirmPassword || "",
-        ParentPhoneNumber:
-          initialData.ParentPhoneNumber || initialData.Phone || "",
-        DateOfBirth: initialData.DateOfBirth || "",
-        GenderId: initialData.GenderId || "1",
+        PhoneNumber: initialData.PhoneNumber || "",
+        GenderId: String(formData.GenderId),
+        DateOfBirth: formattedDate,
       });
     } else {
-      setSelectedValue("male");
       setFormData({
         Name: "",
         UserName: "",
         Email: "",
         Password: "",
         ConfirmPassword: "",
-        ParentPhoneNumber: "",
+        PhoneNumber: "",
         DateOfBirth: "",
         GenderId: "1",
       });
@@ -65,8 +68,10 @@ export default function ChildrenModal({
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     onSave({
       ...formData,
+      GenderId: Number(formData.GenderId),
       id: initialData?.id,
     });
   };
@@ -115,13 +120,13 @@ export default function ChildrenModal({
         </div>
         <div>
           <Input
-            id="ParentPhoneNumber"
-            label={t("ParentPhoneNumber")}
-            placeholder={t("ParentPhoneNumber")}
-            value={formData.ParentPhoneNumber}
+            id="PhoneNumber"
+            label={t("PhoneNumber")}
+            placeholder={t("PhoneNumber")}
+            value={formData.PhoneNumber}
             onChange={(e) => {
               const onlyNumbers = e.target.value.replace(/\D/g, "");
-              setFormData({ ...formData, ParentPhoneNumber: onlyNumbers });
+              setFormData({ ...formData, PhoneNumber: onlyNumbers });
             }}
           />
         </div>
@@ -168,17 +173,22 @@ export default function ChildrenModal({
                 id="male"
                 name="GenderId"
                 value="1"
-                checked={selectedValue === "1"}
+                checked={formData.GenderId === "1"}
                 label={t("Male")}
-                onChange={handleChange}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, GenderId: value }))
+                }
               />
+
               <Radio
                 id="female"
-                name="gender"
+                name="GenderId"
                 value="2"
-                checked={selectedValue === "2"}
+                checked={formData.GenderId === "2"}
                 label={t("Female")}
-                onChange={handleChange}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, GenderId: value }))
+                }
               />
             </div>
           </div>
@@ -188,7 +198,6 @@ export default function ChildrenModal({
               label={t("Age")}
               value={formData.DateOfBirth}
               type="date"
-              placeholder={t("EnterChildrenAge")}
               onChange={(e) =>
                 setFormData({ ...formData, DateOfBirth: e.target.value })
               }

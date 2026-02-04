@@ -5,6 +5,8 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { useLanguage } from "../../../locales/LanguageContext";
 import { AdminsModalProps } from "../../../utils/types/adminType";
+import Label from "../../../components/form/Label";
+import Radio from "../../../components/form/input/Radio";
 
 export default function AdminModal({
   open,
@@ -19,43 +21,65 @@ export default function AdminModal({
   const [formData, setFormData] = useState({
     Name: "",
     Email: "",
-    Phone: "",
+    PhoneNumber: "",
     UserName: "",
     ConfirmPassword: "",
     Password: "",
     Type: 2,
     roleName: "",
+    DateOfBirth: "",
+    GenderId: "",
   });
+
+  const formatDateForInput = (date: string) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
 
   useEffect(() => {
     if (initialData) {
+      const formattedDate = initialData.DateOfBirth
+        ? formatDateForInput(initialData.DateOfBirth)
+        : "";
+
       setFormData({
         Name: initialData.Name,
         Email: initialData.Email,
-        Phone: initialData.Phone ?? "",
+        PhoneNumber: initialData.PhoneNumber ?? "",
         UserName: initialData.UserName ?? "",
         Password: initialData.Password ?? "",
         ConfirmPassword: initialData.ConfirmPassword ?? "",
         roleName: initialData.roleName ?? "",
         Type: initialData.Type ?? 2,
+        DateOfBirth: formattedDate,
+        GenderId: String(initialData.GenderId),
       });
     } else {
       setFormData({
         Name: "",
         Email: "",
-        Phone: "",
+        PhoneNumber: "",
         UserName: "",
         Password: "",
         ConfirmPassword: "",
         roleName: "",
+        DateOfBirth: "",
         Type: 2,
+        GenderId: "",
       });
     }
   }, [initialData, open]);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+
+    onSave({
+      ...formData,
+      GenderId: Number(formData.GenderId),
+    });
   };
 
   return (
@@ -102,14 +126,14 @@ export default function AdminModal({
         </div>
         <div>
           <Input
-            id="Phone"
+            id="PhoneNumber"
             type="tel"
-            label={t("AdminPhone")}
-            placeholder={t("EnterAdminPhone")}
-            value={formData.Phone}
+            label={t("AdminPhoneNumber")}
+            placeholder={t("EnterAdminPhoneNumber")}
+            value={formData.PhoneNumber}
             onChange={(e) => {
               const onlyNumbers = e.target.value.replace(/\D/g, "");
-              setFormData({ ...formData, Phone: onlyNumbers });
+              setFormData({ ...formData, PhoneNumber: onlyNumbers });
             }}
           />
         </div>
@@ -166,6 +190,46 @@ export default function AdminModal({
             ))}
           </select>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>
+            <Label>{t("Gender")}</Label>
+            <div className="flex items-center gap-3">
+              <Radio
+                id="male"
+                name="GenderId"
+                value="1"
+                checked={formData.GenderId === "1"}
+                label={t("Male")}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, GenderId: value }))
+                }
+              />
+
+              <Radio
+                id="female"
+                name="GenderId"
+                value="2"
+                checked={formData.GenderId === "2"}
+                label={t("Female")}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, GenderId: value }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <Input
+              id="DateOfBirth"
+              label={t("Age")}
+              value={formData.DateOfBirth}
+              type="date"
+              onChange={(e) =>
+                setFormData({ ...formData, DateOfBirth: e.target.value })
+              }
+            />
+          </div>
+        </div>
+
         <Button type="submit" className="mt-2" disabled={loading}>
           {loading
             ? initialData

@@ -54,7 +54,7 @@ export default function ChildrenInfo() {
         { label: t("Name"), value: childData.Name || "__" },
         {
           label: t("Phone"),
-          value: childData.ParentPhoneNumber || childData.Phone || "__",
+          value: childData.PhoneNumber || childData.PhoneNumber || "__",
         },
         { label: t("Email"), value: childData.Email || "__" },
         {

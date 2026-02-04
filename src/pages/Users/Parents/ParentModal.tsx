@@ -16,12 +16,6 @@ export default function ParentModal({
   initialData,
 }: ParentsModalProps) {
   const { t } = useLanguage();
-  const [selectedValue, setSelectedValue] = useState<string>("");
-
-  const handleChange = (value: string) => {
-    setSelectedValue(value);
-    setFormData({ ...formData, GenderId: value });
-  };
 
   const [formData, setFormData] = useState({
     Name: "",
@@ -29,7 +23,7 @@ export default function ParentModal({
     Email: "",
     Password: "",
     ConfirmPassword: "",
-    ParentPhoneNumber: "",
+    PhoneNumber: "",
     GenderId: "",
     DateOfBirth: "",
   });
@@ -47,16 +41,14 @@ export default function ParentModal({
       const formattedDate = initialData.DateOfBirth
         ? formatDateForInput(initialData.DateOfBirth)
         : "";
-
-      setSelectedValue(initialData.GenderId || "");
       setFormData({
         Name: initialData.Name,
         UserName: initialData.UserName,
         Email: initialData.Email,
         Password: initialData.Password,
         ConfirmPassword: initialData.ConfirmPassword,
-        ParentPhoneNumber: initialData.ParentPhoneNumber ?? "",
-        GenderId: initialData.GenderId,
+        PhoneNumber: initialData.PhoneNumber ?? "",
+        GenderId: String(initialData.GenderId),
         DateOfBirth: formattedDate,
       });
     } else {
@@ -66,7 +58,7 @@ export default function ParentModal({
         Email: "",
         Password: "",
         ConfirmPassword: "",
-        ParentPhoneNumber: "",
+        PhoneNumber: "",
         GenderId: "",
         DateOfBirth: "",
       });
@@ -125,13 +117,13 @@ export default function ParentModal({
         </div>
         <div>
           <Input
-            id="ParentPhoneNumber"
-            label={t("ParentPhoneNumber")}
-            placeholder={t("ParentPhoneNumber")}
-            value={formData.ParentPhoneNumber}
+            id="PhoneNumber"
+            label={t("PhoneNumber")}
+            placeholder={t("PhoneNumber")}
+            value={formData.PhoneNumber}
             onChange={(e) => {
               const onlyNumbers = e.target.value.replace(/\D/g, "");
-              setFormData({ ...formData, ParentPhoneNumber: onlyNumbers });
+              setFormData({ ...formData, PhoneNumber: onlyNumbers });
             }}
           />
         </div>
@@ -177,17 +169,22 @@ export default function ParentModal({
                 id="male"
                 name="GenderId"
                 value="1"
-                checked={selectedValue === "1"}
+                checked={formData.GenderId === "1"}
                 label={t("Male")}
-                onChange={handleChange}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, GenderId: value }))
+                }
               />
+
               <Radio
                 id="female"
                 name="GenderId"
                 value="2"
-                checked={selectedValue === "2"}
+                checked={formData.GenderId === "2"}
                 label={t("Female")}
-                onChange={handleChange}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, GenderId: value }))
+                }
               />
             </div>
           </div>

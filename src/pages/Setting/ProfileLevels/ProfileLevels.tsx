@@ -24,11 +24,15 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+import Pagination from "../../../components/common/Pagination";
 
 export default function ProfileLevels() {
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageSize, setPageSize] = useState(12);
   const [ProfileLevels, setProfileLevels] = useState<LevelList[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<LevelList | null>(null);
@@ -52,7 +56,10 @@ export default function ProfileLevels() {
       }
       try {
         setLoading(true);
-        const data: LevelApiResponse = await allLevelData();
+        const data: LevelApiResponse = await allLevelData({
+          page: currentPage,
+          pageSize: pageSize,
+        });
 
         setProfileLevels(
           data.Data.map((item) => ({
@@ -127,7 +134,10 @@ export default function ProfileLevels() {
         res = await createLevel(data);
       }
 
-      const listRes: LevelApiResponse = await allLevelData();
+      const listRes: LevelApiResponse = await allLevelData({
+        page: currentPage,
+        pageSize: pageSize,
+      });
 
       setProfileLevels(
         listRes.Data.map((item) => ({
@@ -226,11 +236,11 @@ export default function ProfileLevels() {
   return (
     <div>
       <PageMeta title="Green minds Admin | Profile Levels" description={``} />
-      <div className="md:px-10">
-        <h2 className="font-medium text-2xl p-4 text-[#000000]">
-          {t("levelNameLabel")}
-        </h2>
-        <div className="flex justify-end my-4">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 min-h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
+        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            {t("levelNameLabel")}
+          </h2>
           {canCreate && (
             <AddButton startIcon={<Plus />} onClick={() => setOpenModal(true)}>
               {t("add_level")}
@@ -240,7 +250,18 @@ export default function ProfileLevels() {
         {loading ? (
           <TableLoading columnCount={5} />
         ) : (
-          <BasicTableOne data={ProfileLevels} columns={columns} />
+          <div className="flex flex-col gap-2 min-h-[calc(100vh-200px)] px-5">
+            <BasicTableOne data={ProfileLevels} columns={columns} />
+            <div className="mt-auto">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
+              />
+            </div>
+          </div>
         )}
       </div>
 

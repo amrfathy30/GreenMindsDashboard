@@ -294,7 +294,7 @@ export default function Setting() {
           >
             <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
               <BoxIcon className="w-5 h-5 " />
-              <span>{t("profileLevels")}</span>
+              <span>{t("levelNameLabel")}</span>
             </div>
           </Link>
         </div>
