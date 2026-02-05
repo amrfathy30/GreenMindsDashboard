@@ -62,7 +62,7 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
           <Input
             key={perm.Id}
             type="checkbox"
-            label={perm.Key}
+            label={perm.DisplayName}
             checked={selectedPermissions.includes(perm.Id)}
             onChange={() => togglePermission(perm.Id)}
           />

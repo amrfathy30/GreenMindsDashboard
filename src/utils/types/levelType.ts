@@ -36,16 +36,18 @@ export interface ProfileLevelsModalProps {
 export interface LevelApiResponse {
   StatusCode: number;
   Message: string;
-  PageSize: number;
-  Total: number;
   Data: {
-    Id: number;
-    NameAr: string;
-    NameEn: string;
-    MaxPoints: string;
-    MinPoints: string;
-    LevelNumber: string;
-  }[];
+    PageSize: number;
+    Total: number;
+    Items: {
+      Id: number;
+      NameAr: string;
+      NameEn: string;
+      MaxPoints: string;
+      MinPoints: string;
+      LevelNumber: string;
+    }[];
+  };
 }
 
 export interface LevelModalProps {

@@ -32,8 +32,10 @@ export interface AddRoleModalProps {
 
 export interface AdminRolePermissionsProps {
   permissions: {
-    Key: string | undefined; Id: number; DisplayName: string 
-}[];
+    Key: string | undefined;
+    Id: number;
+    DisplayName: string;
+  }[];
   assignedPermissions: number[];
   loading: boolean;
   pageLoading?: boolean;
