@@ -1,4 +1,4 @@
-import { ParentList, ParentParams } from "../../utils/types/parentType";
+import { ParentFormData, ParentParams } from "../../utils/types/parentType";
 import axiosInstance from "../axiosInstance";
 
 export const allParentData = async (params?: ParentParams) => {
@@ -6,12 +6,17 @@ export const allParentData = async (params?: ParentParams) => {
   return response.data;
 };
 
-export const createParent = async (data: ParentList) => {
+export const createParent = async (data: ParentFormData) => {
   const response = await axiosInstance.post("/Parents", data);
   return response.data;
 };
 
-export const updateParent = async (data: ParentList, id: number) => {
+export const createUserParent = async (data: ParentFormData) => {
+  const response = await axiosInstance.post("/Account/CreateUserWithType", data);
+  return response.data;
+};
+
+export const updateParent = async (data: ParentFormData, id: number) => {
   const response = await axiosInstance.put(`/Parents/${id}`, data);
   return response.data;
 };

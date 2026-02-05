@@ -10,6 +10,7 @@ export interface AdminList {
   RolesNames?: string[];
   DateOfBirth?: string;
   GenderId?: number;
+  Type?: number;
 }
 
 export interface adminRoles {

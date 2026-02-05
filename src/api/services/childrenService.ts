@@ -2,6 +2,7 @@ import {
   ApiResponse,
   ChildApiResponse,
   ChildGame,
+  ChildPointsResponse,
   Children,
   ChildrenParams,
   ChildVideo,
@@ -41,6 +42,15 @@ export const getChildrenById = async (
   id: number,
 ): Promise<ChildApiResponse> => {
   const response = await axiosInstance.get(`/Children/${id}`);
+  return response.data;
+};
+
+export const getPointsById = async (
+  childId: number,
+): Promise<ChildPointsResponse> => {
+  const response = await axiosInstance.get(
+    `/Children/points/by-id/${childId}`,
+  );
   return response.data;
 };
 

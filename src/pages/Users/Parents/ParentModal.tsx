@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useEffect, useState } from "react";
 import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
 import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { useLanguage } from "../../../locales/LanguageContext";
-import { ParentsModalProps } from "../../../utils/types/parentType";
-import Radio from "../../../components/form/input/Radio";
-import Label from "../../../components/form/Label";
+import {
+  ParentFormData,
+  ParentsModalProps,
+} from "../../../utils/types/parentType";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 export default function ParentModal({
   open,
@@ -16,6 +20,7 @@ export default function ParentModal({
   initialData,
 }: ParentsModalProps) {
   const { t } = useLanguage();
+  const lang = localStorage.getItem("GM-language");
 
   const [formData, setFormData] = useState({
     Name: "",
@@ -24,8 +29,9 @@ export default function ParentModal({
     Password: "",
     ConfirmPassword: "",
     PhoneNumber: "",
-    GenderId: "",
-    DateOfBirth: "",
+    GenderId: 1,
+    DateOfBirth: "1979-03-04",
+    Type: 0,
   });
 
   const formatDateForInput = (date: string) => {
@@ -42,14 +48,15 @@ export default function ParentModal({
         ? formatDateForInput(initialData.DateOfBirth)
         : "";
       setFormData({
-        Name: initialData.Name,
-        UserName: initialData.UserName,
-        Email: initialData.Email,
-        Password: initialData.Password,
-        ConfirmPassword: initialData.ConfirmPassword,
+        Name: initialData.Name ?? "",
+        UserName: initialData.UserName ?? "",
+        Email: initialData.Email ?? "",
+        Password: "",
+        ConfirmPassword: "",
         PhoneNumber: initialData.PhoneNumber ?? "",
-        GenderId: String(initialData.GenderId),
-        DateOfBirth: formattedDate,
+        GenderId: initialData.GenderId ?? 1,
+        DateOfBirth: formattedDate || "1979-03-04",
+        Type: initialData.Type ?? 0,
       });
     } else {
       setFormData({
@@ -59,15 +66,32 @@ export default function ParentModal({
         Password: "",
         ConfirmPassword: "",
         PhoneNumber: "",
-        GenderId: "",
-        DateOfBirth: "",
+        GenderId: 1,
+        DateOfBirth: "1979-03-04",
+        Type: 0,
       });
     }
   }, [initialData, open]);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+
+    const payload: ParentFormData = {
+      Name: formData.Name,
+      UserName: formData.UserName,
+      Email: formData.Email,
+      PhoneNumber: formData.PhoneNumber,
+      GenderId: formData.GenderId,
+      DateOfBirth: formData.DateOfBirth,
+      Type: formData.Type,
+    };
+
+    if (formData.Password.trim()) {
+      payload.Password = formData.Password;
+      payload.ConfirmPassword = formData.ConfirmPassword;
+    }
+
+    onSave(payload);
   };
 
   return (
@@ -116,15 +140,17 @@ export default function ParentModal({
           />
         </div>
         <div>
-          <Input
-            id="PhoneNumber"
-            label={t("PhoneNumber")}
-            placeholder={t("PhoneNumber")}
+          <label className="block text-sm font-medium mb-1">
+            {t("PhoneNumber")}
+          </label>
+
+          <PhoneInput
+            defaultCountry="eg"
             value={formData.PhoneNumber}
-            onChange={(e) => {
-              const onlyNumbers = e.target.value.replace(/\D/g, "");
-              setFormData({ ...formData, PhoneNumber: onlyNumbers });
-            }}
+            onChange={(phone) =>
+              setFormData({ ...formData, PhoneNumber: phone })
+            }
+            inputClassName={`w-full !h-[42px] ${lang === "en" ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg" : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none"} `}
           />
         </div>
         {/* {!initialData && (
@@ -161,7 +187,7 @@ export default function ParentModal({
         <p className="text-xs text-gray-600">{t("PasswordContain")}</p>
         {/* </>
         )} */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
             <Label>{t("Gender")}</Label>
             <div className="flex items-center gap-3">
@@ -199,7 +225,7 @@ export default function ParentModal({
               }
             />
           </div>
-        </div>
+        </div> */}
 
         <Button type="submit" className="mt-2" disabled={loading}>
           {loading

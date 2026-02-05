@@ -9,10 +9,14 @@ import { Link } from "react-router";
 import Pagination from "../../../components/common/Pagination";
 import ParentModal from "./ParentModal";
 import { useLanguage } from "../../../locales/LanguageContext";
-import { ParentApiResponse, ParentList } from "../../../utils/types/parentType";
+import {
+  ParentApiResponse,
+  ParentFormData,
+  ParentList,
+} from "../../../utils/types/parentType";
 import {
   allParentData,
-  createParent,
+  createUserParent,
   deleteParent,
   updateParent,
 } from "../../../api/services/parentService";
@@ -23,6 +27,7 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+import { createUser } from "../../../api/services/adminService";
 
 export default function ParentsList({
   openAddModal,
@@ -124,14 +129,9 @@ export default function ParentsList({
     }
   };
 
-  const handleSave = async (data: ParentList) => {
+  const handleSave = async (data: ParentFormData) => {
     try {
-      if (
-        !data.UserName?.trim() ||
-        !data.Name?.trim() ||
-        data.Email === "" ||
-        data.DateOfBirth === ""
-      ) {
+      if (!data.UserName?.trim() || !data.Name?.trim() || data.Email === "") {
         toast.error(t("all_fields_required"));
         return;
       }
@@ -139,10 +139,10 @@ export default function ParentsList({
       setModalLoading(true);
 
       let res;
-      if (editData) {
-        res = await updateParent(data, editData.Id!);
+      if (editData?.id) {
+        res = await updateParent(data, editData.id);
       } else {
-        res = await createParent({ ...data });
+        res = await createUserParent(data);
       }
 
       const listRes: ParentApiResponse = await allParentData({
@@ -160,8 +160,6 @@ export default function ParentsList({
           ConfirmPassword: "",
           EmailVerified: item.EmailVerified,
           PhoneNumber: item.PhoneNumber,
-          GenderId: item.GenderId,
-          DateOfBirth: item.DateOfBirth,
         })),
       );
 
@@ -177,37 +175,12 @@ export default function ParentsList({
     }
   };
 
-  const calculateAge = (dateOfBirth: string) => {
-    if (!dateOfBirth) return "__";
-
-    const birthDate = new Date(dateOfBirth);
-    const today = new Date();
-
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  };
-
-  const getGenderLabel = (genderId: string | number, t: any) => {
-    if (String(genderId) === "1") return t("Male");
-    if (String(genderId) === "2") return t("Female");
-    return "__";
-  };
-
   const columns = [
     {
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">
+        <span className="text-[#757575] dark:text-white block max-w-[100px] truncate">
           {row.Name || "__"}
         </span>
       ),
@@ -216,7 +189,7 @@ export default function ParentsList({
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">
+        <span className="text-[#757575] dark:text-white block max-w-[100px] truncate">
           {row.UserName || "__"}
         </span>
       ),
@@ -246,24 +219,6 @@ export default function ParentsList({
         </span>
       ),
     },
-    {
-      key: "Gender",
-      label: t("Gender"),
-      render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">
-          {getGenderLabel(row.GenderId, t)}
-        </span>
-      ),
-    },
-    {
-      key: "Age",
-      label: t("Age"),
-      render: (row: any) => (
-        <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
-          {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
-        </span>
-      ),
-    },
 
     {
       key: "actions",
@@ -274,15 +229,16 @@ export default function ParentsList({
             <button
               onClick={() => {
                 setEditData({
-                  Id: row.id,
-                  Name: row.Name,
-                  UserName: row.UserName,
-                  Email: row.Email,
+                  id: row.id,
+                  Name: row.Name ?? "",
+                  Email: row.Email ?? "",
+                  PhoneNumber: row.PhoneNumber ?? "",
+                  UserName: row.UserName ?? "",
                   Password: "",
                   ConfirmPassword: "",
-                  PhoneNumber: row.PhoneNumber,
-                  GenderId: row.GenderId,
-                  DateOfBirth: row.DateOfBirth,
+                  GenderId: row.GenderId ?? 1,
+                  DateOfBirth: row.DateOfBirth ?? "1979-03-04",
+                  Type: 2,
                 });
                 setOpenModal(true);
               }}
@@ -379,6 +335,7 @@ export default function ParentsList({
       />
 
       <ParentModal
+        key={editData?.id ?? "create"}
         open={openModal}
         onClose={() => {
           setOpenModal(false);

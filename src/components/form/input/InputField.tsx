@@ -71,7 +71,7 @@ const Input: FC<InputProps> = ({
     return (
       <label
         htmlFor={id}
-        className="flex items-center gap-2 text-sm font-medium text-black dark:text-gray-300 cursor-pointer"
+        className={`flex items-center gap-2 text-sm font-medium overflow-hidden text-black dark:text-gray-300 cursor-pointer ${className}`}
       >
         <input
           type="checkbox"
@@ -82,7 +82,7 @@ const Input: FC<InputProps> = ({
           disabled={disabled}
           className={`h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 ${className}`}
         />
-        <span>
+        <span className="block truncate text-xs">
           {label}
           {required && <span className="text-error-500">*</span>}
         </span>
