@@ -317,7 +317,11 @@ export default function AdminsList({
                   Email: row.Email,
                   PhoneNumber: row.PhoneNumber,
                   Password: row.Password,
+                  ConfirmPassword: row.ConfirmPassword,
                   UserName: row.UserName,
+                  GenderId: row.GenderId,
+                  roleName: row.RolesNames?.[0] || "",
+                  DateOfBirth: row.DateOfBirth,
                 });
                 setOpenModal(true);
               }}

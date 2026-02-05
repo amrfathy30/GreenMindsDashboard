@@ -45,7 +45,7 @@ export default function ProfileLevels() {
 
   const canView = hasPermission("Levels_GetAll");
   const canCreate = hasPermission("Levels_Create");
-  const canEdit = hasPermission("Levels_Create");
+  const canEdit = hasPermission("Levels_Update");
   const canDelete = hasPermission("Levels_Delete");
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function ProfileLevels() {
         });
 
         setProfileLevels(
-          data.Data.map((item) => ({
+          data.Data.Items.map((item) => ({
             id: item.Id,
             NameEn: item.NameEn,
             NameAr: item.NameAr,
@@ -71,7 +71,7 @@ export default function ProfileLevels() {
             LevelNumber: item.LevelNumber,
           })),
         );
-        setTotalPages(Math.ceil(data.Total / data.PageSize));
+        setTotalPages(Math.ceil(data.Data.Total / data.Data.PageSize));
       } catch (error) {
         toast.error(t("failed_load_level"));
       } finally {
@@ -80,7 +80,7 @@ export default function ProfileLevels() {
     };
 
     fetchLevels();
-  }, [t]);
+  }, [canView, currentPage, pageSize, t]);
 
   const handleDelete = (id: number) => {
     setSelectedDeleteId(id);
@@ -141,7 +141,7 @@ export default function ProfileLevels() {
       });
 
       setProfileLevels(
-        listRes.Data.map((item) => ({
+        listRes.Data.Items.map((item) => ({
           id: item.Id,
           MaxPoints: item.MaxPoints,
           MinPoints: item.MinPoints,
