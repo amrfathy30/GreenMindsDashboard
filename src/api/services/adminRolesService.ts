@@ -58,10 +58,19 @@ export const updateRole = async (roleName: string, newName: string) => {
   return response.data;
 };
 
-export const AddAdminRole = async (roleName: string, userId: string) => {
+// export const AddAdminRole = async (roleName: string, userId: string) => {
+//   const response = await axiosInstance.post(
+//     `/AdminRoles/users/${userId}/roles/${roleName}`,
+//   );
+//   return response.data;
+// };
+
+export const AddAdminRole = async (userId: string, roles: string[]) => {
   const response = await axiosInstance.post(
-    `/AdminRoles/users/${userId}/roles/${roleName}`,
+    `/AdminRoles/users/${userId}/roles/sync`,
+    roles,
   );
+
   return response.data;
 };
 

@@ -228,6 +228,12 @@ const translations = {
     Thumbnail: "Thumbnail",
     title: "Title",
     points: "Points",
+    Progress: "Progress",
+    DailyReward: "Daily Reward",
+    RewardCollectedToday: "Reward collected today",
+    NextReward: "Next reward",
+    Points: "points",
+    ConsecutiveDays: "Consecutive days",
     At: "At",
     PointsRange: "Points Range",
     CurrentLevel: "Current Level",
@@ -400,7 +406,12 @@ const translations = {
     GamesNotAvailable: "الألعاب غير متاحة بعد",
     VideosNotAvailable: "الفيديوهات غير متاحة بعد",
     LevelNumber: "رقم المستوى",
-
+    Progress: "التقدم",
+    DailyReward: "المكافأة اليومية",
+    RewardCollectedToday: "تم استلام المكافأة اليوم",
+    NextReward: "المكافأة القادمة",
+    Points: "نقطة",
+    ConsecutiveDays: "الأيام المتتالية",
     // age group
 
     age_groups_name: "اسم الفئات العمرية",

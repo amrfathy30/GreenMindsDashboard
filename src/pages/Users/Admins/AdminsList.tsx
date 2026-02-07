@@ -166,14 +166,14 @@ export default function AdminsList({
         res = await updateAdmin(editData.id, data);
 
         if (data.roleName && data.roleName !== editData.roleName) {
-          await AddAdminRole(data.roleName, String(editData.id));
+          await AddAdminRole(String(editData.id), [data.roleName]);
         }
       } else {
         res = await createUser(data);
         createdAdminId = res?.Data?.Id;
 
         if (createdAdminId && data.roleName) {
-          await AddAdminRole(data.roleName, String(createdAdminId));
+          await AddAdminRole(String(createdAdminId), [data.roleName]);
         }
       }
 

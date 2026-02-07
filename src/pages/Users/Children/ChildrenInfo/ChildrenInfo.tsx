@@ -173,7 +173,6 @@ export default function ChildrenInfo() {
 
       {pointsData && (
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Points */}
           <div className="rounded-xl border shadow p-5 dark:border-gray-700">
             <h3 className="text-sm text-gray-500 dark:text-gray-400">
               {t("TotalPoints")}
@@ -209,7 +208,7 @@ export default function ChildrenInfo() {
               {pointsData.NextLevel.Name}
             </p>
             <p className="text-sm text-gray-500">
-              {t("At")} {pointsData.NextLevel.MinPoints} {t("points")}
+              #{pointsData.NextLevel.LevelNumber}
             </p>
             <p className="text-xs text-gray-400 mt-1">
               {t("PointsRange")}: {pointsData.NextLevel.MinPoints} -{" "}
@@ -219,47 +218,39 @@ export default function ChildrenInfo() {
         </div>
       )}
 
-      {/* {pointsData && (
-  <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
-    <div className="flex justify-between mb-2">
-      <span className="text-sm font-medium">
-        {t("Progress")}
-      </span>
-      <span className="text-sm font-medium">
-        {pointsData.Progress}%
-      </span>
-    </div>
+      {pointsData && (
+        <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
+          <div className="flex justify-between mb-2">
+            <span className="text-sm font-medium">{t("Progress")}</span>
+            <span className="text-sm font-medium">{pointsData.Progress}%</span>
+          </div>
 
-    <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700">
-      <div
-        className="bg-green-600 h-3 rounded-full transition-all duration-500"
-        style={{ width: `${pointsData.Progress}%` }}
-      />
-    </div>
-  </div>
-)}
+          <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700">
+            <div
+              className="bg-green-600 h-3 rounded-full transition-all duration-500"
+              style={{ width: `${pointsData.Progress}%` }}
+            />
+          </div>
+        </div>
+      )}
 
-{pointsData && (
-  <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
-    <h3 className="font-semibold mb-2">
-      {t("DailyReward")}
-    </h3>
+      {pointsData && (
+        <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
+          <h3 className="font-semibold mb-2">{t("DailyReward")}</h3>
 
-    {pointsData.IsAwardedToday ? (
-      <p className="text-green-600">
-        ✔ {t("RewardCollectedToday")}
-      </p>
-    ) : (
-      <p className="text-orange-500">
-        {t("NextReward")}: +{pointsData.NextDayAwardPoints} {t("Points")}
-      </p>
-    )}
+          {pointsData.IsAwardedToday ? (
+            <p className="text-green-600">✔ {t("RewardCollectedToday")}</p>
+          ) : (
+            <p className="text-orange-500">
+              {t("NextReward")}: +{pointsData.NextDayAwardPoints} {t("points")}
+            </p>
+          )}
 
-    <p className="text-sm text-gray-500 mt-1">
-      {t("ConsecutiveDays")}: {pointsData.CurrentConsecutiveDays}
-    </p>
-  </div>
-)} */}
+          <p className="text-sm text-gray-500 mt-1">
+            {t("ConsecutiveDays")}: {pointsData.CurrentConsecutiveDays}
+          </p>
+        </div>
+      )}
 
       <div className="mt-8">
         <Taps id={childId} />
