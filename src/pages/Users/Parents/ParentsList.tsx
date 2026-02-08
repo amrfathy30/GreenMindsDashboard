@@ -27,7 +27,7 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
-import { createUser } from "../../../api/services/adminService";
+
 
 export default function ParentsList({
   openAddModal,
