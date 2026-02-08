@@ -107,29 +107,32 @@ export default function PermissionsList() {
         ) : permissions.length === 0 ? (
           <p className="text-gray-600">{t("no_permissions_found")}</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-8 px-6">
-            {permissions.map((perm) => (
-              <div
-                key={perm.Id}
-                className="flex items-center justify-between border p-3 bg-white rounded-xl"
-              >
-                <div className="flex flex-col w-[90%]">
-                  <span className="line-clamp-1 text-sm truncate">
-                    {perm.DisplayName}
-                  </span>
-                  <span className="line-clamp-1 text-xs text-green-700">
-                    {perm.Key}
-                  </span>
-                </div>
-
-                {canEdit && (
-                  <button onClick={() => openEditModal(perm)}>
-                    <EditIcon className="w-6 h-6" />
-                  </button>
-                )}
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-8 px-6">
+          {permissions.map((perm) => (
+            <div
+              key={perm.Id}
+              className="flex items-center justify-between border border-gray-200 dark:border-gray-700 p-3 bg-white dark:bg-[#1e1e1e] rounded-xl shadow-sm transition-all duration-200 hover:shadow-md"
+            >
+              <div className="flex flex-col w-[85%]">
+                <span className="line-clamp-1 text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  {perm.DisplayName}
+                </span>
+                <span className="line-clamp-1 text-[11px] text-green-700 dark:text-green-500/80 font-mono italic">
+                  {perm.Key}
+                </span>
               </div>
-            ))}
-          </div>
+
+              {canEdit && (
+                <button 
+                  onClick={() => openEditModal(perm)}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                >
+                  <EditIcon className="w-5 h-5 text-gray-500 dark:text-gray-400 dark:invert-0" />
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
         )}
       </div>
 
