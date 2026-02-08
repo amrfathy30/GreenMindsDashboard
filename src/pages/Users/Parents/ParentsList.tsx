@@ -205,7 +205,7 @@ export default function ParentsList({
     },
     {
       key: "Status",
-       label: <span className="whitespace-nowrap">{t("EmailStatus")}</span>, 
+       label: <span className="whitespace-nowrap"></span>, 
       render: (row: any) => (
         <span
           className={`text-sm font-medium whitespace-nowrap ${

@@ -105,25 +105,27 @@ export default function AdminModal({
         onSubmit={onSubmit}
         className="flex flex-col gap-3 p-6 my-6 border rounded-2xl"
       >
-        <div>
-          <Input
-            id="Name"
-            label={t("AdminName")}
-            placeholder={t("EnterNameHere")}
-            value={formData.Name}
-            onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
-          />
-        </div>
-        <div>
-          <Input
-            id="UserName"
-            label={t("AdminUserName")}
-            placeholder={t("AdminUserName")}
-            value={formData.UserName}
-            onChange={(e) =>
-              setFormData({ ...formData, UserName: e.target.value })
-            }
-          />
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <Input
+              id="Name"
+              label={t("AdminName")}
+              placeholder={t("EnterNameHere")}
+              value={formData.Name}
+              onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+            />
+          </div>
+          <div>
+            <Input
+              id="UserName"
+              label={t("AdminUserName")}
+              placeholder={t("AdminUserName")}
+              value={formData.UserName}
+              onChange={(e) =>
+                setFormData({ ...formData, UserName: e.target.value })
+              }
+            />
+          </div>
         </div>
         <div>
           <Input
@@ -136,7 +138,7 @@ export default function AdminModal({
             }
           />
         </div>
-<div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           <label className="block text-sm font-medium mb-1 dark:text-white">
             {t("PhoneNumber")}
           </label>
@@ -151,24 +153,22 @@ export default function AdminModal({
               '--react-international-phone-text-color': 'inherit',
             } as React.CSSProperties}
 
-            inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
-              lang === "en" 
-                ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0" 
+            inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${lang === "en"
+                ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
                 : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
-            }`}
-            
+              }`}
+
             countrySelectorStyleProps={{
-              buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
-                lang === "en" 
-                  ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none" 
+              buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${lang === "en"
+                  ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
                   : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
-              }`,
+                }`,
             }}
           />
         </div>
         {/* {!initialData && (
           <> */}
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <Input
             id="Password"
             type="password"
@@ -187,7 +187,7 @@ export default function AdminModal({
         <p className="text-xs text-gray-600 dark:text-gray-400">{t("PasswordContain")}</p>
         {/* </>
         )} */}
-<div>
+        <div>
           <label className="block text-sm font-medium mb-1 dark:text-white">{t("UserType")}</label>
           <select
             id="roleName"

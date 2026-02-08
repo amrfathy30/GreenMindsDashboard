@@ -383,7 +383,7 @@ const translations = {
     current_role: "Current Role",
     edit_role_name: "Edit role name",
     delete_role: "Delete role",
-    save_new_permissions: "Save new permissions",
+    save_new_permissions: "Save Role permissions",
     EmailStatus: "Email Status",
   },
   ar: {

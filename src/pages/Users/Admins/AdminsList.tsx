@@ -336,7 +336,7 @@ export default function AdminsList({
                 setOpenModal(true);
               }}
             >
-              <EditIcon className="w-6 h-6 invert-0 dark:invert" />
+              <EditIcon className="w-5 h-5 invert-0 dark:invert" />
             </button>
           )}
           {canDeleteAdmin && (
@@ -347,7 +347,7 @@ export default function AdminsList({
               }}
               aria-label={t("common.delete")}
             >
-              <RemoveIcon className="w-6 h-6 invert-0 dark:invert" />
+              <RemoveIcon className="w-5 h-5  invert-0 dark:invert" />
             </button>
           )}
         </div>

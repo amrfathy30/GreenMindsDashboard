@@ -36,7 +36,6 @@ export interface AdminRolePermissionsProps {
     Id: number;
     DisplayName: string;
   }[];
-  assignedPermissions: number[];
   loading: boolean;
   pageLoading?: boolean;
   t: (key: string) => string;

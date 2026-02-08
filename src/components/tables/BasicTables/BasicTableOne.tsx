@@ -8,11 +8,7 @@ import {
   TableRow,
 } from "../../ui/table";
 
-interface Column {
-  key: string;
-  label: string;
-  render?: (item: any) => React.ReactNode;
-}
+
 
 interface ExpandableConfig {
   canExpand: (row: any) => boolean;
@@ -21,7 +17,7 @@ interface ExpandableConfig {
 }
 
 interface GenericTableProps {
-  columns: Column[];
+  columns: any[];
   data: any[];
   expandable?: ExpandableConfig;
 }

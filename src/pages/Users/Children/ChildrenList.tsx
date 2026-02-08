@@ -258,17 +258,22 @@ export default function ChildrenList({
       render: (row: any) => (
         <div className="flex items-center gap-2">
           <span>{row.Email || "__"}</span>
-          <span
-            className={`text-sm ${
-              row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
-            }`}
-          >
-            {row.EmailVerified ? t("Verified") : t("NotVerified")}
-          </span>
         </div>
       ),
     },
-
+    {
+      key: "Status",
+       label: <span className="whitespace-nowrap"></span>, 
+      render: (row: any) => (
+        <span
+          className={`text-sm font-medium whitespace-nowrap ${
+            row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
+          }`}
+        >
+          {row.EmailVerified ? t("Verified") : t("NotVerified")}
+        </span>
+      ),
+    },
     {
       key: "PhoneNumber",
       label: t("ParentPhone"),
@@ -305,7 +310,7 @@ export default function ChildrenList({
               onClick={(e) => e.stopPropagation()}
             >
               <button>
-                <EyeIcon className="w-6 h-6 text-black/60 dark:text-[#999999]" />
+                <EyeIcon className="w-5 h-5 text-black/60 dark:text-[#999999]" />
               </button>
             </Link>
           )}
@@ -326,7 +331,7 @@ export default function ChildrenList({
                 setOpenModal(true);
               }}
             >
-              <EditIcon className="w-6 h-6 invert-0 dark:invert" />
+              <EditIcon className="w-5 h-5  invert-0 dark:invert" />
             </button>
           )}
           {canDelete && (
@@ -336,7 +341,7 @@ export default function ChildrenList({
                 handleDelete(row.id);
               }}
             >
-              <RemoveIcon className="w-6 h-6 invert-0 dark:invert" />
+              <RemoveIcon className="w-5 h-5  invert-0 dark:invert" />
             </button>
           )}
         </div>

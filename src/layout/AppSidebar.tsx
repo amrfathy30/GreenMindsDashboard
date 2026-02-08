@@ -262,11 +262,11 @@ const SearchSection = ({
           }}
           onFocus={() => setIsOpen(true)}
           placeholder={showFullSearch ? "Search ..." : ""}
-          className={`transition-all w-full duration-300 h-11 rounded-lg border text-sm
+          className={`transition-all w-full duration-300 h-11 rounded-lg border text-sm border-gray-200 dark:border-gray-800
             ${
               showFullSearch
-                ? "w-full pl-12 pr-4 border-gray-200 bg-white text-gray-900 text-black focus:outline-none focus:ring-2 focus:ring-green-500"
-                : "w-10 px-2 border-gray-200 bg-transparent text-gray-900 dark:text-white"
+                ? "w-full pl-12 pr-4  bg-transparent text-gray-900 dark:text-white text-black focus:outline-none focus:ring-2 focus:ring-transparent"
+                : "w-10 px-2 bg-transparent text-gray-900 dark:text-white"
             }`}
         />
       </form>

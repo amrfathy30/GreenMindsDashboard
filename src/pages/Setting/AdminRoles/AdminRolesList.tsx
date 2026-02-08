@@ -2,11 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import AddButton from "../../../components/ui/button/AddButton";
-import { Plus, Edit2, Trash2, Save } from "lucide-react"; 
+import { Plus, Edit2, Trash2, Save } from "lucide-react";
 import { toast } from "sonner";
 import PageMeta from "../../../components/common/PageMeta";
-import Button from "../../../components/ui/button/Button";
-
 import { AgeApiResponse } from "../../../utils/types/ageType";
 import { useLanguage } from "../../../locales/LanguageContext";
 import {
@@ -33,7 +31,7 @@ export default function AdminRoles() {
   const { t } = useLanguage();
   const [adminRoles, setAdminRoles] = useState<any[]>([]);
   const [allPermissions, setAllPermissions] = useState<any[]>([]);
-  const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]); 
+  const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
   const [permissionsLoading, setPermissionsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -182,16 +180,15 @@ export default function AdminRoles() {
 
         <div className="flex flex-col md:flex-row gap-6 px-5 min-h-[500px]">
           <div className={`flex flex-col gap-2 min-w-[200px] py-2 ${lang === "ar" ? "border-l border-gray-300 dark:border-gray-700/50 pl-6" : "border-r border-gray-300 dark:border-gray-700/40 pr-6"}`}>            {adminRoles.map((role, index) => (
-              <button
-                key={role.Id}
-                onClick={() => setActiveTab(index)}
-                className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 ${
-                  activeTab === index ? "bg-secondary text-white shadow-md" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700"
+            <button
+              key={role.Id}
+              onClick={() => setActiveTab(index)}
+              className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === index ? "bg-secondary text-white shadow-md" : "text-gray-500 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
-              >
-                {role?.Name}
-              </button>
-            ))}
+            >
+              {role?.Name}
+            </button>
+          ))}
           </div>
 
           <div className="flex-1 flex flex-col bg-white dark:bg-[#1e1e1e] rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -206,36 +203,36 @@ export default function AdminRoles() {
                       {adminRoles[activeTab].Name}
                     </h3>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
                     {canUpdateRoleAndPermissions && (
-                      <button 
+                      <button
                         onClick={() => { setRoleToEdit(adminRoles[activeTab]); setEditRoleModalOpen(true); }}
                         className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-blue-500 text-blue-500 transition-all duration-300 hover:bg-blue-500 hover:text-white group"
                       >
-                        <Edit2 size={14} className="group-hover:scale-110 transition-transform" /> 
+                        <Edit2 size={14} className="group-hover:scale-110 transition-transform" />
                         {t("edit_role_name")}
                       </button>
                     )}
-
-                    {canDeleteRole && (
-                      <button 
-                        onClick={handleDeleteTrigger}
-                        className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-red-500 text-red-500 transition-all duration-300 hover:bg-red-500 hover:text-white group"
-                      >
-                        <Trash2 size={14} className="group-hover:scale-110 transition-transform" /> 
-                        {t("delete_role")}
-                      </button>
-                    )}
-
-                    <button 
-                      onClick={handleSavePermissions} 
+                    <button
+                      onClick={handleSavePermissions}
                       disabled={saving || permissionsLoading}
                       className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-[#25B16F] text-[#25B16F] transition-all duration-300 hover:bg-[#25B16F] hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Save size={14} className={`${saving ? 'animate-spin' : 'group-hover:scale-110'} transition-transform`} />
                       {saving ? t("updating") : t("save_new_permissions")}
                     </button>
+                    {canDeleteRole && (
+                      <button
+                        onClick={handleDeleteTrigger}
+                        className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-red-500 text-red-500 transition-all duration-300 hover:bg-red-500 hover:text-white group"
+                      >
+                        <Trash2 size={14} className="group-hover:scale-110 transition-transform" />
+                        {t("delete_role")}
+                      </button>
+                    )}
+
+
                   </div>
                 </div>
                 <AdminRolePermissions
@@ -245,8 +242,7 @@ export default function AdminRoles() {
                   loading={saving}
                   pageLoading={permissionsLoading}
                   t={t}
-                  onSave={handleSavePermissions}
-                />
+                  onSave={handleSavePermissions}/>
               </>
             )}
           </div>

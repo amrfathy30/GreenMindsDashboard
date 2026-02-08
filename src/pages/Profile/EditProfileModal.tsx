@@ -126,8 +126,6 @@ export default function EditProfileModal({
         Phone: formData.Phone,
         UserName: formData.UserName,
         Type: 2,
-        Password: "",
-        ConfirmPassword: "",
       };
 
       await updateProfile(payload, adminId);

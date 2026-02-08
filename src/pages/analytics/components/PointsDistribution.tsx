@@ -76,11 +76,11 @@ export default function PointsDistribution({
               </div>
             </div>
 
-            <div className="mt-4 space-y-2 px-2">
+            <div className="mt-4 space-y-2 px-2 grid grid-cols-1 md:grid-cols-2">
               {sortedData.map((lvl, index) => (
                 <div 
                   key={index} 
-                  className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800 last:border-0"
+                  className="flex flex-col items-start py-1 border-b border-gray-100 dark:border-gray-800 h-full justify-center"
                 >
                   <div className="flex items-center gap-3">
                     <span 
@@ -91,13 +91,19 @@ export default function PointsDistribution({
                       {lvl.LevelName}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">
+                  <div className="flex items-center gap-3 ">
+                  <span 
+                      className="w-3 h-3 rounded-full flex-shrink-0" 
+                     
+                    ></span>
+                   <div className="flex items-center gap-1">
+                   <span className="text-sm font-bold text-gray-900 dark:text-white">
                       {lvl.UsersCount}
                     </span>
                     <span className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">
                       {t("points")}
                     </span>
+                   </div>
                   </div>
                 </div>
               ))}
