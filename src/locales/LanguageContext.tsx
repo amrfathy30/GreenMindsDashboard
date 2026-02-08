@@ -384,6 +384,7 @@ const translations = {
     edit_role_name: "Edit role name",
     delete_role: "Delete role",
     save_new_permissions: "Save new permissions",
+    EmailStatus: "Email Status",
   },
   ar: {
     // sidebar
@@ -758,6 +759,7 @@ const translations = {
     edit_role_name: "تعديل اسم الدور",
     delete_role: "حذف الدور",
     save_new_permissions: "حفظ الصلاحيات الجديدة",
+    EmailStatus: "حالة البريد",
   },
 };
 
