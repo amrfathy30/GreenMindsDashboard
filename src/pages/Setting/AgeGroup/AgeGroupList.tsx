@@ -167,9 +167,9 @@ export default function AgeGroupList() {
     },
     {
       key: "actions",
-      label: t("actions"),
+      label: (<div className="text-end px-4">{t("actions")}</div>) as any,
       render: (row: any) => (
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-end items-center gap-2 px-4">
           {canEdit && (
             <button
               onClick={() => {
