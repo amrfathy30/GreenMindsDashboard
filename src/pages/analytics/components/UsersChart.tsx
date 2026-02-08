@@ -63,30 +63,27 @@ export default function UsersChart({
       </div>
 
       {/* Legend */}
-      <div className="mt-6 space-y-3 text-sm">
-        <div className="flex justify-between items-center">
+      <div className="mt-6 space-y-3 text-sm">     
+      <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-green-500"></span>
-            <span>{t("parentsTab")}</span>
+            <span className="text-gray-700 dark:text-gray-200">{t("parentsTab")}</span>
           </div>
-          <span className="text-gray-500">
-            {parentChildStats.ParentPercentage}% ·{" "}
-            {parentChildStats.TotalParents}
-            {t("pageTitle")}
+          <span className="text-gray-500 dark:text-gray-400">
+            {parentChildStats.ParentPercentage}% · {parentChildStats.TotalParents} {t("pageTitle")}
           </span>
         </div>
 
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-blue-500"></span>
-            <span>{t("Children")}</span>
+            <span className="text-gray-700 dark:text-gray-200">{t("Children")}</span>
           </div>
-          <span className="text-gray-500">
-            {parentChildStats.ChildPercentage}% ·{" "}
-            {parentChildStats.TotalChildren} {t("pageTitle")}
+          <span className="text-gray-500 dark:text-gray-400">
+            {parentChildStats.ChildPercentage}% · {parentChildStats.TotalChildren} {t("pageTitle")}
           </span>
         </div>
-      </div>
+        </div>
     </ComponentCard>
   );
 }
