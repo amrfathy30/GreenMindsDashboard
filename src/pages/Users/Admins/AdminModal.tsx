@@ -136,68 +136,70 @@ export default function AdminModal({
             }
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">
+<div className="flex flex-col gap-1">
+          <label className="block text-sm font-medium mb-1 dark:text-white">
             {t("PhoneNumber")}
           </label>
 
           <PhoneInput
             defaultCountry="eg"
             value={formData.PhoneNumber}
-            onChange={(phone) =>
-              setFormData({ ...formData, PhoneNumber: phone })
-            }
-            inputClassName={`w-full !h-[42px] ${lang === "en" ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg" : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none"} `}
+            onChange={(phone) => setFormData({ ...formData, PhoneNumber: phone })}
+            style={{
+              '--react-international-phone-border-color': 'inherit',
+              '--react-international-phone-bg-color': 'transparent',
+              '--react-international-phone-text-color': 'inherit',
+            } as React.CSSProperties}
+
+            inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
+              lang === "en" 
+                ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0" 
+                : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
+            }`}
+            
+            countrySelectorStyleProps={{
+              buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
+                lang === "en" 
+                  ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none" 
+                  : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
+              }`,
+            }}
           />
         </div>
         {/* {!initialData && (
           <> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div>
-            <Input
-              id="Password"
-              type="password"
-              label={t("AdminPassword")}
-              placeholder={t("EnterAdminPassword")}
-              value={formData.Password}
-              onChange={(e) =>
-                setFormData({ ...formData, Password: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <Input
-              id="ConfirmPassword"
-              type="password"
-              label={t("AdminConfirmPassword")}
-              placeholder={t("EnterAdminPassword")}
-              value={formData.ConfirmPassword}
-              onChange={(e) =>
-                setFormData({ ...formData, ConfirmPassword: e.target.value })
-              }
-            />
-          </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <Input
+            id="Password"
+            type="password"
+            label={t("AdminPassword")}
+            value={formData.Password}
+            onChange={(e) => setFormData({ ...formData, Password: e.target.value })}
+          />
+          <Input
+            id="ConfirmPassword"
+            type="password"
+            label={t("AdminConfirmPassword")}
+            value={formData.ConfirmPassword}
+            onChange={(e) => setFormData({ ...formData, ConfirmPassword: e.target.value })}
+          />
         </div>
-        <p className="text-xs text-gray-600">{t("PasswordContain")}</p>
-
+        <p className="text-xs text-gray-600 dark:text-gray-400">{t("PasswordContain")}</p>
         {/* </>
         )} */}
-        <div>
-          <label className="block text-sm font-medium">{t("UserType")}</label>
-
+<div>
+          <label className="block text-sm font-medium mb-1 dark:text-white">{t("UserType")}</label>
           <select
             id="roleName"
             value={formData.roleName}
-            onChange={(e) => {
-              setFormData({ ...formData, roleName: e.target.value });
-            }}
-            className="w-full rounded-lg border py-2.5 px-4"
+            onChange={(e) => setFormData({ ...formData, roleName: e.target.value })}
+            className="w-full rounded-lg border py-2.5 px-4 bg-transparent dark:bg-transparent dark:text-white dark:border-gray-700 focus:outline-none"
           >
-            <option value="" disabled>
+            <option value="" disabled className="dark:bg-gray-900">
               {t("select_UserType")}
             </option>
             {adminRoles?.map((role) => (
-              <option key={role.Id} value={role.Name}>
+              <option key={role.Id} value={role.Name} className="dark:bg-gray-900">
                 {role.Name}
               </option>
             ))}
