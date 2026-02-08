@@ -59,27 +59,27 @@ export default function GenderChart({
         <Chart options={options} series={series} type="donut" width={260} />
       </div>
 
-      <div className="mt-6 space-y-3 text-sm">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded bg-[#79BEFF]"></span>
-            <span> {t("Male")}</span>
-          </div>
-          <span className="text-gray-500">
-            {malePercentage}% · {male} {t("pageTitle")}
-          </span>
+     <div className="mt-6 space-y-3 text-sm">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded bg-[#79BEFF]"></span>
+          <span className="text-gray-700 dark:text-gray-200"> {t("Male")}</span>
         </div>
-
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded bg-[#FA5A9F]"></span>
-            <span>{t("Female")}</span>
-          </div>
-          <span className="text-gray-500">
-            {femalePercentage}% · {female} {t("pageTitle")}
-          </span>
-        </div>
+        <span className="text-gray-500 dark:text-gray-400">
+          {malePercentage}% · {male} {t("pageTitle")}
+        </span>
       </div>
+
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded bg-[#FA5A9F]"></span>
+          <span className="text-gray-700 dark:text-gray-200">{t("Female")}</span>
+        </div>
+        <span className="text-gray-500 dark:text-gray-400">
+          {femalePercentage}% · {female} {t("pageTitle")}
+        </span>
+      </div>
+    </div>
     </ComponentCard>
   );
 }
