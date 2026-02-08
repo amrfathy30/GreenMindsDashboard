@@ -180,7 +180,7 @@ export default function ParentsList({
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white block max-w-[100px] truncate">
+        <span className="text-[#757575] dark:text-white block max-w-[120px] truncate">
           {row.Name || "__"}
         </span>
       ),
@@ -189,7 +189,7 @@ export default function ParentsList({
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white block max-w-[100px] truncate">
+        <span className="text-[#757575] dark:text-white block max-w-[120px] truncate">
           {row.UserName || "__"}
         </span>
       ),
@@ -198,33 +198,38 @@ export default function ParentsList({
       key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <div className="flex items-center gap-2">
-          <span>{row.Email || "__"}</span>
-          <span
-            className={`text-sm ${
-              row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
-            }`}
-          >
-            {row.EmailVerified ? t("Verified") : t("NotVerified")}
-          </span>
-        </div>
+        <span className="text-[#757575] dark:text-white block max-w-[200px] truncate">
+          {row.Email || "__"}
+        </span>
+      ),
+    },
+    {
+      key: "Status",
+       label: <span className="whitespace-nowrap">{t("EmailStatus")}</span>, 
+      render: (row: any) => (
+        <span
+          className={`text-sm font-medium whitespace-nowrap ${
+            row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
+          }`}
+        >
+          {row.EmailVerified ? t("Verified") : t("NotVerified")}
+        </span>
       ),
     },
     {
       key: "Phone",
       label: t("ParentPhone"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white flex justify-center items-center">
+        <span className="text-[#757575] dark:text-white block">
           {row.PhoneNumber || "__"}
         </span>
       ),
     },
-
     {
       key: "actions",
       label: t("Actions"),
       render: (row: any) => (
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex items-center gap-3">
           {canEdit && (
             <button
               onClick={() => {
@@ -243,7 +248,7 @@ export default function ParentsList({
                 setOpenModal(true);
               }}
             >
-              <EditIcon className="w-6 h-6 invert-0 dark:invert" />
+              <EditIcon className="w-5 h-5 invert-0 dark:invert opacity-80 hover:opacity-100 transition-opacity" />
             </button>
           )}
           {canDelete && (
@@ -253,7 +258,7 @@ export default function ParentsList({
                 handleDelete(row.id);
               }}
             >
-              <RemoveIcon className="w-6 h-6 invert-0 dark:invert" />
+              <RemoveIcon className="w-5 h-5 invert-0 dark:invert opacity-80 hover:opacity-100 transition-opacity" />
             </button>
           )}
         </div>
@@ -275,7 +280,7 @@ export default function ParentsList({
   return (
     <div>
       {tableLoading ? (
-        <TableLoading columnCount={5} />
+        <TableLoading columnCount={6} />
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne

@@ -380,6 +380,7 @@ const translations = {
     NoName: "No name",
     Loading: "Loading...",
     OperationFailed: "Operation failed",
+    EmailStatus: "Email Status",
   },
   ar: {
     // sidebar
@@ -750,6 +751,7 @@ const translations = {
     NoName: "لا يوجد اسم",
     Loading: "جارٍ التحميل...",
     OperationFailed: "فشلت العملية",
+    EmailStatus: "حالة البريد",
   },
 };
 
