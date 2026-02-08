@@ -380,6 +380,10 @@ const translations = {
     NoName: "No name",
     Loading: "Loading...",
     OperationFailed: "Operation failed",
+    current_role: "Current Role",
+    edit_role_name: "Edit role name",
+    delete_role: "Delete role",
+    save_new_permissions: "Save new permissions",
   },
   ar: {
     // sidebar
@@ -750,6 +754,10 @@ const translations = {
     NoName: "لا يوجد اسم",
     Loading: "جارٍ التحميل...",
     OperationFailed: "فشلت العملية",
+    current_role: "الدور الحالي",
+    edit_role_name: "تعديل اسم الدور",
+    delete_role: "حذف الدور",
+    save_new_permissions: "حفظ الصلاحيات الجديدة",
   },
 };
 
