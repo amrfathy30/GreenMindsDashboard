@@ -134,7 +134,6 @@ export default function AvatarList() {
                 <AvatarCard
                   key={avatar.Id}
                   name={avatar.Name}
-                  level={avatar.RequiredLevelName || avatar.LevelName || "N/A"}
                   ageGroup={avatar.AgeSectorName || "N/A"}
                   image={
                     avatar.ImageUrl

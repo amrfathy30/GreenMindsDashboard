@@ -228,6 +228,11 @@ const translations = {
     Thumbnail: "Thumbnail",
     title: "Title",
     points: "Points",
+    At: "At",
+    PointsRange: "Points Range",
+    CurrentLevel: "Current Level",
+    TotalPoints: "Total Points",
+    NextLevel: "Next Level",
     "age group": "Age Group",
     // Game translations
     games_admin: "Games - Admin",
@@ -573,6 +578,11 @@ const translations = {
     Thumbnail: "الصورة المصغرة",
     title: "العنوان",
     points: "النقاط",
+    At: "في",
+    PointsRange: "نطاق النقاط",
+    CurrentLevel: "المستوي الحالي",
+    TotalPoints: "اجمالي النقاط",
+    NextLevel: "المستوي التالي",
     "age group": "الفئة العمرية",
     // Game translations
     games_admin: "إدارة الألعاب",

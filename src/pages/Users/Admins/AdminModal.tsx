@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useEffect, useState } from "react";
 import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
@@ -5,8 +6,8 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { useLanguage } from "../../../locales/LanguageContext";
 import { AdminsModalProps } from "../../../utils/types/adminType";
-import Label from "../../../components/form/Label";
-import Radio from "../../../components/form/input/Radio";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 export default function AdminModal({
   open,
@@ -17,7 +18,7 @@ export default function AdminModal({
   initialData,
 }: AdminsModalProps) {
   const { t } = useLanguage();
-
+  const lang = localStorage.getItem("GM-language");
   const [formData, setFormData] = useState({
     Name: "",
     Email: "",
@@ -27,8 +28,8 @@ export default function AdminModal({
     Password: "",
     Type: 2,
     roleName: "",
-    DateOfBirth: "",
-    GenderId: "",
+    DateOfBirth: "1979-03-04",
+    GenderId: "1",
   });
 
   const formatDateForInput = (date: string) => {
@@ -41,21 +42,19 @@ export default function AdminModal({
 
   useEffect(() => {
     if (initialData) {
-      const formattedDate = initialData.DateOfBirth
-        ? formatDateForInput(initialData.DateOfBirth)
-        : "";
-
       setFormData({
-        Name: initialData.Name,
-        Email: initialData.Email,
+        Name: initialData.Name ?? "",
+        Email: initialData.Email ?? "",
         PhoneNumber: initialData.PhoneNumber ?? "",
         UserName: initialData.UserName ?? "",
-        Password: initialData.Password ?? "",
-        ConfirmPassword: initialData.ConfirmPassword ?? "",
+        Password: "",
+        ConfirmPassword: "",
         roleName: initialData.roleName ?? "",
         Type: initialData.Type ?? 2,
-        DateOfBirth: formattedDate,
-        GenderId: String(initialData.GenderId),
+        DateOfBirth: initialData.DateOfBirth
+          ? formatDateForInput(initialData.DateOfBirth)
+          : "1979-03-04",
+        GenderId: String(initialData.GenderId ?? 1),
       });
     } else {
       setFormData({
@@ -66,9 +65,9 @@ export default function AdminModal({
         Password: "",
         ConfirmPassword: "",
         roleName: "",
-        DateOfBirth: "",
         Type: 2,
-        GenderId: "",
+        DateOfBirth: "1979-03-04",
+        GenderId: "1",
       });
     }
   }, [initialData, open]);
@@ -76,10 +75,23 @@ export default function AdminModal({
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    onSave({
-      ...formData,
+    const payload: any = {
+      Name: formData.Name,
+      Email: formData.Email,
+      PhoneNumber: formData.PhoneNumber,
+      UserName: formData.UserName,
+      Type: formData.Type,
+      roleName: formData.roleName,
       GenderId: Number(formData.GenderId),
-    });
+      DateOfBirth: formData.DateOfBirth,
+    };
+
+    if (formData.Password.trim()) {
+      payload.Password = formData.Password;
+      payload.ConfirmPassword = formData.ConfirmPassword;
+    }
+
+    onSave(payload);
   };
 
   return (
@@ -125,16 +137,17 @@ export default function AdminModal({
           />
         </div>
         <div>
-          <Input
-            id="PhoneNumber"
-            type="tel"
-            label={t("AdminPhoneNumber")}
-            placeholder={t("EnterAdminPhoneNumber")}
+          <label className="block text-sm font-medium mb-1">
+            {t("PhoneNumber")}
+          </label>
+
+          <PhoneInput
+            defaultCountry="eg"
             value={formData.PhoneNumber}
-            onChange={(e) => {
-              const onlyNumbers = e.target.value.replace(/\D/g, "");
-              setFormData({ ...formData, PhoneNumber: onlyNumbers });
-            }}
+            onChange={(phone) =>
+              setFormData({ ...formData, PhoneNumber: phone })
+            }
+            inputClassName={`w-full !h-[42px] ${lang === "en" ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg" : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none"} `}
           />
         </div>
         {/* {!initialData && (
@@ -190,7 +203,7 @@ export default function AdminModal({
             ))}
           </select>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
             <Label>{t("Gender")}</Label>
             <div className="flex items-center gap-3">
@@ -228,7 +241,7 @@ export default function AdminModal({
               }
             />
           </div>
-        </div>
+        </div> */}
 
         <Button type="submit" className="mt-2" disabled={loading}>
           {loading

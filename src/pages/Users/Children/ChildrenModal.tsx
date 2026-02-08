@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useEffect, useState } from "react";
 import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
@@ -7,6 +8,8 @@ import Radio from "../../../components/form/input/Radio";
 import Label from "../../../components/form/Label";
 import { useLanguage } from "../../../locales/LanguageContext";
 import { ChildrenModalProps } from "../../../utils/types/childrenType";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 export default function ChildrenModal({
   open,
@@ -16,6 +19,7 @@ export default function ChildrenModal({
   initialData,
 }: ChildrenModalProps) {
   const { t } = useLanguage();
+  const lang = localStorage.getItem("GM-language");
 
   const [formData, setFormData] = useState({
     Name: "",
@@ -26,6 +30,7 @@ export default function ChildrenModal({
     PhoneNumber: "",
     DateOfBirth: "",
     GenderId: "",
+    Type: 1,
   });
 
   const formatDateForInput = (date: string) => {
@@ -46,11 +51,12 @@ export default function ChildrenModal({
         Name: initialData.Name || "",
         Email: initialData.Email || "",
         UserName: initialData.UserName || "",
-        Password: initialData.Password || "",
-        ConfirmPassword: initialData.ConfirmPassword || "",
+        Password: "",
+        ConfirmPassword: "",
         PhoneNumber: initialData.PhoneNumber || "",
-        GenderId: String(formData.GenderId),
+        GenderId: String(initialData.GenderId ?? 1),
         DateOfBirth: formattedDate,
+        Type: 1,
       });
     } else {
       setFormData({
@@ -62,6 +68,7 @@ export default function ChildrenModal({
         PhoneNumber: "",
         DateOfBirth: "",
         GenderId: "1",
+        Type: 1,
       });
     }
   }, [initialData, open]);
@@ -69,11 +76,23 @@ export default function ChildrenModal({
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    onSave({
-      ...formData,
+    const payload: any = {
+      Name: formData.Name,
+      Email: formData.Email,
+      UserName: formData.UserName,
+      PhoneNumber: formData.PhoneNumber,
+      DateOfBirth: formData.DateOfBirth,
       GenderId: Number(formData.GenderId),
+      Type: 1,
       id: initialData?.id,
-    });
+    };
+
+    if (formData.Password.trim()) {
+      payload.Password = formData.Password;
+      payload.ConfirmPassword = formData.ConfirmPassword;
+    }
+
+    onSave(payload);
   };
 
   return (
@@ -119,15 +138,17 @@ export default function ChildrenModal({
           />
         </div>
         <div>
-          <Input
-            id="PhoneNumber"
-            label={t("PhoneNumber")}
-            placeholder={t("PhoneNumber")}
+          <label className="block text-sm font-medium mb-1">
+            {t("PhoneNumber")}
+          </label>
+
+          <PhoneInput
+            defaultCountry="eg"
             value={formData.PhoneNumber}
-            onChange={(e) => {
-              const onlyNumbers = e.target.value.replace(/\D/g, "");
-              setFormData({ ...formData, PhoneNumber: onlyNumbers });
-            }}
+            onChange={(phone) =>
+              setFormData({ ...formData, PhoneNumber: phone })
+            }
+            inputClassName={`w-full !h-[42px] ${lang === "en" ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg" : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none"} `}
           />
         </div>
         {/* {!initialData && (

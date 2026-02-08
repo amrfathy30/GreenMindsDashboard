@@ -11,7 +11,7 @@ import { ShowToastSuccess } from "../../../components/common/ToastHelper";
 import { AdminApiResponse, AdminList } from "../../../utils/types/adminType";
 import {
   allAdminData,
-  createAdmin,
+  createUser,
   deleteAdmin,
   updateAdmin,
 } from "../../../api/services/adminService";
@@ -169,7 +169,7 @@ export default function AdminsList({
           await AddAdminRole(data.roleName, String(editData.id));
         }
       } else {
-        res = await createAdmin(data);
+        res = await createUser(data);
         createdAdminId = res?.Data?.Id;
 
         if (createdAdminId && data.roleName) {
@@ -223,39 +223,47 @@ export default function AdminsList({
     }
   };
 
-  const calculateAge = (dateOfBirth: string) => {
-    if (!dateOfBirth) return "__";
+  // const calculateAge = (dateOfBirth: string) => {
+  //   if (!dateOfBirth) return "__";
 
-    const birthDate = new Date(dateOfBirth);
-    const today = new Date();
+  //   const birthDate = new Date(dateOfBirth);
+  //   const today = new Date();
 
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
+  //   let age = today.getFullYear() - birthDate.getFullYear();
+  //   const monthDiff = today.getMonth() - birthDate.getMonth();
 
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
+  //   if (
+  //     monthDiff < 0 ||
+  //     (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  //   ) {
+  //     age--;
+  //   }
 
-    return age;
-  };
+  //   return age;
+  // };
 
-  const getGenderLabel = (genderId: string | number, t: any) => {
-    if (String(genderId) === "1") return t("Male");
-    if (String(genderId) === "2") return t("Female");
-    return "__";
-  };
+  // const getGenderLabel = (genderId: string | number, t: any) => {
+  //   if (String(genderId) === "1") return t("Male");
+  //   if (String(genderId) === "2") return t("Female");
+  //   return "__";
+  // };
 
   const columns = [
     {
       key: "Name",
       label: t("name"),
+      render: (row: any) => (
+        <span className="block max-w-[100px] truncate">{row.Name || "__"}</span>
+      ),
     },
     {
       key: "UserName",
       label: t("UserName"),
+      render: (row: any) => (
+        <span className="block max-w-[100px] truncate">
+          {row.UserName || "__"}
+        </span>
+      ),
     },
     {
       key: "Email",
@@ -284,24 +292,24 @@ export default function AdminsList({
         </span>
       ),
     },
-    {
-      key: "Gender",
-      label: t("Gender"),
-      render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">
-          {getGenderLabel(row.GenderId, t)}
-        </span>
-      ),
-    },
-    {
-      key: "Age",
-      label: t("Age"),
-      render: (row: any) => (
-        <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
-          {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
-        </span>
-      ),
-    },
+    // {
+    //   key: "Gender",
+    //   label: t("Gender"),
+    //   render: (row: any) => (
+    //     <span className="text-[#757575] dark:text-white">
+    //       {getGenderLabel(row.GenderId, t)}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   key: "Age",
+    //   label: t("Age"),
+    //   render: (row: any) => (
+    //     <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
+    //       {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
+    //     </span>
+    //   ),
+    // },
 
     {
       key: "actions",
@@ -313,16 +321,18 @@ export default function AdminsList({
               onClick={() => {
                 setEditData({
                   id: row.id,
-                  Name: row.Name,
-                  Email: row.Email,
-                  PhoneNumber: row.PhoneNumber,
-                  Password: row.Password,
-                  ConfirmPassword: row.ConfirmPassword,
-                  UserName: row.UserName,
-                  GenderId: row.GenderId,
-                  roleName: row.RolesNames?.[0] || "",
-                  DateOfBirth: row.DateOfBirth,
+                  Name: row.Name ?? "",
+                  Email: row.Email ?? "",
+                  PhoneNumber: row.PhoneNumber ?? "",
+                  UserName: row.UserName ?? "",
+                  Password: "",
+                  ConfirmPassword: "",
+                  roleName: row.RolesNames?.[0] ?? "",
+                  GenderId: row.GenderId ?? 1,
+                  DateOfBirth: row.DateOfBirth ?? "1979-03-04",
+                  Type: 2,
                 });
+
                 setOpenModal(true);
               }}
             >
@@ -375,6 +385,7 @@ export default function AdminsList({
         description={t("confirmDeleteAdmin")}
       />
       <AdminModal
+        key={editData?.id ?? "create"}
         open={openModal}
         onClose={() => {
           setOpenModal(false);

@@ -63,6 +63,36 @@ export interface Child {
   IsDelete?: boolean;
 }
 
+export interface ChildPointsResponse {
+  StatusCode: number;
+  Message: string;
+  Data: {
+    Child: {
+      ChildId: number;
+      ChildName: string;
+      Points: number;
+      Progress: number;
+      CurrentConsecutiveDays: number;
+      IsAwardedToday: boolean;
+      NextDayAwardPoints: number;
+      CurrentLevel: {
+        Id: number;
+        LevelNumber: number;
+        Name: string;
+        MinPoints: number;
+        MaxPoints: number;
+      };
+      NextLevel: {
+        Id: number;
+        LevelNumber: number;
+        Name: string;
+        MinPoints: number;
+        MaxPoints: number;
+      };
+    };
+  };
+}
+
 export interface ChildApiResponse {
   StatusCode: number;
   Message: string;

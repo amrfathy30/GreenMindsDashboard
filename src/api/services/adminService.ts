@@ -6,7 +6,7 @@ export const allAdminData = async () => {
   return response.data;
 };
 
-export const createAdmin = async (data: AdminList) => {
+export const createUser = async (data: AdminList) => {
   const response = await axiosInstance.post(
     "/Account/CreateUserWithType",
     data,

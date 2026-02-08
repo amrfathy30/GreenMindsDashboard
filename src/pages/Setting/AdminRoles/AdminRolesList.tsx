@@ -34,6 +34,7 @@ export default function AdminRoles() {
   const [adminRoles, setAdminRoles] = useState<any[]>([]);
   const [adminRolePermission, setAdminRolePermission] = useState<any[]>([]);
   const [allPermissions, setAllPermissions] = useState<any[]>([]);
+  const [permissionsLoading, setPermissionsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [saving, setSaving] = useState(false);
@@ -183,12 +184,13 @@ export default function AdminRoles() {
   const fetchActiveAdminRoles = async () => {
     if (!adminRoles[activeTab]) return;
 
+    setPermissionsLoading(true);
+    setAdminRolePermission([]);
     try {
-      setLoading(true);
       const data = await allRolePermissions(adminRoles[activeTab].Name);
       setAdminRolePermission(Array.isArray(data.Data) ? data.Data : []);
     } finally {
-      setLoading(false);
+      setPermissionsLoading(false);
     }
   };
 
@@ -238,7 +240,7 @@ export default function AdminRoles() {
     <>
       <PageMeta title="Green minds Admin | Admin Roles" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="md:h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("AdminRoles")}
           </h2>
@@ -249,19 +251,26 @@ export default function AdminRoles() {
             </AddButton>
           )}
         </div>
-        <div className="px-5">
+        <div className="flex gap-4 px-5">
           {/* Tab Headers */}
-          <div className="flex border-b border-gray-200 overflow-x-auto">
+          <div
+            className={`relative flex flex-col overflow-y-auto pr-10 max-h-full
+ ${
+   lang === "ar"
+     ? "border-l-2 border-l-gray-500 pl-4"
+     : "border-r-2 border-r-gray-500 pr-4"
+ }`}
+          >
             {adminRoles.map((role, index) => (
               <div
                 key={role.Id}
-                className="relative flex items-center dropdown-wrapper flex-shrink-0"
+                className=" flex justify-between items-center dropdown-wrapper flex-shrink-0"
               >
                 <button
                   onClick={() => setActiveTab(index)}
-                  className={`py-2 px-4 text-sm font-medium transition-colors duration-200 focus:outline-none ${
+                  className={`py-2 px-4 truncate w-[180px] text-sm font-medium transition-colors duration-200 focus:outline-none ${
                     activeTab === index
-                      ? "border-b-2 border-primary text-primary"
+                      ? "text-white bg-secondary rounded"
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
@@ -269,7 +278,7 @@ export default function AdminRoles() {
                   {role?.Name}
                 </button>
 
-                <div className="relative ml-2">
+                <div className="absolute right-0 ml-2">
                   <button
                     onClick={() =>
                       setOpenDropdown((prev) =>
@@ -283,7 +292,7 @@ export default function AdminRoles() {
 
                   {openDropdown === role.Id && (
                     <div
-                      className={`${lang === "en" ? "right-0" : "left-0"} absolute  mt-1 w-32 bg-white border rounded shadow-lg z-10`}
+                      className={`${lang === "en" ? "right-0" : "right-0"} absolute mt-1 w-32 bg-white border rounded shadow-lg z-10`}
                     >
                       {canUpdateRoleAndPermissions && (
                         <button
@@ -319,7 +328,7 @@ export default function AdminRoles() {
             permissions={allPermissions}
             assignedPermissions={assignedPermissionIds}
             loading={saving}
-            pageLoading={loading}
+            pageLoading={permissionsLoading}
             t={t}
             onSave={handleSavePermissions}
           />

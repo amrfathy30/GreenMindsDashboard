@@ -26,6 +26,7 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+// import { createUser } from "../../../api/services/adminService";
 
 export default function ChildrenList({
   openAddModal,
@@ -238,11 +239,18 @@ export default function ChildrenList({
     {
       key: "Name",
       label: t("Name"),
+      render: (row: any) => (
+        <span className="block max-w-[100px] truncate">{row.Name || "__"}</span>
+      ),
     },
     {
       key: "UserName",
       label: t("UserName"),
-      render: (row: any) => <span>{row.UserName || "__"}</span>,
+      render: (row: any) => (
+        <span className="block max-w-[100px] truncate">
+          {row.UserName || "__"}
+        </span>
+      ),
     },
     {
       key: "Email",
@@ -376,6 +384,7 @@ export default function ChildrenList({
       />
 
       <ChildrenModal
+        key={editData?.id ?? "create"}
         open={openModal}
         onClose={() => {
           setOpenModal(false);

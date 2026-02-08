@@ -5,13 +5,21 @@ import Taps from "./Taps/Taps";
 import { useLanguage } from "../../../../locales/LanguageContext";
 import { toast } from "sonner";
 import { useParams } from "react-router";
-import { getChildrenById } from "../../../../api/services/childrenService";
-import { Child, ChildApiResponse } from "../../../../utils/types/childrenType";
+import {
+  getChildrenById,
+  getPointsById,
+} from "../../../../api/services/childrenService";
+import {
+  Child,
+  ChildApiResponse,
+  ChildPointsResponse,
+} from "../../../../utils/types/childrenType";
 import {
   fetchUserPermissions,
   hasPermission,
 } from "../../../../utils/permissions/permissions";
 import EmptyState from "../../../../components/common/no-data-found";
+import ChildrenInfoSkeleton from "../../../../components/loading/ChildrenInfoSkeleton";
 
 export default function ChildrenInfo() {
   const { t } = useLanguage();
@@ -20,11 +28,16 @@ export default function ChildrenInfo() {
 
   const [child, setChild] = useState<ChildApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [childPoints, setChildPoints] = useState<ChildPointsResponse | null>(
+    null,
+  );
+  const [loadingPoints, setLoadingPoints] = useState(true);
   useEffect(() => {
     fetchUserPermissions();
   }, []);
   const canView = hasPermission("Children_GetChild");
 
+  // getChildrenById
   useEffect(() => {
     const fetchChild = async () => {
       if (!id) return;
@@ -45,9 +58,33 @@ export default function ChildrenInfo() {
     };
 
     fetchChild();
-  }, [id, t]);
+  }, [canView, id, t]);
+
+  // getPointsById
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return;
+      if (!canView) {
+        setLoadingPoints(false);
+        return;
+      }
+
+      try {
+        setLoadingPoints(true);
+        const data = await getPointsById(Number(id));
+        setChildPoints(data);
+      } catch (error: any) {
+        toast.error(error?.response?.data?.Message || t("OperationFailed"));
+      } finally {
+        setLoadingPoints(false);
+      }
+    };
+
+    fetchData();
+  }, [canView, id, t]);
 
   const childData: Child | undefined = child?.Data;
+  const pointsData = childPoints?.Data?.Child;
 
   const childDetails = childData
     ? [
@@ -75,14 +112,6 @@ export default function ChildrenInfo() {
       ]
     : [];
 
-  if (loading) {
-    return (
-      <div className="p-8 text-center">
-        <h2 className="text-xl font-semibold">{t("Loading")}</h2>
-      </div>
-    );
-  }
-
   if (!childId) {
     return (
       <div className="text-center min-h-screen flex items-center justify-center">
@@ -104,10 +133,13 @@ export default function ChildrenInfo() {
     );
   }
 
+  if (loading || loadingPoints) {
+    return <ChildrenInfoSkeleton />;
+  }
+
   return (
     <div className="md:px-8 md:py-4">
       <PageMeta title={pageTitle} description="" />
-
       <div className="flex items-center gap-2">
         {childData?.AvatarImg ? (
           <img
@@ -138,6 +170,96 @@ export default function ChildrenInfo() {
           </div>
         ))}
       </div>
+
+      {pointsData && (
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Points */}
+          <div className="rounded-xl border shadow p-5 dark:border-gray-700">
+            <h3 className="text-sm text-gray-500 dark:text-gray-400">
+              {t("TotalPoints")}
+            </h3>
+            <p className="text-3xl font-bold text-secondary">
+              {pointsData.Points}
+            </p>
+          </div>
+
+          {/* Current Level */}
+          <div className="rounded-xl border shadow p-5 dark:border-gray-700">
+            <h3 className="text-sm text-gray-500 dark:text-gray-400">
+              {t("CurrentLevel")}
+            </h3>
+            <p className="text-xl font-semibold text-secondary">
+              {pointsData.CurrentLevel.Name}
+            </p>
+            <p className="text-sm text-gray-500">
+              #{pointsData.CurrentLevel.LevelNumber}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              {t("PointsRange")}: {pointsData.CurrentLevel.MinPoints} -{" "}
+              {pointsData.CurrentLevel.MaxPoints}
+            </p>
+          </div>
+
+          {/* Next Level */}
+          <div className="rounded-xl border shadow p-5 dark:border-gray-700">
+            <h3 className="text-sm text-gray-500 dark:text-gray-400">
+              {t("NextLevel")}
+            </h3>
+            <p className="text-xl font-semibold text-secondary">
+              {pointsData.NextLevel.Name}
+            </p>
+            <p className="text-sm text-gray-500">
+              {t("At")} {pointsData.NextLevel.MinPoints} {t("points")}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              {t("PointsRange")}: {pointsData.NextLevel.MinPoints} -{" "}
+              {pointsData.NextLevel.MaxPoints}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* {pointsData && (
+  <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
+    <div className="flex justify-between mb-2">
+      <span className="text-sm font-medium">
+        {t("Progress")}
+      </span>
+      <span className="text-sm font-medium">
+        {pointsData.Progress}%
+      </span>
+    </div>
+
+    <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700">
+      <div
+        className="bg-green-600 h-3 rounded-full transition-all duration-500"
+        style={{ width: `${pointsData.Progress}%` }}
+      />
+    </div>
+  </div>
+)}
+
+{pointsData && (
+  <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
+    <h3 className="font-semibold mb-2">
+      {t("DailyReward")}
+    </h3>
+
+    {pointsData.IsAwardedToday ? (
+      <p className="text-green-600">
+        ✔ {t("RewardCollectedToday")}
+      </p>
+    ) : (
+      <p className="text-orange-500">
+        {t("NextReward")}: +{pointsData.NextDayAwardPoints} {t("Points")}
+      </p>
+    )}
+
+    <p className="text-sm text-gray-500 mt-1">
+      {t("ConsecutiveDays")}: {pointsData.CurrentConsecutiveDays}
+    </p>
+  </div>
+)} */}
 
       <div className="mt-8">
         <Taps id={childId} />

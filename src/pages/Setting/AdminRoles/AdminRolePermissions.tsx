@@ -21,6 +21,7 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
   }, [assignedPermissions]);
 
   const togglePermission = (id: number) => {
+    if (pageLoading) return;
     setSelectedPermissions((prev) =>
       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id],
     );
@@ -32,7 +33,7 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
 
   const canView = hasPermission("AdminPermissions_GetAllPermissions");
 
-  if (!canView && !loading) {
+  if (!canView) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <EmptyState
@@ -43,21 +44,18 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
     );
   }
 
-  if (pageLoading) {
-    return (
-      <div className="mt-4">
-        <PermissionsSkeleton />
-      </div>
-    );
-  }
-
   if (permissions.length === 0) {
     return <p className="text-gray-600">{t("no_permissions_found")}</p>;
   }
 
   return (
-    <div className="mt-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
+    <div className="relative">
+      {pageLoading && (
+        <div className="absolute inset-0 z-10 bg-white p-2">
+          <PermissionsSkeleton />
+        </div>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
         {permissions.map((perm) => (
           <Input
             key={perm.Id}
@@ -65,6 +63,7 @@ const AdminRolePermissions: React.FC<AdminRolePermissionsProps> = ({
             label={perm.DisplayName}
             checked={selectedPermissions.includes(perm.Id)}
             onChange={() => togglePermission(perm.Id)}
+            className="text-[11px]"
           />
         ))}
       </div>

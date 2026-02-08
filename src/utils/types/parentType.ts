@@ -4,48 +4,38 @@ export interface ParentParams {
 }
 
 export interface ParentList {
-  Id?: number;
-  id?: number;
+  id: number;
   UserName: string;
   Name: string;
   Email: string;
   Password: string;
   ConfirmPassword: string;
-  Phone?: string;
-  GenderId: string;
+  PhoneNumber?: string;
+  GenderId: number;
   DateOfBirth: string;
   EmailVerified?: boolean;
+  Type?: number;
+}
+
+export interface ParentFormData {
+  UserName: string;
+  Name: string;
+  Email: string;
+  Password?: string;
+  ConfirmPassword?: string;
   PhoneNumber?: string;
+  GenderId: number;
+  DateOfBirth: string;
+  EmailVerified?: boolean;
+  Type?: number;
 }
 
 export interface ParentsModalProps {
   open: boolean;
   loading: boolean;
   onClose: () => void;
-  onSave: (data: {
-    UserName: string;
-    Name: string;
-    Email: string;
-    Password: string;
-    ConfirmPassword: string;
-    Phone?: string;
-    PhoneNumber?: string;
-    GenderId: string;
-    DateOfBirth: string;
-    EmailVerified?: boolean;
-  }) => void;
-  initialData?: {
-    UserName: string;
-    Name: string;
-    Email: string;
-    Password: string;
-    ConfirmPassword: string;
-    Phone?: string;
-    PhoneNumber?: string;
-    GenderId: string;
-    DateOfBirth: string;
-    EmailVerified?: boolean;
-  };
+  onSave: (data: ParentFormData) => void;
+  initialData?: ParentFormData;
 }
 
 export interface ParentApiResponse {
@@ -61,7 +51,7 @@ export interface ParentApiResponse {
       ConfirmPassword: string;
       PhoneNumber?: string;
       Phone?: string;
-      GenderId: string;
+      GenderId: number;
       DateOfBirth: string;
       EmailVerified?: boolean;
     }[];

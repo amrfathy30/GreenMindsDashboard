@@ -809,3 +809,31 @@ span.flatpickr-weekday,
 ::-webkit-scrollbar-thumb {
   @apply bg-secondary rounded-full;
 }
+
+[dir="rtl"] .react-international-phone-country-selector-button {
+  height: 42px !important;
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+[dir="ltr"] .react-international-phone-country-selector-button {
+  height: 42px !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+    padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+[dir="rtl"] .react-international-phone-country-selector-dropdown {
+  right: 0 !important;
+}
+
+[dir="ltr"] .react-international-phone-country-selector-dropdown {
+  left: 0 !important;
+}
