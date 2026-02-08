@@ -22,6 +22,7 @@ import { useLanguage } from "../../locales/LanguageContext";
 import { useAdmin } from "../../context/AdminContext";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import ProfileSkeleton from "../../components/loading/ProfileSkeleton";
+import { PhoneInput } from "react-international-phone";
 
 export default function EditProfileModal({
   open,
@@ -263,15 +264,33 @@ export default function EditProfileModal({
             }
           />
 
-          <Input
-            id="Phone"
-            label={t("adminPhone")}
-            placeholder={t("enterPhone")}
-            value={formData.Phone}
-            onChange={(e) =>
-              setFormData({ ...formData, Phone: e.target.value })
-            }
-          />
+          <div className="flex flex-col gap-1" dir={useLanguage().language === "ar" ? "rtl" : "ltr"}>
+            <label className="block text-sm font-medium mb-1 dark:text-white">
+              {t("adminPhone")}
+            </label>
+            <PhoneInput
+              defaultCountry="eg"
+              value={formData.Phone}
+              onChange={(phone) => setFormData({ ...formData, Phone: phone })}
+              className="flex" 
+              inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
+                useLanguage().language === "en"
+                  ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
+                  : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
+              }`}
+              countrySelectorStyleProps={{
+                buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
+                  useLanguage().language === "en" 
+                    ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none" 
+                    : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
+                }`,
+              }}
+              inputStyle={{
+                  direction: 'ltr', 
+                  textAlign: useLanguage().language === "ar" ? "right" : "left"
+              }}
+            />
+          </div>
 
           <Button type="submit" disabled={loading}>
             {loading ? t("saving") : t("saveButton")}
