@@ -9,6 +9,7 @@ import TextArea from "../../components/form/input/TextArea";
 import { createGame, updateGame } from "../../api/services/gameService";
 import { allAgeData } from "../../api/services/ageService";
 import { toast } from "sonner";
+const BASE_URL = "https://kidsapi.pulvent.com"; 
 
 interface GameModalProps {
   isOpen: boolean;
@@ -34,9 +35,8 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     android: "",
     ios: "",
     appLink: "",
-    // apiLink: "",
-    // apiKey: "",
     ageSectorId: "", 
+    thumbnailUrl: "", 
   });
 
   useEffect(() => {
@@ -50,12 +50,12 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
         console.error("Failed to fetch age groups", error);
       }
     };
-
     if (isOpen) fetchAgeGroups();
   }, [isOpen]);
 
   useEffect(() => {
     if (gameData && isOpen) {
+      const tUrl = gameData.ThumbnailUrl || "";
       setFormDataState({
         nameEn: gameData.GameNameEn || "",
         nameAr: gameData.GameNameAr || "",
@@ -65,12 +65,14 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
         ios: gameData.IosLink || "",
         appLink: gameData.AppLink || "",  
         ageSectorId: gameData.AgeSectorId?.toString() || "", 
+        thumbnailUrl: tUrl, 
       });
-      setPreviewImage(gameData.ThumbnailUrl || null);
+      setPreviewImage(tUrl ? (tUrl.startsWith("http") ? tUrl : `${BASE_URL}/${tUrl}`) : null);
     } else if (!gameData && isOpen) {
       setFormDataState({
         nameEn: "", nameAr: "", descEn: "", descAr: "",
-        android: "", ios: "", appLink: "", ageSectorId: ""
+        android: "", ios: "", appLink: "", ageSectorId: "",
+        thumbnailUrl: "" 
       });
       setPreviewImage(null);
     }
@@ -98,14 +100,14 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
     formData.append("DescriptionAr", formDataState.descAr);
     formData.append("AndroidLink", formDataState.android);
     formData.append("IosLink", formDataState.ios);
-    // formData.append("ApiLink", formDataState.apiLink);
-    // formData.append("ApiKey", formDataState.apiKey);
     formData.append("AppLink", formDataState.appLink);
     formData.append("AgeSectorId", formDataState.ageSectorId);
 
     const file = fileInputRef.current?.files?.[0];
     if (file) {
       formData.append("Thumbnail", file);
+    } else {
+      formData.append("ThumbnailUrl", formDataState.thumbnailUrl);
     }
 
     setLoading(true);
@@ -113,9 +115,8 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
 
     try {
       if (type === 'edit') {
-        if (gameData?.Id || gameData?.id) {
-          formData.append("Id", (gameData.Id || gameData.id).toString());
-        }
+        const id = gameData.Id || gameData.id;
+        if (id) formData.append("Id", id.toString());
         await updateGame(formData);
         toast.success(t("game_updated_successfully"), { id: toastId });
       } else {
@@ -125,18 +126,8 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
       onSuccess();
       onClose();
     } catch (error: any) {
-  const serverErrors = error.response?.data?.Data;
-  let customMsg = "";
-
-  if (serverErrors && typeof serverErrors === 'object') {
-    const firstKey = Object.keys(serverErrors)[0];
-    customMsg = serverErrors[firstKey][0]; 
-  }
-
-  const finalMsg = customMsg || error.response?.data?.Message || t("something_went_wrong");
-
-  toast.error(finalMsg, { id: toastId });
-} finally {
+      toast.error(t("something_went_wrong"), { id: toastId });
+    } finally {
       setLoading(false);
     }
   };
@@ -147,6 +138,7 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
       const reader = new FileReader();
       reader.onloadend = () => setPreviewImage(reader.result as string);
       reader.readAsDataURL(file);
+      setFormDataState(prev => ({ ...prev, thumbnailUrl: "" }));
     }
   };
 
@@ -172,13 +164,12 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
           >
             <option value="" disabled>{t("select_age_group")}</option>
-            {ageGroups && ageGroups.map((group: any) => (
+            {ageGroups.map((group: any) => (
               <option key={group.Id} value={group.Id}> 
                 {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
               </option>
             ))}
           </select>
-          {formError && !formDataState.ageSectorId && <p className="text-xs text-red-500">{t("required")}</p>}
         </div>
 
         <div className="grid grid-cols-2 gap-2 w-full">
@@ -190,21 +181,37 @@ const GameModal: React.FC<GameModalProps> = ({ isOpen, onClose, gameData, type, 
           {[{ label: t("android_link"), id: "android" }, { label: t("ios_link"), id: "ios" }, { label: t("app_link"), id: "appLink" }].map((f) => (
             <Input key={f.id} id={f.id} label={f.label} value={(formDataState as any)[f.id]} onChange={handleChange} required />
           ))}
-          {/* <Input id="apiKey" label={t("api_key_label")} value={formDataState.apiKey} onChange={handleChange} required /> */}
         </div>
 
         <div className="space-y-2">
-          <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">{t("upload_thumbnail_label")}</label>
+          <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
+            {t("upload_thumbnail_label")}
+          </label>
           <div className="flex flex-col sm:flex-row items-center gap-4">
+            
             <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
-              {previewImage ? <img src={previewImage} className="h-full w-full object-cover" /> : <ImageIcon size={26} className="text-gray-400" />}
+              {previewImage ? <img src={previewImage} className="h-full w-full object-cover" alt="" /> : <ImageIcon size={26} className="text-gray-400" />}
             </div>
+            
             <div className="w-full space-y-2">
               <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+              
               <button type="button" onClick={() => fileInputRef.current?.click()} className="flex items-center gap-2">
                 <Upload size={18} className="text-[#25B16F]" />
-                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">{t("upload_button")}</span>
+                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
+                    {t("upload_button")}
+                </span>
               </button>
+
+              <Input 
+                id="thumbnailUrl" 
+                placeholder={t("placeholder_thumb_url_game")} 
+                value={formDataState.thumbnailUrl} 
+                onChange={(e) => {
+                   handleChange(e);
+                   if (e.target.value) setPreviewImage(e.target.value);
+                }} 
+              />
             </div>
           </div>
         </div>
