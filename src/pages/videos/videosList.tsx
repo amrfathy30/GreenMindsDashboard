@@ -18,7 +18,6 @@ import {
 import { VideoType } from "../../utils/types/videoType";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
-import { allAgeData } from "../../api/services/ageService";
 import { VideoTableSkeleton } from "../../components/loading/TableLoading";
 import EmptyState from "../../components/common/no-data-found";
 import {
@@ -58,7 +57,6 @@ export default function VideosList() {
       setLoading(true);
       const [videosRes] = await Promise.all([
         allVideosData({ page: currentPage, pageSize: pageSize }),
-        allAgeData(),
       ]);
       const responseData = videosRes.Data;
       const videosArray = responseData?.Items || [];
@@ -238,8 +236,9 @@ export default function VideosList() {
                       </td>
                       <td className="px-4 py-3 text-center">
                         <span className="text-sm md:text-base font-lalezar text-gray-600 dark:text-gray-300">
-                          {video.AgeSector?.FromAge || "__"} :{" "}
-                          {video.AgeSector?.ToAge || "__"}
+                          {hasPermission("AgeSectors_GetPaged")
+                            ? `${video.AgeSector?.FromAge || "__"} : ${video.AgeSector?.ToAge || "__"}`
+                            : "Private"}
                         </span>
                       </td>
                       {(canEdit || canDelete) && (
