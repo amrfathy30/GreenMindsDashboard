@@ -18,7 +18,6 @@ import {
 import { VideoType } from "../../utils/types/videoType";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
-import { allAgeData } from "../../api/services/ageService";
 import { VideoTableSkeleton } from "../../components/loading/TableLoading";
 import EmptyState from "../../components/common/no-data-found";
 import {
@@ -28,18 +27,10 @@ import {
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
-interface AgeSector {
-  Id: number;
-  DisplayName: string;
-  FromAge: number;
-  ToAge: number;
-}
-
 export default function VideosList() {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<VideoType[]>([]);
-  const [ageSectors, setAgeSectors] = useState<AgeSector[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(6);
@@ -64,16 +55,14 @@ export default function VideosList() {
     }
     try {
       setLoading(true);
-      const [videosRes, agesRes] = await Promise.all([
+      const [videosRes] = await Promise.all([
         allVideosData({ page: currentPage, pageSize: pageSize }),
-        allAgeData(),
       ]);
       const responseData = videosRes.Data;
       const videosArray = responseData?.Items || [];
       const totalCount = responseData?.Total || 0;
       const totalPagesCount = Math.ceil(totalCount / pageSize) || 1;
       setVideos(videosArray);
-      setAgeSectors(agesRes.Data || []);
       setTotalPages(totalPagesCount);
     } catch (error) {
       console.error(error);
@@ -247,14 +236,9 @@ export default function VideosList() {
                       </td>
                       <td className="px-4 py-3 text-center">
                         <span className="text-sm md:text-base font-lalezar text-gray-600 dark:text-gray-300">
-                          {(() => {
-                            const sector = ageSectors.find(
-                              (a) => a.Id === video.AgeSectorId,
-                            );
-                            return sector
-                              ? `${sector.FromAge} : ${sector.ToAge}`
-                              : video.AgeSectorName || "-";
-                          })()}
+                          {hasPermission("AgeSectors_GetPaged")
+                            ? `${video.AgeSector?.FromAge || "__"} : ${video.AgeSector?.ToAge || "__"}`
+                            : "Private"}
                         </span>
                       </td>
                       {(canEdit || canDelete) && (

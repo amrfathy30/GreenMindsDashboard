@@ -47,6 +47,8 @@ export default function ProfileLevels() {
   const canCreate = hasPermission("Levels_Create");
   const canEdit = hasPermission("Levels_Update");
   const canDelete = hasPermission("Levels_Delete");
+  const canViewAction =
+    hasPermission("Levels_Update") || hasPermission("Levels_Delete");
 
   useEffect(() => {
     const fetchLevels = async () => {
@@ -164,7 +166,7 @@ export default function ProfileLevels() {
     }
   };
 
-  const columns = [
+  const columns: any[] = [
     {
       key: "NameEn",
       label: t("NameEn"),
@@ -187,7 +189,10 @@ export default function ProfileLevels() {
       key: "MaxPoints",
       label: t("maxPoints"),
     },
-    {
+  ];
+
+  if (canViewAction) {
+    columns.push({
       key: "actions",
       label: t("actions"),
       render: (row: any) => (
@@ -220,8 +225,8 @@ export default function ProfileLevels() {
           )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   if (!canView && !loading) {
     return (

@@ -37,6 +37,8 @@ export default function AgeGroupList() {
   const canCreate = hasPermission("AgeSectors_Create");
   const canEdit = hasPermission("AgeSectors_Update");
   const canDelete = hasPermission("AgeSectors_Delete");
+  const canViewAction =
+    hasPermission("AgeSectors_Update") || hasPermission("AgeSectors_Delete");
 
   useEffect(() => {
     const fetchAgeGroups = async () => {
@@ -155,7 +157,7 @@ export default function AgeGroupList() {
     }
   };
 
-  const columns = [
+  const columns: any[] = [
     {
       key: "DisplayName",
       label: t("age_groups_name"),
@@ -165,7 +167,10 @@ export default function AgeGroupList() {
       label: t("age_groups"),
       render: (row: any) => `${t("from")} ${row.FromAge} : ${row.ToAge}`,
     },
-    {
+  ];
+
+  if (canViewAction) {
+    columns.push({
       key: "actions",
       label: (<div className="text-end px-4">{t("actions")}</div>) as any,
       render: (row: any) => (
@@ -192,8 +197,8 @@ export default function AgeGroupList() {
           )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   if (!canView && !loading) {
     return (

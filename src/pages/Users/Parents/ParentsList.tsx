@@ -28,7 +28,6 @@ import {
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
 
-
 export default function ParentsList({
   openAddModal,
   setOpenAddModal,
@@ -51,6 +50,10 @@ export default function ParentsList({
   const canView = hasPermission("Parents_GetParents");
   const canEdit = hasPermission("Parents_UpdateParent");
   const canDelete = hasPermission("Parents_DeleteParent");
+
+  const canViewAction =
+    hasPermission("Parents_UpdateParent") ||
+    hasPermission("Parents_DeleteParent");
 
   useEffect(() => {
     if (openAddModal) {
@@ -175,7 +178,7 @@ export default function ParentsList({
     }
   };
 
-  const columns = [
+  const columns: any[] = [
     {
       key: "Name",
       label: t("Name"),
@@ -205,7 +208,7 @@ export default function ParentsList({
     },
     {
       key: "Status",
-       label: <span className="whitespace-nowrap"></span>, 
+      label: <span className="whitespace-nowrap"></span>,
       render: (row: any) => (
         <span
           className={`text-sm font-medium whitespace-nowrap ${
@@ -225,7 +228,10 @@ export default function ParentsList({
         </span>
       ),
     },
-    {
+  ];
+
+  if (canViewAction) {
+    columns.push({
       key: "actions",
       label: t("Actions"),
       render: (row: any) => (
@@ -263,8 +269,8 @@ export default function ParentsList({
           )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   if (!canView && !tableLoading) {
     return (

@@ -1,3 +1,10 @@
+export interface AgeSector {
+  Id: number;
+  FromAge: number;
+  ToAge: number;
+  DisplayName: string;
+}
+
 export interface VideoType {
   Id: number;
   TitleEn: string;
@@ -7,6 +14,8 @@ export interface VideoType {
   NumberOfPoints: number;
   AgeSectorId: number;
   AgeSectorName?: string;
+
+  AgeSector?: AgeSector;
 }
 
 export interface VideoPayload {
@@ -18,7 +27,7 @@ export interface VideoPayload {
   VideoFile?: File | null;
   NumberOfPoints: number;
   AgeSectorId: number;
-  ThumbnailUrl?: string; 
+  ThumbnailUrl?: string;
 }
 
 export interface VideoApiResponse {

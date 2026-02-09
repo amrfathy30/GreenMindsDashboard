@@ -28,6 +28,10 @@ export default function Setting() {
   }, []);
   const canEditSmtp = hasPermission("Smtp_Update");
   const canView = hasPermission("Smtp_Get");
+  const ageGroupShow = hasPermission("AgeSectors_GetAll");
+  const adminRoleShow = hasPermission("AdminRoles_GetAllRoles");
+  const permissionShow = hasPermission("AdminPermissions_GetAllPermissions");
+  const levelShow = hasPermission("Levels_GetAll");
 
   const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
 
@@ -58,7 +62,7 @@ export default function Setting() {
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {t("pageTitle")}
+            {t("setting")}
           </h2>
         </div>
         <div className="flex flex-col gap-3 m-6 py-4 border border-gray-300 dark:border-gray-600 rounded-tl-3xl rounded-tr-3xl rounded-bl-md rounded-br-md">
@@ -258,45 +262,53 @@ export default function Setting() {
           )}
 
           {/* Age Groups */}
-          <Link
-            to="/age-group"
-            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
-          >
-            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <AgeGroup className="w-5 h-5 dark:brightness-300" />
-              <span>{t("ageGroups")}</span>
-            </div>
-          </Link>
-          <Link
-            to="/admin-roles"
-            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
-          >
-            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <UserCheckIcon />
-              <span>{t("AdminRoles")}</span>
-            </div>
-          </Link>
-
-          <Link
-            to="/permissions-list"
-            className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
-          >
-            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <UserCheckIcon />
-              <span> {t("Permission")}</span>
-            </div>
-          </Link>
-
+          {ageGroupShow && (
+            <Link
+              to="/age-group"
+              className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
+            >
+              <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+                <AgeGroup className="w-5 h-5 dark:brightness-300" />
+                <span>{t("ageGroups")}</span>
+              </div>
+            </Link>
+          )}
+          {/* Admin Roles */}
+          {adminRoleShow && (
+            <Link
+              to="/admin-roles"
+              className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
+            >
+              <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+                <UserCheckIcon />
+                <span>{t("AdminRoles")}</span>
+              </div>
+            </Link>
+          )}
+          {/* Permission */}
+          {permissionShow && (
+            <Link
+              to="/permissions-list"
+              className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
+            >
+              <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+                <UserCheckIcon />
+                <span> {t("Permission")}</span>
+              </div>
+            </Link>
+          )}
           {/* Profile Levels */}
-          <Link
-            to="/profile-levels"
-            className="flex justify-between items-center px-4 cursor-pointer"
-          >
-            <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
-              <BoxIcon className="w-5 h-5 " />
-              <span>{t("levelNameLabel")}</span>
-            </div>
-          </Link>
+          {levelShow && (
+            <Link
+              to="/profile-levels"
+              className="flex justify-between items-center px-4 cursor-pointer"
+            >
+              <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
+                <BoxIcon className="w-5 h-5 " />
+                <span>{t("levelNameLabel")}</span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
 
