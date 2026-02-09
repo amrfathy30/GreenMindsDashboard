@@ -65,6 +65,12 @@ export default function Users() {
     else if (activeTab === "tab3") setOpenAddChildModal(true);
   };
 
+  const canViewTab = {
+    tab1: hasPermission("Account_GetAdmins"),
+    tab2: hasPermission("Parents_GetParents"),
+    tab3: hasPermission("Children_GetChildren"),
+  };
+
   return (
     <div>
       <PageMeta title="Green minds Admin | Users" description={``} />
@@ -77,36 +83,42 @@ export default function Users() {
         <div className="h-[80%] px-5">
           <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8 ">
             <div className="flex items-center gap-4">
-              <button
-                className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
-                  activeTab === "tab1"
-                    ? "bg-linear-to-r from-primary to-secondary text-white"
-                    : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
-                }`}
-                onClick={() => setActiveTab("tab1")}
-              >
-                {t("adminsTab")}
-              </button>
-              <button
-                className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
-                  activeTab === "tab2"
-                    ? "bg-linear-to-r from-primary to-secondary text-white"
-                    : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
-                }`}
-                onClick={() => setActiveTab("tab2")}
-              >
-                {t("parentsTab")}
-              </button>
-              <button
-                className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
-                  activeTab === "tab3"
-                    ? "bg-linear-to-r from-primary to-secondary text-white"
-                    : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
-                }`}
-                onClick={() => setActiveTab("tab3")}
-              >
-                {t("childrenTab")}
-              </button>
+              {canViewTab.tab1 && (
+                <button
+                  className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
+                    activeTab === "tab1"
+                      ? "bg-linear-to-r from-primary to-secondary text-white"
+                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                  }`}
+                  onClick={() => setActiveTab("tab1")}
+                >
+                  {t("adminsTab")}
+                </button>
+              )}
+              {canViewTab.tab2 && (
+                <button
+                  className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
+                    activeTab === "tab2"
+                      ? "bg-linear-to-r from-primary to-secondary text-white"
+                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                  }`}
+                  onClick={() => setActiveTab("tab2")}
+                >
+                  {t("parentsTab")}
+                </button>
+              )}
+              {canViewTab.tab3 && (
+                <button
+                  className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
+                    activeTab === "tab3"
+                      ? "bg-linear-to-r from-primary to-secondary text-white"
+                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                  }`}
+                  onClick={() => setActiveTab("tab3")}
+                >
+                  {t("childrenTab")}
+                </button>
+              )}
             </div>
 
             {canAdd[activeTab] && (

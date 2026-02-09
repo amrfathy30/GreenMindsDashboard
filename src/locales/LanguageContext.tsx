@@ -385,6 +385,10 @@ const translations = {
     delete_role: "Delete role",
     save_new_permissions: "Save Role permissions",
     EmailStatus: "Email Status",
+    select_all: "Select all",
+    search_permissions: "Search Permissions",
+    unselect_all: "Unselect all",
+    welcome: "Welcome to Green Minds Admin",
   },
   ar: {
     // sidebar
@@ -760,6 +764,10 @@ const translations = {
     delete_role: "حذف الدور",
     save_new_permissions: "حفظ الصلاحيات الجديدة",
     EmailStatus: "حالة البريد",
+    select_all: "تحديد الكل",
+    welcome: "أهلاً بكم في إدارة العقول الخضراء",
+    unselect_all: "إلغاء تحديد الكل",
+    search_permissions: "البحث عن الصلاحيات",
   },
 };
 

@@ -52,6 +52,9 @@ export default function AdminsList({
   const canEditAdmin = hasPermission("Account_Update");
   const canDeleteAdmin = hasPermission("Account_Delete");
 
+  const canViewAction =
+    hasPermission("Account_Update") || hasPermission("Account_Delete");
+
   useEffect(() => {
     if (openAddModal) {
       setEditData(null);
@@ -248,7 +251,7 @@ export default function AdminsList({
   //   return "__";
   // };
 
-  const columns = [
+  const columns: any[] = [
     {
       key: "Name",
       label: t("name"),
@@ -268,20 +271,12 @@ export default function AdminsList({
     {
       key: "Email",
       label: t("email"),
-      render: (row: any) => (
-        <div className="flex items-center gap-2">
-          <span>{row.Email || "__"}</span>
-        </div>
-      ),
+      render: (row: any) => <span>{row.Email || "__"}</span>,
     },
     {
       key: "RolesNames",
       label: t("RolesNames"),
-      render: (row: any) => (
-        <div className="flex items-center gap-2">
-          <span>{row.RolesNames?.[0] ?? "__"}</span>
-        </div>
-      ),
+      render: (row: any) => <span>{row.RolesNames?.[0] ?? "__"}</span>,
     },
     {
       key: "PhoneNumber",
@@ -292,26 +287,10 @@ export default function AdminsList({
         </span>
       ),
     },
-    // {
-    //   key: "Gender",
-    //   label: t("Gender"),
-    //   render: (row: any) => (
-    //     <span className="text-[#757575] dark:text-white">
-    //       {getGenderLabel(row.GenderId, t)}
-    //     </span>
-    //   ),
-    // },
-    // {
-    //   key: "Age",
-    //   label: t("Age"),
-    //   render: (row: any) => (
-    //     <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
-    //       {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
-    //     </span>
-    //   ),
-    // },
+  ];
 
-    {
+  if (canViewAction) {
+    columns.push({
       key: "actions",
       label: t("actions"),
       render: (row: any) => (
@@ -352,8 +331,8 @@ export default function AdminsList({
           )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   if (!canViewAdmin && !tableLoading) {
     return (

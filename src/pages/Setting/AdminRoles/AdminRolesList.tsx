@@ -45,9 +45,13 @@ export default function AdminRoles() {
   }, []);
 
   const canCreateRole = hasPermission("AdminRoles_CreateRole");
-  const canUpdateRoleAndPermissions = hasPermission("AdminRoles_UpdateRoleAndPermissions");
+  const canUpdateRoleAndPermissions = hasPermission(
+    "AdminRoles_UpdateRoleAndPermissions",
+  );
   const canViewRoles = hasPermission("AdminRoles_GetAllRoles");
-  const canViewPermissions = hasPermission("AdminPermissions_GetAllPermissions");
+  const canViewPermissions = hasPermission(
+    "AdminPermissions_GetAllPermissions",
+  );
   const canDeleteRole = hasPermission("AdminRoles_DeleteRole");
 
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -100,7 +104,9 @@ export default function AdminRoles() {
       setAdminRoles(rolesData.Data);
       setRoleToEdit(null);
     } catch {
-      toast.error(roleToEdit ? t("failed_update_role") : t("failed_create_role"));
+      toast.error(
+        roleToEdit ? t("failed_update_role") : t("failed_create_role"),
+      );
     } finally {
       setAddRoleLoading(false);
     }
@@ -113,7 +119,7 @@ export default function AdminRoles() {
         setLoading(true);
         const [rolesRes, permsRes] = await Promise.all([
           allAdminRoles(),
-          canViewPermissions ? AllPermissions() : Promise.resolve({ Data: [] })
+          canViewPermissions ? AllPermissions() : Promise.resolve({ Data: [] }),
         ]);
         setAdminRoles(rolesRes.Data);
         setAllPermissions(Array.isArray(permsRes.Data) ? permsRes.Data : []);
@@ -131,7 +137,9 @@ export default function AdminRoles() {
     setPermissionsLoading(true);
     try {
       const data = await allRolePermissions(adminRoles[activeTab].Name);
-      const ids = Array.isArray(data.Data) ? data.Data.map((p: any) => p.Id) : [];
+      const ids = Array.isArray(data.Data)
+        ? data.Data.map((p: any) => p.Id)
+        : [];
       setSelectedPermissions(ids);
     } finally {
       setPermissionsLoading(false);
@@ -157,10 +165,25 @@ export default function AdminRoles() {
     }
   };
 
+  const handleToggleSelectAll = () => {
+    if (allPermissions.length === 0) return;
+
+    const allIds = allPermissions.map((p: any) => p.Id);
+
+    const isAllSelected =
+      allIds.length > 0 &&
+      allIds.every((id: number) => selectedPermissions.includes(id));
+
+    setSelectedPermissions(isAllSelected ? [] : allIds);
+  };
+
   if (!canViewRoles && !loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <EmptyState title={t("access_denied")} description={t("not_authorized_to_view_this_page")} />
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
       </div>
     );
   }
@@ -170,25 +193,40 @@ export default function AdminRoles() {
       <PageMeta title="Green minds Admin | Admin Roles" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="md:h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t("AdminRoles")}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            {t("AdminRoles")}
+          </h2>
           {canCreateRole && (
-            <AddButton startIcon={<Plus />} onClick={() => { setRoleToEdit(null); setOpenModal(true); }}>
+            <AddButton
+              startIcon={<Plus />}
+              onClick={() => {
+                setRoleToEdit(null);
+                setOpenModal(true);
+              }}
+            >
               {t("add_admin_role")}
             </AddButton>
           )}
         </div>
 
         <div className="flex flex-col md:flex-row gap-6 px-5 min-h-[500px]">
-          <div className={`flex flex-col gap-2 min-w-[200px] py-2 ${lang === "ar" ? "border-l border-gray-300 dark:border-gray-700/50 pl-6" : "border-r border-gray-300 dark:border-gray-700/40 pr-6"}`}>            {adminRoles.map((role, index) => (
-            <button
-              key={role.Id}
-              onClick={() => setActiveTab(index)}
-              className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === index ? "bg-secondary text-white shadow-md" : "text-gray-500 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+          <div
+            className={`flex flex-col gap-2 min-w-[200px] py-2 ${lang === "ar" ? "border-l border-gray-300 dark:border-gray-700/50 pl-6" : "border-r border-gray-300 dark:border-gray-700/40 pr-6"}`}
+          >
+            {" "}
+            {adminRoles.map((role, index) => (
+              <button
+                key={role.Id}
+                onClick={() => setActiveTab(index)}
+                className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 ${
+                  activeTab === index
+                    ? "bg-secondary text-white shadow-md"
+                    : "text-gray-500 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
-            >
-              {role?.Name}
-            </button>
-          ))}
+              >
+                {role?.Name}
+              </button>
+            ))}
           </div>
 
           <div className="flex-1 flex flex-col bg-white dark:bg-[#1e1e1e] rounded-xl p-5 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -204,35 +242,62 @@ export default function AdminRoles() {
                     </h3>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col md:flex-row w-full md:w-fit gap-2">
+                    <button
+                      onClick={handleToggleSelectAll}
+                      disabled={permissionsLoading}
+                      className="flex justify-center items-center w-full md:w-fit text-center gap-2 px-2 py-1.5 text-xs font-medium rounded-[11px]
+             border border-gray-400 text-gray-600 dark:text-gray-100 
+             transition-all duration-300 
+             hover:bg-gray-400 hover:text-white
+             disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {allPermissions.length > 0 &&
+                      allPermissions.every((p: any) =>
+                        selectedPermissions.includes(p.Id),
+                      )
+                        ? t("unselect_all")
+                        : t("select_all")}
+                    </button>
+
                     {canUpdateRoleAndPermissions && (
                       <button
-                        onClick={() => { setRoleToEdit(adminRoles[activeTab]); setEditRoleModalOpen(true); }}
-                        className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-blue-500 text-blue-500 transition-all duration-300 hover:bg-blue-500 hover:text-white group"
+                        onClick={() => {
+                          setRoleToEdit(adminRoles[activeTab]);
+                          setEditRoleModalOpen(true);
+                        }}
+                        className="flex justify-center items-center w-full md:w-fit text-center gap-2 px-2 py-1.5 text-xs font-medium rounded-[11px] border border-blue-500 text-blue-500 transition-all duration-300 hover:bg-blue-500 hover:text-white group"
                       >
-                        <Edit2 size={14} className="group-hover:scale-110 transition-transform" />
+                        <Edit2
+                          size={14}
+                          className="group-hover:scale-110 transition-transform"
+                        />
                         {t("edit_role_name")}
                       </button>
                     )}
                     <button
                       onClick={handleSavePermissions}
                       disabled={saving || permissionsLoading}
-                      className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-[#25B16F] text-[#25B16F] transition-all duration-300 hover:bg-[#25B16F] hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex justify-center items-center w-full md:w-fit text-center gap-2 px-2 py-1.5 text-xs font-medium rounded-[11px] border border-[#25B16F] text-[#25B16F] transition-all duration-300 hover:bg-[#25B16F] hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Save size={14} className={`${saving ? 'animate-spin' : 'group-hover:scale-110'} transition-transform`} />
+                      <Save
+                        size={14}
+                        className={`${saving ? "animate-spin" : "group-hover:scale-110"} transition-transform`}
+                      />
                       {saving ? t("updating") : t("save_new_permissions")}
                     </button>
                     {canDeleteRole && (
                       <button
                         onClick={handleDeleteTrigger}
-                        className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-[11px] border border-red-500 text-red-500 transition-all duration-300 hover:bg-red-500 hover:text-white group"
+                        className="flex justify-center items-center w-full md:w-fit text-center gap-2 px-2 py-1.5 text-xs font-medium rounded-[11px] border border-red-500 text-red-500 transition-all duration-300 hover:bg-red-500 hover:text-white group"
                       >
-                        <Trash2 size={14} className="group-hover:scale-110 transition-transform" />
+                        <Trash2
+                          size={14}
+                          className="group-hover:scale-110 transition-transform"
+                        />
                         {t("delete_role")}
                       </button>
                     )}
-
-
                   </div>
                 </div>
                 <AdminRolePermissions
@@ -242,7 +307,8 @@ export default function AdminRoles() {
                   loading={saving}
                   pageLoading={permissionsLoading}
                   t={t}
-                  onSave={handleSavePermissions}/>
+                  onSave={handleSavePermissions}
+                />
               </>
             )}
           </div>
@@ -250,7 +316,10 @@ export default function AdminRoles() {
 
         <AddRoleModal
           open={editRoleModalOpen || openModal}
-          onClose={() => { setEditRoleModalOpen(false); setOpenModal(false); }}
+          onClose={() => {
+            setEditRoleModalOpen(false);
+            setOpenModal(false);
+          }}
           onSave={handleSaveRole}
           initialData={roleToEdit ? { RoleName: roleToEdit.Name } : undefined}
           editing={!!roleToEdit}

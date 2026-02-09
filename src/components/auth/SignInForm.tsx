@@ -55,7 +55,7 @@ export default function SignInForm() {
   const getAdminRoute = (permissions: any) => {
     if (permissions.includes("Videos_GetPaged")) return "/videos";
     else if (permissions.includes("Games_GetPaged")) return "/games";
-    else return "/"; // Add No permissions page
+    else return "/welcome";
   };
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

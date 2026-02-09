@@ -26,6 +26,21 @@ const AppSidebar: React.FC = () => {
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const { isRTL, t } = useLanguage();
+
+  const canViewUsersLink =
+    hasPermission("Account_GetAdmins") ||
+    hasPermission("Parents_GetParents") ||
+    hasPermission("Children_GetChildren");
+
+  const canViewAnalyticsLink =
+    hasPermission("Dashboard_LevelsStats") ||
+    hasPermission("Dashboard_GenderPercentage") ||
+    hasPermission("Dashboard_UsersByAgeSector") ||
+    hasPermission("Dashboard_TotalGames") ||
+    hasPermission("Dashboard_TopRanks") ||
+    hasPermission("Dashboard_ParentChildStats") ||
+    hasPermission("Dashboard_TotalVideos");
+
   const navItems: NavItem[] = [
     {
       icon: <VideoIcon />,
@@ -37,19 +52,19 @@ const AppSidebar: React.FC = () => {
       icon: <GameIcon />,
       name: t("games"),
       path: "/games",
-      hasPermission: true,
+      hasPermission: hasPermission("Games_GetPaged"),
     },
     {
       icon: <AvatarIcon />,
       name: t("avatars"),
       path: "/avatars",
-      hasPermission: true,
+      hasPermission: hasPermission("Avatars_GetPaged"),
     },
     {
       icon: <AnalyticsIcon />,
       name: t("analytics"),
       path: "/analytics",
-      hasPermission: true,
+      hasPermission: canViewAnalyticsLink,
     },
     {
       icon: <SettingsIcon />,
@@ -61,7 +76,7 @@ const AppSidebar: React.FC = () => {
       icon: <UserCircleIcon />,
       name: t("users"),
       path: "/users",
-      hasPermission: true,
+      hasPermission: canViewUsersLink,
     },
   ];
   // Keyboard shortcut for search focus

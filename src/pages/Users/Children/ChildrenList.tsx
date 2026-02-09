@@ -54,6 +54,11 @@ export default function ChildrenList({
   const canDelete = hasPermission("Children_DeleteChild");
   const canShow = hasPermission("Children_GetChild");
 
+  const canViewAction =
+    hasPermission("Children_UpdateChild") ||
+    hasPermission("Children_GetChild") ||
+    hasPermission("Children_DeleteChild");
+
   useEffect(() => {
     if (openAddModal) {
       setEditData(null);
@@ -235,7 +240,7 @@ export default function ChildrenList({
     return "__";
   };
 
-  const columns = [
+  const columns: any[] = [
     {
       key: "Name",
       label: t("Name"),
@@ -263,7 +268,7 @@ export default function ChildrenList({
     },
     {
       key: "Status",
-       label: <span className="whitespace-nowrap"></span>, 
+      label: <span className="whitespace-nowrap"></span>,
       render: (row: any) => (
         <span
           className={`text-sm font-medium whitespace-nowrap ${
@@ -297,7 +302,10 @@ export default function ChildrenList({
         </span>
       ),
     },
-    {
+  ];
+
+  if (canViewAction) {
+    columns.push({
       key: "actions",
       label: t("Actions"),
       render: (row: any) => (
@@ -346,8 +354,8 @@ export default function ChildrenList({
           )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   if (!canView && !tableLoading) {
     return (
