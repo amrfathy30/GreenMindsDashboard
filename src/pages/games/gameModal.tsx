@@ -269,7 +269,7 @@ const GameModal: React.FC<GameModalProps> = ({
             {t("upload_thumbnail_label")}
           </label>
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
+            <div className="relative flex h-20 w-25 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
               {previewImage ? (
                 <img
                   src={previewImage}
@@ -294,8 +294,8 @@ const GameModal: React.FC<GameModalProps> = ({
                 onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-2"
               >
-                <Upload size={18} className="text-[#25B16F]" />
-                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
+                <Upload size={18} className="text-secondary" />
+                <span className="text-sm font-bold bg-linear-to-r from-[#00A7E1] to-secondary bg-clip-text text-transparent">
                   {t("upload_button")}
                 </span>
               </button>
