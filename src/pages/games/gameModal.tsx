@@ -10,8 +10,8 @@ import TextArea from "../../components/form/input/TextArea";
 import { createGame, updateGame } from "../../api/services/gameService";
 import { allAgeData } from "../../api/services/ageService";
 import { toast } from "sonner";
-const BASE_URL = "https://kidsapi.pulvent.com"; 
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
+const BASE_URL = "https://kidsapi.pulvent.com";
 
 interface GameModalProps {
   isOpen: boolean;
@@ -43,11 +43,8 @@ const GameModal: React.FC<GameModalProps> = ({
     android: "",
     ios: "",
     appLink: "",
-    ageSectorId: "", 
-    thumbnailUrl: "", 
-    // apiLink: "",
-    // apiKey: "",
     ageSectorId: "",
+    thumbnailUrl: "",
   });
 
   useEffect(() => {
@@ -74,18 +71,15 @@ const GameModal: React.FC<GameModalProps> = ({
         descAr: gameData.DescriptionAr || "",
         android: gameData.AndroidLink || "",
         ios: gameData.IosLink || "",
-        appLink: gameData.AppLink || "",  
-        ageSectorId: gameData.AgeSectorId?.toString() || "", 
-        thumbnailUrl: tUrl, 
         appLink: gameData.AppLink || "",
         ageSectorId: gameData.AgeSectorId?.toString() || "",
+        thumbnailUrl: tUrl,
       });
-      setPreviewImage(tUrl ? (tUrl.startsWith("http") ? tUrl : `${BASE_URL}/${tUrl}`) : null);
+      setPreviewImage(
+        tUrl ? (tUrl.startsWith("http") ? tUrl : `${BASE_URL}/${tUrl}`) : null,
+      );
     } else if (!gameData && isOpen) {
       setFormDataState({
-        nameEn: "", nameAr: "", descEn: "", descAr: "",
-        android: "", ios: "", appLink: "", ageSectorId: "",
-        thumbnailUrl: "" 
         nameEn: "",
         nameAr: "",
         descEn: "",
@@ -94,6 +88,7 @@ const GameModal: React.FC<GameModalProps> = ({
         ios: "",
         appLink: "",
         ageSectorId: "",
+        thumbnailUrl: "",
       });
       setPreviewImage(null);
     }
@@ -141,13 +136,9 @@ const GameModal: React.FC<GameModalProps> = ({
 
     setLoading(true);
     try {
-      if (type === 'edit') {
+      if (type === "edit") {
         const id = gameData.Id || gameData.id;
         if (id) formData.append("Id", id.toString());
-      if (type === "edit") {
-        if (gameData?.Id || gameData?.id) {
-          formData.append("Id", (gameData.Id || gameData.id).toString());
-        }
         await updateGame(formData);
         ShowToastSuccess(t("game_updated_successfully"));
       } else {
@@ -157,8 +148,6 @@ const GameModal: React.FC<GameModalProps> = ({
       onSuccess();
       onClose();
     } catch (error: any) {
-      toast.error(t("something_went_wrong"), { id: toastId });
-    } finally {
       const serverErrors = error.response?.data?.Data;
       let customMsg = "";
 
@@ -182,7 +171,7 @@ const GameModal: React.FC<GameModalProps> = ({
       const reader = new FileReader();
       reader.onloadend = () => setPreviewImage(reader.result as string);
       reader.readAsDataURL(file);
-      setFormDataState(prev => ({ ...prev, thumbnailUrl: "" }));
+      setFormDataState((prev) => ({ ...prev, thumbnailUrl: "" }));
     }
   };
 
@@ -226,25 +215,15 @@ const GameModal: React.FC<GameModalProps> = ({
             onChange={handleChange}
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
           >
-            <option value="" disabled>{t("select_age_group")}</option>
-            {ageGroups.map((group: any) => (
-              <option key={group.Id} value={group.Id}> 
-                {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
-              </option>
-            ))}
             <option value="" disabled>
               {t("select_age_group")}
             </option>
-            {ageGroups &&
-              ageGroups.map((group: any) => (
-                <option key={group.Id} value={group.Id}>
-                  {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
-                </option>
-              ))}
+            {ageGroups.map((group: any) => (
+              <option key={group.Id} value={group.Id}>
+                {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
+              </option>
+            ))}
           </select>
-          {formError && !formDataState.ageSectorId && (
-            <p className="text-xs text-red-500">{t("required")}</p>
-          )}
         </div>
 
         <div className="grid grid-cols-2 gap-2 w-full">
@@ -289,14 +268,8 @@ const GameModal: React.FC<GameModalProps> = ({
           <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
             {t("upload_thumbnail_label")}
           </label>
-          <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
-            {t("upload_thumbnail_label")}
-          </label>
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            
             <div className="relative flex h-[80px] w-[100px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
-              {previewImage ? <img src={previewImage} className="h-full w-full object-cover" alt="" /> : <ImageIcon size={26} className="text-gray-400" />}
-            <div className="relative flex h-20 w-25 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
               {previewImage ? (
                 <img
                   src={previewImage}
@@ -307,15 +280,8 @@ const GameModal: React.FC<GameModalProps> = ({
                 <ImageIcon size={26} className="text-gray-400" />
               )}
             </div>
-            
+
             <div className="w-full space-y-2">
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
-              
-              <button type="button" onClick={() => fileInputRef.current?.click()} className="flex items-center gap-2">
-                <Upload size={18} className="text-[#25B16F]" />
-                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
-                    {t("upload_button")}
-                </span>
               <input
                 type="file"
                 ref={fileInputRef}
@@ -328,20 +294,20 @@ const GameModal: React.FC<GameModalProps> = ({
                 onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-2"
               >
-                <Upload size={18} className="text-secondary" />
-                <span className="text-sm font-bold bg-linear-to-r from-[#00A7E1] to-secondary bg-clip-text text-transparent">
+                <Upload size={18} className="text-[#25B16F]" />
+                <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
                   {t("upload_button")}
                 </span>
               </button>
 
-              <Input 
-                id="thumbnailUrl" 
-                placeholder={t("placeholder_thumb_url_game")} 
-                value={formDataState.thumbnailUrl} 
+              <Input
+                id="thumbnailUrl"
+                placeholder={t("placeholder_thumb_url_game")}
+                value={formDataState.thumbnailUrl}
                 onChange={(e) => {
-                   handleChange(e);
-                   if (e.target.value) setPreviewImage(e.target.value);
-                }} 
+                  handleChange(e);
+                  if (e.target.value) setPreviewImage(e.target.value);
+                }}
               />
             </div>
           </div>
