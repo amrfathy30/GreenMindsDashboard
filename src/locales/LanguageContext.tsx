@@ -280,6 +280,7 @@ const translations = {
       "Sorry, you are not authorized to view this page.",
     access_denied: "Access Denied",
     years: "Years",
+    placeholder_thumb_url_game: "Enter game thumbnail URL here",
     //Avatar Translation
     avatars_admin: "Avatars - Admin",
     add_avatar: "Add Avatar",
@@ -646,6 +647,7 @@ const translations = {
     not_authorized_to_view_this_page: "عفواً، ليس لديك صلاحية لعرض هذه الصفحة.",
     access_denied: "تم رفض الوصول",
     years: "سنوات",
+    placeholder_thumb_url_game: "أدخل رابط الصورة المصغرة للعبة هنا",
     //Avatar Translation
     avatars_admin: "إدارة الصور الرمزية",
     add_avatar: "إضافة صورة رمزية",
