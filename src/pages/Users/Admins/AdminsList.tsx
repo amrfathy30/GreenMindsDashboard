@@ -98,7 +98,7 @@ export default function AdminsList({
     };
 
     fetchData();
-  }, [t]);
+  }, [canViewAdmin, t]);
 
   const [adminRoles, setAdminRoles] = useState<any[]>([]);
   // fetchAdminRoles
@@ -117,7 +117,7 @@ export default function AdminsList({
     };
 
     fetchAdminRoles();
-  }, [t]);
+  }, [canViewAdminRoles, t]);
 
   const handleDelete = (id: number) => {
     setSelectedDeleteId(id);
@@ -256,14 +256,14 @@ export default function AdminsList({
       key: "Name",
       label: t("name"),
       render: (row: any) => (
-        <span className="block max-w-[100px] truncate">{row.Name || "__"}</span>
+        <span className="block max-w-25 truncate">{row.Name || "__"}</span>
       ),
     },
     {
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="block max-w-[100px] truncate">
+        <span className="dark:text-white block max-w-25 truncate">
           {row.UserName || "__"}
         </span>
       ),
@@ -271,20 +271,24 @@ export default function AdminsList({
     {
       key: "Email",
       label: t("email"),
-      render: (row: any) => <span>{row.Email || "__"}</span>,
+      render: (row: any) => (
+        <span className="dark:text-white block max-w-60 truncate">
+          {row.Email || "__"}
+        </span>
+      ),
     },
     {
       key: "RolesNames",
       label: t("RolesNames"),
-      render: (row: any) => <span>{row.RolesNames?.[0] ?? "__"}</span>,
+      render: (row: any) => (
+        <span className="dark:text-white">{row.RolesNames?.[0] ?? "__"}</span>
+      ),
     },
     {
       key: "PhoneNumber",
       label: t("PhoneNumber"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">
-          {row.PhoneNumber || "__"}
-        </span>
+        <span className="dark:text-white">{row.PhoneNumber || "__"}</span>
       ),
     },
   ];
@@ -336,7 +340,7 @@ export default function AdminsList({
 
   if (!canViewAdmin && !tableLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}

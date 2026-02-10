@@ -29,9 +29,15 @@ export default function Setting() {
   const canEditSmtp = hasPermission("Smtp_Update");
   const canView = hasPermission("Smtp_Get");
   const ageGroupShow = hasPermission("AgeSectors_GetAll");
-  const adminRoleShow = hasPermission("AdminRoles_GetAllRoles");
-  const permissionShow = hasPermission("AdminPermissions_GetAllPermissions");
   const levelShow = hasPermission("Levels_GetAll");
+
+  const canShowAdminRoles =
+    hasPermission("AdminRoles_GetAllRoles") &&
+    hasPermission("AdminRoles_GetPermissionsForRole");
+
+  const canShowAdminPermission = hasPermission(
+    "AdminPermissions_GetAllPermissions",
+  );
 
   const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
 
@@ -53,14 +59,14 @@ export default function Setting() {
 
   useEffect(() => {
     fetchSmtp();
-  }, []);
+  }, [canView]);
 
   return (
     <>
       <PageMeta title="Green minds Admin | Settings" description={``} />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("setting")}
           </h2>
@@ -155,7 +161,7 @@ export default function Setting() {
                 <Dropdown
                   isOpen={open}
                   onClose={closeDropdown}
-                  className={`${language === "en" ? "right-0 " : "left-0 "} absolute top-4 flex h-[74px] w-[200px] flex-col rounded-2xl bg-white shadow-theme-lg dark:bg-gray-dark`}
+                  className={`${language === "en" ? "right-0 " : "left-0 "} absolute top-4 flex h-18.5 w-50 flex-col rounded-2xl bg-white shadow-theme-lg dark:bg-gray-dark`}
                 >
                   <ul className="flex flex-col">
                     <li>
@@ -274,7 +280,7 @@ export default function Setting() {
             </Link>
           )}
           {/* Admin Roles */}
-          {adminRoleShow && (
+          {canShowAdminRoles && (
             <Link
               to="/admin-roles"
               className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
@@ -286,7 +292,7 @@ export default function Setting() {
             </Link>
           )}
           {/* Permission */}
-          {permissionShow && (
+          {canShowAdminPermission && (
             <Link
               to="/permissions-list"
               className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"

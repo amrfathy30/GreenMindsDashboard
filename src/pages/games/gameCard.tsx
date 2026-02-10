@@ -31,7 +31,7 @@ const GameCard: React.FC<GameCardProps> = ({
   const hasActions = canEdit || canDelete;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-lg shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e] h-[250px]">
+    <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-lg shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e] h-62.5">
       <div className="relative mb-4 h-[68%] w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 ">
         <img src={image} alt={title} className="h-full w-full object-cover" />
       </div>

@@ -36,6 +36,7 @@ export default function ChildrenInfo() {
     fetchUserPermissions();
   }, []);
   const canView = hasPermission("Children_GetChild");
+  const canViewPoints = hasPermission("Children_GetChildPointsById");
 
   // getChildrenById
   useEffect(() => {
@@ -64,7 +65,7 @@ export default function ChildrenInfo() {
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
-      if (!canView) {
+      if (!canViewPoints) {
         setLoadingPoints(false);
         return;
       }
@@ -81,7 +82,7 @@ export default function ChildrenInfo() {
     };
 
     fetchData();
-  }, [canView, id, t]);
+  }, [canViewPoints, id, t]);
 
   const childData: Child | undefined = child?.Data;
   const pointsData = childPoints?.Data?.Child;
@@ -122,9 +123,9 @@ export default function ChildrenInfo() {
 
   const pageTitle = `${t("GreenMindsAdmin")} | ${t("ChildrenInformation")}`;
 
-  if (!canView && !loading) {
+  if (!canView && !canViewPoints && !loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}

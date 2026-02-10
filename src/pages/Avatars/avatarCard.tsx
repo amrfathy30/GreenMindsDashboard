@@ -31,7 +31,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
 
   return (
     <div className="relative flex rounded-2xl gap-4 border border-gray-200 bg-white p-4 shadow-lg transition-all hover:shadow-xl shadow-[#0FA5AA57] dark:border-gray-800 dark:bg-[#1e1e1e]">
-      <div className="relative shrink-0 h-[90px] w-[90px]  overflow-hidden rounded-xl flex items-center justify-center border bg-gray-50 dark:bg-gray-700/30 dark:border-gray-700">
+      <div className="relative shrink-0 h-22.5 w-22.5  overflow-hidden rounded-xl flex items-center justify-center border bg-gray-50 dark:bg-gray-700/30 dark:border-gray-700">
         <img
           src={image}
           className="h-full w-full rounded-xl object-cover "
@@ -94,7 +94,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
             <span className="text-gray-500 dark:text-gray-400">
               {t("age_group_label")} :
             </span>
-            <span className="font-semibold text-[#009DD1]">{ageGroup}</span>
+            <span className="font-semibold text-primary">{ageGroup}</span>
           </div>
         </div>
       </div>

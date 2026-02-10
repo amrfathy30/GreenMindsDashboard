@@ -29,6 +29,7 @@ export default function EditProfileModal({
   onClose,
 }: EditProfileModalProps) {
   const { t } = useLanguage();
+  const lang = localStorage.getItem("GM-language");
 
   const [loading, setLoading] = useState(false);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoRequest | null>(
@@ -43,31 +44,35 @@ export default function EditProfileModal({
   const adminId = admin?.UserId;
   const [loadingData, setLoadingData] = useState(false);
 
-  const fetchPersonalInfo = async () => {
-    try {
-      setLoadingData(true);
+  useEffect(() => {
+    if (!open) return;
 
-      const res = await GetPersonalInfoById(adminId);
+    const fetchPersonalInfo = async () => {
+      try {
+        setLoadingData(true);
 
-      setPersonalInfo(res?.Data);
+        const res = await GetPersonalInfoById(adminId);
+        setPersonalInfo(res?.Data);
 
-      const data = res?.Data;
-      setFormData({
-        Name: data?.Name ?? "",
-        UserName: data?.UserName ?? "",
-        Email: data?.Email ?? "",
-        Phone: data?.Phone ?? "",
-        Id: data?.Id,
-      });
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.Message || "Failed to load personal info",
-      );
-    } finally {
-      setLoadingData(false);
-    }
-  };
+        const data = res?.Data;
+        setFormData({
+          Name: data?.Name ?? "",
+          UserName: data?.UserName ?? "",
+          Email: data?.Email ?? "",
+          Phone: data?.Phone ?? "",
+          Id: data?.Id,
+        });
+      } catch (error: any) {
+        toast.error(
+          error?.response?.data?.Message || "Failed to load personal info",
+        );
+      } finally {
+        setLoadingData(false);
+      }
+    };
 
+    fetchPersonalInfo();
+  }, [open, adminId]);
   useEffect(() => {
     if (personalInfo?.AvatarUrl) {
       setAvatar(personalInfo.AvatarUrl);
@@ -80,10 +85,6 @@ export default function EditProfileModal({
     Phone: "",
     UserName: "",
   });
-
-  useEffect(() => {
-    if (open) fetchPersonalInfo();
-  }, [open]);
 
   if (!open) return null;
 
@@ -110,8 +111,7 @@ export default function EditProfileModal({
       if (
         !formData.Name?.trim() ||
         !formData.UserName?.trim() ||
-        !formData.Phone ||
-        !formData.Email?.trim()
+        !formData.Phone
       ) {
         toast.error(t("all_fields_required"));
         return;
@@ -122,8 +122,8 @@ export default function EditProfileModal({
       const payload: PersonalInfoRequest = {
         id: adminId,
         Name: formData.Name,
-        Email: formData.Email,
-        Phone: formData.Phone,
+        Email: personalInfo?.Email ?? "",
+        PhoneNumber: formData.Phone,
         UserName: formData.UserName,
         Type: 2,
       };
@@ -183,7 +183,7 @@ export default function EditProfileModal({
         <ChangePasswordModal
           setShowResetPassword={setShowResetPassword}
           setShowChangePassword={setShowChangePassword}
-          email={personalInfo?.Email}
+          email={personalInfo?.Email ?? ""}
         />
       ) : showResetPassword ? (
         <ResetPasswordModal />
@@ -252,7 +252,7 @@ export default function EditProfileModal({
             }
           />
 
-          <Input
+          {/* <Input
             id="email"
             label={t("adminEmail")}
             placeholder={t("enterEmail")}
@@ -260,9 +260,12 @@ export default function EditProfileModal({
             onChange={(e) =>
               setFormData({ ...formData, Email: e.target.value })
             }
-          />
+          /> */}
 
-          <div className="flex flex-col gap-1" dir={useLanguage().language === "ar" ? "rtl" : "ltr"}>
+          <div
+            className="flex flex-col gap-1"
+            dir={lang === "ar" ? "rtl" : "ltr"}
+          >
             <label className="block text-sm font-medium mb-1 dark:text-white">
               {t("adminPhone")}
             </label>
@@ -270,22 +273,22 @@ export default function EditProfileModal({
               defaultCountry="eg"
               value={formData.Phone}
               onChange={(phone) => setFormData({ ...formData, Phone: phone })}
-              className="flex" 
+              className="flex"
               inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
-                useLanguage().language === "en"
+                lang === "en"
                   ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
                   : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
               }`}
               countrySelectorStyleProps={{
                 buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
-                  useLanguage().language === "en" 
-                    ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none" 
+                  lang === "en"
+                    ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
                     : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
                 }`,
               }}
               inputStyle={{
-                  direction: 'ltr', 
-                  textAlign: useLanguage().language === "ar" ? "right" : "left"
+                direction: "ltr",
+                textAlign: lang === "ar" ? "right" : "left",
               }}
             />
           </div>

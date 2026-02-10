@@ -79,7 +79,7 @@ export default function Analytics() {
     };
 
     fetchData();
-  }, [t]);
+  }, [canViewParentChildStats, t]);
 
   // genderPercentage
   const [genderPercentage, setGenderPercentage] = useState<GenderStats[]>([]);
@@ -107,7 +107,7 @@ export default function Analytics() {
     };
 
     fetchData();
-  }, [t]);
+  }, [canViewGender, t]);
 
   // usersByAgeSector
   const [usersByAgeSector, setUsersByAgeSector] = useState<AgeSector[]>([]);
@@ -132,7 +132,7 @@ export default function Analytics() {
     };
 
     fetchData();
-  }, [t]);
+  }, [canViewAge, t]);
 
   // totalVideos
   const [totalVideos, setTotalVideos] = useState<number>(0);
@@ -155,7 +155,7 @@ export default function Analytics() {
       }
     };
     fetchData();
-  }, [t]);
+  }, [canViewVideos, t]);
 
   // TotalGames
   const [totalGames, setTotalGames] = useState<number>(0);
@@ -178,7 +178,7 @@ export default function Analytics() {
       }
     };
     fetchData();
-  }, [t]);
+  }, [canViewGames, t]);
 
   // TopRanks
   const [topRanks, setTopRanks] = useState<TopRankedUser[]>([]);
@@ -204,7 +204,7 @@ export default function Analytics() {
       }
     };
     fetchData();
-  }, [t]);
+  }, [canViewRank, t]);
 
   // levelsStats
   const [levelsStatsData, setLevelsStatsData] = useState<LevelStats[]>([]);
@@ -230,7 +230,7 @@ export default function Analytics() {
       }
     };
     fetchData();
-  }, [t]);
+  }, [canViewLevels, t]);
 
   if (
     !canViewLevels &&
@@ -241,7 +241,7 @@ export default function Analytics() {
     !canViewVideos
   ) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -255,7 +255,7 @@ export default function Analytics() {
       <PageMeta title="Green minds Admin | Analytics" description="" />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("analytics")}
           </h2>

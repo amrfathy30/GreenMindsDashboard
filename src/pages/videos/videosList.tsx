@@ -33,7 +33,7 @@ export default function VideosList() {
   const [videos, setVideos] = useState<VideoType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(20);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -73,7 +73,7 @@ export default function VideosList() {
 
   useEffect(() => {
     fetchInitialData();
-  }, [currentPage, pageSize]);
+  }, [currentPage, canView, pageSize]);
 
   const handleSave = async (formData: FormData) => {
     try {
@@ -125,7 +125,7 @@ export default function VideosList() {
     <>
       <PageMeta title="Green minds Admin | Videos" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 min-h-[calc(100vh-48px)] flex flex-col dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-auto min-h-[70px] mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4 shrink-0">
+        <div className="h-auto min-h-17.5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4 shrink-0">
           <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
             {t("Videos - Admin")}
           </h2>
@@ -161,9 +161,9 @@ export default function VideosList() {
         ) : (
           videos?.length !== 0 && (
             <div className="overflow-x-auto px-2 md:px-4 flex-1">
-              <table className="w-full text-left border-collapse min-w-[800px]">
+              <table className="w-full text-left border-collapse min-w-200">
                 <thead>
-                  <tr className="bg-[#D9D9D940] dark:bg-white/[0.02]">
+                  <tr className="bg-[#D9D9D940] dark:bg-white/2">
                     <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
                       {t("Thumbnail")}
                     </th>
@@ -187,7 +187,7 @@ export default function VideosList() {
                   {videos.map((video, index) => (
                     <tr
                       key={video.Id}
-                      className={`border-b border-gray-50 dark:border-gray-800/50 transition-colors ${index % 2 === 0 ? "bg-white dark:bg-transparent" : "bg-[#D9D9D940] dark:bg-white/[0.01]"}`}
+                      className={`border-b border-gray-50 dark:border-gray-800/50 transition-colors ${index % 2 === 0 ? "bg-white dark:bg-transparent" : "bg-[#D9D9D940] dark:bg-white/1"}`}
                     >
                       <td className="px-4 py-3">
                         <div
@@ -195,7 +195,7 @@ export default function VideosList() {
                             setSelectedVideo(video);
                             setIsPreviewOpen(true);
                           }}
-                          className="relative aspect-[16/9] h-[45px] md:h-[55px] rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700"
+                          className="relative aspect-video h-11.25 md:h-13.75 rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700"
                         >
                           <img
                             src={

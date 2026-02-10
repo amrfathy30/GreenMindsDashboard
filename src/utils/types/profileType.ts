@@ -13,7 +13,7 @@ export interface ChangePasswordRequest {
 export interface ModalProps {
   setShowResetPassword: any;
   setShowChangePassword: any;
-  email?: string;
+  email: string | undefined;
 }
 
 export interface SendEmailRequest {
@@ -24,7 +24,8 @@ export interface PersonalInfoRequest {
   Id?: number;
   id?: number;
   Email: string;
-  Phone: string;
+  Phone?: string;
+  PhoneNumber?: string;
   Name: string;
   UserName?: string;
   AvatarImg?: File;
@@ -32,22 +33,6 @@ export interface PersonalInfoRequest {
   Password?: string;
   ConfirmPassword?: string;
   Type?: number;
-  
-  // TypeName: string;
-  // CityId: string;
-  // CityName: string;
-  // CountryId: string;
-  // CountryName: string;
-  // NationalityId: string;
-  // NationalityName: string;
-  // GenderId: string;
-  // EmployeeCount: string;
-  // GenderName: string;
-  // VisaStatusId: string;
-  // VisaStatusName: string;
-  // ParentName: string;
-  // Summary: string;
-  // loginCountryData: string;
 }
 
 export interface EditProfileModalProps {

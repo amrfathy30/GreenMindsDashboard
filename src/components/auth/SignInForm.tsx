@@ -42,16 +42,6 @@ export default function SignInForm() {
       );
   };
 
-  // <Route path="/avatars" element={<AvatarsList />} />
-  // <Route path="/analytics" element={<Analytics />} />
-  // <Route path="/users" element={<Users />} />
-  // <Route path="/children-info/:id" element={<ChildrenInfo />} />
-  // <Route path="/setting" element={<Setting />} />
-  // <Route path="/age-group" element={<AgeGroup />} />
-  // <Route path="/admin-roles" element={<AdminRoles />} />
-  // <Route path="/profile-levels" element={<ProfileLevels />} />
-  // <Route path="/permissions-list" element={<PermissionsList />} />
-
   const getAdminRoute = (permissions: any) => {
     if (permissions.includes("Videos_GetPaged")) return "/videos";
     else if (permissions.includes("Games_GetPaged")) return "/games";

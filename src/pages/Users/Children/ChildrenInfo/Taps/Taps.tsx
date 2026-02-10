@@ -22,7 +22,7 @@ export default function Taps({ id }: TapsProps) {
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab1"
                 ? "bg-linear-to-r from-primary to-secondary text-white"
-                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-secondary"
             }`}
             onClick={() => setActiveTab("tab1")}
           >
@@ -32,7 +32,7 @@ export default function Taps({ id }: TapsProps) {
             className={`px-3 md:px-6 py-2 font-medium text-[20px] rounded-xl ${
               activeTab === "tab2"
                 ? "bg-linear-to-r from-primary to-secondary text-white"
-                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                : "bg-[#FAFAFA] text-black border border-[#EDEDED] hover:text-white hover:bg-secondary"
             }`}
             onClick={() => setActiveTab("tab2")}
           >

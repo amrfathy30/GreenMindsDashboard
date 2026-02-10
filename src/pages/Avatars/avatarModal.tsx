@@ -193,10 +193,10 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               onClick={() => fileInputRef.current?.click()}
               className="flex items-center gap-2 group hover:opacity-80 transition-opacity"
             >
-              <div className="text-[#25B16F]">
+              <div className="text-secondary">
                 <Upload size={18} strokeWidth={2.5} />
               </div>
-              <span className="text-sm font-bold bg-gradient-to-r from-[#00A7E1] to-[#25B16F] bg-clip-text text-transparent">
+              <span className="text-sm font-bold bg-linear-to-r from-[#00A7E1] to-secondary bg-clip-text text-transparent">
                 {t("upload_avatar_btn")}
               </span>
             </button>

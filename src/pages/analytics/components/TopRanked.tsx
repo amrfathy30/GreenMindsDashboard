@@ -33,7 +33,7 @@ export default function TopRanked({
                 alt="child-image"
               />
 
-              <div className="max-w-[150px] overflow-hidden">
+              <div className="max-w-37.5 overflow-hidden">
                 <h2
                   className="text-sm dark:text-white truncate"
                   title={user.UserName}

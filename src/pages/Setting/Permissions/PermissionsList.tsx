@@ -23,10 +23,12 @@ export default function PermissionsList() {
   const [permissions, setPermissions] = useState<PermissionApiResponse["Data"]>(
     [],
   );
+
   const [search, setSearch] = useState("");
   const [selectedPermission, setSelectedPermission] = useState<
     PermissionApiResponse["Data"][number] | null
   >(null);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -54,7 +56,7 @@ export default function PermissionsList() {
       }
     };
     fetchPermissions();
-  }, []);
+  }, [canView]);
 
   const openEditModal = (perm: PermissionApiResponse["Data"][number]) => {
     setSelectedPermission(perm);
@@ -82,7 +84,87 @@ export default function PermissionsList() {
     }
   };
 
-  const filteredPermissions = permissions.filter(
+  const HIDDEN_PERMISSION_KEYS = [
+    "Avatars_GetAvatarsByUserId",
+    "AdminRoles_GetRolesForUser",
+    "Videos_GetByUserId",
+    "Games_GetByUserId",
+    "Children_GetChildPointsById",
+    "Children_GetChild",
+    "Children_GetChildren",
+    "AgeSectors_GetAll",
+    "AgeSectors_GetPaged",
+    "AgeSectors_Get",
+    "Smtp_Get",
+    "AdminRoles_GetUsersInRole",
+    "Users_CreateUserWithType",
+    "Account_Create",
+    "Account_ResetPassword",
+    "Account_GetById",
+    "Account_GetMyPersonalInfo",
+    "Account_ChangePasswordByUserId",
+    "Account_GetPersonalInfo",
+    "Account_UpdateProfile",
+    "Smtp_Update",
+    "Account_UserTypes",
+    "Smtp_GetAll",
+    "Account_TestToken",
+    "Account_GetAll",
+    "Avatars_Get",
+    "Avatars_GetForCurrentUser",
+    "Children_GetChildAvatarsByAge",
+    "Children_GetChildrenLookup",
+    "Account_AddChild",
+    "Children_GetChildrenByParent",
+    "Children_GetChildVideosByAge",
+    "Children_UpdateChildByParent",
+    "Children_GetChildGamesByAge",
+    "Children_GetChildPointsByIdWithPermission",
+    "Children_RemoveMyChild",
+    "Children_GetPointsForChild",
+    "Games_GetAll",
+    "Games_GetByUserAge",
+    "Games_Get",
+    "Levels_GetAllPagedWithHeaders",
+    "Parents_GetParentsLookup",
+    "Parents_GetParentSonsList",
+    "Parents_GetParent",
+    "Parents_RegisterSonByParent",
+    "Parents_GetUserTypesLookup",
+    "Parents_GetChildrenOrderList",
+    "Smtp_Create",
+    "Smtp_Delete",
+    "Users_GetAll",
+    "Users_GetAdmins",
+    "Users_Get",
+    "Users_Create",
+    "Users_Update",
+    "Users_Delete",
+    "Users_GetPersonalInfo",
+    "Users_GetMyPersonalInfo",
+    "Users_GetById",
+    "Users_UserTypes",
+    "Users_MyRolesAndPermissions",
+    "Users_AddPoints",
+    "Videos_GetAll",
+    "Videos_GetByAgeSector",
+    "Videos_Get",
+    "Videos_Complete",
+    "WeatherForecast_Get",
+    "Debug_InfoAuth",
+    "Account_AddPoints",
+    "Levels_GetPaged",
+    "Levels_Get",
+    "Parents_CreateUserWithType",
+    "Children_GetAllChildren",
+    "Avatars_GetAll",
+  ];
+
+  const visiblePermissions = permissions.filter(
+    (p) => !HIDDEN_PERMISSION_KEYS.includes(p.Key),
+  );
+
+  const filteredPermissions = visiblePermissions.filter(
     (p) =>
       p.DisplayName.toLowerCase().includes(search.toLowerCase()) ||
       p.Key.toLowerCase().includes(search.toLowerCase()),
@@ -90,6 +172,7 @@ export default function PermissionsList() {
 
   const getGroupFromKey = (key: string) => key.split("_")[0];
   const groupedPermissions: Record<string, typeof permissions> = {};
+
   filteredPermissions.forEach((perm) => {
     const group = getGroupFromKey(perm.Key);
     if (!groupedPermissions[group]) groupedPermissions[group] = [];
@@ -98,7 +181,7 @@ export default function PermissionsList() {
 
   if (!canView && !loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -143,7 +226,7 @@ export default function PermissionsList() {
                     {group} ({perms.length})
                   </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                     {perms.map((perm) => (
                       <div
                         key={perm.Id}

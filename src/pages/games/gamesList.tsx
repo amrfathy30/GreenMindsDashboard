@@ -23,7 +23,7 @@ export default function GamesList() {
   const [games, setGames] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(20);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>(null);
@@ -39,6 +39,10 @@ export default function GamesList() {
   const canDelete = hasPermission("Games_Delete");
 
   const fetchGames = async () => {
+    if (!canView) {
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const response = await getPagedGames(currentPage, pageSize);
@@ -59,7 +63,7 @@ export default function GamesList() {
 
   useEffect(() => {
     fetchGames();
-  }, [currentPage, pageSize]);
+  }, [currentPage, canView, pageSize]);
 
   const handleEditClick = (game: any) => {
     setSelectedGame(game);
@@ -72,7 +76,7 @@ export default function GamesList() {
   };
   if (!canView) {
     return (
-      <div className="flex-grow flex items-center justify-center">
+      <div className="grow flex items-center justify-center">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -89,7 +93,7 @@ export default function GamesList() {
       />
 
       <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
-        <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="h-17.5 flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("games_admin")}
           </h2>
@@ -107,7 +111,7 @@ export default function GamesList() {
           )}
         </div>
 
-        <div className="flex-grow overflow-y-auto px-5 py-6">
+        <div className="grow overflow-y-auto px-5 py-6">
           {games?.length === 0 && !loading ? (
             <EmptyState
               title={t("no_games_found")}

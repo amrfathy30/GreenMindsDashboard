@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { useEffect, useState, useRef } from "react";
 import { Modal } from "../../components/ui/modal";
 import Button from "../../components/ui/button/Button";
@@ -73,7 +74,7 @@ export default function VideoFormModal({
     } else if (!initialData && isOpen) {
       resetForm();
     }
-  }, [initialData, isOpen]);
+  }, [canViewAges, initialData, isOpen]);
 
   const resetForm = () => {
     setTitleEn("");
@@ -202,7 +203,7 @@ export default function VideoFormModal({
           <div
             className={`flex flex-col md:flex-row items-start md:items-center gap-4 ${isRTL ? "md:flex-row-reverse" : ""}`}
           >
-            <div className="relative flex h-[100px] w-full md:w-[120px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
+            <div className="relative flex h-25 w-full md:w-30 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
               {videoPreview ? (
                 getYTID(videoPreview) ? (
                   <img
@@ -234,8 +235,8 @@ export default function VideoFormModal({
                 onClick={() => videoInputRef.current?.click()}
                 className="flex items-center gap-2"
               >
-                <Upload size={18} className="text-[#25B16F]" />
-                <span className="text-[#25B16F] font-bold text-sm">
+                <Upload size={18} className="text-secondary " />
+                <span className="text-secondary font-bold text-sm">
                   {t("upload_video")}
                 </span>
               </button>
@@ -256,7 +257,7 @@ export default function VideoFormModal({
           <div
             className={`flex flex-col md:flex-row items-start md:items-center gap-4 ${isRTL ? "md:flex-row-reverse" : ""}`}
           >
-            <div className="relative flex h-[100px] w-full md:w-[120px] shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
+            <div className="relative flex h-25 w-full md:w-30 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
               {thumbPreview ? (
                 <img
                   src={thumbPreview}
@@ -280,8 +281,8 @@ export default function VideoFormModal({
                 onClick={() => thumbInputRef.current?.click()}
                 className="flex items-center gap-2"
               >
-                <Upload size={18} className="text-[#25B16F]" />
-                <span className="text-[#25B16F] font-bold text-sm">
+                <Upload size={18} className="text-secondary" />
+                <span className="text-secondary font-bold text-sm">
                   {t("upload_thumb")}
                 </span>
               </button>

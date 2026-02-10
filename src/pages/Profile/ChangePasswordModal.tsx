@@ -59,6 +59,11 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
 
       ShowToastSuccess(res?.Message || "Password updated successfully");
 
+      setTimeout(() => {
+        localStorage.clear();
+        window.location.href = "/";
+      }, 1000);
+
       setShowChangePassword(false);
     } catch (error: any) {
       toast.error(

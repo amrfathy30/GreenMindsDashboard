@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne";
@@ -16,7 +15,7 @@ import {
 } from "../../../utils/types/parentType";
 import {
   allParentData,
-  createUserParent,
+  createParent,
   deleteParent,
   updateParent,
 } from "../../../api/services/parentService";
@@ -37,7 +36,7 @@ export default function ParentsList({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(20);
   const [tableLoading, setTableLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -145,7 +144,7 @@ export default function ParentsList({
       if (editData?.id) {
         res = await updateParent(data, editData.id);
       } else {
-        res = await createUserParent(data);
+        res = await createParent(data);
       }
 
       const listRes: ParentApiResponse = await allParentData({
@@ -183,7 +182,7 @@ export default function ParentsList({
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white block max-w-[120px] truncate">
+        <span className=" dark:text-white block max-w-30 truncate">
           {row.Name || "__"}
         </span>
       ),
@@ -192,7 +191,7 @@ export default function ParentsList({
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white block max-w-[120px] truncate">
+        <span className="dark:text-white block max-w-30 truncate">
           {row.UserName || "__"}
         </span>
       ),
@@ -201,7 +200,7 @@ export default function ParentsList({
       key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white block max-w-[200px] truncate">
+        <span className="dark:text-white block max-w-50 truncate">
           {row.Email || "__"}
         </span>
       ),
@@ -212,7 +211,7 @@ export default function ParentsList({
       render: (row: any) => (
         <span
           className={`text-sm font-medium whitespace-nowrap ${
-            row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
+            row.EmailVerified ? "text-secondary" : "text-[#E51C1C]"
           }`}
         >
           {row.EmailVerified ? t("Verified") : t("NotVerified")}
@@ -223,7 +222,7 @@ export default function ParentsList({
       key: "Phone",
       label: t("ParentPhone"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white block">
+        <span className=" dark:text-white block">
           {row.PhoneNumber || "__"}
         </span>
       ),
@@ -274,7 +273,7 @@ export default function ParentsList({
 
   if (!canView && !tableLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -316,7 +315,7 @@ export default function ParentsList({
                     </span>
                     <Link
                       to="/children-info"
-                      className="text-[#25B16F] font-semibold hover:underline text-end"
+                      className="text-secondary font-semibold hover:underline text-end"
                     >
                       {t("SeeMore") || "See more"}
                     </Link>

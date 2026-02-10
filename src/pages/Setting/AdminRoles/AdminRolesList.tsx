@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import AddButton from "../../../components/ui/button/AddButton";
@@ -85,6 +85,22 @@ export default function AdminRoles() {
     }
   };
 
+  const DEFAULT_ROLE_PERMISSION_KEYS = [
+    "Account_ResetPassword",
+    "Account_Update",
+    "Account_GetById",
+    "Account_GetMyPersonalInfo",
+    "Account_ChangePasswordByUserId",
+    "Account_GetPersonalInfo",
+    "Account_UpdateProfile",
+  ];
+
+  const getDefaultPermissionIds = () => {
+    return allPermissions
+      .filter((p) => DEFAULT_ROLE_PERMISSION_KEYS.includes(p.Key))
+      .map((p) => p.Id);
+  };
+
   const handleSaveRole = async (data: { RoleName: string }) => {
     try {
       setAddRoleLoading(true);
@@ -96,7 +112,12 @@ export default function AdminRoles() {
           PermissionIds: [],
         });
       } else {
-        await createRole({ RoleName: data.RoleName, Permissions: [] });
+        const defaultPermissionIds = getDefaultPermissionIds();
+
+        await createRole({
+          RoleName: data.RoleName,
+          Permissions: defaultPermissionIds,
+        });
       }
       setOpenModal(false);
       setEditRoleModalOpen(false);
@@ -179,7 +200,7 @@ export default function AdminRoles() {
 
   if (!canViewRoles && !loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -192,7 +213,7 @@ export default function AdminRoles() {
     <>
       <PageMeta title="Green minds Admin | Admin Roles" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="md:h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="md:h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("AdminRoles")}
           </h2>
@@ -209,16 +230,16 @@ export default function AdminRoles() {
           )}
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6 px-5 min-h-[500px]">
+        <div className="flex flex-col md:flex-row gap-6 px-5 min-h-125">
           <div
-            className={`flex flex-col gap-2 min-w-[200px] py-2 ${lang === "ar" ? "border-l border-gray-300 dark:border-gray-700/50 pl-6" : "border-r border-gray-300 dark:border-gray-700/40 pr-6"}`}
+            className={`flex flex-col gap-2 py-2 ${lang === "ar" ? "border-l border-gray-300 dark:border-gray-700/50 pl-6" : "border-r border-gray-300 dark:border-gray-700/40 pr-6"}`}
           >
             {" "}
             {adminRoles.map((role, index) => (
               <button
                 key={role.Id}
                 onClick={() => setActiveTab(index)}
-                className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 truncate md:w-57.5 ${
                   activeTab === index
                     ? "bg-secondary text-white shadow-md"
                     : "text-gray-500 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -237,7 +258,7 @@ export default function AdminRoles() {
                     <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">
                       {t("current_role")}
                     </span>
-                    <h3 className="text-lg font-bold text-gray-800 dark:text-white leading-tight">
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-white leading-tight line-clamp-1">
                       {adminRoles[activeTab].Name}
                     </h3>
                   </div>
@@ -278,7 +299,7 @@ export default function AdminRoles() {
                     <button
                       onClick={handleSavePermissions}
                       disabled={saving || permissionsLoading}
-                      className="flex justify-center items-center w-full md:w-fit text-center gap-2 px-2 py-1.5 text-xs font-medium rounded-[11px] border border-[#25B16F] text-[#25B16F] transition-all duration-300 hover:bg-[#25B16F] hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex justify-center items-center w-full md:w-fit text-center gap-2 px-2 py-1.5 text-xs font-medium rounded-[11px] border border-secondary text-secondary transition-all duration-300 hover:bg-secondary hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Save
                         size={14}

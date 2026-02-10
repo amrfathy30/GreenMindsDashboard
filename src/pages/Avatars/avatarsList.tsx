@@ -26,7 +26,7 @@ export default function AvatarList() {
   const { t } = useLanguage();
   const [avatars, setAvatars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<any>(null);
@@ -48,8 +48,12 @@ export default function AvatarList() {
   };
 
   const loadAvatars = async () => {
-    setLoading(true);
+    if (!canView) {
+      setLoading(false);
+      return;
+    }
     try {
+      setLoading(true);
       const response = await getAvatarsPaged(currentPage, pageSize);
 
       const apiResponse = response.data || response;
@@ -68,7 +72,7 @@ export default function AvatarList() {
   };
   useEffect(() => {
     loadAvatars();
-  }, [currentPage, pageSize]);
+  }, [currentPage, canView, pageSize]);
 
   const handleDeleteClick = (avatar: any) => {
     setSelectedAvatar(avatar);
@@ -90,7 +94,7 @@ export default function AvatarList() {
 
   if (!canView) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -104,7 +108,7 @@ export default function AvatarList() {
       <PageMeta title="Green minds Admin | Avatars" description="" />
 
       <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
-        <div className="h-[70px] flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="h-17.5 flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("avatars_admin")}
           </h2>
@@ -122,8 +126,7 @@ export default function AvatarList() {
           )}
         </div>
 
-        <div className="flex-grow overflow-y-auto px-5 py-6">
-
+        <div className="grow overflow-y-auto px-5 py-6">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
             {loading ? (
               Array.from({ length: 8 }).map((_, index) => (
@@ -150,8 +153,11 @@ export default function AvatarList() {
               ))
             ) : (
               <div className="col-span-full flex justify-center items-center py-20">
-              <EmptyState title={t("no_avatars_found")} description={t("no_avatars_desc")} />
-            </div>
+                <EmptyState
+                  title={t("no_avatars_found")}
+                  description={t("no_avatars_desc")}
+                />
+              </div>
             )}
           </div>
         </div>

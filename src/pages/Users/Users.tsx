@@ -45,7 +45,7 @@ export default function Users() {
   }, []);
 
   const canAdd = {
-    tab1: hasPermission("Users_CreateUserWithType"),
+    tab1: hasPermission("Account_CreateUserWithType"),
     tab2:
       hasPermission("Parents_CreateUserWithType") ||
       hasPermission("Parents_CreateParent"),
@@ -75,7 +75,7 @@ export default function Users() {
     <div>
       <PageMeta title="Green minds Admin | Users" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800  dark:bg-neutral-800 bg-[#EDEDED] min-h-[calc(100vh-48px)]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("pageTitle")}
           </h2>
@@ -88,7 +88,7 @@ export default function Users() {
                   className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
                     activeTab === "tab1"
                       ? "bg-linear-to-r from-primary to-secondary text-white"
-                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-secondary"
                   }`}
                   onClick={() => setActiveTab("tab1")}
                 >
@@ -100,7 +100,7 @@ export default function Users() {
                   className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
                     activeTab === "tab2"
                       ? "bg-linear-to-r from-primary to-secondary text-white"
-                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-secondary"
                   }`}
                   onClick={() => setActiveTab("tab2")}
                 >
@@ -112,7 +112,7 @@ export default function Users() {
                   className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
                     activeTab === "tab3"
                       ? "bg-linear-to-r from-primary to-secondary text-white"
-                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-[#25B16F]"
+                      : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-secondary"
                   }`}
                   onClick={() => setActiveTab("tab3")}
                 >
@@ -124,7 +124,7 @@ export default function Users() {
             {canAdd[activeTab] && (
               <button
                 onClick={handleAdd}
-                className="flex items-center gap-2 border border-[#25B16F] text-[#25B16F] px-4 py-2 rounded-lg font-medium text-base hover:bg-[#25B16F] hover:text-white transition duration-200"
+                className="flex items-center gap-2 border border-secondary text-secondary px-4 py-2 rounded-lg font-medium text-base hover:bg-secondary hover:text-white transition duration-200"
               >
                 <Plus className="w-5 h-5" />
                 {addButtonText[activeTab]}

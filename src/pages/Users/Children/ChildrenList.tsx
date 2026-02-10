@@ -39,7 +39,7 @@ export default function ChildrenList({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(20);
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<Children | null>(null);
   const [tableLoading, setTableLoading] = useState(true);
@@ -105,7 +105,7 @@ export default function ChildrenList({
     };
 
     fetchParent();
-  }, [currentPage, pageSize, t]);
+  }, [canView, currentPage, pageSize, t]);
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -245,14 +245,16 @@ export default function ChildrenList({
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="block max-w-[100px] truncate">{row.Name || "__"}</span>
+        <span className="block max-w-25 truncate dark:text-white">
+          {row.Name || "__"}
+        </span>
       ),
     },
     {
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="block max-w-[100px] truncate">
+        <span className="block max-w-25 truncate dark:text-white">
           {row.UserName || "__"}
         </span>
       ),
@@ -261,7 +263,7 @@ export default function ChildrenList({
       key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 dark:text-white">
           <span>{row.Email || "__"}</span>
         </div>
       ),
@@ -272,7 +274,7 @@ export default function ChildrenList({
       render: (row: any) => (
         <span
           className={`text-sm font-medium whitespace-nowrap ${
-            row.EmailVerified ? "text-[#25B16F]" : "text-[#E51C1C]"
+            row.EmailVerified ? "text-secondary" : "text-[#E51C1C]"
           }`}
         >
           {row.EmailVerified ? t("Verified") : t("NotVerified")}
@@ -282,13 +284,15 @@ export default function ChildrenList({
     {
       key: "PhoneNumber",
       label: t("ParentPhone"),
-      render: (row: any) => <span>{row.PhoneNumber || "__"}</span>,
+      render: (row: any) => (
+        <span className=" dark:text-white">{row.PhoneNumber || "__"}</span>
+      ),
     },
     {
       key: "Gender",
       label: t("Gender"),
       render: (row: any) => (
-        <span className="text-[#757575] dark:text-white">
+        <span className=" dark:text-white">
           {getGenderLabel(row.GenderId, t)}
         </span>
       ),
@@ -297,7 +301,7 @@ export default function ChildrenList({
       key: "Age",
       label: t("Age"),
       render: (row: any) => (
-        <span className="text-[#757575] text-sm flex gap-1 items-center dark:text-white text-center">
+        <span className=" text-sm flex gap-1 items-center dark:text-white text-center">
           {calculateAge(row.DateOfBirth)} <span>{t("years")}</span>
         </span>
       ),
@@ -359,7 +363,7 @@ export default function ChildrenList({
 
   if (!canView && !tableLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}

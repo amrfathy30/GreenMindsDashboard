@@ -32,7 +32,7 @@ export default function ProfileLevels() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(20);
   const [ProfileLevels, setProfileLevels] = useState<LevelList[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<LevelList | null>(null);
@@ -230,7 +230,7 @@ export default function ProfileLevels() {
 
   if (!canView && !loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <EmptyState
           title={t("access_denied")}
           description={t("not_authorized_to_view_this_page")}
@@ -243,7 +243,7 @@ export default function ProfileLevels() {
     <div>
       <PageMeta title="Green minds Admin | Profile Levels" description={``} />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 min-h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-[70px] mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+        <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("levelNameLabel")}
           </h2>

@@ -386,8 +386,12 @@ const translations = {
     save_new_permissions: "Save Role permissions",
     EmailStatus: "Email Status",
     select_all: "Select all",
+    game_created_successfully: "game created successfully",
+    game_updated_successfully: "game updated successfully",
     search_permissions: "Search Permissions",
     unselect_all: "Unselect all",
+    permissionDeactivated: "It was automatically deactivated",
+    permissionEnabled: "It was automatically activated",
     welcome: "Welcome to Green Minds Admin",
   },
   ar: {
@@ -765,8 +769,13 @@ const translations = {
     save_new_permissions: "حفظ الصلاحيات الجديدة",
     EmailStatus: "حالة البريد",
     select_all: "تحديد الكل",
+    game_updated_successfully: "تم تحديث اللعبة بنجاح",
+    game_created_successfully: "تم اضافة اللعبة بنجاح",
     welcome: "أهلاً بكم في إدارة العقول الخضراء",
     unselect_all: "إلغاء تحديد الكل",
+    permissionDeactivated: "تم إلغاء تفعيله تلقائياً",
+    permissionEnabled: "تم تفعيله تلقائيا",
+
     search_permissions: "البحث عن الصلاحيات",
   },
 };

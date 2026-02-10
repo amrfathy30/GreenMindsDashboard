@@ -11,6 +11,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { ChildVideos } from "../../../../../api/services/childrenService";
 import { toast } from "sonner";
+import { hasPermission } from "../../../../../utils/permissions/permissions";
 
 export default function Video({ id }: TapsProps) {
   const { t } = useLanguage();
@@ -22,12 +23,17 @@ export default function Video({ id }: TapsProps) {
   > | null>(null);
 
   const fetchedVideos = useRef(false);
+  const canView = hasPermission("Videos_GetByUserId");
 
   useEffect(() => {
     if (!id || fetchedVideos.current) return;
     fetchedVideos.current = true;
 
     const fetchChildVideos = async () => {
+      if (!canView) {
+        setLoadingVideos(false);
+        return;
+      }
       try {
         setLoadingVideos(true);
         const data = await ChildVideos(Number(id));
@@ -40,7 +46,18 @@ export default function Video({ id }: TapsProps) {
     };
 
     fetchChildVideos();
-  }, [id]);
+  }, [canView, id, t]);
+
+  if (!canView && !loadingVideos) {
+    return (
+      <div className="flex items-center justify-center min-h-100">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full w-full p-4 dark:text-white border dark:border-gray-700 flex items-center justify-center rounded-[15px]">
@@ -48,9 +65,9 @@ export default function Video({ id }: TapsProps) {
         <VideoTableSkeleton />
       ) : Array.isArray(childVideos?.Data) && childVideos.Data.length > 0 ? (
         <div className="overflow-x-auto px-2 md:px-4 flex-1">
-          <table className="w-full text-left border-collapse min-w-[800px]">
+          <table className="w-full text-left border-collapse min-w-200">
             <thead>
-              <tr className="bg-[#D9D9D940] dark:bg-white/[0.02]">
+              <tr className="bg-[#D9D9D940] dark:bg-white/2">
                 <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
                   {t("Thumbnail")}
                 </th>
@@ -69,11 +86,11 @@ export default function Video({ id }: TapsProps) {
                   className={`border-b border-gray-50 dark:border-gray-800/50 transition-colors ${
                     index % 2 === 0
                       ? "bg-white dark:bg-transparent"
-                      : "bg-[#D9D9D940] dark:bg-white/[0.01]"
+                      : "bg-[#D9D9D940] dark:bg-white/1"
                   }`}
                 >
                   <td className="px-4 py-3">
-                    <div className="relative aspect-[16/9] h-[45px] md:h-[55px] rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700">
+                    <div className="relative aspect-video h-11.25 md:h-13.75 rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700">
                       <img
                         src={
                           video.ThumbnailUrl?.startsWith("http")

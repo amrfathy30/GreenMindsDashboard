@@ -54,12 +54,12 @@ export default function PointsDistribution({
     <ComponentCard title={t("PointsDistribution")}>
       <div className="flex flex-col h-full">
         {!hasData ? (
-          <div className="flex items-center justify-center h-[350px] text-gray-500 text-lg font-semibold">
+          <div className="flex items-center justify-center h-87.5 text-gray-500 text-lg font-semibold">
             {t("NoData")}
           </div>
         ) : (
           <>
-            <div className="relative flex justify-center items-center h-[280px]">
+            <div className="relative flex justify-center items-center h-70">
               <Chart
                 key={JSON.stringify(series)}
                 options={options}
@@ -84,7 +84,7 @@ export default function PointsDistribution({
                 >
                   <div className="flex items-center gap-3">
                     <span 
-                      className="w-3 h-3 rounded-full flex-shrink-0" 
+                      className="w-3 h-3 rounded-full shrink-0" 
                       style={{ backgroundColor: chartColors[index] }}
                     ></span>
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -93,7 +93,7 @@ export default function PointsDistribution({
                   </div>
                   <div className="flex items-center gap-3 ">
                   <span 
-                      className="w-3 h-3 rounded-full flex-shrink-0" 
+                      className="w-3 h-3 rounded-full shrink-0" 
                      
                     ></span>
                    <div className="flex items-center gap-1">

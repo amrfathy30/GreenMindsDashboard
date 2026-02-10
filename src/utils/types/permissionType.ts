@@ -8,6 +8,11 @@ export interface PermissionApiResponse {
   }[];
 }
 
+export interface ExtendedProps extends AdminRolePermissionsProps {
+  selectedPermissions: number[];
+  setSelectedPermissions: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
 export interface UpdatePermissionModalProps {
   open: boolean;
   onClose: () => void;

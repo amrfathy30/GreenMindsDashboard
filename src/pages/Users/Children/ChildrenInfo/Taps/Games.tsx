@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import GameCard from "../../../../games/gameCard";
 import GameCardSkeleton from "../../../../../components/loading/gameLoading";
 import EmptyState from "../../../../../components/common/no-data-found";
+import { hasPermission } from "../../../../../utils/permissions/permissions";
 
 export default function Games({ id }: TapsProps) {
   const { t, isRTL } = useLanguage();
@@ -23,12 +24,18 @@ export default function Games({ id }: TapsProps) {
 
   const fetchedGames = useRef(false);
 
+  const canView = hasPermission("Games_GetByUserId");
+
   useEffect(() => {
     if (!id || fetchedGames.current) return;
 
     fetchedGames.current = true;
 
     const fetchChildGames = async () => {
+      if (!canView) {
+        setLoadingGames(false);
+        return;
+      }
       try {
         setLoadingGames(true);
         const data = await ChildGames(Number(id));
@@ -41,11 +48,22 @@ export default function Games({ id }: TapsProps) {
     };
 
     fetchChildGames();
-  }, [id]);
+  }, [canView, id, t]);
+
+  if (!canView && !loadingGames) {
+    return (
+      <div className="flex items-center justify-center min-h-100">
+        <EmptyState
+          title={t("access_denied")}
+          description={t("not_authorized_to_view_this_page")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full w-full p-4 dark:text-white border dark:border-gray-700 flex flex-col rounded-[15px]">
-      <div className="flex-grow overflow-y-auto p-4">
+      <div className="grow overflow-y-auto p-4">
         {loadingGames ? (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, index) => (

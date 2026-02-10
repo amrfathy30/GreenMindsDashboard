@@ -1,8 +1,10 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import { deleteGame } from "../../api/services/gameService";
 import { useLanguage } from "../../locales/LanguageContext";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
+import { ShowToastSuccess } from "../../components/common/ToastHelper";
 
 interface DeleteGameModalProps {
   isOpen: boolean;
@@ -11,8 +13,14 @@ interface DeleteGameModalProps {
   onSuccess: () => void;
 }
 
-const DeleteGameModal: React.FC<DeleteGameModalProps> = ({ isOpen, onClose, gameId, onSuccess }) => {
+const DeleteGameModal: React.FC<DeleteGameModalProps> = ({
+  isOpen,
+  onClose,
+  gameId,
+  onSuccess,
+}) => {
   const { t } = useLanguage();
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
@@ -21,24 +29,24 @@ const DeleteGameModal: React.FC<DeleteGameModalProps> = ({ isOpen, onClose, game
       console.error("No Game ID provided");
       return;
     }
-    const toastId = toast.loading(t("deleting...")); 
 
+    setLoading(true);
     try {
       await deleteGame(gameId);
-      
-      toast.success(t("deleted_successfully"), { id: toastId });
-      
-      onSuccess(); 
+      ShowToastSuccess(t("DeletedSuccessfully"));
+      onSuccess();
       onClose();
     } catch (error: any) {
-      console.error("Delete failed", error);
-      toast.error(error.response?.data?.Message || t("delete_failed"), { id: toastId });
+      toast.error(error.response?.data?.Message || t("failed_delete"));
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <ConfirmModal
       open={isOpen}
+      loading={loading}
       onClose={onClose}
       onConfirm={handleOnClick}
       title={t("delete_game_title")}
