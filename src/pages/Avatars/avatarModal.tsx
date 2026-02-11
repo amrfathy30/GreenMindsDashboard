@@ -68,11 +68,19 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreviewImage(reader.result as string);
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/jfif"];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(t("imageTypeAllowed"));
+      event.target.value = "";
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onloadend = () => setPreviewImage(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -185,7 +193,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
-              accept="image/*"
+              accept=".png,.jpg,.jpeg,.jfif"
               className="hidden"
             />
             <button
@@ -201,6 +209,9 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               </span>
             </button>
           </div>
+          <p className="text-[10px] text-red-500 -mt-1">
+            {t("imageTypeAllowed")}
+          </p>
         </div>
 
         <Button type="submit" disabled={isSubmitting} className="mt-2">

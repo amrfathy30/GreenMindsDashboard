@@ -167,12 +167,19 @@ const GameModal: React.FC<GameModalProps> = ({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreviewImage(reader.result as string);
-      reader.readAsDataURL(file);
-      setFormDataState((prev) => ({ ...prev, thumbnailUrl: "" }));
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/jfif"];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(t("imageTypeAllowed"));
+      event.target.value = "";
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onloadend = () => setPreviewImage(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
   if (!isOpen) return null;
@@ -286,7 +293,7 @@ const GameModal: React.FC<GameModalProps> = ({
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                accept="image/*"
+                accept=".png,.jpg,.jpeg,.jfif"
                 className="hidden"
               />
               <button
@@ -309,6 +316,9 @@ const GameModal: React.FC<GameModalProps> = ({
                   if (e.target.value) setPreviewImage(e.target.value);
                 }}
               />
+              <p className="text-[10px] text-red-500 -mt-1">
+                {t("imageTypeAllowed")}
+              </p>
             </div>
           </div>
         </div>

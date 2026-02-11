@@ -9,6 +9,7 @@ import Input from "../../components/form/input/InputField";
 import Form from "../../components/form/Form";
 import { Upload, Image as ImageIcon, Video as VideoIcon } from "lucide-react";
 import { hasPermission } from "../../utils/permissions/permissions";
+import { toast } from "sonner";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
@@ -94,16 +95,37 @@ export default function VideoFormModal({
     fileType: "thumb" | "video",
   ) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (fileType === "thumb") {
-        setThumbnailFile(file);
-        setThumbPreview(URL.createObjectURL(file));
-        setThumbnailUrl("");
-      } else {
-        setVideoFile(file);
-        setVideoPreview(URL.createObjectURL(file));
-        setVideoUrl("");
+    if (!file) return;
+
+    if (fileType === "thumb") {
+      const allowedImageTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/jfif",
+      ];
+
+      if (!allowedImageTypes.includes(file.type)) {
+        toast.error(t("imageTypeAllowed"));
+        e.target.value = "";
+        return;
       }
+
+      setThumbnailFile(file);
+      setThumbPreview(URL.createObjectURL(file));
+      setThumbnailUrl("");
+    } else {
+      const allowedVideoTypes = ["video/mp4"];
+
+      if (!allowedVideoTypes.includes(file.type)) {
+        toast.error(t("OnlyMP4Allowed"));
+        e.target.value = "";
+        return;
+      }
+
+      setVideoFile(file);
+      setVideoPreview(URL.createObjectURL(file));
+      setVideoUrl("");
     }
   };
 
@@ -227,7 +249,7 @@ export default function VideoFormModal({
                 type="file"
                 ref={videoInputRef}
                 className="hidden"
-                accept="video/*"
+                accept=".mp4"
                 onChange={(e) => handleFileChange(e, "video")}
               />
               <button
@@ -246,6 +268,9 @@ export default function VideoFormModal({
                 onChange={handleVideoUrlChange}
                 className="w-full"
               />
+              <p className="text-[10px] text-red-500 -mt-1">
+                {t("OnlyMP4Allowed")}
+              </p>
             </div>
           </div>
         </div>
@@ -273,7 +298,7 @@ export default function VideoFormModal({
                 type="file"
                 ref={thumbInputRef}
                 className="hidden"
-                accept="image/*"
+                accept=".png,.jpg,.jpeg,.jfif"
                 onChange={(e) => handleFileChange(e, "thumb")}
               />
               <button
@@ -292,6 +317,9 @@ export default function VideoFormModal({
                 onChange={handleThumbnailUrlChange}
                 className="w-full"
               />
+              <p className="text-[10px] text-red-500 -mt-1">
+                {t("imageTypeAllowed")}
+              </p>
             </div>
           </div>
         </div>
