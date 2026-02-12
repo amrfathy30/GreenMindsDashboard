@@ -515,7 +515,7 @@ const translations = {
     Actions: "الإجراءات",
     OnlyMP4Allowed: "يُسمح فقط بمقاطع الفيديو بصيغة MP4",
     DeleteParent: "حذف ولي الأمر",
-    AreYouSureDeleteParent: "هل أنت متأكد أنك تريد حذف هذا الولي؟",
+    AreYouSureDeleteParent: "هل أنت متأكد أنك تريد حذف ولي الأمر؟",
     ParentDeletedSuccessfully: "تم حذف ولي الأمر بنجاح",
     DeletedSuccessfully: "تم الحذف بنجاح",
     failed_delete: "فشل في الحذف",

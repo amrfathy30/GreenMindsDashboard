@@ -51,6 +51,7 @@ const TextArea: React.FC<TextareaProps> = ({
           className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300"
         >
           {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
       <textarea

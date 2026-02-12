@@ -138,18 +138,37 @@ export default function ChildrenModal({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 dark:text-white">
             {t("PhoneNumber")}
           </label>
 
-          <PhoneInput
-            defaultCountry="eg"
-            value={formData.PhoneNumber}
-            onChange={(phone) =>
-              setFormData({ ...formData, PhoneNumber: phone })
-            }
-            inputClassName={`w-full !h-[42px] ${lang === "en" ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg" : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none"} `}
-          />
+<div className="flex flex-col gap-1" dir={lang === "ar" ? "rtl" : "ltr"}>
+  <PhoneInput
+    defaultCountry="eg"
+    value={formData.PhoneNumber}
+    onChange={(phone) => setFormData({ ...formData, PhoneNumber: phone })}
+    
+    className="flex dark:[&_.react-international-phone-input-container]:bg-[#1a222c] dark:[&_.react-international-phone-input-container]:border-gray-700"
+    
+    inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
+                lang === "en"
+                  ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
+                  : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
+              }`}
+    countrySelectorStyleProps={{
+                buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
+                  lang === "en"
+                    ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
+                    : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
+                }`,
+              }}
+    inputStyle={{
+      direction: "ltr",
+      textAlign: lang === "ar" ? "right" : "left",
+    }}
+
+  />
+</div>
         </div>
         {/* {!initialData && (
           <> */}

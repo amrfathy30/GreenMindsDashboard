@@ -23,7 +23,7 @@ export default function UsersChart({
 
   const options: ApexCharts.ApexOptions = {
     chart: { type: "donut" },
-    labels: ["Parents", "Children"],
+    labels: [t("parentsTab"), t("Children")],
     colors: ["#22c55e", "#3b82f6"],
     legend: { show: false },
     dataLabels: { enabled: false },
