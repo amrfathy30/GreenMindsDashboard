@@ -9,6 +9,7 @@ import {
   hasPermission,
 } from "../../utils/permissions/permissions";
 import PageMeta from "../../components/common/PageMeta";
+import { useSearchParams } from "react-router";
 
 export default function Users() {
   const { t } = useLanguage();
@@ -16,23 +17,24 @@ export default function Users() {
   const [openAddAdminModal, setOpenAddAdminModal] = useState(false);
   const [openAddParentModal, setOpenAddParentModal] = useState(false);
   const [openAddChildModal, setOpenAddChildModal] = useState(false);
-
-  const [activeTab, setActiveTab] = useState<"tab1" | "tab2" | "tab3">("tab1");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab =
+    (searchParams.get("tab") as "admin" | "parent" | "child") || "admin";
 
   const tabContent = {
-    tab1: (
+    admin: (
       <AdminsList
         openAddModal={openAddAdminModal}
         setOpenAddModal={setOpenAddAdminModal}
       />
     ),
-    tab2: (
+    parent: (
       <ParentsList
         openAddModal={openAddParentModal}
         setOpenAddModal={setOpenAddParentModal}
       />
     ),
-    tab3: (
+    child: (
       <ChildrenList
         openAddModal={openAddChildModal}
         setOpenAddModal={setOpenAddChildModal}
@@ -45,30 +47,30 @@ export default function Users() {
   }, []);
 
   const canAdd = {
-    tab1: hasPermission("Account_CreateUserWithType"),
-    tab2:
+    admin: hasPermission("Account_CreateUserWithType"),
+    parent:
       hasPermission("Parents_CreateUserWithType") ||
       hasPermission("Parents_CreateParent"),
 
-    tab3: hasPermission("Children_CreateChild"),
+    child: hasPermission("Children_CreateChild"),
   };
 
   const addButtonText = {
-    tab1: t("addAdmin"),
-    tab2: t("addParent"),
-    tab3: t("addChild"),
+    admin: t("addAdmin"),
+    parent: t("addParent"),
+    child: t("addChild"),
   };
 
   const handleAdd = () => {
-    if (activeTab === "tab1") setOpenAddAdminModal(true);
-    else if (activeTab === "tab2") setOpenAddParentModal(true);
-    else if (activeTab === "tab3") setOpenAddChildModal(true);
+    if (currentTab === "admin") setOpenAddAdminModal(true);
+    else if (currentTab === "parent") setOpenAddParentModal(true);
+    else if (currentTab === "child") setOpenAddChildModal(true);
   };
 
   const canViewTab = {
-    tab1: hasPermission("Account_GetAdmins"),
-    tab2: hasPermission("Parents_GetParents"),
-    tab3: hasPermission("Children_GetChildren"),
+    admin: hasPermission("Account_GetAdmins"),
+    parent: hasPermission("Parents_GetParents"),
+    child: hasPermission("Children_GetChildren"),
   };
 
   return (
@@ -83,56 +85,56 @@ export default function Users() {
         <div className="h-[80%] px-5">
           <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8 ">
             <div className="flex items-center gap-4">
-              {canViewTab.tab1 && (
+              {canViewTab.admin && (
                 <button
                   className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
-                    activeTab === "tab1"
+                    currentTab === "admin"
                       ? "bg-linear-to-r from-primary to-secondary text-white"
                       : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-secondary"
                   }`}
-                  onClick={() => setActiveTab("tab1")}
+                  onClick={() => setSearchParams({ tab: "admin" })}
                 >
                   {t("adminsTab")}
                 </button>
               )}
-              {canViewTab.tab2 && (
+              {canViewTab.parent && (
                 <button
                   className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
-                    activeTab === "tab2"
+                    currentTab === "parent"
                       ? "bg-linear-to-r from-primary to-secondary text-white"
                       : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-secondary"
                   }`}
-                  onClick={() => setActiveTab("tab2")}
+                  onClick={() => setSearchParams({ tab: "parent" })}
                 >
                   {t("parentsTab")}
                 </button>
               )}
-              {canViewTab.tab3 && (
+              {canViewTab.child && (
                 <button
                   className={`px-3 md:px-6 py-2 font-medium text-base rounded-xl ${
-                    activeTab === "tab3"
+                    currentTab === "child"
                       ? "bg-linear-to-r from-primary to-secondary text-white"
                       : "bg-[#FAFAFA] text-black dark:bg-[#2f3131] dark:text-white dark:border-gray-800 border border-[#EDEDED] hover:text-white hover:bg-secondary"
                   }`}
-                  onClick={() => setActiveTab("tab3")}
+                  onClick={() => setSearchParams({ tab: "child" })}
                 >
                   {t("childrenTab")}
                 </button>
               )}
             </div>
 
-            {canAdd[activeTab] && (
+            {canAdd[currentTab] && (
               <button
                 onClick={handleAdd}
                 className="flex items-center gap-2 border border-secondary text-secondary px-4 py-2 rounded-lg font-medium text-base hover:bg-secondary hover:text-white transition duration-200"
               >
                 <Plus className="w-5 h-5" />
-                {addButtonText[activeTab]}
+                {addButtonText[currentTab]}
               </button>
             )}
           </div>
 
-          <div>{tabContent[activeTab]}</div>
+          <div>{tabContent[currentTab as "admin" | "parent" | "child"]}</div>
         </div>
       </div>
     </div>

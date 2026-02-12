@@ -218,7 +218,7 @@ export default function VideosList() {
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white line-clamp-1">
+                        <span className="text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white line-clamp-1 block max-w-60 truncate">
                           {video.TitleEn} / {video.TitleAr}
                         </span>
                       </td>

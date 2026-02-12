@@ -158,6 +158,8 @@ export default function EditProfileModal({
   return createPortal(
     <Modal
       isOpen={open}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       onClose={onClose}
       className="max-w-xl mx-4"
       title={

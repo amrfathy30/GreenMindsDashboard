@@ -156,7 +156,7 @@ export default function AdminsList({
       }
 
       if (data.Password !== data.ConfirmPassword) {
-        toast.error(t("PasswordNotMatch"));
+        toast.error(t("PasswordsDoNotMatch"));
         return;
       }
 

@@ -60,6 +60,8 @@ export default function SmtpSettingsModal({
     <Modal
       title={t("smtpSettings")}
       isOpen={open}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       onClose={onClose}
       className="max-w-xl mx-4"
     >

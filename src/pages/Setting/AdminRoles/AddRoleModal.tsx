@@ -36,6 +36,8 @@ export default function AddRoleModal({
     <Modal
       isOpen={open}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       className="max-w-xl mx-4"
       title={editing ? t("edit_admin_role") : t("add_admin_role")}
     >

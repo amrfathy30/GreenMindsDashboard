@@ -145,6 +145,8 @@ export default function VideoPreviewModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       isFullscreen={true}
       showCloseButton={false}
     >

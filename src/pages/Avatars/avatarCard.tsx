@@ -94,7 +94,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
             <span className="text-gray-500 dark:text-gray-400">
               {t("age_group_label")} :
             </span>
-            <span className="font-semibold text-primary">{ageGroup}</span>
+            <span className="font-semibold text-primary truncate">{ageGroup}</span>
           </div>
         </div>
       </div>

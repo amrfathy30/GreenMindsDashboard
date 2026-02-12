@@ -98,6 +98,8 @@ export default function ParentModal({
     <Modal
       isOpen={open}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       className="max-w-xl mx-4"
       title={initialData ? t("EditParent") : t("AddNewParent")}
     >
@@ -147,7 +149,7 @@ export default function ParentModal({
           <PhoneInput
             defaultCountry="eg"
             value={formData.PhoneNumber}
-            onChange={(phone:any) =>
+            onChange={(phone: any) =>
               setFormData({ ...formData, PhoneNumber: phone })
             }
             inputClassName={`w-full !h-[42px] ${lang === "en" ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg" : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none"} `}

@@ -211,6 +211,11 @@ const translations = {
     success_create: "created successfully",
     SeeAll: "See All",
     TopRanked: "Top Ranked",
+    something_went_wrong: "something went wrong",
+    game_name_en_invalid: "Game Name En contains invalid characters.",
+    game_desc_ar_invalid: "Description En contains invalid characters.",
+    game_desc_en_invalid: "Description Ar contains invalid characters.",
+    game_name_ar_invalid: "Game Name Ar contains invalid characters.",
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
@@ -522,7 +527,7 @@ const translations = {
     NameAr: "الاسم (عربي)",
     NameEn: "الاسم (إنجليزي)",
     UserName: "اسم المستخدم",
-    age_groups: "الفئه العمريه",
+    age_groups: "الفئة العمرية",
     AdminRoles: "صلاحيات الادوار",
     SeeMore: "عرض المزيد",
     EditParent: "تعديل ولي الأمر",
@@ -583,6 +588,11 @@ const translations = {
     PasswordContain:
       "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل مما يلي: (حرف كبير، حرف صغير، رمز، ورقم)",
 
+    game_name_en_invalid: "اسم اللعبة بالإنجليزي يحتوي على رموز غير مسموح بها",
+    game_name_ar_invalid: "اسم اللعبة بالعربية يحتوي على رموز غير مسموح بها",
+    game_desc_ar_invalid: "الوصف بالعربية يحتوي على رموز غير مسموح بها",
+    game_desc_en_invalid: "الوصف بالإنجليزي يحتوي على رموز غير مسموح بها",
+    something_went_wrong: "حدث خطا ما",
     // setting
     setting: "الإعدادات",
     language: "اللغة",

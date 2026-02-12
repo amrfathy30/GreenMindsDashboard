@@ -140,6 +140,8 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       title={type === "edit" ? t("edit_avatar") : t("add_avatar")}
       className="max-w-xl mx-4"
     >

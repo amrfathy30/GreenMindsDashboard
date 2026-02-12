@@ -36,6 +36,8 @@ export default function UpdatePermissionModal({
     <Modal
       isOpen={open}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       className="max-w-xl mx-4"
       title={t("UpdatePermission")}
     >

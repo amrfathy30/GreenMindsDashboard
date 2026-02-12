@@ -44,6 +44,8 @@ export default function AgeGroupModal({
   return (
     <Modal
       isOpen={open}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       onClose={onClose}
       className="max-w-xl mx-4"
       title={initialData ? t("modalTitleEditAge") : t("modalTitleAddAge")}

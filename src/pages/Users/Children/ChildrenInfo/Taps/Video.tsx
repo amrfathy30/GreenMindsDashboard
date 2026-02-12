@@ -65,7 +65,7 @@ export default function Video({ id }: TapsProps) {
         <VideoTableSkeleton />
       ) : Array.isArray(childVideos?.Data) && childVideos.Data.length > 0 ? (
         <div className="overflow-x-auto px-2 md:px-4 flex-1">
-          <table className="w-full text-left border-collapse min-w-200">
+          <table className="w-full text-center border-collapse min-w-200">
             <thead>
               <tr className="bg-[#D9D9D940] dark:bg-white/2">
                 <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -112,7 +112,7 @@ export default function Video({ id }: TapsProps) {
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white line-clamp-1">
+                    <span className="text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white line-clamp-1  truncate max-w-60">
                       {video.TitleEn} / {video.TitleAr}
                     </span>
                   </td>

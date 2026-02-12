@@ -39,13 +39,15 @@ export default function ProfileLevelsModal({
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSave({ MinPoints, MaxPoints, NameEn, NameAr,LevelNumber });
+    onSave({ MinPoints, MaxPoints, NameEn, NameAr, LevelNumber });
   };
 
   return (
     <Modal
       isOpen={open}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       className="max-w-xl mx-4"
       title={initialData ? t("modalTitleEditLevel") : t("modalTitleAddLevel")}
     >

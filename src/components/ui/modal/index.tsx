@@ -10,6 +10,8 @@ interface ModalProps {
   isFullscreen?: boolean;
   dangerType?: boolean;
   editing?: boolean;
+  closeOnOutsideClick?: boolean;
+  closeOnEscape?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -18,7 +20,8 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   className,
   editing = false,
-
+  closeOnOutsideClick = true,
+  closeOnEscape = true,
   title,
   showCloseButton = true,
   isFullscreen = false,
@@ -28,6 +31,8 @@ export const Modal: React.FC<ModalProps> = ({
   const lang = localStorage.getItem("GM-language");
 
   useEffect(() => {
+    if (!closeOnEscape) return;
+
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
@@ -41,7 +46,7 @@ export const Modal: React.FC<ModalProps> = ({
     return () => {
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, closeOnEscape]);
 
   useEffect(() => {
     if (isOpen) {
@@ -66,7 +71,7 @@ export const Modal: React.FC<ModalProps> = ({
       {!isFullscreen && (
         <div
           className="fixed inset-0 h-full w-full bg-[#00000099] backdrop-blur-[1px]"
-          onClick={onClose}
+          onClick={closeOnOutsideClick ? onClose : undefined}
         ></div>
       )}
       <div

@@ -9,10 +9,15 @@ export default function BarChartOne({
   ageSectors: AgeSector[];
 }) {
   const { t } = useLanguage();
+  const isDark = document.documentElement.classList.contains("dark");
+
+  const maxColumns = 10;
+  const displayedSectors = ageSectors.slice(0, maxColumns);
+
   const series = [
     {
       name: t("UsersCount"),
-      data: ageSectors.map((sector) => sector.Count),
+      data: displayedSectors.map((sector) => sector.Count),
     },
   ];
 
@@ -37,16 +42,24 @@ export default function BarChartOne({
       enabled: true,
       offsetY: -20,
       style: {
-        fontSize: "12px",
-        colors: ["#304758"],
+        fontSize: "10px",
+        colors: [isDark ? "#fff" : "#304758"],
         fontFamily: "Outfit, sans-serif",
       },
     },
     stroke: { show: true, width: 4, colors: ["transparent"] },
     xaxis: {
-      categories: ageSectors.map((sector) => sector.DisplayName),
+      categories: displayedSectors.map((sector) => sector.DisplayName),
       axisBorder: { show: false },
       axisTicks: { show: false },
+      labels: {
+        formatter: (val: string) =>
+          val.length > 8 ? val.slice(0, 8) + "..." : val,
+        style: {
+          fontSize: "8px",
+          fontFamily: "Outfit, sans-serif",
+        },
+      },
     },
     legend: {
       show: true,

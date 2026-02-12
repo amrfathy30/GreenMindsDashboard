@@ -148,16 +148,27 @@ const GameModal: React.FC<GameModalProps> = ({
       onSuccess();
       onClose();
     } catch (error: any) {
+      let finalMsg = "";
+
       const serverErrors = error.response?.data?.Data;
-      let customMsg = "";
+      const serverMessage = error.response?.data?.Message;
+
+      const translations: Record<string, string> = {
+        "GameNameEn contains invalid characters.": t("game_name_en_invalid"),
+        "GameNameAr contains invalid characters.": t("game_name_ar_invalid"),
+        "DescriptionAr contains invalid characters.": t("game_desc_ar_invalid"),
+        "DescriptionEn contains invalid characters.": t("game_desc_en_invalid"),
+      };
 
       if (serverErrors && typeof serverErrors === "object") {
         const firstKey = Object.keys(serverErrors)[0];
-        customMsg = serverErrors[firstKey][0];
+        const msgFromServer = serverErrors[firstKey][0];
+        finalMsg = translations[msgFromServer] || msgFromServer;
+      } else if (serverMessage) {
+        finalMsg = translations[serverMessage] || serverMessage;
+      } else {
+        finalMsg = t("something_went_wrong");
       }
-
-      const finalMsg =
-        customMsg || error.response?.data?.Message || t("something_went_wrong");
 
       toast.error(finalMsg);
     } finally {
@@ -188,6 +199,8 @@ const GameModal: React.FC<GameModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       className="max-w-xl mx-4"
       title={type === "edit" ? t("edit_game") : t("add_new_game")}
     >

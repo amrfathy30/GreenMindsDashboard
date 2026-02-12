@@ -36,14 +36,14 @@ export default function GenderChart({
             show: true,
             value: {
               show: true,
-              fontSize: "28px",
+              fontSize: "18px",
               fontWeight: 800,
               color: "#111827",
             },
             total: {
               show: true,
               label: t("pageTitle"),
-              fontSize: "28px",
+              fontSize: "18px",
               fontWeight: 800,
               formatter: () => (male + female).toString(),
             },

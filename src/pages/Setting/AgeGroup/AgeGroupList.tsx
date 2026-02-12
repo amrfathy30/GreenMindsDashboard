@@ -161,6 +161,9 @@ export default function AgeGroupList() {
     {
       key: "DisplayName",
       label: t("age_groups_name"),
+      render: (row: any) => (
+        <span className="block truncate max-w-60">{row.DisplayName}</span>
+      ),
     },
     {
       key: "ageGroups",

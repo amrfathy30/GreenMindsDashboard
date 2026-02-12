@@ -184,6 +184,8 @@ export default function VideoFormModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnEscape={false}
+      closeOnOutsideClick={false}
       className="max-w-xl mx-4"
       title={type === "add" ? t("add_video_title") : t("edit_video_title")}
     >

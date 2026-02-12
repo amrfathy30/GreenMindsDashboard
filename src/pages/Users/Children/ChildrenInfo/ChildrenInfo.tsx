@@ -122,6 +122,7 @@ export default function ChildrenInfo() {
   }
 
   const pageTitle = `${t("GreenMindsAdmin")} | ${t("ChildrenInformation")}`;
+  const progress = Number(pointsData?.Progress || 0);
 
   if (!canView && !canViewPoints && !loading) {
     return (
@@ -155,7 +156,7 @@ export default function ChildrenInfo() {
           <div className="w-10 h-10 rounded-full bg-gray-300" />
         )}
 
-        <h2 className="font-medium text-2xl text-[#000000] dark:text-white">
+        <h2 className="font-medium text-2xl text-[#000000] dark:text-white truncate">
           {childData?.Name || t("NoName")}
         </h2>
       </div>
@@ -222,14 +223,18 @@ export default function ChildrenInfo() {
       {pointsData && (
         <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
           <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium">{t("Progress")}</span>
-            <span className="text-sm font-medium">{pointsData.Progress}%</span>
+            <span className="text-sm font-medium  dark:text-gray-100">
+              {t("Progress")}
+            </span>
+            <span className="text-sm font-medium dark:text-gray-100">
+              {progress.toFixed(2)}%
+            </span>{" "}
           </div>
 
           <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700">
             <div
               className="bg-green-600 h-3 rounded-full transition-all duration-500"
-              style={{ width: `${pointsData.Progress}%` }}
+              style={{ width: `${progress}%` }}
             />
           </div>
         </div>
@@ -237,10 +242,12 @@ export default function ChildrenInfo() {
 
       {pointsData && (
         <div className="mt-6 rounded-xl border shadow p-5 dark:border-gray-700">
-          <h3 className="font-semibold mb-2">{t("DailyReward")}</h3>
+          <h3 className="font-semibold mb-2 dark:text-gray-100">
+            {t("DailyReward")}
+          </h3>
 
           {pointsData.IsAwardedToday ? (
-            <p className="text-green-600">✔ {t("RewardCollectedToday")}</p>
+            <p className="text-green-600 ">✔ {t("RewardCollectedToday")}</p>
           ) : (
             <p className="text-orange-500">
               {t("NextReward")}: +{pointsData.NextDayAwardPoints} {t("points")}
