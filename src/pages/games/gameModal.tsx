@@ -286,7 +286,7 @@ const GameModal: React.FC<GameModalProps> = ({
 
         <div className="space-y-2">
           <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
-            {t("upload_thumbnail_label")}
+            {t("upload_thumbnail_label")}<span className="text-red-500">*</span>
           </label>
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="relative flex h-20 w-25 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
