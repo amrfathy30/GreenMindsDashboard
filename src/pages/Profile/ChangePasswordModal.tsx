@@ -30,50 +30,8 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
   };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const { CurrentPassword, NewPassword, ConfirmPassword } = formData;
-  if (NewPassword.length < 8) {
-    toast.error(t("password_min_length")); 
-    return;
-  }
-  if (NewPassword !== ConfirmPassword) {
-    toast.error(t("passwords_dont_match"));
-    return;
-  }
-  try {
-    setLoading(true);
-    const res = await updatePassword({
-      CurrentPassword,
-      NewPassword,
-      ConfirmPassword,
-    });
-    ShowToastSuccess(res?.Message || t("password_updated_success"));
-    setTimeout(() => {
-      localStorage.clear();
-      window.location.href = "/";
-    }, 1000);
-    setShowChangePassword(false);
-  } catch (error: any) {
-    const translations: Record<string, string> = {
-      "Password Must be 8 digits or more": t("password_min_length"),
-      "Current password is incorrect": t("current_password_incorrect"),
-      "Password Should contain one at least of (a capital letter, small letter, symbol, and number)": t("PasswordContain"),
-    };
-    
-    const finalMsg = getTranslatedApiError(error, t, translations);
-    toast.error(finalMsg);
-} finally {
-    setLoading(false);
-  }
-};
     e.preventDefault();
-
     const { CurrentPassword, NewPassword, ConfirmPassword } = formData;
-
-    if (!CurrentPassword || !NewPassword || !ConfirmPassword) {
-      toast.error("All fields are required");
-      return;
-    }
 
     const MIN_PASSWORD_LENGTH = 8;
     const MAX_PASSWORD_LENGTH = 15;
@@ -87,31 +45,32 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
     }
 
     if (NewPassword !== ConfirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(t("passwords_not_match"));
       return;
     }
-
     try {
       setLoading(true);
-
       const res = await updatePassword({
-        CurrentPassword: CurrentPassword,
-        NewPassword: NewPassword,
-        ConfirmPassword: ConfirmPassword,
+        CurrentPassword,
+        NewPassword,
+        ConfirmPassword,
       });
-
-      ShowToastSuccess(res?.Message || "Password updated successfully");
-
+      ShowToastSuccess(res?.Message || t("password_updated_success"));
       setTimeout(() => {
         localStorage.clear();
         window.location.href = "/";
       }, 1000);
-
       setShowChangePassword(false);
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.Message || "Failed to update password",
-      );
+      const translations: Record<string, string> = {
+        "Password Must be 8 digits or more": t("password_min_length"),
+        "Current password is incorrect": t("current_password_incorrect"),
+        "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
+          t("PasswordContain"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
     } finally {
       setLoading(false);
     }
@@ -125,7 +84,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
 
       const res = await sendEmail(email);
 
-    ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+      ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
 
       setShowChangePassword(false);
       setShowResetPassword(true);

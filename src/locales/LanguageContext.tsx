@@ -224,9 +224,9 @@ const translations = {
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
-/*** */
+    /*** */
     password_min_length: "Password Must be 8 digits or more",
-    passwords_dont_match: "Passwords do not match",
+    passwords_not_match: "Passwords do not match",
     current_password_incorrect: "Current password is incorrect",
     password_updated_success: "Password updated successfully",
     reset_email_sent_success: "Reset email sent successfully",
@@ -632,7 +632,7 @@ const translations = {
     something_went_wrong: "حدث خطا ما",
     /******/
     password_min_length: "يجب أن تكون كلمة المرور 8 أرقام أو أكثر",
-    passwords_dont_match: "كلمات المرور غير متطابقة",
+    passwords_not_match: "كلمات المرور غير متطابقة",
     current_password_incorrect: "كلمة المرور الحالية غير صحيحة",
     password_updated_success: "تم تحديث كلمة المرور بنجاح",
     reset_email_sent_success: "تم إرسال بريد إعادة التعيين بنجاح",
