@@ -425,6 +425,8 @@ const translations = {
     permissions_group_admin_permissions: "Admin Permissions",
     permissions_group_weather: "Weather Forecast",
     permissions_group_debug: "Debug",
+
+    special_chars_not_allowed: "Special characters are not allowed",
   },
   ar: {
     // sidebar
@@ -841,6 +843,8 @@ const translations = {
     permissions_group_admin_permissions: "صلاحيات الإدارة",
     permissions_group_weather: "الطقس",
     permissions_group_debug: "التصحيح والأخطاء",
+
+    special_chars_not_allowed: "غير مسموح باستخدام الرموز الخاصة",
   },
 };
 
