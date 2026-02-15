@@ -11,6 +11,7 @@ import { createGame, updateGame } from "../../api/services/gameService";
 import { allAgeData } from "../../api/services/ageService";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
+import { getTranslatedApiError } from "../../utils/handleApiError";
 const BASE_URL = "https://kidsapi.pulvent.com";
 
 interface GameModalProps {
@@ -148,11 +149,6 @@ const GameModal: React.FC<GameModalProps> = ({
       onSuccess();
       onClose();
     } catch (error: any) {
-      let finalMsg = "";
-
-      const serverErrors = error.response?.data?.Data;
-      const serverMessage = error.response?.data?.Message;
-
       const translations: Record<string, string> = {
         "GameNameEn contains invalid characters.": t("game_name_en_invalid"),
         "GameNameAr contains invalid characters.": t("game_name_ar_invalid"),
@@ -160,16 +156,7 @@ const GameModal: React.FC<GameModalProps> = ({
         "DescriptionEn contains invalid characters.": t("game_desc_en_invalid"),
       };
 
-      if (serverErrors && typeof serverErrors === "object") {
-        const firstKey = Object.keys(serverErrors)[0];
-        const msgFromServer = serverErrors[firstKey][0];
-        finalMsg = translations[msgFromServer] || msgFromServer;
-      } else if (serverMessage) {
-        finalMsg = translations[serverMessage] || serverMessage;
-      } else {
-        finalMsg = t("something_went_wrong");
-      }
-
+      const finalMsg = getTranslatedApiError(error, t, translations);
       toast.error(finalMsg);
     } finally {
       setLoading(false);
@@ -286,7 +273,8 @@ const GameModal: React.FC<GameModalProps> = ({
 
         <div className="space-y-2">
           <label className="mb-1.5 block text-sm font-medium text-black dark:text-gray-300">
-            {t("upload_thumbnail_label")}<span className="text-red-500">*</span>
+            {t("upload_thumbnail_label")}
+            <span className="text-red-500">*</span>
           </label>
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="relative flex h-20 w-25 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">

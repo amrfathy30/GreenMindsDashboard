@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import PageMeta from "../../../components/common/PageMeta";
 import { useLanguage } from "../../../locales/LanguageContext";
 import {
@@ -57,6 +57,27 @@ export default function PermissionsList() {
     };
     fetchPermissions();
   }, [canView]);
+
+  const GROUP_TRANSLATIONS = useMemo<Record<string, string>>(
+    () => ({
+      Users: t("permissions_group_users"),
+      Games: t("permissions_group_games"),
+      Parents: t("permissions_group_parents"),
+      Children: t("permissions_group_children"),
+      Levels: t("permissions_group_levels"),
+      Videos: t("permissions_group_videos"),
+      Avatars: t("permissions_group_avatars"),
+      Account: t("permissions_group_account"),
+      AdminRoles: t("permissions_group_admin_roles"),
+      AdminPermissions: t("permissions_group_admin_permissions"),
+      AgeSectors: t("permissions_group_age_sectors"),
+      Smtp: t("permissions_group_smtp"),
+      WeatherForecast: t("permissions_group_weather"),
+      Dashboard: t("permissions_group_dashboard"),
+      Debug: t("permissions_group_debug"),
+    }),
+    [t],
+  );
 
   const openEditModal = (perm: PermissionApiResponse["Data"][number]) => {
     setSelectedPermission(perm);
@@ -170,8 +191,12 @@ export default function PermissionsList() {
       p.Key.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const getGroupFromKey = (key: string) => key.split("_")[0];
-  const groupedPermissions: Record<string, typeof permissions> = {};
+  const getGroupFromKey = (key: string) => {
+    const groupKey = key.split("_")[0];
+    return GROUP_TRANSLATIONS[groupKey] || groupKey;
+  };
+
+  const groupedPermissions: Record<string, PermissionApiResponse["Data"]> = {};
 
   filteredPermissions.forEach((perm) => {
     const group = getGroupFromKey(perm.Key);
