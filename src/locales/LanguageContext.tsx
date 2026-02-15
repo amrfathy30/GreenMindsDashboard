@@ -219,6 +219,15 @@ const translations = {
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
+/*** */
+    password_min_length: "Password Must be 8 digits or more",
+    passwords_dont_match: "Passwords do not match",
+    current_password_incorrect: "Current password is incorrect",
+    password_updated_success: "Password updated successfully",
+    reset_email_sent_success: "Reset email sent successfully",
+
+    ToAge_range: "The age limit must be between 1 and 99",
+    FromAge_less_than_ToAge: "Start age must be less than end age",
 
     // Video translations
     video_added: "Video added successfully",
@@ -608,6 +617,16 @@ const translations = {
     game_desc_ar_invalid: "الوصف بالعربية يحتوي على رموز غير مسموح بها",
     game_desc_en_invalid: "الوصف بالإنجليزي يحتوي على رموز غير مسموح بها",
     something_went_wrong: "حدث خطا ما",
+    /******/
+    password_min_length: "يجب أن تكون كلمة المرور 8 أرقام أو أكثر",
+    passwords_dont_match: "كلمات المرور غير متطابقة",
+    current_password_incorrect: "كلمة المرور الحالية غير صحيحة",
+    password_updated_success: "تم تحديث كلمة المرور بنجاح",
+    reset_email_sent_success: "تم إرسال بريد إعادة التعيين بنجاح",
+    //password_requirements: "يجب أن تحتوي كلمة المرور على حرف كبير، حرف صغير، رمز، ورقم على الأقل",
+
+    ToAge_range: "يجب أن تكون الفئة العمرية (إلى) بين 1 و 99",
+    FromAge_less_than_ToAge: "يجب أن يكون سن البداية أقل من سن النهاية",
     // setting
     setting: "الإعدادات",
     language: "اللغة",

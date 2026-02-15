@@ -5,6 +5,8 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { AgeGroupModalProps } from "../../../utils/types/ageType";
 import { useLanguage } from "../../../locales/LanguageContext";
+import { toast } from "sonner"; 
+import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function AgeGroupModal({
   open,
@@ -31,16 +33,29 @@ export default function AgeGroupModal({
     }
   }, [initialData, open]);
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await onSave({
-      id: initialData?.id,
-      FromAge,
-      ToAge,
-      DisplayName,
-    });
-  };
+    if (parseInt(FromAge) >= parseInt(ToAge)) {
+      toast.error(t("FromAge_less_than_ToAge"));
+      return;
+    }
 
+    try {
+      await onSave({
+        id: initialData?.id,
+        FromAge,
+        ToAge,
+        DisplayName,
+      });
+    } catch (error: any) {
+      const errorTranslations: Record<string, string> = {
+        "ToAge must be between 1 and 99": t("ToAge_range"),
+        "FromAge must be less than ToAge": t("FromAge_less_than_ToAge"),
+      };
+      const finalMsg = getTranslatedApiError(error, t, errorTranslations);
+      toast.error(finalMsg);
+    }
+  };
   return (
     <Modal
       isOpen={open}
@@ -69,10 +84,17 @@ export default function AgeGroupModal({
             id="FromAge"
             type="number"
             required
+            min="1"    
+            max="99"   
             label={t("fromLabel")}
             placeholder={t("fromPlaceholder")}
             value={FromAge}
-            onChange={(e) => setFromAge(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || (Number(val) >= 1 && Number(val) <= 99)) {
+                setFromAge(val);
+              }
+            }}
           />
         </div>
         <div>
@@ -80,10 +102,17 @@ export default function AgeGroupModal({
             id="ToAge"
             type="number"
             required
+            min="1"
+            max="99" 
             label={t("toLabel")}
             placeholder={t("toPlaceholder")}
             value={ToAge}
-            onChange={(e) => setToAge(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || Number(val) <= 99) {
+                setToAge(val);
+              }
+            }}
           />
         </div>
         <Button type="submit" className="mt-2" disabled={loading}>
