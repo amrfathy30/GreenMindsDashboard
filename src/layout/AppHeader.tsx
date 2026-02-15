@@ -50,7 +50,7 @@ const AppHeader: React.FC = () => {
               )}
             </a>
             <button
-              className="items-center p-1 justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 lg:border"
+              className="items-center p-1 mx-14 md:mx-0 justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 border"
               onClick={handleToggle}
               aria-label="Toggle Sidebar"
             >

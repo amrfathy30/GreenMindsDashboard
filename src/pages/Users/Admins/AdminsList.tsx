@@ -143,6 +143,12 @@ export default function AdminsList({
     }
   };
 
+  const isValidPhone = (phone?: string) => {
+    if (!phone) return false;
+    const digitsOnly = phone.replace(/\D/g, "");
+    return digitsOnly.length > 4;
+  };
+
   const handleSave = async (data: AdminList) => {
     try {
       if (!data.Name?.trim() || !data.UserName?.trim() || !data.Email?.trim()) {
@@ -150,14 +156,27 @@ export default function AdminsList({
         return;
       }
 
-      if (!editData?.id && data.Password.length < 8) {
-        toast.error(t("PasswordMustBeAtLeast8Characters"));
+      if (!isValidPhone(data.PhoneNumber)) {
+        toast.error(t("please_enter_valid_phone"));
         return;
       }
 
-      if (data.Password !== data.ConfirmPassword) {
-        toast.error(t("PasswordsDoNotMatch"));
-        return;
+      const MIN_PASSWORD_LENGTH = 8;
+      const MAX_PASSWORD_LENGTH = 15;
+
+      if (!editData?.id && data.Password) {
+        if (
+          data.Password.length < MIN_PASSWORD_LENGTH ||
+          data.Password.length > MAX_PASSWORD_LENGTH
+        ) {
+          toast.error(t("PasswordBetween"));
+          return;
+        }
+
+        if (data.Password !== data.ConfirmPassword) {
+          toast.error(t("PasswordNotMatch"));
+          return;
+        }
       }
 
       setModalLoading(true);

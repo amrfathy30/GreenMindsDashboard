@@ -131,11 +131,40 @@ export default function ParentsList({
     }
   };
 
+  const isValidPhone = (phone?: string) => {
+    if (!phone) return false;
+    const digitsOnly = phone.replace(/\D/g, "");
+    return digitsOnly.length > 4;
+  };
+
   const handleSave = async (data: ParentFormData) => {
     try {
       if (!data.UserName?.trim() || !data.Name?.trim() || data.Email === "") {
         toast.error(t("all_fields_required"));
         return;
+      }
+
+      if (!isValidPhone(data.PhoneNumber)) {
+        toast.error(t("please_enter_valid_phone"));
+        return;
+      }
+
+      const MIN_PASSWORD_LENGTH = 8;
+      const MAX_PASSWORD_LENGTH = 15;
+
+      if (!editData?.id && data.Password) {
+        if (
+          data.Password.length < MIN_PASSWORD_LENGTH ||
+          data.Password.length > MAX_PASSWORD_LENGTH
+        ) {
+          toast.error(t("PasswordBetween"));
+          return;
+        }
+
+        if (data.Password !== data.ConfirmPassword) {
+          toast.error(t("PasswordNotMatch"));
+          return;
+        }
       }
 
       setModalLoading(true);

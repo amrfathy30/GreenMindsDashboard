@@ -281,23 +281,22 @@ export default function Analytics() {
             )}
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-1">
+            {loadingUsersByAgeSector ? (
+              <BarChartOneSkeleton />
+            ) : (
+              <AgeGroupChart usersByAgeSector={usersByAgeSector} />
+            )}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
-            <div className="col-span-1 md:col-span-3">
-              {loadingUsersByAgeSector ? (
-                <BarChartOneSkeleton />
-              ) : (
-                <AgeGroupChart usersByAgeSector={usersByAgeSector} />
-              )}
-            </div>
-
-            <div className="col-span-1 md:col-span-3">
+            <div className="col-span-1 md:col-span-4">
               {loadingLevelsStats ? (
                 <PointsDistributionSkeleton />
               ) : (
                 <PointsDistribution levelsStatsData={levelsStatsData} />
               )}
             </div>
-            <div className="col-span-1 md:col-span-2">
+            <div className="col-span-1 md:col-span-4">
               {loadingTopRanks ? (
                 <TopRankedSkeleton />
               ) : (

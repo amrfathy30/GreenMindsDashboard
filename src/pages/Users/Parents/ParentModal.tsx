@@ -130,17 +130,19 @@ export default function ParentModal({
             }
           />
         </div>
-        <div>
-          <Input
-            id="Email"
-            label={t("ParentEmail")}
-            placeholder={t("EnterParentEmail")}
-            value={formData.Email}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, Email: e.target.value }))
-            }
-          />
-        </div>
+        {!initialData && (
+          <div>
+            <Input
+              id="Email"
+              label={t("ParentEmail")}
+              placeholder={t("EnterParentEmail")}
+              value={formData.Email}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, Email: e.target.value }))
+              }
+            />
+          </div>
+        )}
         <div>
           <label className="block text-sm font-medium mb-1">
             {t("PhoneNumber")}

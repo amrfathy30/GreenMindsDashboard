@@ -80,9 +80,9 @@ export default function AdminModal({
       Email: formData.Email,
       PhoneNumber: formData.PhoneNumber,
       UserName: formData.UserName,
-      Type: formData.Type,
+      Type: 2,
       roleName: formData.roleName,
-      GenderId: Number(formData.GenderId),
+      GenderId: 1,
       DateOfBirth: formData.DateOfBirth,
     };
 
@@ -131,17 +131,19 @@ export default function AdminModal({
             />
           </div>
         </div>
-        <div>
-          <Input
-            id="Email"
-            label={t("AdminEmail")}
-            placeholder={t("EnterAdminEmail")}
-            value={formData.Email}
-            onChange={(e) =>
-              setFormData({ ...formData, Email: e.target.value })
-            }
-          />
-        </div>
+        {!initialData && (
+          <div>
+            <Input
+              id="Email"
+              label={t("AdminEmail")}
+              placeholder={t("EnterAdminEmail")}
+              value={formData.Email}
+              onChange={(e) =>
+                setFormData({ ...formData, Email: e.target.value })
+              }
+            />
+          </div>
+        )}
         <div className="flex flex-col gap-1">
           <label className="block text-sm font-medium mb-1 dark:text-white">
             {t("PhoneNumber")}

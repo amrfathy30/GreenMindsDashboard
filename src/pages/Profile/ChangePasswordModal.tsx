@@ -38,8 +38,14 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       return;
     }
 
-    if (NewPassword.length < 8) {
-      toast.error("Password must be at least 8 characters");
+    const MIN_PASSWORD_LENGTH = 8;
+    const MAX_PASSWORD_LENGTH = 15;
+
+    if (
+      NewPassword.length < MIN_PASSWORD_LENGTH ||
+      NewPassword.length > MAX_PASSWORD_LENGTH
+    ) {
+      toast.error(t("PasswordBetween"));
       return;
     }
 

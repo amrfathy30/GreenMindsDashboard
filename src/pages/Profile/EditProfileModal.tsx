@@ -92,6 +92,12 @@ export default function EditProfileModal({
     fileInputRef.current?.click();
   };
 
+  const isValidPhone = (phone?: string) => {
+    if (!phone) return false;
+    const digitsOnly = phone.replace(/\D/g, "");
+    return digitsOnly.length > 4;
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -114,6 +120,11 @@ export default function EditProfileModal({
         !formData.Phone
       ) {
         toast.error(t("all_fields_required"));
+        return;
+      }
+
+      if (!isValidPhone(formData.Phone)) {
+        toast.error(t("please_enter_valid_phone"));
         return;
       }
 

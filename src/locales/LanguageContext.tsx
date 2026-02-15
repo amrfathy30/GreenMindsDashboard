@@ -113,8 +113,13 @@ const translations = {
     LastRegister: "Last Register",
     Children: "Children",
     Actions: "Actions",
+    PasswordBetween: "Password must be between 8 and 15 characters",
     DeleteParent: "Delete Parent",
+    ParentDeletedSuccessfully: "Parent Deleted Successfully",
     AreYouSureDeleteParent: "Are you sure you want to delete this parent?",
+    please_enter_valid_phone: "Please enter a valid phone number.",
+    phone_number_required:
+      "Please enter your phone number after the country code.",
     NameAr: "Name (Ar)",
     NameEn: "Name (En)",
     EditParent: "Edit Parent",
@@ -219,7 +224,11 @@ const translations = {
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
-
+    InvalidEmailOrPasswordWithAttempts:
+      "Invalid email or password. You have {{count}} attempts remaining.",
+    AccountLocked:
+      "Your account is temporarily locked due to too many failed attempts.",
+    AccountLockedUntil: "Your account is locked until {{time}}.",
     // Video translations
     video_added: "Video added successfully",
     video_updated: "Video updated successfully",
@@ -328,7 +337,7 @@ const translations = {
     // profile
     changePassword: "Change Password",
     resetPassword: "Reset Password",
-    backToEdit: "Back to edit",
+    backToEdit: "Back",
     adminName: "Admin Name",
     adminEmail: "Admin Email",
     adminPhone: "Admin Phone",
@@ -533,9 +542,12 @@ const translations = {
     LastRegister: "آخر تسجيل",
     Children: "الأبناء",
     Actions: "الإجراءات",
+    PasswordBetween: "يجب أن تتراوح كلمة المرور بين 8 و 15 حرفًا",
     OnlyMP4Allowed: "يُسمح فقط بمقاطع الفيديو بصيغة MP4",
     DeleteParent: "حذف ولي الأمر",
     AreYouSureDeleteParent: "هل أنت متأكد أنك تريد حذف ولي الأمر؟",
+    please_enter_valid_phone: "من فضلك أدخل رقم هاتف صحيح.",
+    phone_number_required: "من فضلك أدخل رقم الهاتف بعد مفتاح الدولة.",
     ParentDeletedSuccessfully: "تم حذف ولي الأمر بنجاح",
     DeletedSuccessfully: "تم الحذف بنجاح",
     failed_delete: "فشل في الحذف",
@@ -608,6 +620,10 @@ const translations = {
     game_desc_ar_invalid: "الوصف بالعربية يحتوي على رموز غير مسموح بها",
     game_desc_en_invalid: "الوصف بالإنجليزي يحتوي على رموز غير مسموح بها",
     something_went_wrong: "حدث خطا ما",
+    InvalidEmailOrPasswordWithAttempts:
+      "البريد الإلكتروني أو كلمة المرور غير صحيحة. لديك {{count}} محاولات متبقية.",
+    AccountLocked: "تم حظر حسابك مؤقتًا بسبب عدد محاولات تسجيل الدخول الخاطئة.",
+    AccountLockedUntil: "تم حظر حسابك حتى الساعة {{time}}.",
     // setting
     setting: "الإعدادات",
     language: "اللغة",
@@ -716,7 +732,7 @@ const translations = {
     // profile
     changePassword: "تغيير كلمة المرور",
     resetPassword: "إعادة تعيين كلمة المرور",
-    backToEdit: "العودة للتعديل",
+    backToEdit: "العودة",
     adminName: "اسم المشرف",
     adminEmail: "البريد الإلكتروني",
     adminPhone: "رقم الهاتف",

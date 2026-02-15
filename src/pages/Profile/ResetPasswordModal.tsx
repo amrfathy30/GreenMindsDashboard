@@ -27,10 +27,17 @@ export default function ResetPasswordModal() {
 
     const { otp, NewPassword, ConfirmPassword } = formData;
 
-    if (NewPassword.length < 8) {
-      toast.error(t("PasswordMustBeAtLeast8Characters"));
+    const MIN_PASSWORD_LENGTH = 8;
+    const MAX_PASSWORD_LENGTH = 15;
+
+    if (
+      NewPassword.length < MIN_PASSWORD_LENGTH ||
+      NewPassword.length > MAX_PASSWORD_LENGTH
+    ) {
+      toast.error(t("PasswordBetween"));
       return;
     }
+
     if (!otp || !NewPassword || !ConfirmPassword) {
       toast.error(t("AllFieldsAreRequired"));
       return;

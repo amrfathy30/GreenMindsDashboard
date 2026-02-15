@@ -24,6 +24,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { t } = useLanguage();
+  const lang = localStorage.getItem("GM-language");
 
   const menuRef = useClickOutside(() => {
     setShowMenu(false);
@@ -59,7 +60,9 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
             </button>
 
             {showMenu && (
-              <div className="absolute right-0 top-full mt-1 z-50 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-2xl dark:border-gray-700 dark:bg-gray-800">
+              <div
+                className={`absolute ${lang === "en" ? "right-0 " : "left-0 "} top-full mt-1 z-50 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-2xl dark:border-gray-700 dark:bg-gray-800`}
+              >
                 {canEdit && (
                   <button
                     onClick={(e) => {
@@ -94,7 +97,9 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
             <span className="text-gray-500 dark:text-gray-400">
               {t("age_group_label")} :
             </span>
-            <span className="font-semibold text-primary truncate">{ageGroup}</span>
+            <span className="font-semibold text-primary truncate">
+              {ageGroup}
+            </span>
           </div>
         </div>
       </div>

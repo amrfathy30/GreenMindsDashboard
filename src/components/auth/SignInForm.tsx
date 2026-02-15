@@ -47,6 +47,7 @@ export default function SignInForm() {
     else if (permissions.includes("Games_GetPaged")) return "/games";
     else return "/welcome";
   };
+
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -60,8 +61,14 @@ export default function SignInForm() {
       return;
     }
 
-    if (password.length < 8) {
-      toast.error(t("PasswordMustBeAtLeast8Characters"));
+    const MIN_PASSWORD_LENGTH = 8;
+    const MAX_PASSWORD_LENGTH = 15;
+
+    if (
+      password.length < MIN_PASSWORD_LENGTH ||
+      password.length > MAX_PASSWORD_LENGTH
+    ) {
+      toast.error(t("PasswordBetween"));
       return;
     }
 
@@ -93,10 +100,31 @@ export default function SignInForm() {
         toast.error(response?.Message || t("InvalidEmailOrPassword"));
       }
     } catch (err: any) {
-      const apiMessage =
-        err?.response?.data?.Message || t("SomethingWentWrongPleaseTryAgain");
+      const message = err?.response?.data?.Message;
+      const remaining = err?.response?.data?.Data?.RemainingAttempts;
+      const lockoutUntil = err?.response?.data?.Data?.LockoutUntil;
 
-      toast.error(apiMessage);
+      let finalMsg = "";
+
+      if (typeof remaining === "number") {
+        if (remaining > 0) {
+          finalMsg = t("InvalidEmailOrPasswordWithAttempts").replace(
+            "{{count}}",
+            String(remaining),
+          );
+        } else if (lockoutUntil) {
+          finalMsg = t("AccountLockedUntil").replace(
+            "{{time}}",
+            new Date(lockoutUntil).toLocaleTimeString(),
+          );
+        } else {
+          finalMsg = t("AccountLocked");
+        }
+      } else {
+        finalMsg = message || t("SomethingWentWrongPleaseTryAgain");
+      }
+
+      toast.error(finalMsg);
     } finally {
       setLoading(false);
     }

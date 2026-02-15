@@ -11,7 +11,7 @@ export default function BarChartOne({
   const { t } = useLanguage();
   const isDark = document.documentElement.classList.contains("dark");
 
-  const maxColumns = 10;
+  const maxColumns = 12;
   const displayedSectors = ageSectors.slice(0, maxColumns);
 
   const series = [
