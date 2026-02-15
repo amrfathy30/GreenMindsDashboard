@@ -8,6 +8,7 @@ import Input from "../../components/form/input/InputField";
 import Button from "../../components/ui/button/Button";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import { useLanguage } from "../../locales/LanguageContext";
+import { getTranslatedApiError } from "../../utils/handleApiError";
 
 const ChangePasswordModal: React.FC<ModalProps> = ({
   setShowResetPassword,
@@ -29,6 +30,42 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
   };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const { CurrentPassword, NewPassword, ConfirmPassword } = formData;
+  if (NewPassword.length < 8) {
+    toast.error(t("password_min_length")); 
+    return;
+  }
+  if (NewPassword !== ConfirmPassword) {
+    toast.error(t("passwords_dont_match"));
+    return;
+  }
+  try {
+    setLoading(true);
+    const res = await updatePassword({
+      CurrentPassword,
+      NewPassword,
+      ConfirmPassword,
+    });
+    ShowToastSuccess(res?.Message || t("password_updated_success"));
+    setTimeout(() => {
+      localStorage.clear();
+      window.location.href = "/";
+    }, 1000);
+    setShowChangePassword(false);
+  } catch (error: any) {
+    const translations: Record<string, string> = {
+      "Password Must be 8 digits or more": t("password_min_length"),
+      "Current password is incorrect": t("current_password_incorrect"),
+      "Password Should contain one at least of (a capital letter, small letter, symbol, and number)": t("PasswordContain"),
+    };
+    
+    const finalMsg = getTranslatedApiError(error, t, translations);
+    toast.error(finalMsg);
+} finally {
+    setLoading(false);
+  }
+};
     e.preventDefault();
 
     const { CurrentPassword, NewPassword, ConfirmPassword } = formData;
@@ -88,7 +125,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
 
       const res = await sendEmail(email);
 
-      ShowToastSuccess(res?.Message || "Reset email sent successfully");
+    ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
 
       setShowChangePassword(false);
       setShowResetPassword(true);
