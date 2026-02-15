@@ -266,6 +266,7 @@ const translations = {
     TotalPoints: "Total Points",
     NextLevel: "Next Level",
     "age group": "Age Group",
+    
     // Game translations
     games_admin: "Games - Admin",
     add_game: "Add Game",

@@ -23,7 +23,8 @@ const GameCard: React.FC<GameCardProps> = ({
   canEdit = true,
   canDelete = true,
 }) => {
-  const { t } = useLanguage();
+  // تم إضافة isRTL هنا لحل مشكلة الخطأ
+  const { t, isRTL } = useLanguage(); 
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useClickOutside(() => {
     setShowMenu(false);
@@ -51,7 +52,11 @@ const GameCard: React.FC<GameCardProps> = ({
           )}
 
           {showMenu && (
-            <div className="absolute right-2 bottom-12 z-10 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            <div 
+              className={`absolute bottom-12 z-10 w-32 rounded-lg border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-800 ${
+                isRTL ? "left-2" : "right-2"
+              }`}
+            >
               {canEdit && (
                 <button
                   onClick={(e) => {
