@@ -97,16 +97,26 @@ export default function VideoFormModal({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const fileExtension = `.${file.name.split(".").pop()?.toLowerCase()}`;
+
     if (fileType === "thumb") {
-      const allowedImageTypes = [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "image/jfif",
+      const allowedImageExtensions = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".webp",
+        ".bmp",
+        ".svg",
+        ".tiff",
       ];
 
-      if (!allowedImageTypes.includes(file.type)) {
-        toast.error(t("imageTypeAllowed"));
+      if (!allowedImageExtensions.includes(fileExtension)) {
+        toast.error(
+          isRTL
+            ? "يُسمح فقط بصور بصيغة (jpg, jpeg, png, gif, webp, bmp, svg, tiff)"
+            : "Only images (jpg, jpeg, png, gif, webp, bmp, svg, tiff) are allowed",
+        );
         e.target.value = "";
         return;
       }
@@ -115,10 +125,21 @@ export default function VideoFormModal({
       setThumbPreview(URL.createObjectURL(file));
       setThumbnailUrl("");
     } else {
-      const allowedVideoTypes = ["video/mp4"];
+      const allowedVideoExtensions = [
+        ".mp4",
+        ".webm",
+        ".mov",
+        ".m4v",
+        ".mkv",
+        ".avi",
+      ];
 
-      if (!allowedVideoTypes.includes(file.type)) {
-        toast.error(t("OnlyMP4Allowed"));
+      if (!allowedVideoExtensions.includes(fileExtension)) {
+        toast.error(
+          isRTL
+            ? "يُسمح فقط بمقاطع الفيديو بصيغة (mp4, webm, mov, m4v, mkv, avi)"
+            : "Only videos (mp4, webm, mov, m4v, mkv, avi) are allowed",
+        );
         e.target.value = "";
         return;
       }
@@ -251,7 +272,7 @@ export default function VideoFormModal({
                 type="file"
                 ref={videoInputRef}
                 className="hidden"
-                accept=".mp4"
+                accept=".mp4,.webm,.mov,.m4v,.mkv,.avi"
                 onChange={(e) => handleFileChange(e, "video")}
               />
               <button
@@ -271,7 +292,9 @@ export default function VideoFormModal({
                 className="w-full"
               />
               <p className="text-[10px] text-red-500 -mt-1">
-                {t("OnlyMP4Allowed")}
+                {isRTL
+                  ? "يُسمح فقط بمقاطع الفيديو بصيغة (mp4, webm, mov, m4v, mkv, avi)"
+                  : "Only videos (mp4, webm, mov, m4v, mkv, avi) are allowed"}
               </p>
             </div>
           </div>
@@ -300,7 +323,7 @@ export default function VideoFormModal({
                 type="file"
                 ref={thumbInputRef}
                 className="hidden"
-                accept=".png,.jpg,.jpeg,.jfif"
+                accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,.svg,.tiff"
                 onChange={(e) => handleFileChange(e, "thumb")}
               />
               <button
@@ -320,7 +343,9 @@ export default function VideoFormModal({
                 className="w-full"
               />
               <p className="text-[10px] text-red-500 -mt-1">
-                {t("imageTypeAllowed")}
+                {isRTL
+                  ? "يُسمح فقط بصور بصيغة (jpg, jpeg, png, gif, webp, bmp, svg, tiff)"
+                  : "Only images (jpg, jpeg, png, gif, webp, bmp, svg, tiff) are allowed"}
               </p>
             </div>
           </div>
