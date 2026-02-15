@@ -28,15 +28,15 @@ export default function ConfirmModal({
       title={title}
       dangerType
     >
-      <div className="pb-6">
-        <div className="border border-[#D3D3D3] dark:border-gray-800 rounded-[15px] h-[120px] my-4 flex items-center justify-center">
-          <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-relaxed">
+      <div className="pb-6 px-4 md:px-0"> 
+        <div className="border border-[#D3D3D3] dark:border-gray-800 rounded-[15px] min-h-[120px] p-5 my-4 flex items-center justify-center text-center">
+          <p className="text-base sm:text-xl font-bold text-gray-900 dark:text-white leading-relaxed">
             {description}
           </p>
         </div>
-        <Button className="mt-2 w-full" onClick={onConfirm} disabled={loading}>
+        <Button className="mt-2 w-full py-3" onClick={onConfirm} disabled={loading}>
           {loading ? t("deleting") : t("delete")}
-        </Button>{" "}
+        </Button>
       </div>
     </Modal>
   );

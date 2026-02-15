@@ -132,11 +132,11 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         required
       />
 
-      <div className="flex items-center gap-2">
-        <p className="dark:text-white">{t("forgotPassword")}</p>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+        <p className="dark:text-white text-sm sm:text-base">{t("forgotPassword")}</p>
         <button
           type="button"
-          className="text-red-500 text-sm"
+          className="text-red-500 text-xs sm:text-sm hover:underline"
           onClick={handleSendResetEmail}
           disabled={sendEmailLoading}
         >

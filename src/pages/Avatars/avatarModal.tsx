@@ -156,14 +156,14 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
           required
         />
 
-        <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium">{t("select_age_group")}</label>
+        <div className="flex flex-col gap-1 ">
+          <label className="text-sm font-medium dark:text-gray-300">{t("select_age_group")}</label>
           <select
             value={formData.ageSectorId}
             onChange={(e) =>
               setFormData({ ...formData, ageSectorId: e.target.value })
             }
-            className="w-full rounded-lg border p-2.5 dark:bg-[#1a222c] dark:border-gray-700"
+            className="w-full rounded-lg border p-2.5 dark:bg-[#1a222c] dark:border-gray-700 dark:text-white outline-none"
             required
           >
             <option value="">{t("select_age_group")}</option>
@@ -176,7 +176,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-medium dark:text-gray-300">
             {t("upload_avatar_label")}
           </label>
           <div className="flex items-center gap-4">
