@@ -16,6 +16,7 @@ import { hasPermission } from "../../../../../utils/permissions/permissions";
 export default function Video({ id }: TapsProps) {
   const { t } = useLanguage();
   const BASE_URL = "https://kidsapi.pulvent.com";
+  const lang = localStorage.getItem("GM-language");
 
   const [loadingVideos, setLoadingVideos] = useState(true);
   const [childVideos, setChildVideos] = useState<ApiResponse<
@@ -65,7 +66,9 @@ export default function Video({ id }: TapsProps) {
         <VideoTableSkeleton />
       ) : Array.isArray(childVideos?.Data) && childVideos.Data.length > 0 ? (
         <div className="overflow-x-auto px-2 md:px-4 flex-1">
-          <table className="w-full text-center border-collapse min-w-200">
+          <table
+            className={`w-full ${lang === "en" ? "text-left" : "text-right"}  border-collapse min-w-200`}
+          >
             <thead>
               <tr className="bg-[#D9D9D940] dark:bg-white/2">
                 <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">

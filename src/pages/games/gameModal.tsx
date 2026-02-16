@@ -35,7 +35,9 @@ const GameModal: React.FC<GameModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState(false);
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   const [formDataState, setFormDataState] = useState({
     nameEn: "",
@@ -96,58 +98,65 @@ const GameModal: React.FC<GameModalProps> = ({
     }
   }, [gameData, isOpen]);
 
-const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-) => {
-  const { id, value } = e.target;
-  
-  setFormDataState((prev) => ({ ...prev, [id]: value }));
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    const { id, value } = e.target;
 
-  const textFields = ["nameEn", "nameAr", "descEn", "descAr"];
-  if (textFields.includes(id) && value.trim() !== "") {
-    if (!noSpecialCharsRegex.test(value)) {
-      setValidationErrors(prev => ({ ...prev, [id]: t("special_chars_not_allowed") }));
+    setFormDataState((prev) => ({ ...prev, [id]: value }));
+
+    const textFields = ["nameEn", "nameAr", "descEn", "descAr"];
+    if (textFields.includes(id) && value.trim() !== "") {
+      if (!noSpecialCharsRegex.test(value)) {
+        setValidationErrors((prev) => ({
+          ...prev,
+          [id]: t("special_chars_not_allowed"),
+        }));
+      } else {
+        setValidationErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[id];
+          return newErrors;
+        });
+      }
     } else {
-      setValidationErrors(prev => {
+      setValidationErrors((prev) => {
         const newErrors = { ...prev };
-        delete newErrors[id]; 
+        delete newErrors[id];
         return newErrors;
       });
     }
-  } else {
-    setValidationErrors(prev => {
-      const newErrors = { ...prev };
-      delete newErrors[id];
-      return newErrors;
-    });
-  }
-};
+  };
   const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
- const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(false);
 
-    const requiredFields = ['nameEn', 'nameAr', 'ageSectorId'];
-    const hasEmptyFields = requiredFields.some(field => !formDataState[field as keyof typeof formDataState]);
+    const requiredFields = ["nameEn", "nameAr", "ageSectorId"];
+    const hasEmptyFields = requiredFields.some(
+      (field) => !formDataState[field as keyof typeof formDataState],
+    );
 
     if (hasEmptyFields) {
       setFormError(true);
       toast.error(t("please_fill_required_fields"));
       return;
     }
-const fieldsToValidate = [
-  { value: formDataState.nameAr, label: t("game_name_ar") },
-  { value: formDataState.descAr, label: t("description_ar") },
-  { value: formDataState.nameEn, label: t("game_name_en") },
-  { value: formDataState.descEn, label: t("description_en") },
-];
+    const fieldsToValidate = [
+      { value: formDataState.nameAr, label: t("game_name_ar") },
+      { value: formDataState.descAr, label: t("description_ar") },
+      { value: formDataState.nameEn, label: t("game_name_en") },
+      { value: formDataState.descEn, label: t("description_en") },
+    ];
 
-for (const field of fieldsToValidate) {
-  if (!noSpecialCharsRegex.test(field.value)) {
-    toast.error(`${field.label} يحتوي على رموز غير مسموح بها`);
-    return; 
-  }
-}
+    for (const field of fieldsToValidate) {
+      if (!noSpecialCharsRegex.test(field.value)) {
+        toast.error(`${field.label} يحتوي على رموز غير مسموح بها`);
+        return;
+      }
+    }
 
     if (!fileInputRef.current?.files?.[0] && !formDataState.thumbnailUrl) {
       toast.error(t("upload_thumbnail_label"));
@@ -190,7 +199,10 @@ for (const field of fieldsToValidate) {
         "GameNameAr contains invalid characters": t("game_name_ar_invalid"),
         "DescriptionAr contains invalid characters": t("game_desc_ar_invalid"),
         "DescriptionEn contains invalid characters": t("game_desc_en_invalid"),
-        "Upload Game Thumbnail or Add the Game Thumbnail link": t("upload_thumbnail_required"), 
+        "Upload Game Thumbnail or Add the Game Thumbnail link": t(
+          "upload_thumbnail_required",
+        ),
+        "ThumbnailUrl must be a valid URL": t("ThumbnailUrlValid"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);
@@ -240,7 +252,11 @@ for (const field of fieldsToValidate) {
           required
           error={formError && !formDataState.nameEn}
         />
-        {validationErrors.nameEn && <p className="text-[10px] text-red-500 ml-1">{validationErrors.nameEn}</p>}
+        {validationErrors.nameEn && (
+          <p className="text-[10px] text-red-500 ml-1">
+            {validationErrors.nameEn}
+          </p>
+        )}
         <Input
           id="nameAr"
           label={t("game_name_ar")}
@@ -250,7 +266,9 @@ for (const field of fieldsToValidate) {
           error={formError && !formDataState.nameAr}
         />
         {validationErrors.nameAr && (
-          <p className="text-xs text-red-500 -mt-2 ml-1">{validationErrors.nameAr}</p>
+          <p className="text-xs text-red-500 -mt-2 ml-1">
+            {validationErrors.nameAr}
+          </p>
         )}
 
         <div className="space-y-2">
@@ -274,34 +292,48 @@ for (const field of fieldsToValidate) {
           </select>
         </div>
 
-<div className="grid grid-cols-2 gap-2 w-full">
-  <div className="flex flex-col gap-1">
-    <TextArea
-      id="descEn"
-      label={t("description_en")}
-      value={formDataState.descEn}
-      onChange={(val) => handleChange({ target: { id: "descEn", value: val } } as any)}
-      required
-      error={(formError && !formDataState.descEn) || !!validationErrors.descEn}
-    />
-    {validationErrors.descEn && (
-      <p className="text-[10px] text-red-500 ml-1">{validationErrors.descEn}</p>
-    )}
-  </div>
-  <div className="flex flex-col gap-1">
-    <TextArea
-      id="descAr"
-      label={t("description_ar")}
-      value={formDataState.descAr}
-      onChange={(val) => handleChange({ target: { id: "descAr", value: val } } as any)}
-      required
-      error={(formError && !formDataState.descAr) || !!validationErrors.descAr}
-    />
-    {validationErrors.descAr && (
-      <p className="text-[10px] text-red-500 ml-1">{validationErrors.descAr}</p>
-    )}
-  </div>
-</div>
+        <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="flex flex-col gap-1">
+            <TextArea
+              id="descEn"
+              label={t("description_en")}
+              value={formDataState.descEn}
+              onChange={(val) =>
+                handleChange({ target: { id: "descEn", value: val } } as any)
+              }
+              required
+              error={
+                (formError && !formDataState.descEn) ||
+                !!validationErrors.descEn
+              }
+            />
+            {validationErrors.descEn && (
+              <p className="text-[10px] text-red-500 ml-1">
+                {validationErrors.descEn}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <TextArea
+              id="descAr"
+              label={t("description_ar")}
+              value={formDataState.descAr}
+              onChange={(val) =>
+                handleChange({ target: { id: "descAr", value: val } } as any)
+              }
+              required
+              error={
+                (formError && !formDataState.descAr) ||
+                !!validationErrors.descAr
+              }
+            />
+            {validationErrors.descAr && (
+              <p className="text-[10px] text-red-500 ml-1">
+                {validationErrors.descAr}
+              </p>
+            )}
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 gap-3">
           {[
@@ -374,11 +406,11 @@ for (const field of fieldsToValidate) {
         </div>
 
         <Button className="mt-2" type="submit" disabled={loading}>
-          {loading
-            ? t("loading...")
-            : type === "edit"
-              ? t("updateButton")
-              : t("saveButton")}
+          {loading ? (
+            <span>{type === "edit" ? t("updating") : t("saving")}</span>
+          ) : (
+            <span>{type === "edit" ? t("updateButton") : t("saveButton")}</span>
+          )}
         </Button>
       </Form>
     </Modal>

@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import { ForgetPassReset } from "../../api/services/profileService";
 import { useLanguage } from "../../locales/LanguageContext";
+import { getTranslatedApiError } from "../../utils/handleApiError";
 
 export default function ResetPasswordModal() {
   const { t } = useLanguage();
@@ -59,9 +60,12 @@ export default function ResetPasswordModal() {
 
       ShowToastSuccess(res?.Message || t("PasswordUpdatedSuccessfully"));
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.Message || t("FailedToUpdatePassword"),
-      );
+      const translations: Record<string, string> = {
+        "try again": t("SomethingWentWrongPleaseTryAgain"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
     } finally {
       setLoading(false);
     }

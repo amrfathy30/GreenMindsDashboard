@@ -218,15 +218,22 @@ export default function AdminModal({
             <option value="" disabled className="dark:bg-gray-900">
               {t("select_UserType")}
             </option>
-            {adminRoles?.map((role) => (
-              <option
-                key={role.Id}
-                value={role.Name}
-                className="dark:bg-gray-900"
-              >
-                {role.Name}
-              </option>
-            ))}
+            {adminRoles?.map((role) => {
+              const label =
+                role.Name.length > 20
+                  ? role.Name.slice(0, 20) + "..."
+                  : role.Name;
+
+              return (
+                <option
+                  key={role.Id}
+                  value={role.Name}
+                  className="dark:bg-gray-900"
+                >
+                  {label}
+                </option>
+              );
+            })}
           </select>
         </div>
 

@@ -11,7 +11,8 @@ export function getTranslatedApiError(
     msg
       ?.replace(/\s*\(Reference:.*?\)/g, "")
       .replace(/\.$/, "")
-      .trim();
+      .trim()
+      .toLowerCase();
 
   const findTranslated = (msg?: string) => {
     if (!msg) return undefined;
@@ -19,16 +20,15 @@ export function getTranslatedApiError(
     const clean = normalize(msg);
 
     const matchedKey = Object.keys(translations).find((key) =>
-      clean?.includes(key),
+      clean?.includes(key.toLowerCase()),
     );
 
-    return matchedKey ? translations[matchedKey] : clean;
+    return matchedKey ? translations[matchedKey] : msg;
   };
 
   if (serverErrors && typeof serverErrors === "object") {
     const firstKey = Object.keys(serverErrors)[0];
     const msgFromServer = serverErrors[firstKey]?.[0];
-
     return findTranslated(msgFromServer) || t("something_went_wrong");
   }
 

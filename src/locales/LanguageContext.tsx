@@ -113,6 +113,9 @@ const translations = {
     LastRegister: "Last Register",
     Children: "Children",
     Actions: "Actions",
+    ThumbnailUrlValid: "Thumbnail Url must be a valid URL",
+    upload_thumbnail_required:
+      "Upload Game Thumbnail or Add the Game Thumbnail link",
     PasswordBetween: "Password must be between 8 and 15 characters",
     DeleteParent: "Delete Parent",
     ParentDeletedSuccessfully: "Parent Deleted Successfully",
@@ -560,7 +563,10 @@ const translations = {
     NotVerified: "غير موثق",
     LastRegister: "آخر تسجيل",
     Children: "الأبناء",
+    upload_thumbnail_required:
+      "قم بتحميل صورة مصغرة للعبة أو أضف رابط الصورة المصغرة للعبة",
     Actions: "الإجراءات",
+    ThumbnailUrlValid: "يجب أن يكون عنوان URL للصورة المصغرة عنوان URL صالحًا",
     PasswordBetween: "يجب أن تتراوح كلمة المرور بين 8 و 15 حرفًا",
     OnlyMP4Allowed: "يُسمح فقط بمقاطع الفيديو بصيغة MP4",
     DeleteParent: "حذف ولي الأمر",

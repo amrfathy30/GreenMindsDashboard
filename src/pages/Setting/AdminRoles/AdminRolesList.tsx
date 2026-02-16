@@ -71,8 +71,8 @@ export default function AdminRoles() {
       setLoading(true);
       const role = adminRoles.find((r) => r.Id === selectedDeleteId);
       if (!role) throw new Error("Role not found");
-      const res = await deleteRole(role.Name);
-      ShowToastSuccess(res?.Message || t("success_delete_role"));
+      await deleteRole(role.Name);
+      ShowToastSuccess(t("success_delete_role"));
       const rolesData: AgeApiResponse = await allAdminRoles();
       setAdminRoles(rolesData.Data);
       setActiveTab(0);

@@ -189,7 +189,7 @@ export default function ChildrenInfo() {
             <h3 className="text-sm text-gray-500 dark:text-gray-400">
               {t("CurrentLevel")}
             </h3>
-            <p className="text-xl font-semibold text-secondary">
+            <p className="text-xl font-semibold text-secondary truncate">
               {pointsData.CurrentLevel.Name}
             </p>
             <p className="text-sm text-gray-500">
@@ -206,7 +206,7 @@ export default function ChildrenInfo() {
             <h3 className="text-sm text-gray-500 dark:text-gray-400">
               {t("NextLevel")}
             </h3>
-            <p className="text-xl font-semibold text-secondary">
+            <p className="text-xl font-semibold text-secondary truncate">
               {pointsData.NextLevel.Name}
             </p>
             <p className="text-sm text-gray-500">

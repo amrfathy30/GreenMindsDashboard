@@ -144,7 +144,7 @@ export default function ParentModal({
           </div>
         )}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 text-black dark:text-gray-300">
             {t("PhoneNumber")}
           </label>
 
