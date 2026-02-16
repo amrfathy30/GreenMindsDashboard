@@ -91,7 +91,7 @@ export default function SmtpSettingsModal({
 
         <Input
           id="username"
-          label="Username"
+          label="Username (اسم المستخدم)"
           placeholder="Enter SMTP username"
           value={formData.Username}
           onChange={(e) =>

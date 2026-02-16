@@ -70,8 +70,8 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       const translations: Record<string, string> = {
         "Password Must be 8 digits or more": t("password_min_length"),
         "Current password is incorrect": t("current_password_incorrect"),
-        "Incorrect current password.": t("current_password_incorrect"),
-        "Password Should contain one at least of (a capital letter, small letter, symbol, and number) ":
+        "Incorrect current password": t("current_password_incorrect"),
+        "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
           t("PasswordContain"),
       };
 

@@ -245,31 +245,6 @@ export default function AdminsList({
     }
   };
 
-  // const calculateAge = (dateOfBirth: string) => {
-  //   if (!dateOfBirth) return "__";
-
-  //   const birthDate = new Date(dateOfBirth);
-  //   const today = new Date();
-
-  //   let age = today.getFullYear() - birthDate.getFullYear();
-  //   const monthDiff = today.getMonth() - birthDate.getMonth();
-
-  //   if (
-  //     monthDiff < 0 ||
-  //     (monthDiff === 0 && today.getDate() < birthDate.getDate())
-  //   ) {
-  //     age--;
-  //   }
-
-  //   return age;
-  // };
-
-  // const getGenderLabel = (genderId: string | number, t: any) => {
-  //   if (String(genderId) === "1") return t("Male");
-  //   if (String(genderId) === "2") return t("Female");
-  //   return "__";
-  // };
-
   const columns: any[] = [
     {
       key: "Name",

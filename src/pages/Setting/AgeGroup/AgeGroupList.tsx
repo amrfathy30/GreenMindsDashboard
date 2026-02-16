@@ -24,6 +24,7 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function AgeGroupList() {
   const [loading, setLoading] = useState(true);
@@ -112,7 +113,7 @@ export default function AgeGroupList() {
       }
 
       if (Number(data.FromAge) >= Number(data.ToAge)) {
-        toast.error(t("from_less_to"));
+        toast.error(t("FromAge_less_than_ToAge"));
         return;
       }
 
@@ -151,7 +152,14 @@ export default function AgeGroupList() {
       setOpenModalAge(false);
       setEditData(null);
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("operation_failed"));
+      const errorTranslations: Record<string, string> = {
+        "DisplayName must be unique": t("DisplayNameUnique"),
+        "ToAge must be between 1 and 99": t("ToAge_range"),
+        "FromAge must be less than ToAge": t("FromAge_less_than_ToAge"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, errorTranslations);
+      toast.error(finalMsg);
     } finally {
       setLoading(false);
     }

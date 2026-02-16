@@ -6,8 +6,6 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { AgeGroupModalProps } from "../../../utils/types/ageType";
 import { useLanguage } from "../../../locales/LanguageContext";
-import { toast } from "sonner";
-import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function AgeGroupModal({
   open,
@@ -36,27 +34,15 @@ export default function AgeGroupModal({
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (parseInt(FromAge) >= parseInt(ToAge)) {
-      toast.error(t("FromAge_less_than_ToAge"));
-      return;
-    }
 
-    try {
-      await onSave({
-        id: initialData?.id,
-        FromAge,
-        ToAge,
-        DisplayName,
-      });
-    } catch (error: any) {
-      const errorTranslations: Record<string, string> = {
-        "ToAge must be between 1 and 99": t("ToAge_range"),
-        "FromAge must be less than ToAge": t("FromAge_less_than_ToAge"),
-      };
-      const finalMsg = getTranslatedApiError(error, t, errorTranslations);
-      toast.error(finalMsg);
-    }
+    await onSave({
+      id: initialData?.id,
+      FromAge,
+      ToAge,
+      DisplayName,
+    });
   };
+
   return (
     <Modal
       isOpen={open}

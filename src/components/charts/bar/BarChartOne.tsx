@@ -56,7 +56,7 @@ export default function BarChartOne({
         formatter: (val: string) =>
           val.length > 8 ? val.slice(0, 8) + "..." : val,
         style: {
-          fontSize: "8px",
+          fontSize: "10px",
           fontFamily: "Outfit, sans-serif",
         },
       },

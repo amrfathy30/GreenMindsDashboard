@@ -28,7 +28,7 @@ import {
 const BASE_URL = "https://kidsapi.pulvent.com";
 
 export default function VideosList() {
-  const { t, isRTL } = useLanguage(); 
+  const { t, isRTL } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<VideoType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -154,10 +154,14 @@ export default function VideosList() {
               <table className="w-full border-collapse min-w-[800px] table-fixed">
                 <thead>
                   <tr className="bg-[#D9D9D940] dark:bg-white/2">
-                    <th className={`px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-[15%] ${isRTL ? "text-right" : "text-left"}`}>
+                    <th
+                      className={`px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-[15%] ${isRTL ? "text-right" : "text-left"}`}
+                    >
                       {t("Thumbnail")}
                     </th>
-                    <th className={`px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-[40%] ${isRTL ? "text-right" : "text-left"}`}>
+                    <th
+                      className={`px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-[40%] ${isRTL ? "text-right" : "text-left"}`}
+                    >
                       {t("title")}
                     </th>
                     <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center w-[15%]">
@@ -208,7 +212,9 @@ export default function VideosList() {
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white block whitespace-normal break-words leading-tight ${isRTL ? "text-right" : "text-left"}`}>
+                        <span
+                          className={`text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white block truncate ${isRTL ? "text-right" : "text-left"}`}
+                        >
                           {video.TitleEn} / {video.TitleAr}
                         </span>
                       </td>

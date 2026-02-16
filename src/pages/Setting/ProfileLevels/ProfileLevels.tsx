@@ -25,6 +25,7 @@ import {
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
 import Pagination from "../../../components/common/Pagination";
+import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function ProfileLevels() {
   const [loading, setLoading] = useState(true);
@@ -160,7 +161,12 @@ export default function ProfileLevels() {
       setOpenModal(false);
       setEditData(null);
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("operation_failed"));
+      const errorTranslations: Record<string, string> = {
+        "NameEn must be unique": t("DisplayNameUnique"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, errorTranslations);
+      toast.error(finalMsg);
     } finally {
       setLoading(false);
     }

@@ -186,10 +186,10 @@ for (const field of fieldsToValidate) {
       onClose();
     } catch (error: any) {
       const translations: Record<string, string> = {
-        "GameNameEn contains invalid characters.": t("game_name_en_invalid"),
-        "GameNameAr contains invalid characters.": t("game_name_ar_invalid"),
-        "DescriptionAr contains invalid characters.": t("game_desc_ar_invalid"),
-        "DescriptionEn contains invalid characters.": t("game_desc_en_invalid"),
+        "GameNameEn contains invalid characters": t("game_name_en_invalid"),
+        "GameNameAr contains invalid characters": t("game_name_ar_invalid"),
+        "DescriptionAr contains invalid characters": t("game_desc_ar_invalid"),
+        "DescriptionEn contains invalid characters": t("game_desc_en_invalid"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);

@@ -229,45 +229,6 @@ export default function AdminModal({
             ))}
           </select>
         </div>
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div>
-            <Label>{t("Gender")}</Label>
-            <div className="flex items-center gap-3">
-              <Radio
-                id="male"
-                name="GenderId"
-                value="1"
-                checked={formData.GenderId === "1"}
-                label={t("Male")}
-                onChange={(value) =>
-                  setFormData((prev) => ({ ...prev, GenderId: value }))
-                }
-              />
-
-              <Radio
-                id="female"
-                name="GenderId"
-                value="2"
-                checked={formData.GenderId === "2"}
-                label={t("Female")}
-                onChange={(value) =>
-                  setFormData((prev) => ({ ...prev, GenderId: value }))
-                }
-              />
-            </div>
-          </div>
-          <div>
-            <Input
-              id="DateOfBirth"
-              label={t("Age")}
-              value={formData.DateOfBirth}
-              type="date"
-              onChange={(e) =>
-                setFormData({ ...formData, DateOfBirth: e.target.value })
-              }
-            />
-          </div>
-        </div> */}
 
         <Button type="submit" className="mt-2" disabled={loading}>
           {loading

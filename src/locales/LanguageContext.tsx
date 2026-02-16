@@ -224,6 +224,7 @@ const translations = {
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
+    DisplayNameUnique: "Name must be unique.",
     /*** */
     password_min_length: "Password Must be 8 digits or more",
     passwords_not_match: "Passwords do not match",
@@ -266,7 +267,7 @@ const translations = {
     TotalPoints: "Total Points",
     NextLevel: "Next Level",
     "age group": "Age Group",
-    
+
     // Game translations
     games_admin: "Games - Admin",
     add_game: "Add Game",
@@ -625,6 +626,7 @@ const translations = {
     UpdateChildren: "تحديث الأطفال",
     success_create: "تم الانشاء بنجاح",
     success_update: "تم التحديث بنجاح",
+    DisplayNameUnique: "يجب أن يكون الاسم فريدًا.",
     PasswordContain:
       "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل مما يلي: (حرف كبير، حرف صغير، رمز، ورقم)",
     game_name_en_invalid: "اسم اللعبة بالإنجليزي يحتوي على رموز غير مسموح بها",

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function getTranslatedApiError(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any,
   t: (key: string) => string,
   translations: Record<string, string>,
@@ -7,16 +7,33 @@ export function getTranslatedApiError(
   const serverErrors = error?.response?.data?.Data;
   const serverMessage = error?.response?.data?.Message;
 
+  const normalize = (msg?: string) =>
+    msg
+      ?.replace(/\s*\(Reference:.*?\)/g, "")
+      .replace(/\.$/, "")
+      .trim();
+
+  const findTranslated = (msg?: string) => {
+    if (!msg) return undefined;
+
+    const clean = normalize(msg);
+
+    const matchedKey = Object.keys(translations).find((key) =>
+      clean?.includes(key),
+    );
+
+    return matchedKey ? translations[matchedKey] : clean;
+  };
+
   if (serverErrors && typeof serverErrors === "object") {
     const firstKey = Object.keys(serverErrors)[0];
     const msgFromServer = serverErrors[firstKey]?.[0];
-    return (
-      translations[msgFromServer] || msgFromServer || t("something_went_wrong")
-    );
+
+    return findTranslated(msgFromServer) || t("something_went_wrong");
   }
 
   if (serverMessage) {
-    return translations[serverMessage] || serverMessage;
+    return findTranslated(serverMessage) || t("something_went_wrong");
   }
 
   return t("something_went_wrong");
