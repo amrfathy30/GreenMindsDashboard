@@ -28,7 +28,7 @@ import {
 const BASE_URL = "https://kidsapi.pulvent.com";
 
 export default function VideosList() {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage(); 
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<VideoType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +43,7 @@ export default function VideosList() {
   useEffect(() => {
     fetchUserPermissions();
   }, []);
+
   const canView = hasPermission("Videos_GetPaged");
   const canAdd = hasPermission("Videos_Create");
   const canEdit = hasPermission("Videos_Update");
@@ -110,17 +111,6 @@ export default function VideosList() {
     }
   };
 
-  // if (!canView && !loading) {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-[400px]">
-  //       <EmptyState
-  //         title={t("access_denied")}
-  //         description={t("not_authorized_to_view_this_page_videos")}
-  //       />
-  //     </div>
-  //   );
-  // }
-
   return (
     <>
       <PageMeta title="Green minds Admin | Videos" description={``} />
@@ -161,23 +151,23 @@ export default function VideosList() {
         ) : (
           videos?.length !== 0 && (
             <div className="overflow-x-auto px-2 md:px-4 flex-1">
-              <table className="w-full text-left border-collapse min-w-200">
+              <table className="w-full border-collapse min-w-[800px] table-fixed">
                 <thead>
                   <tr className="bg-[#D9D9D940] dark:bg-white/2">
-                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    <th className={`px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-[15%] ${isRTL ? "text-right" : "text-left"}`}>
                       {t("Thumbnail")}
                     </th>
-                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    <th className={`px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-[40%] ${isRTL ? "text-right" : "text-left"}`}>
                       {t("title")}
                     </th>
-                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">
+                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center w-[15%]">
                       {t("points")}
                     </th>
-                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">
+                    <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center w-[15%]">
                       {t("age group")}
                     </th>
                     {(canEdit || canDelete) && (
-                      <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">
+                      <th className="px-4 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center w-[15%]">
                         {t("actions")}
                       </th>
                     )}
@@ -195,7 +185,7 @@ export default function VideosList() {
                             setSelectedVideo(video);
                             setIsPreviewOpen(true);
                           }}
-                          className="relative aspect-video h-11.25 md:h-13.75 rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700"
+                          className="relative aspect-video h-12 md:h-14 rounded-xl overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700"
                         >
                           <img
                             src={
@@ -218,7 +208,7 @@ export default function VideosList() {
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white line-clamp-1 block max-w-60 truncate">
+                        <span className={`text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white block whitespace-normal break-words leading-tight ${isRTL ? "text-right" : "text-left"}`}>
                           {video.TitleEn} / {video.TitleAr}
                         </span>
                       </td>
