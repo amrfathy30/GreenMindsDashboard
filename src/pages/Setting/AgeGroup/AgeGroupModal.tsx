@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useState, useEffect } from "react";
 import Form from "../../../components/form/Form";
 import { Modal } from "../../../components/ui/modal";
@@ -5,7 +6,7 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { AgeGroupModalProps } from "../../../utils/types/ageType";
 import { useLanguage } from "../../../locales/LanguageContext";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function AgeGroupModal({
@@ -33,7 +34,7 @@ export default function AgeGroupModal({
     }
   }, [initialData, open]);
 
-const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (parseInt(FromAge) >= parseInt(ToAge)) {
       toast.error(t("FromAge_less_than_ToAge"));
@@ -84,8 +85,8 @@ const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
             id="FromAge"
             type="number"
             required
-            min="1"    
-            max="99"   
+            min="1"
+            max="99"
             label={t("fromLabel")}
             placeholder={t("fromPlaceholder")}
             value={FromAge}
@@ -103,7 +104,7 @@ const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
             type="number"
             required
             min="1"
-            max="99" 
+            max="99"
             label={t("toLabel")}
             placeholder={t("toPlaceholder")}
             value={ToAge}
