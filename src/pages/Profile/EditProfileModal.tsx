@@ -23,6 +23,7 @@ import { useAdmin } from "../../context/AdminContext";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import ProfileSkeleton from "../../components/loading/ProfileSkeleton";
 import { PhoneInput } from "react-international-phone";
+import { getTranslatedApiError } from "../../utils/handleApiError";
 
 export default function EditProfileModal({
   open,
@@ -155,10 +156,14 @@ export default function EditProfileModal({
       ShowToastSuccess(t("ProfileUpdatedSuccessfully"));
       onClose();
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("UpdateFailed"));
-    } finally {
-      setLoading(false);
-    }
+  const translations: Record<string, string> = {
+    "Can Accept Letter Only": t("can_accept_letter_only"),
+  };
+  const finalMsg = getTranslatedApiError(error, t, translations);
+  toast.error(finalMsg);
+} finally {
+  setLoading(false);
+}
   };
 
   const handleBack = () => {

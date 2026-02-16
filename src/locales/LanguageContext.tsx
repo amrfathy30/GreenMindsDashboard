@@ -442,6 +442,8 @@ const translations = {
     permissions_group_debug: "Debug",
 
     special_chars_not_allowed: "Special characters are not allowed",
+    can_accept_letter_only: "Name should contain letters only",
+    account_locked: "Account locked due to multiple failed attempts",
   },
   ar: {
     // sidebar
@@ -870,6 +872,8 @@ const translations = {
     permissions_group_debug: "التصحيح والأخطاء",
 
     special_chars_not_allowed: "غير مسموح باستخدام الرموز الخاصة",
+    can_accept_letter_only: "يجب أن يحتوي الاسم على أحرف فقط",
+    account_locked: "تم قفل الحساب بسبب محاولات تسجيل دخول خاطئة متعددة",
   },
 };
 

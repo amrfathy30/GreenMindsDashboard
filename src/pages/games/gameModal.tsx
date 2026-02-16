@@ -190,6 +190,7 @@ for (const field of fieldsToValidate) {
         "GameNameAr contains invalid characters": t("game_name_ar_invalid"),
         "DescriptionAr contains invalid characters": t("game_desc_ar_invalid"),
         "DescriptionEn contains invalid characters": t("game_desc_en_invalid"),
+        "Upload Game Thumbnail or Add the Game Thumbnail link": t("upload_thumbnail_required"), 
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);

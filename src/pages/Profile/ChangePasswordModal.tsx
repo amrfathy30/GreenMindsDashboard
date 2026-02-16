@@ -73,6 +73,8 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         "Incorrect current password": t("current_password_incorrect"),
         "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
           t("PasswordContain"),
+        "Account locked due to multiple failed attempts": t("account_locked"),
+
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);
@@ -94,10 +96,13 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
 
       setShowChangePassword(false);
       setShowResetPassword(true);
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.Message || "Failed to send reset email",
-      );
+   } catch (error: any) {
+    const translations: Record<string, string> = {
+      "Please try again.": t("please_try_again"),
+    };
+
+    const finalMsg = getTranslatedApiError(error, t, translations);
+    toast.error(finalMsg);
     } finally {
       setSendEmailLoading(false);
     }
