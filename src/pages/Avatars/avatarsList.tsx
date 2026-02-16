@@ -20,6 +20,7 @@ import {
   hasPermission,
 } from "../../utils/permissions/permissions";
 import { toast } from "sonner";
+import { ShowToastSuccess } from "../../components/common/ToastHelper";
 
 const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
 export default function AvatarList() {
@@ -70,6 +71,7 @@ export default function AvatarList() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     loadAvatars();
   }, [currentPage, canView, pageSize]);
@@ -78,17 +80,20 @@ export default function AvatarList() {
     setSelectedAvatar(avatar);
     setIsDeleteModalOpen(true);
   };
+
   const handleConfirmDelete = async () => {
-    const loadingToast = toast.loading(t("deleting..."));
     try {
+      setLoading(true);
+
       await deleteAvatar(selectedAvatar.Id || selectedAvatar.id);
 
-      loadAvatars();
-      setIsDeleteModalOpen(false);
-
-      toast.success(t("deleted_successfully"), { id: loadingToast });
+      ShowToastSuccess(t("DeletedSuccessfully"));
     } catch (error) {
-      toast.error(t("delete_failed"), { id: loadingToast });
+      toast.error(t("failed_delete"));
+    } finally {
+      setLoading(false);
+      setIsDeleteModalOpen(false);
+      loadAvatars();
     }
   };
 
@@ -137,7 +142,7 @@ export default function AvatarList() {
                 <AvatarCard
                   key={avatar.Id}
                   name={avatar.Name}
-                  ageGroup={avatar.AgeSectorName || "N/A"}
+                  ageGroup={avatar.AgeSectorName || "__"}
                   image={
                     avatar.ImageUrl
                       ? avatar.ImageUrl.startsWith("http")
@@ -193,6 +198,7 @@ export default function AvatarList() {
       )}
       {canDelete && (
         <ConfirmModal
+          loading={loading}
           open={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={handleConfirmDelete}

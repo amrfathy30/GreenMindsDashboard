@@ -117,15 +117,20 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
     setIsSubmitting(true);
 
     try {
+      let res;
+
       if (type === "edit") {
         data.append("Id", avatarData.Id || avatarData.id);
-        await updateAvatar(data);
+        res = await updateAvatar(data);
       } else {
-        await createAvatar(data);
+        res = await createAvatar(data);
       }
       onSuccess?.();
       onClose();
-      ShowToastSuccess(t("success"));
+      ShowToastSuccess(
+        res?.Message ||
+          t(type === "edit" ? "success_update" : "success_create"),
+      );
     } catch (error: any) {
       const translations: Record<string, string> = {
         "An avatar with the same name already exists": t("avatar_name_exists"),
