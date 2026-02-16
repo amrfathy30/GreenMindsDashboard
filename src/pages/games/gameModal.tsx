@@ -375,7 +375,7 @@ for (const field of fieldsToValidate) {
 
         <Button className="mt-2" type="submit" disabled={loading}>
           {loading
-            ? t("loading...")
+            ? t("game_loading") 
             : type === "edit"
               ? t("updateButton")
               : t("saveButton")}

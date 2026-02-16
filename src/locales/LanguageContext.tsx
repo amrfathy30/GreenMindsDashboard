@@ -309,6 +309,7 @@ const translations = {
     access_denied: "Access Denied",
     years: "Years",
     placeholder_thumb_url_game: "Enter game thumbnail URL here",
+    game_loading: "Loading...",
     //Avatar Translation
     avatars_admin: "Avatars - Admin",
     add_avatar: "Add Avatar",
@@ -722,6 +723,7 @@ const translations = {
     access_denied: "تم رفض الوصول",
     years: "سنوات",
     placeholder_thumb_url_game: "أدخل رابط الصورة المصغرة للعبة هنا",
+    game_loading: "جاري التحميل...",
     //Avatar Translation
     avatars_admin: "إدارة الصور الرمزية",
     add_avatar: "إضافة صورة رمزية",
