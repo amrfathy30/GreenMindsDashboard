@@ -10,6 +10,7 @@ import { createAvatar, updateAvatar } from "../../api/services/avatarService";
 import { allAgeData } from "../../api/services/ageService";
 import { toast } from "sonner";
 import { getTranslatedApiError } from "../../utils/handleApiError";
+import { ShowToastSuccess } from "../../components/common/ToastHelper";
 
 const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
 
@@ -114,32 +115,30 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
     }
 
     setIsSubmitting(true);
-    const toastId = toast.loading(
-      type === "edit" ? t("updating...") : t("saving..."),
-    );
 
-try {
-  if (type === "edit") {
-    data.append("Id", avatarData.Id || avatarData.id);
-    await updateAvatar(data);
-  } else {
-    await createAvatar(data);
-  }
-  onSuccess?.();
-  onClose();
-  toast.success(t("success"), { id: toastId });
-} catch (error: any) {
-  const translations: Record<string, string> = {
-    "An avatar with the same name already exists.": t("avatar_name_exists"),
-    "Validation failed.": t("validation_failed"),
-    "Invalid file extension. Allowed: .jpg, .jpeg, .png, .webp": t("invalid_extension"),
-  };
-  const finalMsg = getTranslatedApiError(error, t, translations);
-  
-  toast.error(finalMsg, { id: toastId });
-} finally {
-  setIsSubmitting(false);
-}
+    try {
+      if (type === "edit") {
+        data.append("Id", avatarData.Id || avatarData.id);
+        await updateAvatar(data);
+      } else {
+        await createAvatar(data);
+      }
+      onSuccess?.();
+      onClose();
+      ShowToastSuccess(t("success"));
+    } catch (error: any) {
+      const translations: Record<string, string> = {
+        "An avatar with the same name already exists": t("avatar_name_exists"),
+        "Validation failed.": t("validation_failed"),
+        "Invalid file extension. Allowed: .jpg, .jpeg, .png, .webp":
+          t("invalid_extension"),
+      };
+      const finalMsg = getTranslatedApiError(error, t, translations);
+
+      toast.error(finalMsg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -163,9 +162,10 @@ try {
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
         />
-
         <div className="flex flex-col gap-1 ">
-          <label className="text-sm font-medium dark:text-gray-300">{t("select_age_group")}</label>
+          <label className="text-sm font-medium dark:text-gray-300">
+            {t("select_age_group")}
+          </label>
           <select
             value={formData.ageSectorId}
             onChange={(e) =>
@@ -182,7 +182,6 @@ try {
             ))}
           </select>
         </div>
-
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium dark:text-gray-300">
             {t("upload_avatar_label")}
@@ -223,10 +222,17 @@ try {
             {t("imageTypeAllowed")}
           </p>
         </div>
-
-        <Button type="submit" disabled={isSubmitting} className="mt-2">
-          {type === "edit" ? t("updateButton") : t("saveButton")}
-        </Button>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="mt-2 flex items-center justify-center gap-2"
+        >
+          {isSubmitting ? (
+            <span>{type === "edit" ? t("updating") : t("saving")}</span>
+          ) : (
+            <span>{type === "edit" ? t("updateButton") : t("saveButton")}</span>
+          )}
+        </Button>{" "}
       </Form>
     </Modal>
   );
