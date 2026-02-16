@@ -9,6 +9,7 @@ import Input from "../../components/form/input/InputField";
 import { createAvatar, updateAvatar } from "../../api/services/avatarService";
 import { allAgeData } from "../../api/services/ageService";
 import { toast } from "sonner";
+import { getTranslatedApiError } from "../../utils/handleApiError";
 
 const IMAGE_BASE_URL = "https://kidsapi.pulvent.com/";
 
@@ -117,21 +118,28 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
       type === "edit" ? t("updating...") : t("saving..."),
     );
 
-    try {
-      if (type === "edit") {
-        data.append("Id", avatarData.Id || avatarData.id);
-        await updateAvatar(data);
-      } else {
-        await createAvatar(data);
-      }
-      onSuccess?.();
-      onClose();
-      toast.success(t("success"), { id: toastId });
-    } catch (error: any) {
-      toast.error(error.response?.data?.Message || t("error"), { id: toastId });
-    } finally {
-      setIsSubmitting(false);
-    }
+try {
+  if (type === "edit") {
+    data.append("Id", avatarData.Id || avatarData.id);
+    await updateAvatar(data);
+  } else {
+    await createAvatar(data);
+  }
+  onSuccess?.();
+  onClose();
+  toast.success(t("success"), { id: toastId });
+} catch (error: any) {
+  const translations: Record<string, string> = {
+    "An avatar with the same name already exists.": t("avatar_name_exists"),
+    "Validation failed.": t("validation_failed"),
+    "Invalid file extension. Allowed: .jpg, .jpeg, .png, .webp": t("invalid_extension"),
+  };
+  const finalMsg = getTranslatedApiError(error, t, translations);
+  
+  toast.error(finalMsg, { id: toastId });
+} finally {
+  setIsSubmitting(false);
+}
   };
 
   if (!isOpen) return null;
