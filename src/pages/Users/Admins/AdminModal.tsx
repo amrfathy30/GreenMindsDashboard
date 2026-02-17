@@ -77,7 +77,6 @@ export default function AdminModal({
 
     const payload: any = {
       Name: formData.Name,
-      Email: formData.Email,
       PhoneNumber: formData.PhoneNumber,
       UserName: formData.UserName,
       Type: 2,
@@ -85,7 +84,9 @@ export default function AdminModal({
       GenderId: 1,
       DateOfBirth: formData.DateOfBirth,
     };
-
+    if (!initialData) {
+      payload.Email = formData.Email;
+    }
     if (formData.Password.trim()) {
       payload.Password = formData.Password;
       payload.ConfirmPassword = formData.ConfirmPassword;
@@ -93,7 +94,6 @@ export default function AdminModal({
 
     onSave(payload);
   };
-
   return (
     <Modal
       isOpen={open}

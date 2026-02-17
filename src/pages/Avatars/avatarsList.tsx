@@ -97,6 +97,8 @@ export default function AvatarList() {
     }
   };
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("avatars")}`;
+
   if (!canView) {
     return (
       <div className="flex items-center justify-center min-h-100">
@@ -110,7 +112,7 @@ export default function AvatarList() {
 
   return (
     <>
-      <PageMeta title="Green minds Admin | Avatars" description="" />
+      <PageMeta title={pageTitle} description="" />
 
       <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
         <div className="h-17.5 flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
@@ -142,7 +144,7 @@ export default function AvatarList() {
                 <AvatarCard
                   key={avatar.Id}
                   name={avatar.Name}
-                  ageGroup={avatar.AgeSectorName || "__"}
+                  ageGroup={avatar.AgeSectorName || t("noAge")}
                   image={
                     avatar.ImageUrl
                       ? avatar.ImageUrl.startsWith("http")

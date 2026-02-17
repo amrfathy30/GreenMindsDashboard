@@ -5,13 +5,18 @@ import Input from "../../components/form/input/InputField";
 import Button from "../../components/ui/button/Button";
 import { toast } from "sonner";
 import { ShowToastSuccess } from "../../components/common/ToastHelper";
-import { ForgetPassReset } from "../../api/services/profileService";
+import {
+  ForgetPassReset,
+  resendEmail,
+} from "../../api/services/profileService";
 import { useLanguage } from "../../locales/LanguageContext";
 import { getTranslatedApiError } from "../../utils/handleApiError";
+import { ModalProps } from "../../utils/types/profileType";
 
-export default function ResetPasswordModal() {
+const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
+  const [sendEmailLoading, setSendEmailLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     otp: "",
@@ -59,15 +64,45 @@ export default function ResetPasswordModal() {
       });
 
       ShowToastSuccess(res?.Message || t("PasswordUpdatedSuccessfully"));
+      localStorage.removeItem("GMadminData");
+      localStorage.removeItem("GMadminPermissions");
+      localStorage.removeItem("GMadminToken");
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     } catch (error: any) {
       const translations: Record<string, string> = {
-        "try again": t("SomethingWentWrongPleaseTryAgain"),
+        "try again": t("otpWrong"),
+        "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
+          t("PasswordContain"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);
       toast.error(finalMsg);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSendResetEmail = async () => {
+    if (!email) return;
+
+    try {
+      setSendEmailLoading(true);
+
+      const res = await resendEmail(email);
+
+      ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+    } catch (error: any) {
+      const translations: Record<string, string> = {
+        "Please try again": t("please_try_again"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
+    } finally {
+      setSendEmailLoading(false);
     }
   };
 
@@ -80,12 +115,18 @@ export default function ResetPasswordModal() {
         <p className="text-secondary">{t("OtpSentMessage")}</p>
       </div>
       <Input
-        type="number"
+        type="text"
         id="otp"
         label={t("OTP")}
         value={formData.otp}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value.replace(/\D/g, "");
+          if (value.length <= 4) {
+            setFormData({ ...formData, otp: value });
+          }
+        }}
         placeholder={t("EnterOtpHere")}
+        max="4"
       />
       <Input
         type="password"
@@ -103,9 +144,20 @@ export default function ResetPasswordModal() {
         value={formData.ConfirmPassword}
         onChange={handleChange}
       />
+      <div>
+        <button
+          type="button"
+          className="text-red-500 text-xs sm:text-sm hover:underline"
+          onClick={handleSendResetEmail}
+          disabled={sendEmailLoading}
+        >
+          {sendEmailLoading ? t("sending") : t("resendOtp")}
+        </button>
+      </div>
       <Button type="submit" disabled={loading}>
         {loading ? t("Saving") : t("Save")}
       </Button>
     </Form>
   );
-}
+};
+export default ResetPasswordModal;

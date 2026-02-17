@@ -11,8 +11,8 @@ export interface ChangePasswordRequest {
 }
 
 export interface ModalProps {
-  setShowResetPassword: any;
-  setShowChangePassword: any;
+  setShowResetPassword?: any;
+  setShowChangePassword?: any;
   email: string | undefined;
 }
 

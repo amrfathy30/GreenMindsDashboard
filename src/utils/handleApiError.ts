@@ -26,6 +26,11 @@ export function getTranslatedApiError(
     return matchedKey ? translations[matchedKey] : msg;
   };
 
+  if (Array.isArray(serverErrors) && serverErrors.length) {
+    const firstMsg = serverErrors[0];
+    return findTranslated(firstMsg) || t("something_went_wrong");
+  }
+
   if (serverErrors && typeof serverErrors === "object") {
     const firstKey = Object.keys(serverErrors)[0];
     const msgFromServer = serverErrors[firstKey]?.[0];

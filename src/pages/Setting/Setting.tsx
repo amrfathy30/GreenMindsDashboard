@@ -52,7 +52,7 @@ export default function Setting() {
       }
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.Message || "Failed to load SMTP settings",
+        error?.response?.data?.Message || t("FailedLoadSMTP"),
       );
     }
   };
@@ -65,7 +65,7 @@ export default function Setting() {
     <>
       <PageMeta title="Green minds Admin | Settings" description={``} />
 
-      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
+      <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {t("setting")}

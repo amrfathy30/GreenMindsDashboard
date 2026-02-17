@@ -29,6 +29,11 @@ export const sendEmail = async (email: string) => {
   return response.data;
 };
 
+export const resendEmail = async (email: string) => {
+  const response = await axiosInstance.post(`/Otp/ResendByEmail?email=${email}`);
+  return response.data;
+};
+
 export const GetPersonalInfoById = async (id: number | string) => {
   const response = await axiosInstance.get(`/Account/GetPersonalInfo?id=${id}`);
   return response.data;

@@ -13,6 +13,7 @@ import { useSearchParams } from "react-router";
 
 export default function Users() {
   const { t } = useLanguage();
+  const [search, setSearch] = useState("");
 
   const [openAddAdminModal, setOpenAddAdminModal] = useState(false);
   const [openAddParentModal, setOpenAddParentModal] = useState(false);
@@ -26,22 +27,24 @@ export default function Users() {
       <AdminsList
         openAddModal={openAddAdminModal}
         setOpenAddModal={setOpenAddAdminModal}
+        search={search}
       />
     ),
     parent: (
       <ParentsList
         openAddModal={openAddParentModal}
         setOpenAddModal={setOpenAddParentModal}
+        search={search}
       />
     ),
     child: (
       <ChildrenList
         openAddModal={openAddChildModal}
         setOpenAddModal={setOpenAddChildModal}
+        search={search}
       />
     ),
   };
-
   useEffect(() => {
     fetchUserPermissions();
   }, []);
@@ -123,15 +126,25 @@ export default function Users() {
               )}
             </div>
 
-            {canAdd[currentTab] && (
-              <button
-                onClick={handleAdd}
-                className="flex items-center gap-2 border border-secondary text-secondary px-4 py-2 rounded-lg font-medium text-base hover:bg-secondary hover:text-white transition duration-200"
-              >
-                <Plus className="w-5 h-5" />
-                {addButtonText[currentTab]}
-              </button>
-            )}
+            <div className="flex items-center flex-col md:flex-row gap-3">
+              <input
+                type="text"
+                placeholder={t("search")}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="px-4 py-2 rounded-lg bg-white dark:bg-[#2f3131] text-black dark:text-white outline-none"
+              />
+
+              {canAdd[currentTab] && (
+                <button
+                  onClick={handleAdd}
+                  className="flex items-center gap-2 border border-secondary text-secondary px-4 py-2 rounded-lg font-medium text-base hover:bg-secondary hover:text-white transition duration-200"
+                >
+                  <Plus className="w-5 h-5" />
+                  {addButtonText[currentTab]}
+                </button>
+              )}
+            </div>
           </div>
 
           <div>{tabContent[currentTab as "admin" | "parent" | "child"]}</div>

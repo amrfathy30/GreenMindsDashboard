@@ -4,7 +4,6 @@ import BasicTableOne from "../../../components/tables/BasicTables/BasicTableOne"
 import ConfirmModal from "../../../components/common/ConfirmModal";
 import { toast } from "sonner";
 import { EditIcon, RemoveIcon } from "../../../icons";
-import { Link } from "react-router";
 import Pagination from "../../../components/common/Pagination";
 import ParentModal from "./ParentModal";
 import { useLanguage } from "../../../locales/LanguageContext";
@@ -26,12 +25,15 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function ParentsList({
   openAddModal,
   setOpenAddModal,
+  search,
 }: {
   openAddModal?: boolean;
+  search: string;
   setOpenAddModal?: (open: boolean) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -137,11 +139,32 @@ export default function ParentsList({
     return digitsOnly.length > 4;
   };
 
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
+
   const handleSave = async (data: ParentFormData) => {
     try {
-      if (!data.UserName?.trim() || !data.Name?.trim() || data.Email === "") {
+      const isEdit = !!editData?.id;
+      if (!data.UserName?.trim() || !data.Name?.trim()) {
         toast.error(t("all_fields_required"));
         return;
+      }
+
+      if (!isEdit) {
+        if (!data.Email?.trim()) {
+          toast.error(t("email_required"));
+          return;
+        }
+
+        if (!validateEmail(data.Email)) {
+          toast.error(t("PleaseEnterAValidEmail"));
+          return;
+        }
       }
 
       if (!isValidPhone(data.PhoneNumber)) {
@@ -200,7 +223,18 @@ export default function ParentsList({
       setOpenModal(false);
       setEditData(null);
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("operation_failed"));
+      const translations: Record<string, string> = {
+        "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
+          t("PasswordContain"),
+        "Name contains invalid characters. Only letters and spaces are allowed":
+          t("name_error_letters"),
+        "Another user with the same username already exists": t("sameUsername"),
+        "Username already exists": t("sameUsername"),
+        "Email already exists": t("sameEmail"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
     } finally {
       setModalLoading(false);
     }
@@ -257,6 +291,16 @@ export default function ParentsList({
       ),
     },
   ];
+
+  const filteredParents = parentList.filter((item) => {
+    const q = search.toLowerCase();
+    return (
+      item.Name?.toLowerCase().includes(q) ||
+      item.Email?.toLowerCase().includes(q) ||
+      item.UserName?.toLowerCase().includes(q) ||
+      item.PhoneNumber?.toLowerCase().includes(q)
+    );
+  });
 
   if (canViewAction) {
     columns.push({
@@ -318,39 +362,39 @@ export default function ParentsList({
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne
-            data={parentList}
+            data={filteredParents}
             columns={columns}
-            expandable={{
-              title: t("Children"),
-              canExpand: (row) => row.childrenList?.length > 0,
-              renderExpandedRows: (row) =>
-                row.childrenList.map((child: any, index: number) => (
-                  <div
-                    key={index}
-                    className="justify-between items-center grid grid-cols-6"
-                  >
-                    <span className="font-semibold">{child.name}</span>
-                    <span className="font-semibold text-center">
-                      {child.phone}
-                    </span>
-                    <span className="font-semibold text-center">
-                      {child.email}
-                    </span>
-                    <span className="font-semibold text-center">
-                      {child.points}
-                    </span>
-                    <span className="font-semibold text-center">
-                      {child.streaks}
-                    </span>
-                    <Link
-                      to="/children-info"
-                      className="text-secondary font-semibold hover:underline text-end"
-                    >
-                      {t("SeeMore") || "See more"}
-                    </Link>
-                  </div>
-                )),
-            }}
+            // expandable={{
+            //   title: t("Children"),
+            //   canExpand: (row) => row.childrenList?.length > 0,
+            //   renderExpandedRows: (row) =>
+            //     row.childrenList.map((child: any, index: number) => (
+            //       <div
+            //         key={index}
+            //         className="justify-between items-center grid grid-cols-6"
+            //       >
+            //         <span className="font-semibold">{child.name}</span>
+            //         <span className="font-semibold text-center">
+            //           {child.phone}
+            //         </span>
+            //         <span className="font-semibold text-center">
+            //           {child.email}
+            //         </span>
+            //         <span className="font-semibold text-center">
+            //           {child.points}
+            //         </span>
+            //         <span className="font-semibold text-center">
+            //           {child.streaks}
+            //         </span>
+            //         <Link
+            //           to="/children-info"
+            //           className="text-secondary font-semibold hover:underline text-end"
+            //         >
+            //           {t("SeeMore") || "See more"}
+            //         </Link>
+            //       </div>
+            //     )),
+            // }}
           />
           <div className="mt-auto">
             <Pagination

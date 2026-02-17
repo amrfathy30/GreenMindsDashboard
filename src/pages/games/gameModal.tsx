@@ -22,6 +22,18 @@ interface GameModalProps {
   onSuccess: () => void;
 }
 
+type GameFormState = {
+  nameEn: string;
+  nameAr: string;
+  descEn: string;
+  descAr: string;
+  android: string;
+  ios: string;
+  appLink: string;
+  ageSectorId: number | null;
+  thumbnailUrl: string;
+};
+
 const GameModal: React.FC<GameModalProps> = ({
   isOpen,
   onClose,
@@ -39,7 +51,7 @@ const GameModal: React.FC<GameModalProps> = ({
     Record<string, string>
   >({});
 
-  const [formDataState, setFormDataState] = useState({
+  const [formDataState, setFormDataState] = useState<GameFormState>({
     nameEn: "",
     nameAr: "",
     descEn: "",
@@ -47,10 +59,9 @@ const GameModal: React.FC<GameModalProps> = ({
     android: "",
     ios: "",
     appLink: "",
-    ageSectorId: "",
+    ageSectorId: null,
     thumbnailUrl: "",
   });
-
   useEffect(() => {
     const fetchAgeGroups = async () => {
       try {
@@ -76,7 +87,7 @@ const GameModal: React.FC<GameModalProps> = ({
         android: gameData.AndroidLink || "",
         ios: gameData.IosLink || "",
         appLink: gameData.AppLink || "",
-        ageSectorId: gameData.AgeSectorId?.toString() || "",
+        ageSectorId: gameData.AgeSectorId ?? null, // 👈 رقم مش string
         thumbnailUrl: tUrl,
       });
       setPreviewImage(
@@ -91,7 +102,7 @@ const GameModal: React.FC<GameModalProps> = ({
         android: "",
         ios: "",
         appLink: "",
-        ageSectorId: "",
+        ageSectorId: null, // 👈
         thumbnailUrl: "",
       });
       setPreviewImage(null);
@@ -129,6 +140,24 @@ const GameModal: React.FC<GameModalProps> = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (!isOpen || !ageGroups.length) return;
+
+    setFormDataState((prev) => {
+      if (!prev.ageSectorId) return prev;
+
+      const exists = ageGroups.some((g) => g.Id === prev.ageSectorId);
+
+      if (!exists) {
+        toast.error(t("age_sector_deleted_choose_again"));
+        return { ...prev, ageSectorId: null };
+      }
+
+      return prev;
+    });
+  }, [ageGroups, isOpen, t]);
+
   const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,7 +182,7 @@ const GameModal: React.FC<GameModalProps> = ({
 
     for (const field of fieldsToValidate) {
       if (!noSpecialCharsRegex.test(field.value)) {
-        toast.error(`${field.label} يحتوي على رموز غير مسموح بها`);
+        toast.error(t("game_desc_invalid"));
         return;
       }
     }
@@ -171,8 +200,9 @@ const GameModal: React.FC<GameModalProps> = ({
     formData.append("AndroidLink", formDataState.android);
     formData.append("IosLink", formDataState.ios);
     formData.append("AppLink", formDataState.appLink);
-    formData.append("AgeSectorId", formDataState.ageSectorId);
-
+    if (formDataState.ageSectorId !== null) {
+      formData.append("AgeSectorId", String(formDataState.ageSectorId));
+    }
     const file = fileInputRef.current?.files?.[0];
     if (file) {
       formData.append("Thumbnail", file);
@@ -199,10 +229,15 @@ const GameModal: React.FC<GameModalProps> = ({
         "GameNameAr contains invalid characters": t("game_name_ar_invalid"),
         "DescriptionAr contains invalid characters": t("game_desc_ar_invalid"),
         "DescriptionEn contains invalid characters": t("game_desc_en_invalid"),
+        "AppLink must be a valid URL": t("AppLinkValid"),
+        "IosLink must be a valid URL": t("IosLinkValid"),
+        "AndroidLink must be a valid URL": t("AndroidLinkValid"),
         "Upload Game Thumbnail or Add the Game Thumbnail link": t(
           "upload_thumbnail_required",
         ),
         "ThumbnailUrl must be a valid URL": t("ThumbnailUrlValid"),
+        "AgeSectorId does not reference an existing AgeSector":
+          t("AgeSectorIExisting"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);
@@ -277,19 +312,23 @@ const GameModal: React.FC<GameModalProps> = ({
           </label>
           <select
             id="ageSectorId"
-            value={formDataState.ageSectorId}
-            onChange={handleChange}
+            value={formDataState.ageSectorId ?? ""}
+            onChange={(e) =>
+              setFormDataState((prev) => ({
+                ...prev,
+                ageSectorId: e.target.value ? Number(e.target.value) : null,
+              }))
+            }
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
+            required
           >
-            <option value="" disabled>
-              {t("select_age_group")}
-            </option>
-            {ageGroups.map((group: any) => (
+            <option value="">اختر الفئة العمرية</option>
+            {ageGroups.map((group) => (
               <option key={group.Id} value={group.Id}>
                 {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
               </option>
             ))}
-          </select>
+          </select>{" "}
         </div>
 
         <div className="grid grid-cols-2 gap-2 w-full">
@@ -398,9 +437,9 @@ const GameModal: React.FC<GameModalProps> = ({
                   if (e.target.value) setPreviewImage(e.target.value);
                 }}
               />
-              <p className="text-[10px] text-red-500 -mt-1">
+              {/* <p className="text-[10px] text-red-500 -mt-1">
                 {t("imageTypeAllowed")}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

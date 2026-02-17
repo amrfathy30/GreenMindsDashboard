@@ -38,14 +38,14 @@ const GameCard: React.FC<GameCardProps> = ({
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-1" ref={menuRef}>
-          <h3 className="text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
+        <div className="flex items-center justify-between mb-1 gap-3" ref={menuRef}>
+  <h3 className="flex-1 min-w-0 text-base h-[32%] font-semibold text-gray-900 dark:text-white truncate">
             {title}
           </h3>
           {hasActions && (
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="flex h-6 w-6 items-center justify-center rounded-full bg-[#EFEFEF] text-gray-600 backdrop-blur-sm hover:bg-white dark:bg-[#383939] dark:text-gray-300"
+              className="shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-[#EFEFEF] text-gray-600 backdrop-blur-sm hover:bg-white dark:bg-[#383939] dark:text-gray-300"
             >
               <MoreVertical size={12} />
             </button>

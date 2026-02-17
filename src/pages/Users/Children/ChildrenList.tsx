@@ -26,13 +26,16 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+import { getTranslatedApiError } from "../../../utils/handleApiError";
 // import { createUser } from "../../../api/services/adminService";
 
 export default function ChildrenList({
   openAddModal,
   setOpenAddModal,
+  search,
 }: {
   openAddModal?: boolean;
+  search: string;
   setOpenAddModal?: (open: boolean) => void;
 }) {
   const { t } = useLanguage();
@@ -142,17 +145,37 @@ export default function ChildrenList({
     return digitsOnly.length > 4;
   };
 
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
+
   const handleSave = async (data: Children) => {
     try {
+      const isEdit = !!editData?.id;
       if (
         !data.Name?.trim() ||
         !data.UserName?.trim() ||
-        !data.Email ||
         !data.DateOfBirth ||
         !data.PhoneNumber
       ) {
         toast.error(t("all_fields_required"));
         return;
+      }
+
+      if (!isEdit) {
+        if (!data.Email?.trim()) {
+          toast.error(t("email_required"));
+          return;
+        }
+
+        if (!validateEmail(data.Email)) {
+          toast.error(t("PleaseEnterAValidEmail"));
+          return;
+        }
       }
 
       if (new Date(data.DateOfBirth) > new Date()) {
@@ -218,23 +241,19 @@ export default function ChildrenList({
       setOpenModal(false);
       setEditData(null);
     } catch (error: any) {
-      const errData = error?.response?.data;
+      const translations: Record<string, string> = {
+        "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
+          t("PasswordContain"),
+        "Name contains invalid characters. Only letters and spaces are allowed":
+          t("name_error_letters"),
+        "Another user with the same username already exists": t("sameUsername"),
+        "Username already exists": t("sameUsername"),
+        "Email already exists": t("sameEmail"),
+        "Can Accept Letter Only": t("name_error_letters"),
+      };
 
-      if (Array.isArray(errData?.Data)) {
-        toast.error(errData.Data.join("\n"));
-      } else if (errData?.Data && typeof errData.Data === "object") {
-        const messages: string[] = [];
-
-        for (const key in errData.Data) {
-          if (Array.isArray(errData.Data[key])) {
-            messages.push(...errData.Data[key]);
-          }
-        }
-
-        toast.error(messages.join("\n"));
-      } else {
-        toast.error(errData?.Message || t("operation_failed"));
-      }
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
     } finally {
       setModalLoading(false);
     }
@@ -333,6 +352,16 @@ export default function ChildrenList({
     },
   ];
 
+  const filteredParents = childrenList.filter((item) => {
+  const q = search.toLowerCase();
+  return (
+    item.Name?.toLowerCase().includes(q) ||
+    item.Email?.toLowerCase().includes(q) ||
+    item.UserName?.toLowerCase().includes(q) ||
+    item.PhoneNumber?.toLowerCase().includes(q)
+  );
+});
+
   if (canViewAction) {
     columns.push({
       key: "actions",
@@ -403,7 +432,7 @@ export default function ChildrenList({
         <TableLoading columnCount={5} />
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
-          <BasicTableOne data={childrenList} columns={columns} />
+          <BasicTableOne data={filteredParents} columns={columns} />
           <div className="mt-auto">
             <Pagination
               currentPage={currentPage}

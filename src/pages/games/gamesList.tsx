@@ -70,6 +70,8 @@ export default function GamesList() {
     setIsEditModalOpen(true);
   };
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("games")}`;
+
   const handleDeleteClick = (game: any) => {
     setSelectedGame(game);
     setIsDeleteModalOpen(true);
@@ -87,10 +89,7 @@ export default function GamesList() {
 
   return (
     <>
-      <PageMeta
-        title="Green minds Admin | Games"
-        description="Manage your games list easily."
-      />
+      <PageMeta title={pageTitle} description="" />
 
       <div className="rounded-2xl border-b border-[#D9D9D9] dark:border-gray-800 min-h-[calc(100vh-60px)] dark:bg-neutral-800 bg-[#EDEDED] flex flex-col overflow-hidden">
         <div className="h-17.5 flex shrink-0 items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">

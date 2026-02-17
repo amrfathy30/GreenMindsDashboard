@@ -47,9 +47,7 @@ export default function SmtpSettingsModal({
       onSuccess?.();
       onClose();
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.Message || "Failed to update SMTP settings",
-      );
+      toast.error(error?.response?.data?.Message || t("FailedUpdateSMTP"));
     } finally {
       setLoading(false);
     }

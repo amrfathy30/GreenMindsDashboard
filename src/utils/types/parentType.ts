@@ -20,7 +20,7 @@ export interface ParentList {
 export interface ParentFormData {
   UserName: string;
   Name: string;
-  Email: string;
+  Email?: string;
   Password?: string;
   ConfirmPassword?: string;
   PhoneNumber?: string;

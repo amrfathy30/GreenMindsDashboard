@@ -223,9 +223,9 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               </span>
             </button>
           </div>
-          <p className="text-[10px] text-red-500 -mt-1">
+          {/* <p className="text-[10px] text-red-500 -mt-1">
             {t("imageTypeAllowed")}
-          </p>
+          </p> */}
         </div>
         <Button
           type="submit"

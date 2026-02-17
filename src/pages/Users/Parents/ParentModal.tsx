@@ -79,12 +79,14 @@ export default function ParentModal({
     const payload: ParentFormData = {
       Name: formData.Name,
       UserName: formData.UserName,
-      Email: formData.Email,
       PhoneNumber: formData.PhoneNumber,
       GenderId: formData.GenderId,
       DateOfBirth: formData.DateOfBirth,
       Type: formData.Type,
     };
+    if (!initialData) {
+      payload.Email = formData.Email;
+    }
 
     if (formData.Password.trim()) {
       payload.Password = formData.Password;

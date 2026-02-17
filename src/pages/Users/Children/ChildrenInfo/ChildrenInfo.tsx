@@ -168,7 +168,14 @@ export default function ChildrenInfo() {
             className="border dark:border-gray-700 shadow drop-shadow-xl rounded-xl p-3"
           >
             <h2 className="font-semibold dark:text-white">{detail.label}</h2>
-            <h3 className="dark:text-white truncate">{detail.value}</h3>
+            <h3
+              className={`dark:text-white truncate ${
+                detail.label === t("Email") ? "ltr text-left" : ""
+              }`}
+              dir={detail.label === t("Email") ? "ltr" : undefined}
+            >
+              {detail.value}
+            </h3>{" "}
           </div>
         ))}
       </div>

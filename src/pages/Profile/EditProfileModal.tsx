@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Modal } from "../../components/ui/modal";
 import { createPortal } from "react-dom";
-import { ArrowBigLeft, Edit2 } from "lucide-react";
+import { ArrowBigLeft } from "lucide-react";
 import Button from "../../components/ui/button/Button";
 import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
-import React from "react";
 import ChangePasswordModal from "./ChangePasswordModal";
 import ResetPasswordModal from "./ResetPasswordModal";
 import {
@@ -40,7 +39,7 @@ export default function EditProfileModal({
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [avatar, setAvatar] = useState("/images/user.png");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
   const { updateAdmin, admin } = useAdmin();
   const adminId = admin?.UserId;
   const [loadingData, setLoadingData] = useState(false);
@@ -89,9 +88,9 @@ export default function EditProfileModal({
 
   if (!open) return null;
 
-  const handleEditClick = () => {
-    fileInputRef.current?.click();
-  };
+  // const handleEditClick = () => {
+  //   fileInputRef.current?.click();
+  // };
 
   const isValidPhone = (phone?: string) => {
     if (!phone) return false;
@@ -99,17 +98,17 @@ export default function EditProfileModal({
     return digitsOnly.length > 4;
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
 
-    setAvatar(URL.createObjectURL(file));
+  //   setAvatar(URL.createObjectURL(file));
 
-    setFormData((prev) => ({
-      ...prev,
-      AvatarImg: file,
-    }));
-  };
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     AvatarImg: file,
+  //   }));
+  // };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -156,14 +155,14 @@ export default function EditProfileModal({
       ShowToastSuccess(t("ProfileUpdatedSuccessfully"));
       onClose();
     } catch (error: any) {
-  const translations: Record<string, string> = {
-    "Can Accept Letter Only": t("can_accept_letter_only"),
-  };
-  const finalMsg = getTranslatedApiError(error, t, translations);
-  toast.error(finalMsg);
-} finally {
-  setLoading(false);
-}
+      const translations: Record<string, string> = {
+        "Can Accept Letter Only": t("can_accept_letter_only"),
+      };
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBack = () => {
@@ -204,7 +203,7 @@ export default function EditProfileModal({
           email={personalInfo?.Email ?? ""}
         />
       ) : showResetPassword ? (
-        <ResetPasswordModal />
+        <ResetPasswordModal email={personalInfo?.Email ?? ""} />
       ) : loadingData ? (
         <ProfileSkeleton />
       ) : (
@@ -214,7 +213,7 @@ export default function EditProfileModal({
         >
           <div className="flex md:items-center justify-between flex-col md:flex-row gap-4">
             <div className="flex items-center gap-4">
-              <div className="relative">
+              {/* <div className="relative">
                 <img
                   src={avatar}
                   alt="user-avatar"
@@ -234,7 +233,7 @@ export default function EditProfileModal({
                   onChange={handleFileChange}
                   className="hidden"
                 />
-              </div>
+              </div> */}
 
               <div className="flex flex-col dark:text-white">
                 <h2>{personalInfo?.Name}</h2>

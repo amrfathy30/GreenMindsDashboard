@@ -24,6 +24,7 @@ import {
   fetchUserPermissions,
   hasPermission,
 } from "../../utils/permissions/permissions";
+import { getTranslatedApiError } from "../../utils/handleApiError";
 
 const BASE_URL = "https://kidsapi.pulvent.com";
 
@@ -90,7 +91,13 @@ export default function VideosList() {
       setIsEditOpen(false);
       await fetchInitialData();
     } catch (error: any) {
-      toast.error(error?.response?.data?.Message || t("operation_failed"));
+      const translations: Record<string, string> = {
+        "TitleEn can contain only English letters, numbers and spaces":
+          t("TitleEnContain"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
     } finally {
       setLoading(false);
     }
@@ -111,9 +118,11 @@ export default function VideosList() {
     }
   };
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("videos")}`;
+
   return (
     <>
-      <PageMeta title="Green minds Admin | Videos" description={``} />
+      <PageMeta title={pageTitle} description="" />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 min-h-[calc(100vh-48px)] flex flex-col dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-auto min-h-17.5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4 shrink-0">
           <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
@@ -211,13 +220,16 @@ export default function VideosList() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 max-w-62.5">
                         <span
-                          className={`text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white block truncate ${isRTL ? "text-right" : "text-left"}`}
+                          className={`text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white block truncate whitespace-nowrap overflow-hidden ${
+                            isRTL ? "text-right" : "text-left"
+                          }`}
+                          title={`${video.TitleEn} / ${video.TitleAr}`}
                         >
                           {video.TitleEn} / {video.TitleAr}
                         </span>
-                      </td>
+                      </td>{" "}
                       <td className="px-4 py-3 text-center">
                         <div className="flex items-center justify-center gap-1">
                           <span className="text-[#00B69B] font-lalezar text-lg md:text-xl">

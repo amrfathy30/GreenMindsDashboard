@@ -211,6 +211,8 @@ export default function AgeGroupList() {
     });
   }
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("ageGroups")}`;
+
   if (!canView && !loading) {
     return (
       <div className="flex items-center justify-center min-h-100">
@@ -224,7 +226,7 @@ export default function AgeGroupList() {
 
   return (
     <>
-      <PageMeta title="Green minds Admin | Age Group" description={``} />
+      <PageMeta title={pageTitle} description="" />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-full min-h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">

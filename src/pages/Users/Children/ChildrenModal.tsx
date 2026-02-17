@@ -78,7 +78,6 @@ export default function ChildrenModal({
 
     const payload: any = {
       Name: formData.Name,
-      Email: formData.Email,
       UserName: formData.UserName,
       PhoneNumber: formData.PhoneNumber,
       DateOfBirth: formData.DateOfBirth,
@@ -86,6 +85,10 @@ export default function ChildrenModal({
       Type: 1,
       id: initialData?.id,
     };
+
+    if (!initialData) {
+      payload.Email = formData.Email;
+    }
 
     if (formData.Password.trim()) {
       payload.Password = formData.Password;

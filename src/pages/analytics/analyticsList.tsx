@@ -231,6 +231,7 @@ export default function Analytics() {
     };
     fetchData();
   }, [canViewLevels, t]);
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("analytics")}`;
 
   if (
     !canViewLevels &&
@@ -252,7 +253,7 @@ export default function Analytics() {
 
   return (
     <>
-      <PageMeta title="Green minds Admin | Analytics" description="" />
+      <PageMeta title={pageTitle} description="" />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">

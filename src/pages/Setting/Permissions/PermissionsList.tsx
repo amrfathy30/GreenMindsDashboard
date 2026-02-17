@@ -204,6 +204,8 @@ export default function PermissionsList() {
     groupedPermissions[group].push(perm);
   });
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("permissions")}`;
+
   if (!canView && !loading) {
     return (
       <div className="flex items-center justify-center min-h-100">
@@ -217,7 +219,7 @@ export default function PermissionsList() {
 
   return (
     <>
-      <PageMeta title="Green minds Admin | Permissions" description={``} />
+      <PageMeta title={pageTitle} description="" />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED] min-h-[calc(100vh-48px)]">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">

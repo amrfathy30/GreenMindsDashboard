@@ -24,6 +24,7 @@ import {
   hasPermission,
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
+import { getTranslatedApiError } from "../../../utils/handleApiError";
 
 export default function AdminRoles() {
   const [loading, setLoading] = useState(true);
@@ -111,6 +112,7 @@ export default function AdminRoles() {
           Description: "",
           PermissionIds: [],
         });
+        ShowToastSuccess(t("success_update_role"));
       } else {
         const defaultPermissionIds = getDefaultPermissionIds();
 
@@ -118,16 +120,24 @@ export default function AdminRoles() {
           RoleName: data.RoleName,
           Permissions: defaultPermissionIds,
         });
+        ShowToastSuccess(t("success_create_role"));
       }
+
       setOpenModal(false);
       setEditRoleModalOpen(false);
       const rolesData: AgeApiResponse = await allAdminRoles();
       setAdminRoles(rolesData.Data);
       setRoleToEdit(null);
-    } catch {
-      toast.error(
-        roleToEdit ? t("failed_update_role") : t("failed_create_role"),
-      );
+    } catch (error: any) {
+      const translations: Record<string, string> = {
+        "Role name contains invalid characters. Allowed: letters, numbers, space, hyphen, underscore":
+          t("RoleContain"),
+        "Role already exists or failed to create":
+          t("RoleExists"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
     } finally {
       setAddRoleLoading(false);
     }
@@ -198,6 +208,8 @@ export default function AdminRoles() {
     setSelectedPermissions(isAllSelected ? [] : allIds);
   };
 
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("AdminRoles")}`;
+
   if (!canViewRoles && !loading) {
     return (
       <div className="flex items-center justify-center min-h-100">
@@ -211,7 +223,7 @@ export default function AdminRoles() {
 
   return (
     <>
-      <PageMeta title="Green minds Admin | Admin Roles" description={``} />
+      <PageMeta title={pageTitle} description="" />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="md:h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">

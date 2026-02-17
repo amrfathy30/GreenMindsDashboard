@@ -82,7 +82,7 @@ const Input: FC<InputProps> = ({
           disabled={disabled}
           className={`h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 ${className}`}
         />
-        <span className="block truncate text-xs">
+        <span className="block text-xs">
           {label}
           {required && <span className="text-error-500">*</span>}
         </span>

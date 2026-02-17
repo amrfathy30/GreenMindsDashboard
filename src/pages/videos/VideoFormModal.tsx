@@ -291,11 +291,11 @@ export default function VideoFormModal({
                 onChange={handleVideoUrlChange}
                 className="w-full"
               />
-              <p className="text-[10px] text-red-500 -mt-1">
+              {/* <p className="text-[10px] text-red-500 -mt-1">
                 {isRTL
                   ? "يُسمح فقط بمقاطع الفيديو بصيغة (mp4, webm, mov, m4v, mkv, avi)"
                   : "Only videos (mp4, webm, mov, m4v, mkv, avi) are allowed"}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -342,16 +342,16 @@ export default function VideoFormModal({
                 onChange={handleThumbnailUrlChange}
                 className="w-full"
               />
-              <p className="text-[10px] text-red-500 -mt-1">
+              {/* <p className="text-[10px] text-red-500 -mt-1">
                 {isRTL
                   ? "يُسمح فقط بصور بصيغة (jpg, jpeg, png, gif, webp, bmp, svg, tiff)"
                   : "Only images (jpg, jpeg, png, gif, webp, bmp, svg, tiff) are allowed"}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {canViewAges ? (
             <div className="space-y-2">
               <>
@@ -361,7 +361,7 @@ export default function VideoFormModal({
                 <select
                   value={ageSectorId}
                   onChange={(e) => setAgeSectorId(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white py-2.5 px-4 text-sm dark:text-white dark:bg-[#1e1e1e]"
+                  className="w-full rounded-lg border border-gray-300 bg-white py-2.75 px-4 text-sm dark:text-white dark:bg-[#1e1e1e]"
                   required
                 >
                   <option value="" disabled>
@@ -379,7 +379,7 @@ export default function VideoFormModal({
             <span className="text-gray-500">{t("private_age_group")}</span>
           )}{" "}
           <div>
-            <label className="block text-sm font-medium text-black dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-black dark:text-gray-300 mb-2">
               {t("num_points")} <span className="text-red-500">*</span>
             </label>
             <Input
