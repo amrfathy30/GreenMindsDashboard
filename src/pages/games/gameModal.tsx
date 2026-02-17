@@ -144,19 +144,16 @@ const GameModal: React.FC<GameModalProps> = ({
   useEffect(() => {
     if (!isOpen || !ageGroups.length) return;
 
-    setFormDataState((prev) => {
-      if (!prev.ageSectorId) return prev;
+    if (!formDataState.ageSectorId) return;
 
-      const exists = ageGroups.some((g) => g.Id === prev.ageSectorId);
+    const exists = ageGroups.some((g) => g.Id === formDataState.ageSectorId);
 
-      if (!exists) {
-        toast.error(t("age_sector_deleted_choose_again"));
-        return { ...prev, ageSectorId: null };
-      }
-
-      return prev;
-    });
-  }, [ageGroups, isOpen, t]);
+    if (!exists) {
+      toast.error(t("age_sector_deleted_choose_again"));
+      setFormDataState((prev) => ({ ...prev, ageSectorId: null }));
+    }
+  }, [ageGroups, isOpen, t, formDataState.ageSectorId]);
+  
 
   const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
   const handleSubmit = async (e: React.FormEvent) => {
