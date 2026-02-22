@@ -3,6 +3,7 @@ export interface ResetPasswordRequest {
   otp: string;
   NewPassword: string;
   ConfirmPassword: string;
+  email: string | undefined;
 }
 export interface ChangePasswordRequest {
   CurrentPassword: string;

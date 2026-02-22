@@ -59,6 +59,7 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
 
       const res = await ForgetPassReset({
         otp: otp,
+        email: email,
         NewPassword: NewPassword,
         ConfirmPassword: ConfirmPassword,
       });

@@ -61,10 +61,13 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         ConfirmPassword,
       });
       ShowToastSuccess(res?.Message || t("password_updated_success"));
+      localStorage.removeItem("GMadminData");
+      localStorage.removeItem("GMadminPermissions");
+      localStorage.removeItem("GMadminToken");
+
       setTimeout(() => {
-        localStorage.clear();
         window.location.href = "/";
-      }, 1000);
+      }, 1500);
       setShowChangePassword(false);
     } catch (error: any) {
       const translations: Record<string, string> = {

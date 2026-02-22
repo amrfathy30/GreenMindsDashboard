@@ -237,6 +237,8 @@ const translations = {
     game_name_en_invalid: "Game Name En contains invalid characters.",
     game_desc_ar_invalid: "Description En contains invalid characters.",
     game_desc_en_invalid: "Description Ar contains invalid characters.",
+    game_desc_invalid: "Description contains invalid characters.",
+    game_name_invalid: "Game Name contains invalid characters.",
     game_name_ar_invalid: "Game Name Ar contains invalid characters.",
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
@@ -688,6 +690,7 @@ const translations = {
     game_desc_ar_invalid: "الوصف بالعربية يحتوي على رموز غير مسموح بها",
     game_desc_en_invalid: "الوصف بالإنجليزي يحتوي على رموز غير مسموح بها",
     game_desc_invalid: "الوصف يحتوي على رموز غير مسموح بها",
+    game_name_invalid: "اسم اللعبة يحتوي على رموز غير مسموح بها",
     something_went_wrong: "حدث خطا ما",
     /******/
     password_min_length: "يجب أن تكون كلمة المرور 8 أرقام أو أكثر",

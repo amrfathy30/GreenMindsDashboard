@@ -153,9 +153,9 @@ const GameModal: React.FC<GameModalProps> = ({
       setFormDataState((prev) => ({ ...prev, ageSectorId: null }));
     }
   }, [ageGroups, isOpen, t, formDataState.ageSectorId]);
-  
 
   const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(false);
@@ -171,15 +171,25 @@ const GameModal: React.FC<GameModalProps> = ({
       return;
     }
     const fieldsToValidate = [
-      { value: formDataState.nameAr, label: t("game_name_ar") },
       { value: formDataState.descAr, label: t("description_ar") },
-      { value: formDataState.nameEn, label: t("game_name_en") },
       { value: formDataState.descEn, label: t("description_en") },
+    ];
+
+    const fieldsToValidateName = [
+      { value: formDataState.nameAr, label: t("game_name_ar") },
+      { value: formDataState.nameEn, label: t("game_name_en") },
     ];
 
     for (const field of fieldsToValidate) {
       if (!noSpecialCharsRegex.test(field.value)) {
         toast.error(t("game_desc_invalid"));
+        return;
+      }
+    }
+
+    for (const field of fieldsToValidateName) {
+      if (!noSpecialCharsRegex.test(field.value)) {
+        toast.error(t("game_name_invalid"));
         return;
       }
     }

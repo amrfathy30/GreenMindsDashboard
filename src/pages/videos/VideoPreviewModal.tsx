@@ -32,6 +32,8 @@ export default function VideoPreviewModal({
   video,
 }: VideoPreviewModalProps) {
   const { isRTL } = useLanguage();
+  const lang = localStorage.getItem("GM-language");
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -159,6 +161,12 @@ export default function VideoPreviewModal({
           className="relative w-full max-w-5xl aspect-video rounded-2xl md:rounded-[31px] overflow-hidden bg-black shadow-2xl mx-2 md:mx-4"
           onMouseMove={() => setShowControls(true)}
         >
+          <button
+            onClick={onClose}
+            className={`absolute top-3 ${lang === "en" ? "right-3" : "left-3"} md:top-5 md:right-5 z-20 text-white bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl`}
+          >
+            ×
+          </button>
           {videoSrc ? (
             youtubeId ? (
               <div className="relative w-full h-full z-0">

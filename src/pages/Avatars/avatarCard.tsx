@@ -91,9 +91,8 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
             )}
           </div>
         </div>
-
         <div className="grid grid-cols-1 gap-1 dark:border-gray-700">
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-2 text-sm flex-wrap">
             <span className="text-gray-500 dark:text-gray-400">
               {t("age_group_label")} :
             </span>
@@ -101,7 +100,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({
               {ageGroup}
             </span>
           </div>
-        </div>
+        </div>{" "}
       </div>
     </div>
   );
