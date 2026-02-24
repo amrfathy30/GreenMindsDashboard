@@ -45,12 +45,17 @@ export const getChildrenById = async (
   return response.data;
 };
 
+export const getChildrenInfoById = async (
+  id: number,
+): Promise<ChildApiResponse> => {
+  const response = await axiosInstance.get(`/Account/GetPersonalInfo?id=${id}`);
+  return response.data;
+};
+
 export const getPointsById = async (
   childId: number,
 ): Promise<ChildPointsResponse> => {
-  const response = await axiosInstance.get(
-    `/Children/points/by-id/${childId}`,
-  );
+  const response = await axiosInstance.get(`/Children/points/by-id/${childId}`);
   return response.data;
 };
 

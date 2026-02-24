@@ -75,6 +75,8 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
     } catch (error: any) {
       const translations: Record<string, string> = {
         "try again": t("otpWrong"),
+        "Maximum OTP attempts reached. Your OTP has expired. Please request a new OTP":
+          t("MaximumOTP"),
         "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
           t("PasswordContain"),
       };
@@ -96,11 +98,33 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
 
       ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
     } catch (error: any) {
-      const translations: Record<string, string> = {
-        "Please try again": t("please_try_again"),
-      };
+      const statusCode = error?.response?.data?.StatusCode;
+      const apiData = error?.response?.data?.Data;
+      const apiMessage = error?.response?.data?.Message;
 
-      const finalMsg = getTranslatedApiError(error, t, translations);
+      let finalMsg = "";
+
+      // ✅ لو Rate Limit
+      if (statusCode === 429 && apiData?.IsLocked) {
+        const lockoutUntil = apiData?.LockoutUntil;
+
+        const lockTime = lockoutUntil
+          ? new Date(lockoutUntil).toLocaleString()
+          : "";
+
+        finalMsg = t("TooManyAttemptsUntil").replace("{{time}}", lockTime);
+      }
+
+      // ✅ لو فيه رسالة من الـ API
+      else if (apiData?.Message) {
+        finalMsg = apiData.Message;
+      }
+
+      // ✅ fallback
+      else {
+        finalMsg = apiMessage || t("please_try_again");
+      }
+
       toast.error(finalMsg);
     } finally {
       setSendEmailLoading(false);

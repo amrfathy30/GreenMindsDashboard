@@ -181,6 +181,7 @@ export default function VideoFormModal({
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
+    
     const formData = new FormData();
     if (initialData) formData.append("Id", initialData.Id.toString());
     formData.append("TitleEn", titleEn);
@@ -361,11 +362,11 @@ export default function VideoFormModal({
                 <select
                   value={ageSectorId}
                   onChange={(e) => setAgeSectorId(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white py-2.75 px-4 text-sm dark:text-white dark:bg-[#1e1e1e]"
+                  className="w-full rounded-lg border border-gray-300 bg-white py-2.75 px-4 text-sm dark:text-white focus:ring-brand-500/20 dark:border-gray-700 dark:bg-[#1e1e1e]"
                   required
                 >
                   <option value="" disabled>
-                    {t("select_age")}
+                    {t("select_age_group")}
                   </option>
                   {ageSectors.map((age) => (
                     <option key={age.Id} value={age.Id.toString()}>

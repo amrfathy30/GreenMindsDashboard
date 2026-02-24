@@ -123,6 +123,7 @@ export default function AvatarList() {
             <Button
               size="sm"
               variant="primaryGrid"
+              className="rounded-full"
               onClick={() => setIsModalOpen(true)}
             >
               <div className="text-white">

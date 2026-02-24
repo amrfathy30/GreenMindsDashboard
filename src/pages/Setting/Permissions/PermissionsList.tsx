@@ -232,7 +232,7 @@ export default function PermissionsList() {
             placeholder={t("search_permissions")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-72 px-3 py-2 rounded-2xl border bg-white dark:bg-gray-700 dark:text-white"
+            className="w-full md:w-72 px-3 py-2 rounded-2xl border bg-white dark:bg-neutral-800 dark:text-white"
           />
         </div>
 

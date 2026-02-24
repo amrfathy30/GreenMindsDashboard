@@ -27,7 +27,7 @@ import {
 } from "../../../utils/permissions/permissions";
 import EmptyState from "../../../components/common/no-data-found";
 import { getTranslatedApiError } from "../../../utils/handleApiError";
-// import { createUser } from "../../../api/services/adminService";
+import { updateUserPassword } from "../../../api/services/adminService";
 
 export default function ChildrenList({
   openAddModal,
@@ -191,7 +191,7 @@ export default function ChildrenList({
       const MIN_PASSWORD_LENGTH = 8;
       const MAX_PASSWORD_LENGTH = 15;
 
-      if (!editData?.id && data.Password) {
+      if (data.Password) {
         if (
           data.Password.length < MIN_PASSWORD_LENGTH ||
           data.Password.length > MAX_PASSWORD_LENGTH
@@ -209,8 +209,18 @@ export default function ChildrenList({
       setModalLoading(true);
 
       let res;
-      if (editData) {
-        res = await updateChildren(data, editData.id!);
+
+      if (editData?.id) {
+        const { Password, ConfirmPassword, ...rest } = data;
+
+        res = await updateChildren(rest, editData.id);
+
+        if (Password && Password.trim() !== "") {
+          await updateUserPassword(editData.id, {
+            NewPassword: Password,
+            ConfirmPassword: ConfirmPassword,
+          });
+        }
       } else {
         res = await createChildren({ ...data });
       }
@@ -258,7 +268,6 @@ export default function ChildrenList({
       setModalLoading(false);
     }
   };
-
   const calculateAge = (dateOfBirth: string) => {
     if (!dateOfBirth) return "__";
 
@@ -289,7 +298,7 @@ export default function ChildrenList({
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className="block max-w-25 truncate dark:text-white">
+        <span className="block max-w-36 truncate dark:text-white">
           {row.Name || "__"}
         </span>
       ),
@@ -298,7 +307,7 @@ export default function ChildrenList({
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="block max-w-25 truncate dark:text-white">
+        <span className="block max-w-36 truncate dark:text-white">
           {row.UserName || "__"}
         </span>
       ),
@@ -328,9 +337,13 @@ export default function ChildrenList({
     {
       key: "PhoneNumber",
       label: t("ParentPhone"),
-      render: (row: any) => (
-        <span className=" dark:text-white">{row.PhoneNumber || "__"}</span>
-      ),
+      render: (row: any) => {
+        const phone = row.PhoneNumber;
+
+        const formatted = phone?.startsWith("+2") ? phone.slice(2) : phone;
+
+        return <span className="dark:text-white">{formatted || "__"}</span>;
+      },
     },
     {
       key: "Gender",
@@ -352,15 +365,15 @@ export default function ChildrenList({
     },
   ];
 
-  const filteredParents = childrenList.filter((item) => {
-  const q = search.toLowerCase();
-  return (
-    item.Name?.toLowerCase().includes(q) ||
-    item.Email?.toLowerCase().includes(q) ||
-    item.UserName?.toLowerCase().includes(q) ||
-    item.PhoneNumber?.toLowerCase().includes(q)
-  );
-});
+  const filteredChild = childrenList.filter((item) => {
+    const q = search.toLowerCase();
+    return (
+      item.Name?.toLowerCase().includes(q) ||
+      item.Email?.toLowerCase().includes(q) ||
+      item.UserName?.toLowerCase().includes(q) ||
+      item.PhoneNumber?.toLowerCase().includes(q)
+    );
+  });
 
   if (canViewAction) {
     columns.push({
@@ -432,16 +445,21 @@ export default function ChildrenList({
         <TableLoading columnCount={5} />
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
-          <BasicTableOne data={filteredParents} columns={columns} />
-          <div className="mt-auto">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-              pageSize={pageSize}
-              onPageSizeChange={setPageSize}
-            />
-          </div>
+          <BasicTableOne data={filteredChild} columns={columns} />
+          {filteredChild?.length === 0 && (
+            <span className="text-center mt-8">{t("NoData")}</span>
+          )}
+          {!filteredChild && (
+            <div className="mt-auto">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
+              />
+            </div>
+          )}
         </div>
       )}
 

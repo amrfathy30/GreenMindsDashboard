@@ -118,6 +118,7 @@ export default function ChildrenModal({
             placeholder={t("EnterNameHere")}
             value={formData.Name}
             onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+            required
           />
         </div>
         <div>
@@ -129,6 +130,7 @@ export default function ChildrenModal({
             onChange={(e) =>
               setFormData({ ...formData, UserName: e.target.value })
             }
+            required
           />
         </div>
         {!initialData && (
@@ -141,12 +143,13 @@ export default function ChildrenModal({
               onChange={(e) =>
                 setFormData({ ...formData, Email: e.target.value })
               }
+              required
             />
           </div>
         )}
         <div>
           <label className="block text-sm font-medium mb-1 dark:text-white">
-            {t("PhoneNumber")}
+            {t("PhoneNumber")} <span className="text-red-500">*</span>
           </label>
 
           <div
@@ -192,6 +195,7 @@ export default function ChildrenModal({
               onChange={(e) =>
                 setFormData({ ...formData, Password: e.target.value })
               }
+              // required
             />
           </div>
           <div>
@@ -207,6 +211,7 @@ export default function ChildrenModal({
                   ConfirmPassword: e.target.value,
                 })
               }
+              // required
             />
           </div>
         </div>

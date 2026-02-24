@@ -99,6 +99,7 @@ export default function GamesList() {
           {canAdd && (
             <Button
               size="sm"
+              className="rounded-full"
               variant="primaryGrid"
               onClick={() => setIsModalOpen(true)}
             >

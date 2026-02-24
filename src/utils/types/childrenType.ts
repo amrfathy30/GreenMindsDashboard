@@ -9,8 +9,8 @@ export interface Children {
   Email: string;
   UserName: string;
   PhoneNumber: string;
-  Password: string;
-  ConfirmPassword: string;
+  Password?: string;
+  ConfirmPassword?: string;
   DateOfBirth: string;
   EmailVerified?: boolean;
   GenderId: number;
@@ -61,6 +61,9 @@ export interface Child {
   TypeName?: string | null;
   Summary?: string | null;
   IsDelete?: boolean;
+  Avatar?: {
+    ImageUrl?: string;
+  };
 }
 
 export interface ChildPointsResponse {

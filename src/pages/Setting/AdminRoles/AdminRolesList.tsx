@@ -103,6 +103,11 @@ export default function AdminRoles() {
   };
 
   const handleSaveRole = async (data: { RoleName: string }) => {
+    if (!/^[a-zA-Z0-9\u0600-\u06FF\s]+$/.test(data.RoleName)) {
+      toast.error(t("RoleContain"));
+      return;
+    }
+
     try {
       setAddRoleLoading(true);
       if (roleToEdit) {
@@ -132,8 +137,7 @@ export default function AdminRoles() {
       const translations: Record<string, string> = {
         "Role name contains invalid characters. Allowed: letters, numbers, space, hyphen, underscore":
           t("RoleContain"),
-        "Role already exists or failed to create":
-          t("RoleExists"),
+        "Role already exists or failed to create": t("RoleExists"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);

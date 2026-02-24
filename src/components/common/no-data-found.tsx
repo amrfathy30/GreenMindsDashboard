@@ -42,6 +42,7 @@ const styles: { [key: string]: CSSProperties } = {
     width: '300px',
     height: 'auto',
     marginBottom: '20px',
+    // objectFit:"cover"
   },
   title: {
     fontSize: '1.5rem',

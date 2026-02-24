@@ -21,7 +21,7 @@ export default function TopRanked({
           {t("NoData")}
         </div>
       ) : (
-        topRanks.slice(0, 5).map((user, index) => (
+        topRanks.slice(0, 10).map((user, index) => (
           <div
             key={user.UserId}
             className="flex justify-between items-center gap-1 mb-6"

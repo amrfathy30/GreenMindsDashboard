@@ -49,6 +49,11 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       return;
     }
 
+    if (NewPassword === CurrentPassword) {
+      toast.error(t("new_password_same_as_old"));
+      return;
+    }
+
     if (NewPassword !== ConfirmPassword) {
       toast.error(t("passwords_not_match"));
       return;

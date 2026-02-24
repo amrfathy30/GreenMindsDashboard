@@ -201,6 +201,7 @@ const SearchSection = ({
 }) => {
   const { isExpanded, isMobileOpen } = useSidebar();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ name: string; path: string }[]>([]);
@@ -276,7 +277,7 @@ const SearchSection = ({
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          placeholder={showFullSearch ? "Search ..." : ""}
+          placeholder={showFullSearch ? t("search") : ""}
           className={`transition-all w-full duration-300 h-11 rounded-lg border text-sm border-gray-200 dark:border-gray-800
             ${
               showFullSearch

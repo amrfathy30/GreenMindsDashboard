@@ -245,7 +245,7 @@ export default function ParentsList({
       key: "Name",
       label: t("Name"),
       render: (row: any) => (
-        <span className=" dark:text-white block max-w-30 truncate">
+        <span className=" dark:text-white block max-w-36 truncate">
           {row.Name || "__"}
         </span>
       ),
@@ -254,20 +254,22 @@ export default function ParentsList({
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="dark:text-white block max-w-30 truncate">
+        <span className="dark:text-white block max-w-36 truncate">
           {row.UserName || "__"}
         </span>
       ),
     },
     {
-      key: "Email",
-      label: t("email"),
-      render: (row: any) => (
-        <span className="dark:text-white block max-w-50 truncate">
-          {row.Email || "__"}
-        </span>
-      ),
-    },
+  key: "Email",
+  label: t("email"),
+  render: (row: any) => (
+    <span
+      className="dark:text-white block max-w-80 truncate"
+    >
+      {row.Email || "__"}
+    </span>
+  ),
+},
     {
       key: "Status",
       label: <span className="whitespace-nowrap"></span>,
@@ -284,11 +286,13 @@ export default function ParentsList({
     {
       key: "Phone",
       label: t("ParentPhone"),
-      render: (row: any) => (
-        <span className=" dark:text-white block">
-          {row.PhoneNumber || "__"}
-        </span>
-      ),
+      render: (row: any) => {
+        const phone = row.PhoneNumber;
+
+        const formatted = phone?.startsWith("+2") ? phone.slice(2) : phone;
+
+        return <span className="dark:text-white">{formatted || "__"}</span>;
+      },
     },
   ];
 
@@ -361,50 +365,21 @@ export default function ParentsList({
         <TableLoading columnCount={6} />
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
-          <BasicTableOne
-            data={filteredParents}
-            columns={columns}
-            // expandable={{
-            //   title: t("Children"),
-            //   canExpand: (row) => row.childrenList?.length > 0,
-            //   renderExpandedRows: (row) =>
-            //     row.childrenList.map((child: any, index: number) => (
-            //       <div
-            //         key={index}
-            //         className="justify-between items-center grid grid-cols-6"
-            //       >
-            //         <span className="font-semibold">{child.name}</span>
-            //         <span className="font-semibold text-center">
-            //           {child.phone}
-            //         </span>
-            //         <span className="font-semibold text-center">
-            //           {child.email}
-            //         </span>
-            //         <span className="font-semibold text-center">
-            //           {child.points}
-            //         </span>
-            //         <span className="font-semibold text-center">
-            //           {child.streaks}
-            //         </span>
-            //         <Link
-            //           to="/children-info"
-            //           className="text-secondary font-semibold hover:underline text-end"
-            //         >
-            //           {t("SeeMore") || "See more"}
-            //         </Link>
-            //       </div>
-            //     )),
-            // }}
-          />
-          <div className="mt-auto">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-              pageSize={pageSize}
-              onPageSizeChange={setPageSize}
-            />
-          </div>
+          <BasicTableOne data={filteredParents} columns={columns} />
+          {filteredParents?.length === 0 && (
+            <span className="text-center mt-8">{t("NoData")}</span>
+          )}
+          {!filteredParents && (
+            <div className="mt-auto">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
+              />
+            </div>
+          )}
         </div>
       )}
 

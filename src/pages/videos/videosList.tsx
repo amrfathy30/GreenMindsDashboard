@@ -78,6 +78,21 @@ export default function VideosList() {
   }, [currentPage, canView, pageSize]);
 
   const handleSave = async (formData: FormData) => {
+    const titleAr = formData.get("TitleAr") as string;
+    const titleEn = formData.get("TitleEn") as string;
+
+    const titleRegex = /^[a-zA-Z0-9\u0600-\u06FF\s]+$/;
+
+    if (!titleRegex.test(titleAr)) {
+      toast.error(t("VideoTitle"));
+      return;
+    }
+
+    if (!titleRegex.test(titleEn)) {
+      toast.error(t("VideoTitle"));
+      return;
+    }
+
     try {
       setLoading(true);
       if (isEditOpen && selectedVideo) {
@@ -132,7 +147,7 @@ export default function VideosList() {
             <Button
               size="sm"
               variant="primaryGrid"
-              className="w-full sm:w-auto rounded-lg px-4 py-2 text-sm"
+              className="rounded-full"
               onClick={() => {
                 setSelectedVideo(null);
                 setIsAddOpen(true);
@@ -148,8 +163,8 @@ export default function VideosList() {
 
         {videos?.length === 0 && !loading ? (
           <EmptyState
-            title="No Data Found"
-            description="Videos Section has no data yet!"
+            title={t("no_games_found")}
+            description={t("Videos_no_data")}
           />
         ) : (
           ""

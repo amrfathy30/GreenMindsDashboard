@@ -45,11 +45,11 @@ const GameModal: React.FC<GameModalProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [formError, setFormError] = useState(false);
+  // const [formError, setFormError] = useState(false);
   const [ageGroups, setAgeGroups] = useState<any[]>([]);
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string>
-  >({});
+  // const [validationErrors, setValidationErrors] = useState<
+  //   Record<string, string>
+  // >({});
 
   const [formDataState, setFormDataState] = useState<GameFormState>({
     nameEn: "",
@@ -118,27 +118,27 @@ const GameModal: React.FC<GameModalProps> = ({
 
     setFormDataState((prev) => ({ ...prev, [id]: value }));
 
-    const textFields = ["nameEn", "nameAr", "descEn", "descAr"];
-    if (textFields.includes(id) && value.trim() !== "") {
-      if (!noSpecialCharsRegex.test(value)) {
-        setValidationErrors((prev) => ({
-          ...prev,
-          [id]: t("special_chars_not_allowed"),
-        }));
-      } else {
-        setValidationErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors[id];
-          return newErrors;
-        });
-      }
-    } else {
-      setValidationErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[id];
-        return newErrors;
-      });
-    }
+    // const textFields = ["nameEn", "nameAr", "descEn", "descAr"];
+    // if (textFields.includes(id) && value.trim() !== "") {
+    //   if (!noSpecialCharsRegex.test(value)) {
+    //     setValidationErrors((prev) => ({
+    //       ...prev,
+    //       [id]: t("special_chars_not_allowed"),
+    //     }));
+    //   } else {
+    //     setValidationErrors((prev) => {
+    //       const newErrors = { ...prev };
+    //       delete newErrors[id];
+    //       return newErrors;
+    //     });
+    //   }
+    // } else {
+    //   setValidationErrors((prev) => {
+    //     const newErrors = { ...prev };
+    //     delete newErrors[id];
+    //     return newErrors;
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const GameModal: React.FC<GameModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormError(false);
+    // setFormError(false);
 
     const requiredFields = ["nameEn", "nameAr", "ageSectorId"];
     const hasEmptyFields = requiredFields.some(
@@ -166,7 +166,7 @@ const GameModal: React.FC<GameModalProps> = ({
     );
 
     if (hasEmptyFields) {
-      setFormError(true);
+      // setFormError(true);
       toast.error(t("please_fill_required_fields"));
       return;
     }
@@ -292,26 +292,26 @@ const GameModal: React.FC<GameModalProps> = ({
           value={formDataState.nameEn}
           onChange={handleChange}
           required
-          error={formError && !formDataState.nameEn}
+          // error={formError && !formDataState.nameEn}
         />
-        {validationErrors.nameEn && (
+        {/* {validationErrors.nameEn && (
           <p className="text-[10px] text-red-500 ml-1">
             {validationErrors.nameEn}
           </p>
-        )}
+        )} */}
         <Input
           id="nameAr"
           label={t("game_name_ar")}
           value={formDataState.nameAr}
           onChange={handleChange}
           required
-          error={formError && !formDataState.nameAr}
+          // error={formError && !formDataState.nameAr}
         />
-        {validationErrors.nameAr && (
+        {/* {validationErrors.nameAr && (
           <p className="text-xs text-red-500 -mt-2 ml-1">
             {validationErrors.nameAr}
           </p>
-        )}
+        )} */}
 
         <div className="space-y-2">
           <label className="block text-sm font-medium text-black dark:text-gray-300">
@@ -326,10 +326,10 @@ const GameModal: React.FC<GameModalProps> = ({
                 ageSectorId: e.target.value ? Number(e.target.value) : null,
               }))
             }
-            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1a222c]"
+            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1e1e1e]"
             required
           >
-            <option value="">اختر الفئة العمرية</option>
+            <option value="">{t("select_age_group")}</option>
             {ageGroups.map((group) => (
               <option key={group.Id} value={group.Id}>
                 {`${t("from")} ${group.FromAge} : ${group.ToAge}`}
@@ -342,42 +342,44 @@ const GameModal: React.FC<GameModalProps> = ({
           <div className="flex flex-col gap-1">
             <TextArea
               id="descEn"
+              placeholder={t("Enter_your_message")}
               label={t("description_en")}
               value={formDataState.descEn}
               onChange={(val) =>
                 handleChange({ target: { id: "descEn", value: val } } as any)
               }
               required
-              error={
-                (formError && !formDataState.descEn) ||
-                !!validationErrors.descEn
-              }
+              // error={
+              //   (formError && !formDataState.descEn) ||
+              //   !!validationErrors.descEn
+              // }
             />
-            {validationErrors.descEn && (
+            {/* {validationErrors.descEn && (
               <p className="text-[10px] text-red-500 ml-1">
                 {validationErrors.descEn}
               </p>
-            )}
+            )} */}
           </div>
           <div className="flex flex-col gap-1">
             <TextArea
               id="descAr"
+              placeholder={t("Enter_your_message")}
               label={t("description_ar")}
               value={formDataState.descAr}
               onChange={(val) =>
                 handleChange({ target: { id: "descAr", value: val } } as any)
               }
               required
-              error={
-                (formError && !formDataState.descAr) ||
-                !!validationErrors.descAr
-              }
+              // error={
+              //   (formError && !formDataState.descAr) ||
+              //   !!validationErrors.descAr
+              // }
             />
-            {validationErrors.descAr && (
+            {/* {validationErrors.descAr && (
               <p className="text-[10px] text-red-500 ml-1">
                 {validationErrors.descAr}
               </p>
-            )}
+            )} */}
           </div>
         </div>
 

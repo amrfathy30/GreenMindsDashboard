@@ -117,6 +117,7 @@ export default function AdminModal({
               onChange={(e) =>
                 setFormData({ ...formData, Name: e.target.value })
               }
+              required
             />
           </div>
           <div>
@@ -128,6 +129,7 @@ export default function AdminModal({
               onChange={(e) =>
                 setFormData({ ...formData, UserName: e.target.value })
               }
+              required
             />
           </div>
         </div>
@@ -141,12 +143,13 @@ export default function AdminModal({
               onChange={(e) =>
                 setFormData({ ...formData, Email: e.target.value })
               }
+              required
             />
           </div>
         )}
         <div className="flex flex-col gap-1">
           <label className="block text-sm font-medium mb-1 dark:text-white">
-            {t("PhoneNumber")}
+            {t("PhoneNumber")} <span className="text-red-500">*</span>
           </label>
 
           <PhoneInput
@@ -187,6 +190,7 @@ export default function AdminModal({
             onChange={(e) =>
               setFormData({ ...formData, Password: e.target.value })
             }
+            // required
           />
           <Input
             id="ConfirmPassword"
@@ -196,6 +200,7 @@ export default function AdminModal({
             onChange={(e) =>
               setFormData({ ...formData, ConfirmPassword: e.target.value })
             }
+            // required
           />
         </div>
         <p className="text-xs text-gray-600 dark:text-gray-400">
@@ -205,7 +210,7 @@ export default function AdminModal({
         )} */}
         <div>
           <label className="block text-sm font-medium mb-1 dark:text-white">
-            {t("UserType")}
+            {t("UserType")} <span className="text-red-500">*</span>
           </label>
           <select
             id="roleName"

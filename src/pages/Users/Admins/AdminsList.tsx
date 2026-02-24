@@ -14,6 +14,7 @@ import {
   createUser,
   deleteAdmin,
   updateAdmin,
+  updateUserPassword,
 } from "../../../api/services/adminService";
 import { TableLoading } from "../../../components/loading/TableLoading";
 import {
@@ -188,7 +189,7 @@ export default function AdminsList({
       const MIN_PASSWORD_LENGTH = 8;
       const MAX_PASSWORD_LENGTH = 15;
 
-      if (!editData?.id && data.Password) {
+      if (data.Password) {
         if (
           data.Password.length < MIN_PASSWORD_LENGTH ||
           data.Password.length > MAX_PASSWORD_LENGTH
@@ -209,7 +210,18 @@ export default function AdminsList({
       let createdAdminId: number | undefined;
 
       if (editData?.id) {
-        res = await updateAdmin(editData.id, data);
+        const restData: AdminList = {
+          ...data,
+          Password: data.Password || "",
+          ConfirmPassword: data.ConfirmPassword || "",
+        };
+        res = await updateAdmin(editData.id, restData);
+        if (data.Password) {
+          await updateUserPassword(editData.id, {
+            NewPassword: data.Password,
+            ConfirmPassword: data.ConfirmPassword,
+          });
+        }
 
         if (data.roleName && data.roleName !== editData.roleName) {
           await AddAdminRole(String(editData.id), [data.roleName]);
@@ -275,14 +287,14 @@ export default function AdminsList({
       key: "Name",
       label: t("name"),
       render: (row: any) => (
-        <span className="block max-w-25 truncate">{row.Name || "__"}</span>
+        <span className="block max-w-36 truncate">{row.Name || "__"}</span>
       ),
     },
     {
       key: "UserName",
       label: t("UserName"),
       render: (row: any) => (
-        <span className="dark:text-white block max-w-25 truncate">
+        <span className="dark:text-white block max-w-36 truncate">
           {row.UserName || "__"}
         </span>
       ),
@@ -291,7 +303,7 @@ export default function AdminsList({
       key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <span className="dark:text-white block max-w-60 truncate">
+        <span className="dark:text-white block max-w-80 truncate">
           {row.Email || "__"}
         </span>
       ),
@@ -306,9 +318,13 @@ export default function AdminsList({
     {
       key: "PhoneNumber",
       label: t("PhoneNumber"),
-      render: (row: any) => (
-        <span className="dark:text-white">{row.PhoneNumber || "__"}</span>
-      ),
+      render: (row: any) => {
+        const phone = row.PhoneNumber;
+
+        const formatted = phone?.startsWith("+2") ? phone.slice(2) : phone;
+
+        return <span className="dark:text-white">{formatted || "__"}</span>;
+      },
     },
   ];
 
@@ -390,6 +406,9 @@ export default function AdminsList({
       ) : (
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={filteredAdmins} columns={columns} />
+          {filteredAdmins?.length === 0 && (
+            <span className="text-center mt-8">{t("NoData")}</span>
+          )}
         </div>
       )}
 

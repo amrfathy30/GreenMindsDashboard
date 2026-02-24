@@ -213,13 +213,13 @@ export default function EditProfileModal({
         >
           <div className="flex md:items-center justify-between flex-col md:flex-row gap-4">
             <div className="flex items-center gap-4">
-              {/* <div className="relative">
+              <div className="relative">
                 <img
                   src={avatar}
                   alt="user-avatar"
                   className="w-10 h-10 rounded-full object-cover invert-0 dark:invert"
                 />
-                <div
+                {/* <div
                   onClick={handleEditClick}
                   className="w-5 h-5 bg-white rounded-full p-1 border flex justify-center items-center cursor-pointer text-Black absolute -right-2 -bottom-2"
                 >
@@ -232,8 +232,8 @@ export default function EditProfileModal({
                   ref={fileInputRef}
                   onChange={handleFileChange}
                   className="hidden"
-                />
-              </div> */}
+                /> */}
+              </div>
 
               <div className="flex flex-col dark:text-white">
                 <h2>{personalInfo?.Name}</h2>

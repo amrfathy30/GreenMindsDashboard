@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useParams } from "react-router";
 import {
   getChildrenById,
+  getChildrenInfoById,
   getPointsById,
 } from "../../../../api/services/childrenService";
 import {
@@ -27,6 +28,7 @@ export default function ChildrenInfo() {
   const childId = id ? Number(id) : undefined;
 
   const [child, setChild] = useState<ChildApiResponse | null>(null);
+  const [childInfo, setChildInfo] = useState<ChildApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [childPoints, setChildPoints] = useState<ChildPointsResponse | null>(
     null,
@@ -61,6 +63,28 @@ export default function ChildrenInfo() {
     fetchChild();
   }, [canView, id, t]);
 
+  useEffect(() => {
+    const fetchChild = async () => {
+      if (!id) return;
+      if (!canView) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const data = await getChildrenInfoById(Number(id));
+        setChildInfo(data);
+      } catch (error: any) {
+        toast.error(error?.response?.data?.Message || t("OperationFailed"));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChild();
+  }, [canView, id, t]);
+
   // getPointsById
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +108,9 @@ export default function ChildrenInfo() {
     fetchData();
   }, [canViewPoints, id, t]);
 
+  const childInfoData: Child | undefined = childInfo?.Data;
   const childData: Child | undefined = child?.Data;
+
   const pointsData = childPoints?.Data?.Child;
 
   const childDetails = childData
@@ -143,10 +169,10 @@ export default function ChildrenInfo() {
     <div className="md:px-8 md:py-4">
       <PageMeta title={pageTitle} description="" />
       <div className="flex items-center gap-2">
-        {childData?.AvatarImg ? (
+        {childInfoData?.Avatar?.ImageUrl ? (
           <img
             className="w-10 h-10 rounded-full object-cover"
-            src={childData.AvatarImg}
+            src={childInfoData.Avatar?.ImageUrl}
             alt={t("ChildImage")}
             onError={(e) => {
               e.currentTarget.style.display = "none";

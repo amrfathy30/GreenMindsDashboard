@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
@@ -11,17 +10,20 @@ import { toast } from "sonner";
 import { ShowToastSuccess } from "../common/ToastHelper";
 import { fetchUserPermissions } from "../../utils/permissions/permissions";
 import { useAdmin } from "../../context/AdminContext";
+import { sendEmail } from "../../api/services/profileService";
+import { getTranslatedApiError } from "../../utils/handleApiError";
+import ResetPasswordModal from "../../pages/Profile/ResetPasswordModal";
+import { Modal } from "../ui/modal";
 
 export default function SignInForm() {
   const { t } = useLanguage();
-  const lang = localStorage.getItem("GM-language");
   const navigate = useNavigate();
   const { updateAdmin } = useAdmin();
-
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sendEmailLoading, setSendEmailLoading] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   useEffect(() => {
     const checkExistingAuth = async () => {
@@ -130,6 +132,29 @@ export default function SignInForm() {
     }
   };
 
+  const handleSendResetEmail = async () => {
+    if (!email) return;
+
+    try {
+      setSendEmailLoading(true);
+
+      const res = await sendEmail(email);
+
+      ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+
+      setShowResetModal(true);
+    } catch (error: any) {
+      const translations: Record<string, string> = {
+        "Please try again": t("please_try_again"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
+    } finally {
+      setSendEmailLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
@@ -156,25 +181,29 @@ export default function SignInForm() {
                   <Label>
                     {t("Password")} <span className="text-error-500">*</span>
                   </Label>
-                  <div className="relative">
+                  <div>
                     <Input
-                      type={showPassword ? "text" : "password"}
+                      type="password"
                       placeholder={t("EnterYourPassword")}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute z-30 -translate-y-1/2 cursor-pointer ${lang === "en" ? "right-4" : "left-4"}  top-1/2`}
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      )}
-                    </span>
                   </div>
                 </div>
+                <div className="flex flex-col -mt-4 sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+                  <p className="dark:text-white text-sm sm:text-base">
+                    {t("forgotPassword")}
+                  </p>
+                  <button
+                    type="button"
+                    className="text-red-500 text-xs sm:text-sm hover:underline"
+                    onClick={handleSendResetEmail}
+                    disabled={sendEmailLoading}
+                  >
+                    {sendEmailLoading ? t("sending") : t("sendResetEmail")}
+                  </button>
+                </div>
+
                 <div>
                   <Button
                     className="w-full"
@@ -192,6 +221,16 @@ export default function SignInForm() {
           </div>
         </div>
       </div>
+      <Modal
+        className="max-w-xl mx-4"
+        isOpen={showResetModal}
+        closeOnEscape={false}
+        closeOnOutsideClick={false}
+        onClose={() => setShowResetModal(false)}
+        title={t("resetPassword")}
+      >
+        <ResetPasswordModal email={email} />
+      </Modal>{" "}
     </div>
   );
 }

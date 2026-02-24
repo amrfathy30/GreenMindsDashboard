@@ -118,6 +118,7 @@ export default function ParentModal({
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, Name: e.target.value }))
             }
+            required
           />
         </div>
 
@@ -130,6 +131,7 @@ export default function ParentModal({
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, UserName: e.target.value }))
             }
+            required
           />
         </div>
         {!initialData && (
@@ -142,12 +144,13 @@ export default function ParentModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, Email: e.target.value }))
               }
+              required
             />
           </div>
         )}
         <div>
           <label className="block text-sm font-medium mb-1 text-black dark:text-gray-300">
-            {t("PhoneNumber")}
+            {t("PhoneNumber")} <span className="text-red-500">*</span>
           </label>
 
           <PhoneInput
@@ -172,6 +175,7 @@ export default function ParentModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, Password: e.target.value }))
               }
+              // require  d
             />
           </div>
           <div>
@@ -187,6 +191,7 @@ export default function ParentModal({
                   ConfirmPassword: e.target.value,
                 }))
               }
+              // required
             />
           </div>
         </div>

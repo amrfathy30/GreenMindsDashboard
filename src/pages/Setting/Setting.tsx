@@ -40,6 +40,7 @@ export default function Setting() {
   );
 
   const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("setting")}`;
 
   const fetchSmtp = async () => {
     if (!canView) {
@@ -51,9 +52,7 @@ export default function Setting() {
         setSmtpData(res.Data[0]);
       }
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.Message || t("FailedLoadSMTP"),
-      );
+      toast.error(error?.response?.data?.Message || t("FailedLoadSMTP"));
     }
   };
 
@@ -63,7 +62,7 @@ export default function Setting() {
 
   return (
     <>
-      <PageMeta title="Green minds Admin | Settings" description={``} />
+      <PageMeta title={pageTitle} description="" />
 
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5 dark:border-gray-800 h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
         <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">

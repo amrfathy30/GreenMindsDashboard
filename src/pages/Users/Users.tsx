@@ -75,10 +75,12 @@ export default function Users() {
     parent: hasPermission("Parents_GetParents"),
     child: hasPermission("Children_GetChildren"),
   };
+  const pageTitle = `${t("GreenMindsAdmin")} | ${t("users")}`;
 
   return (
     <div>
-      <PageMeta title="Green minds Admin | Users" description={``} />
+      <PageMeta title={pageTitle} description="" />
+
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800  dark:bg-neutral-800 bg-[#EDEDED] min-h-[calc(100vh-48px)]">
         <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">

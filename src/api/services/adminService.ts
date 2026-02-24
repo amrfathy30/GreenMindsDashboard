@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AdminList } from "../../utils/types/adminType";
 import axiosInstance from "../axiosInstance";
 
@@ -16,6 +17,14 @@ export const createUser = async (data: AdminList) => {
 
 export const updateAdmin = async (id: number, data: AdminList) => {
   const response = await axiosInstance.put(`/Account/${id}`, data);
+  return response.data;
+};
+
+export const updateUserPassword = async (userId: number, data: any) => {
+  const response = await axiosInstance.post(
+    `/Account/ChangePasswordByUserId/${userId}`,
+    data,
+  );
   return response.data;
 };
 

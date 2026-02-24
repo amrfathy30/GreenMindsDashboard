@@ -27,7 +27,7 @@ export default function Total({
             {totalGames}
           </h2>
           <h2 className="text-[#3D3F45] dark:text-white text-[30px] font-extrabold text-center">
-            {t("games")}
+            {t("game")}
           </h2>
         </div>
       </div>

@@ -163,6 +163,7 @@ export default function ProfileLevels() {
     } catch (error: any) {
       const errorTranslations: Record<string, string> = {
         "NameEn must be unique": t("DisplayNameUnique"),
+        "LevelNumber must be unique": t("LevelNumberUnique"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, errorTranslations);
@@ -175,14 +176,23 @@ export default function ProfileLevels() {
   const columns: any[] = [
     {
       key: "NameEn",
-      label: t("NameEn"),
-      render: (row: any) => <span>{row.NameEn || "__"}</span>,
+      label: t("Name"),
+      render: (row: any) => (
+        <div className="flex gap-1 items-center">
+          <span className="block max-w-60 truncate">{row.NameEn || "__"}</span>
+          <span className="block max-w-60 truncate">
+            ({row.NameAr || "__"})
+          </span>
+        </div>
+      ),
     },
-    {
-      key: "NameAr",
-      label: t("NameAr"),
-      render: (row: any) => <span>{row.NameAr || "__"}</span>,
-    },
+    // {
+    //   key: "NameAr",
+    //   label: t("NameAr"),
+    //   render: (row: any) => (
+    //     <span className="block max-w-36 truncate">{row.NameAr || "__"}</span>
+    //   ),
+    // },
     {
       key: "LevelNumber",
       label: t("LevelNumber"),

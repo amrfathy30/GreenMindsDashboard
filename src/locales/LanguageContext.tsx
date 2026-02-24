@@ -189,7 +189,7 @@ const translations = {
     AddChildren: "Add Child",
     UpdateChildren: "Update Child",
 
-    OtpSentMessage: "A one time password (otp) has been sent to your email.",
+    OtpSentMessage: "A one time password (OTP) has been sent to your email.",
     OTP: "OTP",
     success_update_role: "success update role",
     success_create_role: "success create role",
@@ -197,6 +197,8 @@ const translations = {
     otpWrong: "Incorrect OTP. Please enter the correct one.",
     RoleContain:
       "Role name contains invalid characters. Allowed: letters, numbers, space, hyphen, underscore.",
+    VideoTitle:
+      "Title can contain only English letters, numbers and spaces",
     NewPassword: "New Password",
     EnterNewPasswordHere: "Enter new password here",
     NewPasswordConfirmation: "New password Confirmation",
@@ -231,15 +233,22 @@ const translations = {
     UserName: "User Name",
     success_create: "created successfully",
     SeeAll: "See All",
-    search: "search",
+    search: "Search",
     TopRanked: "Top Ranked",
+    MaximumOTP:
+      "Maximum OTP attempts reached. Your OTP has expired. Please request a new OTP.",
     something_went_wrong: "something went wrong",
+    Enter_your_message: "Enter Your Message",
+    OTP_resent_successfully: "OTP Resent Successfully",
+    TooManyAttemptsUntil: "Too many attempts. Try again at {{time}}",
     game_name_en_invalid: "Game Name En contains invalid characters.",
     game_desc_ar_invalid: "Description En contains invalid characters.",
     game_desc_en_invalid: "Description Ar contains invalid characters.",
     game_desc_invalid: "Description contains invalid characters.",
     game_name_invalid: "Game Name contains invalid characters.",
     game_name_ar_invalid: "Game Name Ar contains invalid characters.",
+    new_password_same_as_old:
+      "New password must be different from the current one",
     PasswordContain:
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
@@ -291,7 +300,10 @@ const translations = {
     // Game translations
     games_admin: "Games - Admin",
     add_game: "Add Game",
+    game: "Game",
+    LevelNumberUnique: "Level Number must be unique.",
     no_games_found: "No Data Found",
+    Videos_no_data: "Videos Section has no data yet!",
     no_games_desc:
       "Game Section has no data yet, start by adding your first Game Now!",
     game_name_en: "Game Name (EN)",
@@ -407,7 +419,7 @@ const translations = {
     forgotPassword: "Forgot your password?",
     sendResetEmail: "Send email to reset password",
     sending: "Sending...",
-    resendOtp: "resend Otp",
+    resendOtp: "Resend OTP",
     FailedLoadSMTP: "Failed to load SMTP settings",
     FailedUpdateSMTP: "Failed to update SMTP settings",
     noAge: "No Age Group",
@@ -683,6 +695,7 @@ const translations = {
     success_update: "تم التحديث بنجاح",
     DisplayNameUnique: "يجب أن يكون الاسم فريدًا.",
     RoleExists: "الدور موجود بالفعل",
+    new_password_same_as_old: "كلمة المرور الجديدة يجب أن تختلف عن القديمة",
     PasswordContain:
       "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل مما يلي: (حرف كبير، حرف صغير، رمز، ورقم)",
     game_name_en_invalid: "اسم اللعبة بالإنجليزي يحتوي على رموز غير مسموح بها",
@@ -692,6 +705,11 @@ const translations = {
     game_desc_invalid: "الوصف يحتوي على رموز غير مسموح بها",
     game_name_invalid: "اسم اللعبة يحتوي على رموز غير مسموح بها",
     something_went_wrong: "حدث خطا ما",
+    Enter_your_message: "أدخل رسالتك",
+    TooManyAttemptsUntil: "عدد المحاولات تجاوز الحد. حاول مرة أخرى في {{time}}",
+    OTP_resent_successfully: "تم إعادة إرسال رمز التحقق لمرة واحدة بنجاح",
+    MaximumOTP:
+      "تم الوصول إلى الحد الأقصى لمحاولات رمز التحقق لمرة واحدة. لقد انتهت صلاحية رمز التحقق لمرة واحدة الخاص بك. يرجى طلب رمز تحقق لمرة واحدة جديد.",
     /******/
     password_min_length: "يجب أن تكون كلمة المرور 8 أرقام أو أكثر",
     passwords_not_match: "كلمات المرور غير متطابقة",
@@ -739,7 +757,10 @@ const translations = {
     // Game translations
     games_admin: "إدارة الألعاب",
     add_game: "إضافة لعبة",
+    game: "لعبة",
+    LevelNumberUnique: "يجب أن يكون رقم المستوى فريدًا.",
     no_games_found: "لا يوجد بيانات",
+    Videos_no_data: "لا يحتوي قسم الفيديوهات على أي بيانات حتى الآن!",
     no_games_desc:
       "قسم الألعاب لا يحتوي على بيانات حالياً، ابدأ بإضافة لعبتك الأولى الآن!",
     game_name_en: "اسم اللعبة (إنجليزي)",
@@ -879,6 +900,7 @@ const translations = {
     OTP: "رمز التحقق",
     success_create_role: "تم اضافه الدور بنجاح",
     success_update_role: "تم تحديث الرول بنجاح",
+    VideoTitle: "لا يمكن أن يحتوي العنوان إلا على أحرف وأرقام ومسافات .",
     RoleContain:
       "اسم الدور يحتوي على أحرف غير صالحة. المسموح به: الأحرف، الأرقام، المسافات، الواصلات، والشرطات السفلية.",
     EnterOtpHere: "أدخل رمز التحقق هنا",
