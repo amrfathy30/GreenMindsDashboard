@@ -87,7 +87,7 @@ const GameModal: React.FC<GameModalProps> = ({
         android: gameData.AndroidLink || "",
         ios: gameData.IosLink || "",
         appLink: gameData.AppLink || "",
-        ageSectorId: gameData.AgeSectorId ?? null, // 👈 رقم مش string
+        ageSectorId: gameData.AgeSectorId ?? null, 
         thumbnailUrl: tUrl,
       });
       setPreviewImage(
@@ -102,7 +102,7 @@ const GameModal: React.FC<GameModalProps> = ({
         android: "",
         ios: "",
         appLink: "",
-        ageSectorId: null, // 👈
+        ageSectorId: null, 
         thumbnailUrl: "",
       });
       setPreviewImage(null);
@@ -289,6 +289,7 @@ const GameModal: React.FC<GameModalProps> = ({
         <Input
           id="nameEn"
           label={t("game_name_en")}
+          placeholder={t("game_name_en")}
           value={formDataState.nameEn}
           onChange={handleChange}
           required
@@ -302,6 +303,7 @@ const GameModal: React.FC<GameModalProps> = ({
         <Input
           id="nameAr"
           label={t("game_name_ar")}
+          placeholder={t("game_name_ar")}
           value={formDataState.nameAr}
           onChange={handleChange}
           required
@@ -372,7 +374,7 @@ const GameModal: React.FC<GameModalProps> = ({
               required
               // error={
               //   (formError && !formDataState.descAr) ||
-              //   !!validationErrors.descAr
+                // !!validationErrors.descAr
               // }
             />
             {/* {validationErrors.descAr && (
@@ -393,6 +395,7 @@ const GameModal: React.FC<GameModalProps> = ({
               key={f.id}
               id={f.id}
               label={f.label}
+              placeholder={f.label}
               value={(formDataState as any)[f.id]}
               onChange={handleChange}
               required

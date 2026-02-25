@@ -129,12 +129,13 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
       onClose();
       ShowToastSuccess(
         res?.Message ||
-          t(type === "edit" ? "success_update" : "success_create"),
+        t(type === "edit" ? "success_update" : "success_create"),
       );
     } catch (error: any) {
       const translations: Record<string, string> = {
         "An avatar with the same name already exists": t("avatar_name_exists"),
         "Validation failed.": t("validation_failed"),
+        "Name is required": t("NameRequired"),
         "Invalid file extension. Allowed: .jpg, .jpeg, .png, .webp":
           t("invalid_extension"),
       };
@@ -163,6 +164,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
       >
         <Input
           label={t("Name")}
+          placeholder={t("Name")}
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
@@ -192,7 +194,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
             {t("upload_avatar_label")}
           </label>
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full border overflow-hidden bg-gray-50 flex items-center justify-center">
+            <div className="relative flex h-20 w-25 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
               {previewImage ? (
                 <img
                   src={previewImage}

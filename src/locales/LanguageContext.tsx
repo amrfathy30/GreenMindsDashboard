@@ -24,7 +24,7 @@ const translations = {
     avatars: "Avatars",
     settings: "Settings",
     users: "Users",
-    Videos_Admin: "Videos - Admin",
+    Videos_Admin: "Videos",
     // common
     deleting: "Deleting...",
     delete: "Delete",
@@ -106,6 +106,7 @@ const translations = {
     AdminNameEN: "Admin Name (EN)",
     EnterNameHere: "Enter Name Here",
     Name: "Name",
+    NameRequired: "Name is required",
     AdminNameAR: "Admin Name (AR)",
     AdminEmail: "Admin Email",
     EnterAdminEmail: "Enter Admin Email",
@@ -298,7 +299,7 @@ const translations = {
     "age group": "Age Group",
 
     // Game translations
-    games_admin: "Games - Admin",
+    games_admin: "Games",
     add_game: "Add Game",
     game: "Game",
     LevelNumberUnique: "Level Number must be unique.",
@@ -342,7 +343,7 @@ const translations = {
     years: "Years",
     placeholder_thumb_url_game: "Enter game thumbnail URL here",
     //Avatar Translation
-    avatars_admin: "Avatars - Admin",
+    avatars_admin: "Avatars",
     add_avatar: "Add Avatar",
     delete_avatar: "Delete Avatar",
     confirm_delete_avatar: "Are you sure you want to delete this avatar?",
@@ -373,7 +374,7 @@ const translations = {
       "Password must contain at least one special character",
     sameUsername: "Another user with the same username already exists.",
     please_check_required_fields: "Please check all required fields",
-    "Videos - Admin": "Videos - Admin",
+    "Videos - Admin": "Videos",
     placeholder_title_en: "Enter video title here",
     placeholder_title_ar: "Enter video title here in Arabic",
     placeholder_video_url: "Enter video URL here",
@@ -455,7 +456,7 @@ const translations = {
     permissions_updated_successfully: "permissions updated successfully",
     Show_per_page: "Items per pge",
 
-    GreenMindsAdmin: "Green minds Admin",
+    GreenMindsAdmin: "Green Minds Admin",
     ChildrenInformation: "Children Information",
     Phone: "Phone",
     ChildImage: "Child image",
@@ -605,6 +606,7 @@ const translations = {
     AdminNameEN: "اسم المشرف (إنجليزي)",
     EnterNameHere: "أدخل الاسم هنا",
     Name: "الاسم",
+    NameRequired: "الاسم مطلوب",
     AdminNameAR: "اسم المشرف (عربي)",
     AdminEmail: "بريد المشرف الإلكتروني",
     EnterAdminEmail: "أدخل بريد المشرف",
