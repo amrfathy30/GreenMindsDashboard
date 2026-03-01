@@ -55,6 +55,7 @@ const AdminRolePermissions: React.FC<ExtendedProps> = ({
     "Account_ChangePasswordByUserId",
     "Account_GetPersonalInfo",
     "Account_UpdateProfile",
+    "Account_Update",
     "Smtp_Update",
     "Account_UserTypes",
     "Smtp_GetAll",
