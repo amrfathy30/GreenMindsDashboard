@@ -101,8 +101,14 @@ export default function AgeGroupList() {
     }
   };
 
+
   const handleSave = async (data: AgeGroup) => {
     try {
+      const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
+      if (!noSpecialCharsRegex.test(data.DisplayName)) {
+        toast.error(t("DisplayNameInvalidCharacters"));
+        return;
+      }
       if (
         !data.DisplayName?.trim() ||
         data.FromAge === "" ||
@@ -154,6 +160,7 @@ export default function AgeGroupList() {
     } catch (error: any) {
       const errorTranslations: Record<string, string> = {
         "DisplayName must be unique": t("DisplayNameUnique"),
+        "DisplayName contains invalid characters": t("DisplayNameInvalidCharacters"),
         "ToAge must be between 1 and 99": t("ToAge_range"),
         "FromAge must be less than ToAge": t("FromAge_less_than_ToAge"),
       };

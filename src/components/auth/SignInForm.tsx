@@ -146,6 +146,7 @@ export default function SignInForm() {
     } catch (error: any) {
       const translations: Record<string, string> = {
         "Please try again": t("please_try_again"),
+        "Too many reset requests. Please wait at least 60 seconds before trying again, and do not exceed 5 requests per hour": t("many_requests"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);

@@ -157,6 +157,7 @@ export default function EditProfileModal({
     } catch (error: any) {
       const translations: Record<string, string> = {
         "Can Accept Letter Only": t("can_accept_letter_only"),
+        "Another user with the same username already exists": t("username_exists"),
       };
       const finalMsg = getTranslatedApiError(error, t, translations);
       toast.error(finalMsg);
@@ -291,17 +292,15 @@ export default function EditProfileModal({
               value={formData.Phone}
               onChange={(phone) => setFormData({ ...formData, Phone: phone })}
               className="flex"
-              inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
-                lang === "en"
-                  ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
-                  : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
-              }`}
+              inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${lang === "en"
+                ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
+                : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
+                }`}
               countrySelectorStyleProps={{
-                buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
-                  lang === "en"
-                    ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
-                    : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
-                }`,
+                buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${lang === "en"
+                  ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
+                  : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
+                  }`,
               }}
               inputStyle={{
                 direction: "ltr",

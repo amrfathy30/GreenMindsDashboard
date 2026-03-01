@@ -14,6 +14,13 @@ import { ShowToastSuccess } from "../../components/common/ToastHelper";
 import { getTranslatedApiError } from "../../utils/handleApiError";
 const BASE_URL = "https://kidsapi.pulvent.com";
 
+const withBaseUrl = (url?: string) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("//")) return `https:${url}`;
+  return `${BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+};
+
 interface GameModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -79,6 +86,8 @@ const GameModal: React.FC<GameModalProps> = ({
   useEffect(() => {
     if (gameData && isOpen) {
       const tUrl = gameData.ThumbnailUrl || "";
+      const fullUrl = withBaseUrl(tUrl);
+
       setFormDataState({
         nameEn: gameData.GameNameEn || "",
         nameAr: gameData.GameNameAr || "",
@@ -87,12 +96,10 @@ const GameModal: React.FC<GameModalProps> = ({
         android: gameData.AndroidLink || "",
         ios: gameData.IosLink || "",
         appLink: gameData.AppLink || "",
-        ageSectorId: gameData.AgeSectorId ?? null, 
-        thumbnailUrl: tUrl,
+        ageSectorId: gameData.AgeSectorId ?? null,
+        thumbnailUrl: fullUrl,
       });
-      setPreviewImage(
-        tUrl ? (tUrl.startsWith("http") ? tUrl : `${BASE_URL}/${tUrl}`) : null,
-      );
+      setPreviewImage(fullUrl);
     } else if (!gameData && isOpen) {
       setFormDataState({
         nameEn: "",
@@ -102,7 +109,7 @@ const GameModal: React.FC<GameModalProps> = ({
         android: "",
         ios: "",
         appLink: "",
-        ageSectorId: null, 
+        ageSectorId: null,
         thumbnailUrl: "",
       });
       setPreviewImage(null);
@@ -155,6 +162,19 @@ const GameModal: React.FC<GameModalProps> = ({
   }, [ageGroups, isOpen, t, formDataState.ageSectorId]);
 
   const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
+  // const [thumbnailUrlError, setThumbnailUrlError] = useState<string | null>(null);
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // const isImageUrl = (url: string) => {
+  //   return /\.(png|jpe?g|jfif|webp)$/i.test(url.split("?")[0]);
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +187,7 @@ const GameModal: React.FC<GameModalProps> = ({
 
     if (hasEmptyFields) {
       // setFormError(true);
-      toast.error(t("please_fill_required_fields"));
+      toast.error(t("all_fields_required"));
       return;
     }
     const fieldsToValidate = [
@@ -197,6 +217,18 @@ const GameModal: React.FC<GameModalProps> = ({
     if (!fileInputRef.current?.files?.[0] && !formDataState.thumbnailUrl) {
       toast.error(t("upload_thumbnail_label"));
       return;
+    }
+
+    if (formDataState.thumbnailUrl) {
+      if (!isValidUrl(formDataState.thumbnailUrl)) {
+        toast.error(t("ThumbnailUrlValid"));
+        return;
+      }
+
+      // if (!isImageUrl(formDataState.thumbnailUrl)) {
+      //   toast.error(t("imageTypeAllowed"));
+      //   return;
+      // }
     }
 
     const formData = new FormData();
@@ -292,8 +324,8 @@ const GameModal: React.FC<GameModalProps> = ({
           placeholder={t("game_name_en")}
           value={formDataState.nameEn}
           onChange={handleChange}
-          required
-          // error={formError && !formDataState.nameEn}
+        // required
+        // error={formError && !formDataState.nameEn}
         />
         {/* {validationErrors.nameEn && (
           <p className="text-[10px] text-red-500 ml-1">
@@ -306,8 +338,8 @@ const GameModal: React.FC<GameModalProps> = ({
           placeholder={t("game_name_ar")}
           value={formDataState.nameAr}
           onChange={handleChange}
-          required
-          // error={formError && !formDataState.nameAr}
+        // required
+        // error={formError && !formDataState.nameAr}
         />
         {/* {validationErrors.nameAr && (
           <p className="text-xs text-red-500 -mt-2 ml-1">
@@ -329,7 +361,7 @@ const GameModal: React.FC<GameModalProps> = ({
               }))
             }
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1e1e1e]"
-            required
+          // required
           >
             <option value="">{t("select_age_group")}</option>
             {ageGroups.map((group) => (
@@ -350,11 +382,11 @@ const GameModal: React.FC<GameModalProps> = ({
               onChange={(val) =>
                 handleChange({ target: { id: "descEn", value: val } } as any)
               }
-              required
-              // error={
-              //   (formError && !formDataState.descEn) ||
-              //   !!validationErrors.descEn
-              // }
+            // required
+            // error={
+            //   (formError && !formDataState.descEn) ||
+            //   !!validationErrors.descEn
+            // }
             />
             {/* {validationErrors.descEn && (
               <p className="text-[10px] text-red-500 ml-1">
@@ -371,11 +403,11 @@ const GameModal: React.FC<GameModalProps> = ({
               onChange={(val) =>
                 handleChange({ target: { id: "descAr", value: val } } as any)
               }
-              required
-              // error={
-              //   (formError && !formDataState.descAr) ||
-                // !!validationErrors.descAr
-              // }
+            // required
+            // error={
+            //   (formError && !formDataState.descAr) ||
+            // !!validationErrors.descAr
+            // }
             />
             {/* {validationErrors.descAr && (
               <p className="text-[10px] text-red-500 ml-1">
@@ -398,7 +430,7 @@ const GameModal: React.FC<GameModalProps> = ({
               placeholder={f.label}
               value={(formDataState as any)[f.id]}
               onChange={handleChange}
-              required
+            // required
             />
           ))}
         </div>
@@ -444,6 +476,34 @@ const GameModal: React.FC<GameModalProps> = ({
                 id="thumbnailUrl"
                 placeholder={t("placeholder_thumb_url_game")}
                 value={formDataState.thumbnailUrl}
+                // error={!!thumbnailUrlError}
+                // hint={thumbnailUrlError || undefined}
+                // onChange={(e) => {
+                //   handleChange(e);
+
+                //   const val = e.target.value.trim();
+
+                //   if (!val) {
+                //     setThumbnailUrlError(null);
+                //     setPreviewImage(null);
+                //     return;
+                //   }
+
+                //   if (!isValidUrl(val)) {
+                //     setThumbnailUrlError(t("ThumbnailUrlValid"));
+
+                //     return;
+                //   }
+
+                //   if (!isImageUrl(val)) {
+                //     setThumbnailUrlError(t("imageTypeAllowed"));
+
+                //     return;
+                //   }
+
+                //   setThumbnailUrlError(null);
+                //   setPreviewImage(val);
+                // }}
                 onChange={(e) => {
                   handleChange(e);
                   if (e.target.value) setPreviewImage(e.target.value);

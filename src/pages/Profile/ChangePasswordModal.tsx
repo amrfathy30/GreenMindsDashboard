@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FormEvent, useState } from "react";
 import { toast } from "sonner";
-import { sendEmail, updatePassword } from "../../api/services/profileService";
+import { updatePassword } from "../../api/services/profileService";
 import { ModalProps } from "../../utils/types/profileType";
 import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
@@ -11,13 +11,13 @@ import { useLanguage } from "../../locales/LanguageContext";
 import { getTranslatedApiError } from "../../utils/handleApiError";
 
 const ChangePasswordModal: React.FC<ModalProps> = ({
-  setShowResetPassword,
+  // setShowResetPassword,
   setShowChangePassword,
-  email,
+  // email,
 }) => {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
-  const [sendEmailLoading, setSendEmailLoading] = useState(false);
+  // const [sendEmailLoading, setSendEmailLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     CurrentPassword: "",
@@ -82,6 +82,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
           t("PasswordContain"),
         "Account locked due to multiple failed attempts": t("account_locked"),
+        "Another user with the same username already exists": t("username_exists"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, translations);
@@ -91,29 +92,29 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
     }
   };
 
-  const handleSendResetEmail = async () => {
-    if (!email) return;
+  // const handleSendResetEmail = async () => {
+  //   if (!email) return;
 
-    try {
-      setSendEmailLoading(true);
+  //   try {
+  //     setSendEmailLoading(true);
 
-      const res = await sendEmail(email);
+  //     const res = await sendEmail(email);
 
-      ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+  //     ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
 
-      setShowChangePassword(false);
-      setShowResetPassword(true);
-    } catch (error: any) {
-      const translations: Record<string, string> = {
-        "Please try again": t("please_try_again"),
-      };
+  //     setShowChangePassword(false);
+  //     setShowResetPassword(true);
+  //   } catch (error: any) {
+  //     const translations: Record<string, string> = {
+  //       "Please try again": t("please_try_again"),
+  //     };
 
-      const finalMsg = getTranslatedApiError(error, t, translations);
-      toast.error(finalMsg);
-    } finally {
-      setSendEmailLoading(false);
-    }
-  };
+  //     const finalMsg = getTranslatedApiError(error, t, translations);
+  //     toast.error(finalMsg);
+  //   } finally {
+  //     setSendEmailLoading(false);
+  //   }
+  // };
 
   return (
     <Form
@@ -150,7 +151,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         required
       />
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+      {/* <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
         <p className="dark:text-white text-sm sm:text-base">
           {t("forgotPassword")}
         </p>
@@ -162,7 +163,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         >
           {sendEmailLoading ? t("sending") : t("sendResetEmail")}
         </button>
-      </div>
+      </div> */}
 
       <Button type="submit" disabled={loading}>
         {loading ? t("saving") : t("saveButton")}

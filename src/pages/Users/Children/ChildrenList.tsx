@@ -326,9 +326,8 @@ export default function ChildrenList({
       label: <span className="whitespace-nowrap"></span>,
       render: (row: any) => (
         <span
-          className={`text-sm font-medium whitespace-nowrap ${
-            row.EmailVerified ? "text-secondary" : "text-[#E51C1C]"
-          }`}
+          className={`text-sm font-medium whitespace-nowrap ${row.EmailVerified ? "text-secondary" : "text-[#E51C1C]"
+            }`}
         >
           {row.EmailVerified ? t("Verified") : t("NotVerified")}
         </span>
@@ -447,9 +446,9 @@ export default function ChildrenList({
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={filteredChild} columns={columns} />
           {filteredChild?.length === 0 && (
-            <span className="text-center mt-8">{t("NoData")}</span>
+            <span className="text-center mt-8 dark:text-white">{t("NoData")}</span>
           )}
-          {!filteredChild && (
+          {search === "" && childrenList.length > 0 && (
             <div className="mt-auto">
               <Pagination
                 currentPage={currentPage}

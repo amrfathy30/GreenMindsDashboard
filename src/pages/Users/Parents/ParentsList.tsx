@@ -260,24 +260,23 @@ export default function ParentsList({
       ),
     },
     {
-  key: "Email",
-  label: t("email"),
-  render: (row: any) => (
-    <span
-      className="dark:text-white block max-w-80 truncate"
-    >
-      {row.Email || "__"}
-    </span>
-  ),
-},
+      key: "Email",
+      label: t("email"),
+      render: (row: any) => (
+        <span
+          className="dark:text-white block max-w-80 truncate"
+        >
+          {row.Email || "__"}
+        </span>
+      ),
+    },
     {
       key: "Status",
       label: <span className="whitespace-nowrap"></span>,
       render: (row: any) => (
         <span
-          className={`text-sm font-medium whitespace-nowrap ${
-            row.EmailVerified ? "text-secondary" : "text-[#E51C1C]"
-          }`}
+          className={`text-sm font-medium whitespace-nowrap ${row.EmailVerified ? "text-secondary" : "text-[#E51C1C]"
+            }`}
         >
           {row.EmailVerified ? t("Verified") : t("NotVerified")}
         </span>
@@ -367,9 +366,9 @@ export default function ParentsList({
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={filteredParents} columns={columns} />
           {filteredParents?.length === 0 && (
-            <span className="text-center mt-8">{t("NoData")}</span>
+            <span className="text-center mt-8 dark:text-white">{t("NoData")}</span>
           )}
-          {!filteredParents && (
+          {search === "" && parentList.length > 0 && (
             <div className="mt-auto">
               <Pagination
                 currentPage={currentPage}

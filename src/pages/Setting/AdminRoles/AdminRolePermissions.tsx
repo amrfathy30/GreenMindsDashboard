@@ -118,11 +118,14 @@ const AdminRolePermissions: React.FC<ExtendedProps> = ({
   );
 
   const AGE_SECTOR_KEYS = VIRTUAL_PERMISSIONS.AGE_SECTORS_FULL.keys;
+
   const AGE_SECTOR_DEPENDENT_KEYS = [
     "Games_Create",
     "Games_Update",
     "Videos_Create",
     "Videos_Update",
+    "Avatars_Create",
+    "Avatars_Update",
   ];
 
   const togglePermission = (id: number, isChecked: boolean) => {

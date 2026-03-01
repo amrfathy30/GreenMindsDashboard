@@ -5,15 +5,15 @@ import type { FC } from "react";
 
 interface InputProps {
   type?:
-    | "text"
-    | "number"
-    | "email"
-    | "tel"
-    | "password"
-    | "date"
-    | "time"
-    | "checkbox"
-    | string;
+  | "text"
+  | "number"
+  | "email"
+  | "tel"
+  | "password"
+  | "date"
+  | "time"
+  | "checkbox"
+  | string;
   id?: string;
   name?: string;
   placeholder?: string;
@@ -74,7 +74,7 @@ const Input: FC<InputProps> = ({
       " border-success-500 focus:border-success-300 focus:ring-success-500/20";
   } else {
     inputClasses +=
-      " bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-brand-500/20 dark:border-gray-700 dark:text-white";
+      " bg-white dark:bg-[#1e1e1e] text-gray-800 dark:text-white border-gray-300 dark:border-gray-700 focus:border-brand-300 focus:ring-brand-500/20";
   }
 
   if (type === "checkbox") {
@@ -132,7 +132,7 @@ const Input: FC<InputProps> = ({
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none" 
+            className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none"
             tabIndex={-1}
           >
             {showPassword ? (
@@ -146,13 +146,12 @@ const Input: FC<InputProps> = ({
 
       {hint && (
         <p
-          className={`mt-1.5 text-xs ${
-            error
+          className={`mt-1.5 text-xs ${error
               ? "text-error-500"
               : success
                 ? "text-success-500"
                 : "text-gray-500"
-          }`}
+            }`}
         >
           {hint}
         </p>

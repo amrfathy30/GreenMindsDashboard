@@ -35,9 +35,9 @@ export default function Setting() {
     hasPermission("AdminRoles_GetAllRoles") &&
     hasPermission("AdminRoles_GetPermissionsForRole");
 
-  const canShowAdminPermission = hasPermission(
-    "AdminPermissions_GetAllPermissions",
-  );
+  // const canShowAdminPermission = hasPermission(
+  //   "AdminPermissions_GetAllPermissions",
+  // );
 
   const [smtpData, setSmtpData] = useState<SmtpList | null>(null);
   const pageTitle = `${t("GreenMindsAdmin")} | ${t("setting")}`;
@@ -72,7 +72,7 @@ export default function Setting() {
         </div>
         <div className="flex flex-col gap-3 m-6 py-4 border border-gray-300 dark:border-gray-600 rounded-tl-3xl rounded-tr-3xl rounded-bl-md rounded-br-md">
           {/* Language */}
-          <div className="border-b border-gray-300 dark:border-gray-600  pb-3 px-4">
+          <div className="px-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white">
                 <Globe className="w-5 h-5" />
@@ -257,7 +257,7 @@ export default function Setting() {
           {canEditSmtp && (
             <div
               onClick={() => setOpenModal(true)}
-              className="flex justify-between items-center border-b border-gray-300 dark:border-gray-600  pb-3 px-4 cursor-pointer"
+              className="flex justify-between items-center border-t pt-3 border-b border-gray-300 dark:border-gray-600  pb-3 px-4 cursor-pointer"
             >
               <div className="flex items-center gap-2 text-[#6B6B6B] dark:text-white text-base">
                 <MessageSettings className="w-5 h-5 dark:brightness-300" />
@@ -291,7 +291,7 @@ export default function Setting() {
             </Link>
           )}
           {/* Permission */}
-          {canShowAdminPermission && (
+          {/* {canShowAdminPermission && (
             <Link
               to="/permissions-list"
               className="flex justify-between items-center px-4 border-b border-gray-300 dark:border-gray-600  pb-3 cursor-pointer"
@@ -301,7 +301,7 @@ export default function Setting() {
                 <span> {t("Permission")}</span>
               </div>
             </Link>
-          )}
+          )} */}
           {/* Profile Levels */}
           {levelShow && (
             <Link

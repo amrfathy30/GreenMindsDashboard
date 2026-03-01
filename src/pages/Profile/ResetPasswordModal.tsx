@@ -104,7 +104,6 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
 
       let finalMsg = "";
 
-      // ✅ لو Rate Limit
       if (statusCode === 429 && apiData?.IsLocked) {
         const lockoutUntil = apiData?.LockoutUntil;
 
@@ -115,12 +114,10 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
         finalMsg = t("TooManyAttemptsUntil").replace("{{time}}", lockTime);
       }
 
-      // ✅ لو فيه رسالة من الـ API
       else if (apiData?.Message) {
         finalMsg = apiData.Message;
       }
 
-      // ✅ fallback
       else {
         finalMsg = apiMessage || t("please_try_again");
       }

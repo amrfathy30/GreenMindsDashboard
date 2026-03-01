@@ -181,7 +181,10 @@ export default function VideoFormModal({
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    
+    if (!isFormValid()) {
+      toast.error(t("all_fields_required"));
+      return;
+    }
     const formData = new FormData();
     if (initialData) formData.append("Id", initialData.Id.toString());
     formData.append("TitleEn", titleEn);
@@ -225,7 +228,7 @@ export default function VideoFormModal({
               placeholder={t("placeholder_title_ar")}
               value={titleAr}
               onChange={(e) => setTitleAr(e.target.value)}
-              required
+            // required
             />
           </div>
           <div className={`${isRTL ? "order-2" : "order-1"}`}>
@@ -237,7 +240,7 @@ export default function VideoFormModal({
               placeholder={t("placeholder_title_en")}
               value={titleEn}
               onChange={(e) => setTitleEn(e.target.value)}
-              required
+            // required
             />
           </div>
         </div>
@@ -363,7 +366,7 @@ export default function VideoFormModal({
                   value={ageSectorId}
                   onChange={(e) => setAgeSectorId(e.target.value)}
                   className="w-full rounded-lg border border-gray-300 bg-white py-2.75 px-4 text-sm dark:text-white focus:ring-brand-500/20 dark:border-gray-700 dark:bg-[#1e1e1e]"
-                  required
+                // required
                 >
                   <option value="" disabled>
                     {t("select_age_group")}
@@ -388,14 +391,14 @@ export default function VideoFormModal({
               placeholder="0"
               value={points.toString()}
               onChange={(e) => setPoints(Number(e.target.value))}
-              required
+            // required
             />
           </div>
         </div>
         <Button
           type="submit"
-          className={`mt-4 py-3 transition-all duration-300 ${!isFormValid() ? "opacity-50 cursor-not-allowed bg-gray-400" : ""}`}
-          disabled={loading || !isFormValid()}
+          className={`mt-4 py-3 transition-all duration-300 bg-black hover:bg-black/90`}
+          disabled={loading}
         >
           {loading
             ? t("saving")

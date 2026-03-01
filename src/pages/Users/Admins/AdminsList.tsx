@@ -161,6 +161,38 @@ export default function AdminsList({
       );
   };
 
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const maxLength = 15;
+
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+
+    if (password.length < minLength || password.length > maxLength) {
+      return "PasswordBetween";
+    }
+
+    if (!hasUppercase) {
+      return "PasswordsUppercase";
+    }
+
+    if (!hasLowercase) {
+      return "PasswordsLowercase";
+    }
+
+    if (!hasNumber) {
+      return "PasswordsDigit";
+    }
+
+    if (!hasSpecialChar) {
+      return "PasswordsAlphanumeric";
+    }
+
+    return null;
+  };
+
   const handleSave = async (data: AdminList) => {
     try {
       const isEdit = !!editData?.id;
@@ -186,15 +218,11 @@ export default function AdminsList({
         return;
       }
 
-      const MIN_PASSWORD_LENGTH = 8;
-      const MAX_PASSWORD_LENGTH = 15;
-
       if (data.Password) {
-        if (
-          data.Password.length < MIN_PASSWORD_LENGTH ||
-          data.Password.length > MAX_PASSWORD_LENGTH
-        ) {
-          toast.error(t("PasswordBetween"));
+        const passwordErrorKey = validatePassword(data.Password);
+
+        if (passwordErrorKey) {
+          toast.error(t(passwordErrorKey));
           return;
         }
 
@@ -266,9 +294,12 @@ export default function AdminsList({
         "Another user with the same username already exists": t("sameUsername"),
         "Username already exists": t("sameUsername"),
         "Email already exists": t("sameEmail"),
+        "Name is required and must be at least 2 characters": t("Name_characters"),
         "Passwords must have at least one non alphanumeric character": t(
           "PasswordsAlphanumeric",
         ),
+        "Passwords must have at least one digit ('0'-'9')":
+          t("PasswordsDigit"),
         "Passwords must have at least one lowercase ('a'-'z')":
           t("PasswordsLowercase"),
         "Passwords must have at least one uppercase ('A'-'Z')":
@@ -407,7 +438,7 @@ export default function AdminsList({
         <div className="flex flex-col min-h-[calc(100vh-200px)]">
           <BasicTableOne data={filteredAdmins} columns={columns} />
           {filteredAdmins?.length === 0 && (
-            <span className="text-center mt-8">{t("NoData")}</span>
+            <span className="text-center mt-8 dark:text-white">{t("NoData")}</span>
           )}
         </div>
       )}

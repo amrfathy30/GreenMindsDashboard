@@ -178,7 +178,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
             onChange={(e) =>
               setFormData({ ...formData, ageSectorId: e.target.value })
             }
-            className="w-full rounded-lg border p-2.5 dark:bg-[#1a222c] dark:border-gray-700 dark:text-white outline-none"
+            className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1e1e1e]"
             required
           >
             <option value="">{t("select_age_group")}</option>
