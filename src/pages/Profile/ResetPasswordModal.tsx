@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Form from "../../components/form/Form";
 import Input from "../../components/form/input/InputField";
 import Button from "../../components/ui/button/Button";
@@ -17,6 +17,17 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [sendEmailLoading, setSendEmailLoading] = useState(false);
+  const [coolDown, setCoolDown] = useState(0);
+
+  useEffect(() => {
+    if (coolDown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCoolDown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [coolDown]);
 
   const [formData, setFormData] = useState({
     otp: "",
@@ -89,14 +100,14 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
   };
 
   const handleSendResetEmail = async () => {
-    if (!email) return;
+    if (!email || coolDown > 0) return;
 
     try {
       setSendEmailLoading(true);
+      await resendEmail(email);
+      ShowToastSuccess(t("reset_email_sent_success"));
 
-      const res = await resendEmail(email);
-
-      ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+      setCoolDown(60);
     } catch (error: any) {
       const statusCode = error?.response?.data?.StatusCode;
       const apiData = error?.response?.data?.Data;
@@ -106,19 +117,13 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
 
       if (statusCode === 429 && apiData?.IsLocked) {
         const lockoutUntil = apiData?.LockoutUntil;
-
         const lockTime = lockoutUntil
           ? new Date(lockoutUntil).toLocaleString()
           : "";
-
         finalMsg = t("TooManyAttemptsUntil").replace("{{time}}", lockTime);
-      }
-
-      else if (apiData?.Message) {
+      } else if (apiData?.Message) {
         finalMsg = apiData.Message;
-      }
-
-      else {
+      } else {
         finalMsg = apiMessage || t("please_try_again");
       }
 
@@ -169,11 +174,15 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
       <div>
         <button
           type="button"
-          className="text-red-500 text-xs sm:text-sm hover:underline"
+          className="text-red-500 text-xs sm:text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSendResetEmail}
-          disabled={sendEmailLoading}
+          disabled={sendEmailLoading || coolDown > 0}
         >
-          {sendEmailLoading ? t("sending") : t("resendOtp")}
+          {sendEmailLoading
+            ? t("sending")
+            : coolDown > 0
+              ? `إعادة الإرسال بعد ${coolDown} ثانية`
+              : t("resendOtp")}
         </button>
       </div>
       <Button type="submit" disabled={loading}>

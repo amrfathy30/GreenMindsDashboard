@@ -392,6 +392,7 @@ const translations = {
     add_video_btn: "Add Video",
     save_edit_btn: "Save Edit",
     Editprofile: "Edit profile",
+    resend_after: "Resend After",
     username_exists: "Another user with the same username already exists.",
     Logout: "Logout",
     // profile
@@ -907,6 +908,7 @@ const translations = {
     IosLinkValid: "يجب أن يكون رابط ios صالحًا.",
     AndroidLinkValid: "يجب أن يكون رابط Android صالحًا.",
     Editprofile: "تعديل الملف الشخصي",
+    resend_after: "إعادة الإرسال بعد",
     OtpSentMessage: "تم إرسال كلمة مرور لمرة واحدة (OTP) إلى بريدك الإلكتروني.",
     OTP: "رمز التحقق",
     username_exists: "يوجد مستخدم آخر بنفس اسم المستخدم بالفعل.",

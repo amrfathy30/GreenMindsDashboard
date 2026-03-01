@@ -24,6 +24,17 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [sendEmailLoading, setSendEmailLoading] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [coolDown, setCoolDown] = useState(0);
+
+  useEffect(() => {
+  if (coolDown <= 0) return;
+
+  const timer = setInterval(() => {
+    setCoolDown((prev) => prev - 1);
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, [coolDown]);
 
   useEffect(() => {
     const checkExistingAuth = async () => {
@@ -133,28 +144,31 @@ export default function SignInForm() {
   };
 
   const handleSendResetEmail = async () => {
-    if (!email) return;
+  if (!email || coolDown > 0) return;
 
-    try {
-      setSendEmailLoading(true);
+  try {
+    setSendEmailLoading(true);
 
-      const res = await sendEmail(email);
+    const res = await sendEmail(email);
 
-      ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+    ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
 
-      setShowResetModal(true);
-    } catch (error: any) {
-      const translations: Record<string, string> = {
-        "Please try again": t("please_try_again"),
-        "Too many reset requests. Please wait at least 60 seconds before trying again, and do not exceed 5 requests per hour": t("many_requests"),
-      };
+    setShowResetModal(true);
 
-      const finalMsg = getTranslatedApiError(error, t, translations);
-      toast.error(finalMsg);
-    } finally {
-      setSendEmailLoading(false);
-    }
-  };
+    setCoolDown(60);
+  } catch (error: any) {
+    const translations: Record<string, string> = {
+      "Please try again": t("please_try_again"),
+      "Too many reset requests. Please wait at least 60 seconds before trying again, and do not exceed 5 requests per hour":
+        t("many_requests"),
+    };
+
+    const finalMsg = getTranslatedApiError(error, t, translations);
+    toast.error(finalMsg);
+  } finally {
+    setSendEmailLoading(false);
+  }
+};
 
   return (
     <div className="flex flex-col flex-1">
@@ -197,11 +211,15 @@ export default function SignInForm() {
                   </p>
                   <button
                     type="button"
-                    className="text-red-500 text-xs sm:text-sm hover:underline"
+                    className="text-red-500 text-xs sm:text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleSendResetEmail}
-                    disabled={sendEmailLoading}
+                    disabled={sendEmailLoading || coolDown > 0}
                   >
-                    {sendEmailLoading ? t("sending") : t("sendResetEmail")}
+                    {sendEmailLoading
+                      ? t("sending")
+                      : coolDown > 0
+                        ? `${t("resend_after")} ${coolDown}s`
+                        : t("sendResetEmail")}
                   </button>
                 </div>
 
