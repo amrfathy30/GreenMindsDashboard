@@ -221,6 +221,9 @@ export default function VideosList() {
                                 ? video.ThumbnailUrl
                                 : `${BASE_URL}/${video.ThumbnailUrl}`
                             }
+                            onError={(e) => {
+                              e.currentTarget.src = "/default.png"
+                            }}
                             className="w-full h-full object-cover"
                             alt=""
                           />
@@ -237,9 +240,8 @@ export default function VideosList() {
                       </td>
                       <td className="px-4 py-3 max-w-62.5">
                         <span
-                          className={`text-sm md:text-base font-lalezar font-medium text-gray-900 dark:text-white block truncate whitespace-nowrap overflow-hidden ${
-                            isRTL ? "text-right" : "text-left"
-                          }`}
+                          className={`text-sm md:text-base font-extrabold text-gray-900 dark:text-white block truncate whitespace-nowrap overflow-hidden ${isRTL ? "text-right" : "text-left"
+                            }`}
                           title={`${video.TitleEn} / ${video.TitleAr}`}
                         >
                           {video.TitleEn} / {video.TitleAr}

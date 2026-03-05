@@ -61,7 +61,7 @@ export default function ProfileLevelsModal({
             label={t("levelNameAr")}
             placeholder={t("levelNameAr")}
             value={NameAr}
-            required
+            star
             onChange={(e) => setNameAr(e.target.value)}
           />
         </div>
@@ -72,7 +72,7 @@ export default function ProfileLevelsModal({
             label={t("levelNameEn")}
             placeholder={t("levelNameEn")}
             value={NameEn}
-            required
+            star
             onChange={(e) => setNameEn(e.target.value)}
           />
         </div>
@@ -83,7 +83,7 @@ export default function ProfileLevelsModal({
             label={t("LevelNumber")}
             placeholder={t("LevelNumber")}
             type="number"
-            required
+            star
             value={LevelNumber}
             onChange={(e) => setLevelNumber(e.target.value)}
           />
@@ -94,7 +94,7 @@ export default function ProfileLevelsModal({
             label={t("minPoints")}
             placeholder={t("minPoints")}
             type="number"
-            required
+            star
             value={MinPoints}
             onChange={(e) => setMinPoints(e.target.value)}
           />
@@ -103,7 +103,7 @@ export default function ProfileLevelsModal({
         <div>
           <Input
             id="MaxPoints"
-            required
+            star
             label={t("maxPoints")}
             placeholder={t("maxPoints")}
             type="number"

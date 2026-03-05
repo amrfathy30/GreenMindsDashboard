@@ -24,17 +24,19 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [sendEmailLoading, setSendEmailLoading] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [resetPasswordStage, setResetPasswordStage] = useState<"email" | "reset">("email");
+  const [resetEmail, setResetEmail] = useState("");
   const [coolDown, setCoolDown] = useState(0);
 
   useEffect(() => {
-  if (coolDown <= 0) return;
+    if (coolDown <= 0) return;
 
-  const timer = setInterval(() => {
-    setCoolDown((prev) => prev - 1);
-  }, 1000);
+    const timer = setInterval(() => {
+      setCoolDown((prev) => prev - 1);
+    }, 1000);
 
-  return () => clearInterval(timer);
-}, [coolDown]);
+    return () => clearInterval(timer);
+  }, [coolDown]);
 
   useEffect(() => {
     const checkExistingAuth = async () => {
@@ -64,7 +66,7 @@ export default function SignInForm() {
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email.trim() || !password) {
       toast.error(t("AllFieldsAreRequired"));
       return;
     }
@@ -143,32 +145,40 @@ export default function SignInForm() {
     }
   };
 
-  const handleSendResetEmail = async () => {
-  if (!email || coolDown > 0) return;
+  const handleSendResetEmail = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!resetEmail || coolDown > 0) return;
 
-  try {
-    setSendEmailLoading(true);
+    if (!validateEmail(resetEmail)) {
+      toast.error(t("PleaseEnterAValidEmail"));
+      return;
+    }
 
-    const res = await sendEmail(email);
+    try {
+      setSendEmailLoading(true);
 
-    ShowToastSuccess(res?.Message || t("reset_email_sent_success"));
+      const res = await sendEmail(resetEmail);
 
-    setShowResetModal(true);
+      ShowToastSuccess(res?.Message || t("oto_sent_success"));
 
-    setCoolDown(60);
-  } catch (error: any) {
-    const translations: Record<string, string> = {
-      "Please try again": t("please_try_again"),
-      "Too many reset requests. Please wait at least 60 seconds before trying again, and do not exceed 5 requests per hour":
-        t("many_requests"),
-    };
+      setResetPasswordStage("reset");
 
-    const finalMsg = getTranslatedApiError(error, t, translations);
-    toast.error(finalMsg);
-  } finally {
-    setSendEmailLoading(false);
-  }
-};
+      setCoolDown(60);
+    } catch (error: any) {
+      const translations: Record<string, string> = {
+        "Please try again": t("please_try_again"),
+        "Password Should contain one at least of (a capital letter, small letter, symbol, and number)": t("PasswordContain"),
+        "Web access is restricted to admin users": t("Web_access_restricted"),
+        "Too many reset requests. Please wait at least 60 seconds before trying again, and do not exceed 5 requests per hour":
+          t("many_requests"),
+      };
+
+      const finalMsg = getTranslatedApiError(error, t, translations);
+      toast.error(finalMsg);
+    } finally {
+      setSendEmailLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col flex-1">
@@ -212,14 +222,12 @@ export default function SignInForm() {
                   <button
                     type="button"
                     className="text-red-500 text-xs sm:text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={handleSendResetEmail}
-                    disabled={sendEmailLoading || coolDown > 0}
+                    onClick={() => {
+                      setResetPasswordStage("email");
+                      setShowResetModal(true);
+                    }}
                   >
-                    {sendEmailLoading
-                      ? t("sending")
-                      : coolDown > 0
-                        ? `${t("resend_after")} ${coolDown}s`
-                        : t("sendResetEmail")}
+                    {t("sendResetEmail")}
                   </button>
                 </div>
 
@@ -248,7 +256,37 @@ export default function SignInForm() {
         onClose={() => setShowResetModal(false)}
         title={t("resetPassword")}
       >
-        <ResetPasswordModal email={email} />
+        {resetPasswordStage === "email" ? (
+          <form onSubmit={handleSendResetEmail} className="flex flex-col gap-3 p-6 my-6 border rounded-2xl">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {t("enter_email_for_reset")}
+            </p>
+            <div>
+              <Label>{t("Email")}</Label>
+              <Input
+                placeholder={t("Email")}
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+            </div>
+            <div className="mt-2">
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={!resetEmail || sendEmailLoading || coolDown > 0}
+                loading={sendEmailLoading}
+              >
+                {sendEmailLoading
+                  ? t("sending")
+                  : coolDown > 0
+                    ? `${t("resendAfter")} ${coolDown} ${t("seconds")}`
+                    : t("send")}
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <ResetPasswordModal email={resetEmail} />
+        )}
       </Modal>{" "}
     </div>
   );

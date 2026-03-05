@@ -179,10 +179,20 @@ const GameModal: React.FC<GameModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // setFormError(false);
-
+    const trimmedData = {
+      ...formDataState,
+      nameEn: formDataState.nameEn.trim(),
+      nameAr: formDataState.nameAr.trim(),
+      descEn: formDataState.descEn.trim(),
+      descAr: formDataState.descAr.trim(),
+      android: formDataState.android.trim(),
+      ios: formDataState.ios.trim(),
+      appLink: formDataState.appLink.trim(),
+      thumbnailUrl: formDataState.thumbnailUrl.trim(),
+    };
     const requiredFields = ["nameEn", "nameAr", "ageSectorId"];
     const hasEmptyFields = requiredFields.some(
-      (field) => !formDataState[field as keyof typeof formDataState],
+      (field) => !trimmedData[field as keyof typeof trimmedData],
     );
 
     if (hasEmptyFields) {
@@ -290,7 +300,7 @@ const GameModal: React.FC<GameModalProps> = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/jfif"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp", "image/bmp", "image/svg", "image/tiff"];
 
     if (!allowedTypes.includes(file.type)) {
       toast.error(t("imageTypeAllowed"));
@@ -324,7 +334,7 @@ const GameModal: React.FC<GameModalProps> = ({
           placeholder={t("game_name_en")}
           value={formDataState.nameEn}
           onChange={handleChange}
-        // required
+          star
         // error={formError && !formDataState.nameEn}
         />
         {/* {validationErrors.nameEn && (
@@ -338,7 +348,7 @@ const GameModal: React.FC<GameModalProps> = ({
           placeholder={t("game_name_ar")}
           value={formDataState.nameAr}
           onChange={handleChange}
-        // required
+          star
         // error={formError && !formDataState.nameAr}
         />
         {/* {validationErrors.nameAr && (
@@ -349,7 +359,7 @@ const GameModal: React.FC<GameModalProps> = ({
 
         <div className="space-y-2">
           <label className="block text-sm font-medium text-black dark:text-gray-300">
-            {t("select_age_group")}
+            {t("select_age_group")} {" "} <span className="text-red-500">*</span>
           </label>
           <select
             id="ageSectorId"
@@ -361,7 +371,7 @@ const GameModal: React.FC<GameModalProps> = ({
               }))
             }
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1e1e1e]"
-          // required
+
           >
             <option value="">{t("select_age_group")}</option>
             {ageGroups.map((group) => (
@@ -382,7 +392,7 @@ const GameModal: React.FC<GameModalProps> = ({
               onChange={(val) =>
                 handleChange({ target: { id: "descEn", value: val } } as any)
               }
-            // required
+              star
             // error={
             //   (formError && !formDataState.descEn) ||
             //   !!validationErrors.descEn
@@ -403,7 +413,7 @@ const GameModal: React.FC<GameModalProps> = ({
               onChange={(val) =>
                 handleChange({ target: { id: "descAr", value: val } } as any)
               }
-            // required
+              star
             // error={
             //   (formError && !formDataState.descAr) ||
             // !!validationErrors.descAr
@@ -430,7 +440,7 @@ const GameModal: React.FC<GameModalProps> = ({
               placeholder={f.label}
               value={(formDataState as any)[f.id]}
               onChange={handleChange}
-            // required
+              star
             />
           ))}
         </div>
@@ -458,7 +468,7 @@ const GameModal: React.FC<GameModalProps> = ({
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                accept=".png,.jpg,.jpeg,.jfif"
+                accept=".png,.jpg,.jpeg,.webp,.bmp,.svg,.tiff,.gif"
                 className="hidden"
               />
               <button

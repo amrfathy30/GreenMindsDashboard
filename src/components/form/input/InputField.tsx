@@ -31,6 +31,7 @@ interface InputProps {
   hint?: string;
   defaultValue?: string | number;
   required?: boolean;
+  star?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -49,6 +50,7 @@ const Input: FC<InputProps> = ({
   success = false,
   error = false,
   required = false,
+  star = false,
   checked = false,
   hint,
   defaultValue,
@@ -95,6 +97,7 @@ const Input: FC<InputProps> = ({
         <span className="block text-xs">
           {label}
           {required && <span className="text-error-500">*</span>}
+          {star && <span className="text-error-500">*</span>}
         </span>
       </label>
     );
@@ -109,6 +112,7 @@ const Input: FC<InputProps> = ({
         >
           {label}
           {required && <span className="text-error-500">*</span>}{" "}
+          {star && <span className="text-error-500">*</span>}{" "}
         </label>
       )}
 
@@ -147,10 +151,10 @@ const Input: FC<InputProps> = ({
       {hint && (
         <p
           className={`mt-1.5 text-xs ${error
-              ? "text-error-500"
-              : success
-                ? "text-success-500"
-                : "text-gray-500"
+            ? "text-error-500"
+            : success
+              ? "text-success-500"
+              : "text-gray-500"
             }`}
         >
           {hint}

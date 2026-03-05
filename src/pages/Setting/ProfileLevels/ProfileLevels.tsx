@@ -121,6 +121,16 @@ export default function ProfileLevels() {
         toast.error(t("all_fields_required"));
         return;
       }
+
+      const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
+      if (!noSpecialCharsRegex.test(data.NameEn)) {
+        toast.error(t("DisplayNameInvalidCharacters"));
+        return;
+      }
+      if (!noSpecialCharsRegex.test(data.NameAr)) {
+        toast.error(t("DisplayNameInvalidCharacters"));
+        return;
+      }
       if (Number(data.MinPoints) > Number(data.MaxPoints)) {
         toast.error(t("min_less_max"));
         return;
@@ -156,7 +166,7 @@ export default function ProfileLevels() {
 
       ShowToastSuccess(
         res?.Message ||
-          (editData ? t("success_level_update") : t("success_level_create")),
+        (editData ? t("success_level_update") : t("success_level_create")),
       );
       setOpenModal(false);
       setEditData(null);
@@ -164,6 +174,9 @@ export default function ProfileLevels() {
       const errorTranslations: Record<string, string> = {
         "NameEn must be unique": t("DisplayNameUnique"),
         "LevelNumber must be unique": t("LevelNumberUnique"),
+        "NameAr must be unique": t("DisplayNameUnique"),
+        "NameAr contains invalid characters": t("DisplayNameInvalidCharacters"),
+        "NameEn contains invalid characters": t("DisplayNameInvalidCharacters"),
       };
 
       const finalMsg = getTranslatedApiError(error, t, errorTranslations);

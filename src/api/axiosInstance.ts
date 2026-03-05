@@ -1,17 +1,18 @@
-import axios from 'axios';
+import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: 'https://kidsapi.pulvent.com/api', 
+  baseURL: "https://kidsapi.pulvent.com/api",
+  // baseURL: "https://mped.gov.eg/api",
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'X-Client-Type': 'Web',
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "X-Client-Type": "Web",
   },
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('GMadminToken');
+    const token = localStorage.getItem("GMadminToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,7 +20,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -31,7 +32,7 @@ axiosInstance.interceptors.response.use(
       //  window.location.href='/videos'
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

@@ -72,7 +72,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/jfif"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp", "image/bmp", "image/svg", "image/tiff"];
 
     if (!allowedTypes.includes(file.type)) {
       toast.error(t("imageTypeAllowed"));
@@ -89,13 +89,9 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
     e.preventDefault();
 
     const nameRegex = /^[a-zA-Z\u0600-\u06FF/0-9\s]+$/;
-    if (!nameRegex.test(formData.name)) {
-      toast.error(t("name_error_letters"));
-      return;
-    }
 
     if (
-      !formData.name ||
+      !formData.name.trim() ||
       !formData.ageSectorId ||
       (!previewImage && type === "add")
     ) {
@@ -103,6 +99,10 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
       return;
     }
 
+    if (!nameRegex.test(formData.name)) {
+      toast.error(t("name_error_letters"));
+      return;
+    }
     const data = new FormData();
     data.append("Name", formData.name.trim());
     data.append("AgeSectorId", formData.ageSectorId);
@@ -165,13 +165,14 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
         <Input
           label={t("Name")}
           placeholder={t("Name")}
+          star
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          required
         />
         <div className="flex flex-col gap-1 ">
           <label className="text-sm font-medium dark:text-gray-300">
-            {t("select_age_group")}
+            {t("select_age_group")} {" "}
+            <span className="text-error-500">*</span>
           </label>
           <select
             value={formData.ageSectorId}
@@ -179,7 +180,6 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               setFormData({ ...formData, ageSectorId: e.target.value })
             }
             className="w-full rounded-lg border border-gray-300 bg-transparent py-2.5 px-4 text-black outline-none transition focus:border-primary dark:border-gray-700 dark:text-white dark:bg-[#1e1e1e]"
-            required
           >
             <option value="">{t("select_age_group")}</option>
             {ageGroups.map((g) => (
@@ -191,7 +191,8 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
         </div>
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium dark:text-gray-300">
-            {t("upload_avatar_label")}
+            {t("upload_avatar_label")} {" "}
+            <span className="text-error-500">*</span>
           </label>
           <div className="flex items-center gap-4">
             <div className="relative flex h-20 w-25 shrink-0 items-center justify-center rounded-xl bg-gray-200 dark:bg-[#adf4b514] overflow-hidden border border-gray-700">
@@ -209,7 +210,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
-              accept=".png,.jpg,.jpeg,.jfif"
+              accept=".png,.jpg,.jpeg,.webp,.bmp,.svg,.tiff,.gif"
               className="hidden"
             />
             <button

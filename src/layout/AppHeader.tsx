@@ -25,13 +25,13 @@ const AppHeader: React.FC = () => {
 
   return (
     <header className="sticky top-0 flex flex-col w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-[#1e1e1e] lg:border-b">
-      <div className="flex flex-col items-center justify-between ">
+      <div className="flex flex-col items-center justify-between">
         <div
           className={`flex-col items-center justify-between w-full gap-4 md:gap-0 px-5 py-4 md:py-0 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <UserDropdown />
 
-          <div className="flex w-full  items-center justify-between gap-2 2xsm:gap-3 px-0 md:px-6 py-4">
+          <div className="flex w-full items-center justify-between gap-2 2xsm:gap-3 px-0 md:px-6 py-4">
             <a
               className="flex gap-2 items-center text-[#6B6B6B] hover:text-red-500 dark:text-white cursor-pointer"
               onClick={() => handleLogOut()}
@@ -50,7 +50,7 @@ const AppHeader: React.FC = () => {
               )}
             </a>
             <button
-              className="items-center p-1 mx-14 md:mx-0 justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 border"
+              className="items-center p-1 md:mx-0 justify-center w-6 h-6 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-8 lg:w-8 border"
               onClick={handleToggle}
               aria-label="Toggle Sidebar"
             >

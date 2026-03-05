@@ -104,17 +104,17 @@ export default function AgeGroupList() {
 
   const handleSave = async (data: AgeGroup) => {
     try {
-      const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
-      if (!noSpecialCharsRegex.test(data.DisplayName)) {
-        toast.error(t("DisplayNameInvalidCharacters"));
-        return;
-      }
       if (
         !data.DisplayName?.trim() ||
         data.FromAge === "" ||
         data.ToAge === ""
       ) {
         toast.error(t("all_fields_required"));
+        return;
+      }
+      const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
+      if (!noSpecialCharsRegex.test(data.DisplayName)) {
+        toast.error(t("DisplayNameInvalidCharacters"));
         return;
       }
 
@@ -235,8 +235,8 @@ export default function AgeGroupList() {
     <>
       <PageMeta title={pageTitle} description="" />
       <div className="relative rounded-2xl border-b border-[#D9D9D9] pb-5  dark:border-gray-800 h-full min-h-[calc(100vh-48px)] dark:bg-neutral-800 bg-[#EDEDED]">
-        <div className="h-17.5 mb-6 flex flex-wrap items-center justify-between gap-4 px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+        <div className="h-17.5 mb-6 flex items-center justify-between gap-1 md:gap-4 px-2 md:px-5 border-b border-[#D9D9D9] dark:border-gray-600 py-4">
+          <h2 className="md:text-xl font-bold text-gray-900 dark:text-white">
             {t("age_groups")}
           </h2>
           {canCreate && (
@@ -246,6 +246,7 @@ export default function AgeGroupList() {
                 setEditData(null);
                 setOpenModalAge(true);
               }}
+              className="text-[16px] md:text-lg"
             >
               {t("add_age_groups")}
             </AddButton>

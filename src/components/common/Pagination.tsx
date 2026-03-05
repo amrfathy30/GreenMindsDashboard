@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useLanguage } from "../../locales/LanguageContext";
@@ -6,7 +7,7 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  pageSize?: number; 
+  pageSize?: number;
   onPageSizeChange?: (size: number) => void;
 }
 
@@ -32,10 +33,10 @@ const Pagination: React.FC<PaginationProps> = ({
   const { t, isRTL } = useLanguage();
   const [localPageSize, setLocalPageSize] = useState(pageSize || 6);
   const [error, setError] = useState("");
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const val = Number(e.target.value);
     setLocalPageSize(val);
-  
+
     // Validation Logic
     if (val < 4) {
       setError("Min: 4");
@@ -56,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onPageSizeChange(localPageSize);
         }
       }
-    }, 800); 
+    }, 800);
     return () => clearTimeout(handler);
   }, [localPageSize, onPageSizeChange, pageSize]);
 
@@ -67,22 +68,22 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="relative flex flex-col px-2 md:px-4 lg:flex-row justify-center items-center gap-4 md:gap-6 w-full py-0 my-3">
 
-        <div className="absolute end-2 md:end-4 flex flex-col items-start order-2 lg:order-1">
+      <div className="absolute end-2 md:end-4 flex flex-col items-start order-2 lg:order-1">
         <p className="text-xs text-red-600">{error}</p>
-          <div className="flex items-center bg-white dark:bg-neutral-700 px-3 py-1 h-10 rounded-lg border border-gray-100 dark:border-gray-600 gap-2">
-            <span className="text-xs font-medium text-gray-400 dark:text-gray-300">{t("Show_per_page")}:</span>
+        <div className="flex items-center bg-white dark:bg-neutral-700 px-3 py-1 h-10 rounded-lg border border-gray-100 dark:border-gray-600 gap-2">
+          <span className="text-xs font-medium text-gray-400 dark:text-gray-300">{t("Show_per_page")}:</span>
           <input
             type="number"
             min="4"
             max="20"
             value={localPageSize}
             onChange={(e) => handleChange(e)}
-            className="w-10 text-center text-sm font-bold bg-transparent border border-[#D9D9D9] rounded-md dark:border-gray-800 focus:ring-0 focus:outline-0 dark:text-white p-0"
+            className="w-10 text-center text-sm font-bold bg-transparent border border-[#D9D9D9] rounded-md dark:border-gray-500 focus:ring-0 focus:outline-0 dark:text-white p-0"
           />
-          </div>
-
-         
         </div>
+
+
+      </div>
 
 
       <div className="flex items-center justify-center gap-2 md:gap-4 order-1 lg:order-2 w-full lg:w-auto">
@@ -103,11 +104,10 @@ const Pagination: React.FC<PaginationProps> = ({
               <button
                 key={page}
                 onClick={() => onPageChange(page as number)}
-                className={`${numberButtonClass} ${
-                  currentPage === page
+                className={`${numberButtonClass} ${currentPage === page
                     ? "bg-gradient-to-br from-[#00A7E1] to-[#00CC99] text-white shadow-lg"
                     : "text-[#BDBDBD] hover:bg-gray-50 dark:hover:bg-neutral-600"
-                }`}
+                  }`}
               >
                 {page}
               </button>

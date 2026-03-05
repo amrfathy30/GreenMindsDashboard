@@ -118,7 +118,7 @@ export default function ChildrenModal({
             placeholder={t("EnterNameHere")}
             value={formData.Name}
             onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
-            required
+            star
           />
         </div>
         <div>
@@ -130,7 +130,7 @@ export default function ChildrenModal({
             onChange={(e) =>
               setFormData({ ...formData, UserName: e.target.value })
             }
-            required
+            star
           />
         </div>
         {!initialData && (
@@ -143,7 +143,7 @@ export default function ChildrenModal({
               onChange={(e) =>
                 setFormData({ ...formData, Email: e.target.value })
               }
-              required
+              star
             />
           </div>
         )}
@@ -163,17 +163,15 @@ export default function ChildrenModal({
                 setFormData({ ...formData, PhoneNumber: phone })
               }
               className="flex dark:[&_.react-international-phone-input-container]:bg-[#1a222c] dark:[&_.react-international-phone-input-container]:border-gray-700"
-              inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
-                lang === "en"
-                  ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
-                  : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
-              }`}
+              inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${lang === "en"
+                ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
+                : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
+                }`}
               countrySelectorStyleProps={{
-                buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
-                  lang === "en"
-                    ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
-                    : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
-                }`,
+                buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${lang === "en"
+                  ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
+                  : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
+                  }`,
               }}
               inputStyle={{
                 direction: "ltr",
@@ -195,7 +193,7 @@ export default function ChildrenModal({
               onChange={(e) =>
                 setFormData({ ...formData, Password: e.target.value })
               }
-              // required
+            star
             />
           </div>
           <div>
@@ -211,11 +209,13 @@ export default function ChildrenModal({
                   ConfirmPassword: e.target.value,
                 })
               }
-              // required
+            star
             />
           </div>
         </div>
-        <p className="text-xs text-gray-600">{t("PasswordContain")}</p>
+        <p className="text-xs text-gray-600 dark:text-gray-400">
+          {t("PasswordContain")}
+        </p>
         {/* </>
         )} */}
 

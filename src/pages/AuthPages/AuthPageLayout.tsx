@@ -24,14 +24,14 @@ export default function AuthLayout({
           />
           <div className="relative flex h-full items-top justify-center z-1 pt-10">
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="/" className="block mb-4">
+              <a href="https://mped.gov.eg/" target="_blank" className="block mb-4">
                 <img
                   width={231}
                   height={48}
                   src="/images/logo/auth-logo1.png"
                   alt="Logo"
                 />
-              </Link>
+              </a>
               <Link to="/" className="block mb-4 mt-8">
                 <img
                   width={130}

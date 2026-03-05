@@ -167,6 +167,20 @@ export default function ParentsList({
         }
       }
 
+      const userName = data.UserName.trim();
+
+      if (userName.length < 3) {
+        toast.error(t("UserNameCount"));
+        return;
+      }
+
+      const lettersOnlyRegex = /^[A-Za-z\u0600-\u06FF]+$/;
+
+      if (!lettersOnlyRegex.test(userName)) {
+        toast.error(t("UserNameLettersOnly"));
+        return;
+      }
+
       if (!isValidPhone(data.PhoneNumber)) {
         toast.error(t("please_enter_valid_phone"));
         return;

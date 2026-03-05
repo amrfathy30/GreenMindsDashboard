@@ -12,6 +12,7 @@ interface TextareaProps {
   error?: boolean; // Error state
   hint?: string; // Hint text to display
   required?: boolean;
+  star?: boolean;
 }
 
 const TextArea: React.FC<TextareaProps> = ({
@@ -21,6 +22,7 @@ const TextArea: React.FC<TextareaProps> = ({
   rows = 3, // Default number of rows
   value = "", // Default value
   required,
+  star,
   onChange, // Callback for changes
   className = "", // Additional custom styles
   disabled = false, // Disabled state
@@ -52,6 +54,7 @@ const TextArea: React.FC<TextareaProps> = ({
         >
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
+          {star && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
       <textarea
@@ -66,9 +69,8 @@ const TextArea: React.FC<TextareaProps> = ({
       />
       {hint && (
         <p
-          className={`mt-2 text-sm ${
-            error ? "text-error-500" : "text-gray-500 dark:text-gray-400"
-          }`}
+          className={`mt-2 text-sm ${error ? "text-error-500" : "text-gray-500 dark:text-gray-400"
+            }`}
         >
           {hint}
         </p>

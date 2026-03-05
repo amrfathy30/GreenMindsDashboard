@@ -117,7 +117,7 @@ export default function AdminModal({
               onChange={(e) =>
                 setFormData({ ...formData, Name: e.target.value })
               }
-              required
+              star
             />
           </div>
           <div>
@@ -129,7 +129,7 @@ export default function AdminModal({
               onChange={(e) =>
                 setFormData({ ...formData, UserName: e.target.value })
               }
-              required
+              star
             />
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function AdminModal({
               onChange={(e) =>
                 setFormData({ ...formData, Email: e.target.value })
               }
-              required
+              star
             />
           </div>
         )}
@@ -165,17 +165,15 @@ export default function AdminModal({
                 "--react-international-phone-text-color": "inherit",
               } as React.CSSProperties
             }
-            inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${
-              lang === "en"
-                ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
-                : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
-            }`}
+            inputClassName={`w-full !h-[42px] dark:!bg-transparent dark:!text-white !border-[#E5E7EB] dark:!border-gray-700 ${lang === "en"
+              ? "!rounded-tr-lg !rounded-tl-none !rounded-bl-none !rounded-br-lg !border-l-0"
+              : "!rounded-tl-lg !rounded-bl-lg !rounded-br-none !rounded-tr-none !border-r-0"
+              }`}
             countrySelectorStyleProps={{
-              buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${
-                lang === "en"
-                  ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
-                  : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
-              }`,
+              buttonClassName: `!h-[42px] !border-[#E5E7EB] dark:!border-gray-700 dark:!bg-transparent ${lang === "en"
+                ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
+                : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
+                }`,
             }}
           />
         </div>
@@ -190,7 +188,7 @@ export default function AdminModal({
             onChange={(e) =>
               setFormData({ ...formData, Password: e.target.value })
             }
-            // required
+            star
           />
           <Input
             id="ConfirmPassword"
@@ -200,7 +198,7 @@ export default function AdminModal({
             onChange={(e) =>
               setFormData({ ...formData, ConfirmPassword: e.target.value })
             }
-            // required
+            star
           />
         </div>
         <p className="text-xs text-gray-600 dark:text-gray-400">

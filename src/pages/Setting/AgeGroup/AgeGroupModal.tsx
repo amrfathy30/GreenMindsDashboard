@@ -62,7 +62,7 @@ export default function AgeGroupModal({
             label={t("ageNameLabel")}
             placeholder={t("ageNamePlaceholder")}
             value={DisplayName}
-            required
+            star
             onChange={(e) => setDisplayName(e.target.value)}
           />
         </div>
@@ -70,7 +70,7 @@ export default function AgeGroupModal({
           <Input
             id="FromAge"
             type="number"
-            required
+            star
             min="1"
             max="99"
             label={t("fromLabel")}
@@ -88,7 +88,7 @@ export default function AgeGroupModal({
           <Input
             id="ToAge"
             type="number"
-            required
+            star
             min="1"
             max="99"
             label={t("toLabel")}

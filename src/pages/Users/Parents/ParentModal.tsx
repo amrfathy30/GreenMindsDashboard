@@ -118,7 +118,7 @@ export default function ParentModal({
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, Name: e.target.value }))
             }
-            required
+            star
           />
         </div>
 
@@ -131,7 +131,7 @@ export default function ParentModal({
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, UserName: e.target.value }))
             }
-            required
+            star
           />
         </div>
         {!initialData && (
@@ -144,7 +144,7 @@ export default function ParentModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, Email: e.target.value }))
               }
-              required
+              star
             />
           </div>
         )}
@@ -175,8 +175,7 @@ export default function ParentModal({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, Password: e.target.value }))
               }
-              // require  d
-            />
+              star />
           </div>
           <div>
             <Input
@@ -191,12 +190,12 @@ export default function ParentModal({
                   ConfirmPassword: e.target.value,
                 }))
               }
-              // required
-            />
+              star />
           </div>
         </div>
-        <p className="text-xs text-gray-600">{t("PasswordContain")}</p>
-        {/* </>
+        <p className="text-xs text-gray-600 dark:text-gray-400">
+          {t("PasswordContain")}
+        </p>        {/* </>
         )} */}
         {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>

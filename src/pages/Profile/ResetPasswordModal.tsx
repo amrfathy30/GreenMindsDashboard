@@ -43,6 +43,10 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
     e.preventDefault();
 
     const { otp, NewPassword, ConfirmPassword } = formData;
+    if (!otp || !NewPassword || !ConfirmPassword) {
+      toast.error(t("AllFieldsAreRequired"));
+      return;
+    }
 
     const MIN_PASSWORD_LENGTH = 8;
     const MAX_PASSWORD_LENGTH = 15;
@@ -55,10 +59,6 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
       return;
     }
 
-    if (!otp || !NewPassword || !ConfirmPassword) {
-      toast.error(t("AllFieldsAreRequired"));
-      return;
-    }
 
     if (NewPassword !== ConfirmPassword) {
       toast.error(t("PasswordsDoNotMatch"));
@@ -105,7 +105,7 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
     try {
       setSendEmailLoading(true);
       await resendEmail(email);
-      ShowToastSuccess(t("reset_email_sent_success"));
+      ShowToastSuccess(t("resend_otp_success"));
 
       setCoolDown(60);
     } catch (error: any) {
@@ -181,7 +181,7 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ email }) => {
           {sendEmailLoading
             ? t("sending")
             : coolDown > 0
-              ? `إعادة الإرسال بعد ${coolDown} ثانية`
+              ? `${t("resendAfter")} ${coolDown} ${t("seconds")}`
               : t("resendOtp")}
         </button>
       </div>
