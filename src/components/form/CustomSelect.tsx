@@ -60,7 +60,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         const spaceBelow = window.innerHeight - rect.bottom;
         const spaceAbove = rect.top;
 
-        // If space below is less than 250px and there's more space above
         if (spaceBelow < 250 && spaceAbove > spaceBelow) {
           setDropdownPosition("top");
         } else {
@@ -84,7 +83,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       case "Enter":
         e.preventDefault();
         if (!isOpen) {
-          toggleDropdown(); // Use toggleDropdown to trigger position logic
+          toggleDropdown(); 
         } else if (focusedIndex >= 0) {
           handleSelect(options[focusedIndex].value);
         }
@@ -96,7 +95,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       case "ArrowDown":
         e.preventDefault();
         if (!isOpen) {
-          toggleDropdown(); // Use toggleDropdown to trigger position logic
+          toggleDropdown(); 
         } else {
           setFocusedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
         }
