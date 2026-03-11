@@ -851,3 +851,8 @@ html:not(.dark) input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px white inset !important;
   -webkit-text-fill-color: black !important;
 }
+  
+.react-international-phone-country-selector-dropdown {
+  z-index: 50 !important;
+  background-color: white !important;
+}
