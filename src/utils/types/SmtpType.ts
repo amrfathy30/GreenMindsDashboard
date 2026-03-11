@@ -6,6 +6,7 @@ export interface SmtpList {
   Password: string;
   SenderEmail: string;
   SenderName: string;
+  BaseUrl: string;
   Enabled: boolean;
 }
 

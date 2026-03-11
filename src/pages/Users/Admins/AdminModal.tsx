@@ -8,6 +8,7 @@ import { useLanguage } from "../../../locales/LanguageContext";
 import { AdminsModalProps } from "../../../utils/types/adminType";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import CustomSelect from "../../../components/form/CustomSelect";
 
 export default function AdminModal({
   open,
@@ -201,44 +202,27 @@ export default function AdminModal({
             star
           />
         </div>
-        <p className="text-xs text-gray-600 dark:text-gray-400">
+        {/* <p className="text-xs text-gray-600 dark:text-gray-400">
           {t("PasswordContain")}
-        </p>
+        </p> */}
         {/* </>
         )} */}
-        <div>
-          <label className="block text-sm font-medium mb-1 dark:text-white">
-            {t("UserType")} <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="roleName"
-            value={formData.roleName}
-            onChange={(e) =>
-              setFormData({ ...formData, roleName: e.target.value })
-            }
-            className="w-full rounded-lg border py-2.5 px-4 bg-transparent dark:bg-transparent dark:text-white dark:border-gray-700 focus:outline-none"
-          >
-            <option value="" disabled className="dark:bg-gray-900">
-              {t("select_UserType")}
-            </option>
-            {adminRoles?.map((role) => {
-              const label =
+        <CustomSelect
+          label={t("UserType")}
+          value={formData.roleName}
+          onChange={(value) => setFormData({ ...formData, roleName: value })}
+          options={
+            adminRoles?.map((role) => ({
+              value: role.Name,
+              label:
                 role.Name.length > 20
                   ? role.Name.slice(0, 20) + "..."
-                  : role.Name;
-
-              return (
-                <option
-                  key={role.Id}
-                  value={role.Name}
-                  className="dark:bg-gray-900"
-                >
-                  {label}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+                  : role.Name,
+            })) || []
+          }
+          placeholder={t("select_UserType")}
+          star
+        />
 
         <Button type="submit" className="mt-2" disabled={loading}>
           {loading

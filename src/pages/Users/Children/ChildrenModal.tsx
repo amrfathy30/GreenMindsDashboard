@@ -154,7 +154,6 @@ export default function ChildrenModal({
 
           <div
             className="flex flex-col gap-1"
-            dir={lang === "ar" ? "rtl" : "ltr"}
           >
             <PhoneInput
               defaultCountry="eg"
@@ -173,10 +172,10 @@ export default function ChildrenModal({
                   : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
                   }`,
               }}
-              inputStyle={{
-                direction: "ltr",
-                textAlign: lang === "ar" ? "right" : "left",
-              }}
+              // inputStyle={{
+              //   direction: "ltr",
+              //   textAlign: lang === "ar" ? "right" : "left",
+              // }}
             />
           </div>
         </div>
@@ -213,9 +212,9 @@ export default function ChildrenModal({
             />
           </div>
         </div>
-        <p className="text-xs text-gray-600 dark:text-gray-400">
+        {/* <p className="text-xs text-gray-600 dark:text-gray-400">
           {t("PasswordContain")}
-        </p>
+        </p> */}
         {/* </>
         )} */}
 

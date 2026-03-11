@@ -208,12 +208,12 @@ export default function AdminsList({
         return;
       }
 
-      const lettersOnlyRegex = /^[A-Za-z\u0600-\u06FF]+$/;
+      // const lettersOnlyRegex = /^[A-Za-z\u0600-\u06FF]+$/;
 
-      if (!lettersOnlyRegex.test(userName)) {
-        toast.error(t("UserNameLettersOnly"));
-        return;
-      }
+      // if (!lettersOnlyRegex.test(userName)) {
+      //   toast.error(t("UserNameLettersOnly"));
+      //   return;
+      // }
 
       if (!isEdit) {
         if (!data.Email?.trim()) {
@@ -303,6 +303,7 @@ export default function AdminsList({
     } catch (error: any) {
       const translations: Record<string, string> = {
         "Can Accept Letter Only": t("name_error_letters"),
+        "Role does not exist": t("permission_not_exist"),
         "Name contains invalid characters. Only letters and spaces are allowed":
           t("name_error_letters"),
         "Another user with the same username already exists": t("sameUsername"),

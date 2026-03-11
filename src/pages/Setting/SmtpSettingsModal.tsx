@@ -25,6 +25,7 @@ export default function SmtpSettingsModal({
     Password: "",
     SenderEmail: "",
     SenderName: "",
+    BaseUrl: "",
     Enabled: true,
   });
 
@@ -69,18 +70,27 @@ export default function SmtpSettingsModal({
       >
         <Input
           id="SenderName"
-          label="Display Name (اسم المرسل)"
-          placeholder="Enter name here"
+          label="Sender Name (اسم المرسل)"
+          placeholder="Enter Sender Name here"
           value={formData.SenderName}
           onChange={(e) =>
             setFormData({ ...formData, SenderName: e.target.value })
           }
         />
+        <Input
+          id="BaseUrl"
+          label="Base Url (عنوان URL الأساسي)"
+          placeholder="Enter Base Url here"
+          value={formData.BaseUrl}
+          onChange={(e) =>
+            setFormData({ ...formData, BaseUrl: e.target.value })
+          }
+        />
 
         <Input
           id="SenderEmail"
-          label="SMTP Email (بريد الإرسال)"
-          placeholder="Enter email here"
+          label="Sender Email (بريد الإرسال)"
+          placeholder="Enter Sender email here"
           value={formData.SenderEmail}
           onChange={(e) =>
             setFormData({ ...formData, SenderEmail: e.target.value })
@@ -89,8 +99,8 @@ export default function SmtpSettingsModal({
 
         <Input
           id="username"
-          label="Username (اسم المستخدم)"
-          placeholder="Enter SMTP username"
+          label="User name (اسم المستخدم)"
+          placeholder="Enter SMTP user name"
           value={formData.Username}
           onChange={(e) =>
             setFormData({ ...formData, Username: e.target.value })
@@ -110,7 +120,7 @@ export default function SmtpSettingsModal({
 
         <Input
           id="Host"
-          label="SMTP server (الخادم)"
+          label="SMTP Host (الخادم)"
           placeholder="smtp.gmail.com"
           value={formData.Host}
           onChange={(e) => setFormData({ ...formData, Host: e.target.value })}
@@ -119,7 +129,7 @@ export default function SmtpSettingsModal({
         <Input
           id="Port"
           label="Port (المنفذ)"
-          placeholder="587"
+          placeholder="456"
           type="number"
           value={formData.Port}
           onChange={(e) =>

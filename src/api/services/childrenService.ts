@@ -52,6 +52,13 @@ export const getChildrenInfoById = async (
   return response.data;
 };
 
+// export const getChildAvatarById = async (
+//   userId: number,
+// ): Promise<ChildApiResponse> => {
+//   const response = await axiosInstance.get(`/Avatars/byUser/${userId}`);
+//   return response.data;
+// };
+
 export const getPointsById = async (
   childId: number,
 ): Promise<ChildPointsResponse> => {

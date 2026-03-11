@@ -147,6 +147,38 @@ export default function ParentsList({
       );
   };
 
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const maxLength = 15;
+
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+
+    if (password.length < minLength || password.length > maxLength) {
+      return "PasswordBetween";
+    }
+
+    if (!hasUppercase) {
+      return "PasswordsUppercase";
+    }
+
+    if (!hasLowercase) {
+      return "PasswordsLowercase";
+    }
+
+    if (!hasNumber) {
+      return "PasswordsDigit";
+    }
+
+    if (!hasSpecialChar) {
+      return "PasswordsAlphanumeric";
+    }
+
+    return null;
+  };
+
   const handleSave = async (data: ParentFormData) => {
     try {
       const isEdit = !!editData?.id;
@@ -174,32 +206,28 @@ export default function ParentsList({
         return;
       }
 
-      const lettersOnlyRegex = /^[A-Za-z\u0600-\u06FF]+$/;
+      // const lettersOnlyRegex = /^[A-Za-z\u0600-\u06FF]+$/;
 
-      if (!lettersOnlyRegex.test(userName)) {
-        toast.error(t("UserNameLettersOnly"));
-        return;
-      }
+      // if (!lettersOnlyRegex.test(userName)) {
+      //   toast.error(t("UserNameLettersOnly"));
+      //   return;
+      // }
 
       if (!isValidPhone(data.PhoneNumber)) {
         toast.error(t("please_enter_valid_phone"));
         return;
       }
 
-      const MIN_PASSWORD_LENGTH = 8;
-      const MAX_PASSWORD_LENGTH = 15;
-
       if (!editData?.id && data.Password) {
-        if (
-          data.Password.length < MIN_PASSWORD_LENGTH ||
-          data.Password.length > MAX_PASSWORD_LENGTH
-        ) {
-          toast.error(t("PasswordBetween"));
+        const passwordErrorKey = validatePassword(data.Password);
+
+        if (passwordErrorKey) {
+          toast.error(t(passwordErrorKey));
           return;
         }
 
         if (data.Password !== data.ConfirmPassword) {
-          toast.error(t("PasswordNotMatch"));
+          toast.error(t("passMatchError"));
           return;
         }
       }

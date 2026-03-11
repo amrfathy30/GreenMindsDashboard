@@ -105,17 +105,15 @@ const AppSidebar: React.FC = () => {
               {/* Changed from button to Link for reliable routing */}
               <Link
                 to={nav.path}
-                className={`menu-item group h-full ${
-                  isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
-                }`}
+                className={`menu-item group h-full ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
+                  }`}
                 onClick={() => setIsMobileOpen(false)}
               >
                 <span
-                  className={`menu-item-icon-size ${
-                    isActive(nav.path)
+                  className={`menu-item-icon-size ${isActive(nav.path)
                       ? "text-white dark:text-black"
                       : "text-black dark:text-white"
-                  }`}
+                    }`}
                 >
                   {nav.icon}
                 </span>
@@ -199,7 +197,7 @@ const SearchSection = ({
 }: {
   inputRef: React.RefObject<HTMLInputElement | null>;
 }) => {
-  const { isExpanded, isMobileOpen } = useSidebar();
+  const { isExpanded, setIsExpanded, isMobileOpen } = useSidebar();
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -276,13 +274,15 @@ const SearchSection = ({
             setQuery(e.target.value);
             setIsOpen(true);
           }}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            setIsOpen(true);
+            setIsExpanded(true);
+          }}
           placeholder={showFullSearch ? t("search") : ""}
-          className={`transition-all w-full duration-300 h-11 rounded-lg border text-sm border-gray-200 dark:border-gray-800
-            ${
-              showFullSearch
-                ? "w-full pl-12 pr-4  bg-transparent text-gray-900 dark:text-white text-black focus:outline-none focus:ring-2 focus:ring-transparent"
-                : "w-10 px-2 bg-transparent text-gray-900 dark:text-white"
+          className={`transition-all w-full duration-300 h-11 rounded-lg border text-sm border-gray-200 dark:border-gray-800  focus:outline-none focus:ring-2 focus:ring-black  dark:focus:border-gray-600 
+            ${showFullSearch
+              ? "w-full pl-12 pr-4 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-transparent"
+              : "w-10 px-2 bg-transparent text-gray-900 dark:text-white"
             }`}
         />
       </form>

@@ -115,28 +115,28 @@ export default function ChildrenInfo() {
 
   const childDetails = childData
     ? [
-        { label: t("Name"), value: childData.Name || "__" },
-        {
-          label: t("Phone"),
-          value: childData.PhoneNumber || childData.PhoneNumber || "__",
-        },
-        { label: t("Email"), value: childData.Email || "__" },
-        {
-          label: t("Gender"),
-          value:
-            childData.GenderId === 1
-              ? t("Male")
-              : childData.GenderId === 2
-                ? t("Female")
-                : "__",
-        },
-        {
-          label: t("DateOfBirth"),
-          value: childData.DateOfBirth
-            ? new Date(childData.DateOfBirth).toLocaleDateString()
-            : "__",
-        },
-      ]
+      { label: t("Name"), value: childData.Name || "__" },
+      {
+        label: t("Phone"),
+        value: childData.PhoneNumber || childData.PhoneNumber || "__",
+      },
+      { label: t("Email"), value: childData.Email || "__" },
+      {
+        label: t("Gender"),
+        value:
+          childData.GenderId === 1
+            ? t("Male")
+            : childData.GenderId === 2
+              ? t("Female")
+              : "__",
+      },
+      {
+        label: t("DateOfBirth"),
+        value: childData.DateOfBirth
+          ? new Date(childData.DateOfBirth).toLocaleDateString()
+          : "__",
+      },
+    ]
     : [];
 
   if (!childId) {
@@ -172,14 +172,17 @@ export default function ChildrenInfo() {
         {childInfoData?.Avatar?.ImageUrl ? (
           <img
             className="w-10 h-10 rounded-full object-cover"
-            src={childInfoData.Avatar?.ImageUrl}
+            src={childInfoData.Avatar?.ImageUrl || "default-profile.jpg"}
             alt={t("ChildImage")}
             onError={(e) => {
-              e.currentTarget.style.display = "none";
+              e.currentTarget.src = 'default-profile.jpg';
             }}
           />
         ) : (
-          <div className="w-10 h-10 rounded-full bg-gray-300" />
+          <div className="w-10 h-10 rounded-full bg-gray-300 flex justify-center items-center" >
+            <img src="/default-profile.jpg" alt="" className="rounded-full object-cover w-full h-full" />
+          </div>
+
         )}
 
         <h2 className="font-medium text-2xl text-[#000000] dark:text-white truncate">
@@ -195,9 +198,8 @@ export default function ChildrenInfo() {
           >
             <h2 className="font-semibold dark:text-white">{detail.label}</h2>
             <h3
-              className={`dark:text-white truncate ${
-                detail.label === t("Email") ? "ltr text-left" : ""
-              }`}
+              className={`dark:text-white truncate ${detail.label === t("Email") ? "ltr text-left" : ""
+                }`}
               dir={detail.label === t("Email") ? "ltr" : undefined}
             >
               {detail.value}

@@ -257,7 +257,7 @@ export default function SignInForm() {
         title={t("resetPassword")}
       >
         {resetPasswordStage === "email" ? (
-          <form onSubmit={handleSendResetEmail} className="flex flex-col gap-3 p-6 my-6 border rounded-2xl">
+          <form onSubmit={handleSendResetEmail} className="flex flex-col gap-3 p-6 my-6 border dark:border-gray-700 rounded-2xl">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {t("enter_email_for_reset")}
             </p>

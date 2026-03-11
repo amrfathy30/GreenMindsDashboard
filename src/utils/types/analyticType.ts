@@ -28,6 +28,7 @@ export interface TopRankedUser {
   TotalPoints: number;
   LevelId: number;
   LevelName: string;
+  Avatar: string;
 }
 
 export interface AgeSector {

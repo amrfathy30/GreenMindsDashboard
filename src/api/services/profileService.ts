@@ -38,3 +38,8 @@ export const GetPersonalInfoById = async (id: number | string) => {
   const response = await axiosInstance.get(`/Account/GetPersonalInfo?id=${id}`);
   return response.data;
 };
+
+export const GetAccountById = async (id: number | string) => {
+  const response = await axiosInstance.get(`/Account/${id}`);
+  return response.data;
+};

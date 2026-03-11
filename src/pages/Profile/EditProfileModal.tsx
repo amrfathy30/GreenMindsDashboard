@@ -14,7 +14,8 @@ import {
 } from "../../utils/types/profileType";
 import { toast } from "sonner";
 import {
-  GetPersonalInfoById,
+  GetAccountById,
+  // GetPersonalInfoById,
   updateProfile,
 } from "../../api/services/profileService";
 import { useLanguage } from "../../locales/LanguageContext";
@@ -51,7 +52,7 @@ export default function EditProfileModal({
       try {
         setLoadingData(true);
 
-        const res = await GetPersonalInfoById(adminId);
+        const res = await GetAccountById(adminId);
         setPersonalInfo(res?.Data);
 
         const data = res?.Data;
@@ -59,7 +60,7 @@ export default function EditProfileModal({
           Name: data?.Name ?? "",
           UserName: data?.UserName ?? "",
           Email: data?.Email ?? "",
-          Phone: data?.Phone ?? "",
+          Phone: data?.PhoneNumber ?? "",
           Id: data?.Id,
         });
       } catch (error: any) {
@@ -73,6 +74,8 @@ export default function EditProfileModal({
 
     fetchPersonalInfo();
   }, [open, adminId]);
+
+  
   useEffect(() => {
     if (personalInfo?.AvatarUrl) {
       setAvatar(personalInfo.AvatarUrl);
@@ -301,10 +304,6 @@ export default function EditProfileModal({
                   ? "!rounded-tl-lg !rounded-bl-lg !rounded-tr-none !rounded-br-none"
                   : "!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none"
                   }`,
-              }}
-              inputStyle={{
-                direction: "ltr",
-                textAlign: lang === "ar" ? "right" : "left",
               }}
             />
           </div>

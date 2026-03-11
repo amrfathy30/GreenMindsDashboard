@@ -10,6 +10,7 @@ export default function TopRanked({
     TotalPoints: number;
     LevelId: number;
     LevelName: string;
+    Avatar: string;
   }[];
 }) {
   const { t } = useLanguage();
@@ -29,7 +30,10 @@ export default function TopRanked({
             <div className="flex items-center gap-2">
               <img
                 className="w-10 h-10 rounded-full"
-                src="/images/child.png"
+                src={user.Avatar || "/default-profile.jpg"}
+                onError={(e) => {
+                  e.currentTarget.src = "/default-profile.jpg"
+                }}
                 alt="child-image"
               />
 

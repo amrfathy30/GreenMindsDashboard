@@ -329,6 +329,7 @@ export default function Setting() {
             Username: "",
             Password: "",
             SenderEmail: "",
+            BaseUrl: "",
             SenderName: "",
             Enabled: true,
           }
