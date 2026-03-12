@@ -116,7 +116,7 @@ export default function PointsDistribution({
                         {lvl.UsersCount}
                       </span>
                       <span className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">
-                        {t("points")}
+                        {t("PointsDistributionChild")}
                       </span>
                     </div>
                   </div>

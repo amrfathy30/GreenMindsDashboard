@@ -213,6 +213,11 @@ export default function ParentsList({
       //   return;
       // }
 
+      if (!/^[a-zA-Z0-9\u0600-\u06FF]*$/.test(userName)) {
+        toast.error(t("can_accept_letter_only"));
+        return;
+      }
+
       if (!isValidPhone(data.PhoneNumber)) {
         toast.error(t("please_enter_valid_phone"));
         return;
@@ -268,6 +273,7 @@ export default function ParentsList({
       const translations: Record<string, string> = {
         "Password Should contain one at least of (a capital letter, small letter, symbol, and number)":
           t("PasswordContain"),
+        "Can Accept Letter Only": t("name_error_letters"),
         "Name contains invalid characters. Only letters and spaces are allowed":
           t("name_error_letters"),
         "Another user with the same username already exists": t("sameUsername"),

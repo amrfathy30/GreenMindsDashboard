@@ -171,7 +171,7 @@ export default function ChildrenInfo() {
       <div className="flex items-center gap-2">
         {childInfoData?.Avatar?.ImageUrl ? (
           <img
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10 rounded-full object-cover shrink-0"
             src={childInfoData.Avatar?.ImageUrl || "default-profile.jpg"}
             alt={t("ChildImage")}
             onError={(e) => {
@@ -179,7 +179,7 @@ export default function ChildrenInfo() {
             }}
           />
         ) : (
-          <div className="w-10 h-10 rounded-full bg-gray-300 flex justify-center items-center" >
+          <div className="w-10 h-10 rounded-full bg-gray-300 flex justify-center items-center shrink-0">
             <img src="/default-profile.jpg" alt="" className="rounded-full object-cover w-full h-full" />
           </div>
 

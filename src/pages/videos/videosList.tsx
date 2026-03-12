@@ -30,6 +30,7 @@ const BASE_URL = "https://kidsapi.pulvent.com";
 
 export default function VideosList() {
   const { t, isRTL } = useLanguage();
+  const lang = localStorage.getItem("GM-language") || "en";
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<VideoType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -248,7 +249,7 @@ export default function VideosList() {
                         </span>
                       </td>{" "}
                       <td className="px-4 py-3 text-center">
-                        <div className="flex items-center justify-center gap-1">
+                        <div className={`flex items-center justify-center gap-1 ${lang === "ar" ? "flex-row-reverse" : "flex-row"}`}>
                           <span className="text-[#00B69B] font-lalezar text-lg md:text-xl">
                             +{video.NumberOfPoints}
                           </span>

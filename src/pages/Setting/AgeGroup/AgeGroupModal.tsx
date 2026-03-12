@@ -6,6 +6,7 @@ import Input from "../../../components/form/input/InputField";
 import Button from "../../../components/ui/button/Button";
 import { AgeGroupModalProps } from "../../../utils/types/ageType";
 import { useLanguage } from "../../../locales/LanguageContext";
+import { toast } from "sonner";
 
 export default function AgeGroupModal({
   open,
@@ -71,14 +72,23 @@ export default function AgeGroupModal({
             id="FromAge"
             type="number"
             star
-            min="1"
-            max="99"
             label={t("fromLabel")}
             placeholder={t("fromPlaceholder")}
             value={FromAge}
             onChange={(e) => {
               const val = e.target.value;
-              if (val === "" || (Number(val) >= 1 && Number(val) <= 99)) {
+
+              if (val === "") {
+                setFromAge(val);
+                return;
+              }
+
+              if (Number(val) > 99) {
+                toast.error(t("FromAge_range"));
+                return;
+              }
+
+              if (Number(val) >= 1) {
                 setFromAge(val);
               }
             }}
@@ -89,14 +99,23 @@ export default function AgeGroupModal({
             id="ToAge"
             type="number"
             star
-            min="1"
-            max="99"
             label={t("toLabel")}
             placeholder={t("toPlaceholder")}
             value={ToAge}
             onChange={(e) => {
               const val = e.target.value;
-              if (val === "" || Number(val) <= 99) {
+
+              if (val === "") {
+                setToAge(val);
+                return;
+              }
+
+              if (Number(val) > 99) {
+                toast.error(t("ToAge_range"));
+                return;
+              }
+
+              if (Number(val) >= 1) {
                 setToAge(val);
               }
             }}

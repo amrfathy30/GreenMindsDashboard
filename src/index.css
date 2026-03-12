@@ -852,7 +852,23 @@ html:not(.dark) input:-webkit-autofill {
   -webkit-text-fill-color: black !important;
 }
   
+/* react-international-phone overrides */
 .react-international-phone-country-selector-dropdown {
-  z-index: 50 !important;
-  background-color: white !important;
+  @apply !z-50 !bg-white dark:!bg-[#1e1e1e] !border !border-gray-200 dark:!border-gray-700 !shadow-lg;
+}
+
+.react-international-phone-country-selector-dropdown__list-item {
+  @apply !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800/50 !text-gray-900 dark:!text-gray-200 !transition-colors;
+}
+
+.react-international-phone-country-selector-dropdown__list-item--selected {
+  @apply !bg-gray-100 dark:!bg-gray-800 !font-semibold;
+}
+
+.react-international-phone-country-selector-dropdown__list-item:hover .react-international-phone-country-selector-dropdown__label {
+  @apply !text-gray-900 dark:!text-white;
+}
+
+.react-international-phone-country-selector-dropdown__label {
+  @apply !text-gray-700 dark:!text-gray-300;
 }

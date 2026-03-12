@@ -25,10 +25,10 @@ export default function UserDropdown() {
           </div>
           {isExpanded || isMobileOpen ? (
             <div className="flex flex-col items-start text-black dark:text-white">
-              <span className="block me-1 font-medium text-theme-sm">
+              <span className="block me-1 font-medium text-theme-sm truncate max-w-[150px]">
                 {admin?.Name}
               </span>
-              <span className="block me-1 font-medium text-theme-sm">
+              <span className="block me-1 font-medium text-theme-sm truncate max-w-[200px]">
                 {admin?.Email}
               </span>
             </div>

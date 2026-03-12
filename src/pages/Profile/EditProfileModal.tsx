@@ -75,7 +75,7 @@ export default function EditProfileModal({
     fetchPersonalInfo();
   }, [open, adminId]);
 
-  
+
   useEffect(() => {
     if (personalInfo?.AvatarUrl) {
       setAvatar(personalInfo.AvatarUrl);
@@ -240,8 +240,8 @@ export default function EditProfileModal({
               </div>
 
               <div className="flex flex-col dark:text-white">
-                <h2>{personalInfo?.Name}</h2>
-                <h2>{personalInfo?.Email}</h2>
+                <h2 className="truncate max-w-[250px]">{personalInfo?.Name}</h2>
+                <h2 className="truncate max-w-[250px]">{personalInfo?.Email}</h2>
               </div>
             </div>
             <div>
@@ -261,16 +261,32 @@ export default function EditProfileModal({
             label={t("adminName")}
             placeholder={t("EnterNameHere")}
             value={formData.Name}
-            onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (!/^[a-zA-Z0-9\u0600-\u06FF ]*$/.test(value)) {
+                toast.error(t("can_accept_letter_only"));
+                return;
+              }
+
+              setFormData({ ...formData, Name: value });
+            }}
           />
           <Input
             id="UserName"
             label={t("UserName")}
             placeholder={t("UserName")}
             value={formData.UserName}
-            onChange={(e) =>
-              setFormData({ ...formData, UserName: e.target.value })
-            }
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (!/^[a-zA-Z0-9\u0600-\u06FF ]*$/.test(value)) {
+                toast.error(t("can_accept_letter_only"));
+                return;
+              }
+
+              setFormData({ ...formData, UserName: value });
+            }}
           />
 
           {/* <Input

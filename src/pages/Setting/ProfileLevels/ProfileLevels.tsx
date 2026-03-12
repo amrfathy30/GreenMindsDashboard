@@ -173,6 +173,7 @@ export default function ProfileLevels() {
     } catch (error: any) {
       const errorTranslations: Record<string, string> = {
         "NameEn must be unique": t("DisplayNameUnique"),
+        "The dto field is required": t("The_level_number_is_too_large"),
         "LevelNumber must be unique": t("LevelNumberUnique"),
         "NameAr must be unique": t("DisplayNameUnique"),
         "NameAr contains invalid characters": t("DisplayNameInvalidCharacters"),

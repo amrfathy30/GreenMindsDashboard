@@ -25,6 +25,38 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
     ConfirmPassword: "",
   });
 
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const maxLength = 15;
+
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+
+    if (password.length < minLength || password.length > maxLength) {
+      return "PasswordBetween";
+    }
+
+    if (!hasUppercase) {
+      return "PasswordsUppercase";
+    }
+
+    if (!hasLowercase) {
+      return "PasswordsLowercase";
+    }
+
+    if (!hasNumber) {
+      return "PasswordsDigit";
+    }
+
+    if (!hasSpecialChar) {
+      return "PasswordsAlphanumeric";
+    }
+
+    return null;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -38,25 +70,18 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
       return;
     }
 
-    const MIN_PASSWORD_LENGTH = 8;
-    const MAX_PASSWORD_LENGTH = 15;
+    if (NewPassword) {
+      const passwordErrorKey = validatePassword(NewPassword);
 
-    if (
-      NewPassword.length < MIN_PASSWORD_LENGTH ||
-      NewPassword.length > MAX_PASSWORD_LENGTH
-    ) {
-      toast.error(t("PasswordBetween"));
-      return;
-    }
+      if (passwordErrorKey) {
+        toast.error(t(passwordErrorKey));
+        return;
+      }
 
-    if (NewPassword === CurrentPassword) {
-      toast.error(t("new_password_same_as_old"));
-      return;
-    }
-
-    if (NewPassword !== ConfirmPassword) {
-      toast.error(t("passwords_not_match"));
-      return;
+      if (NewPassword !== ConfirmPassword) {
+        toast.error(t("passMatchError"));
+        return;
+      }
     }
     try {
       setLoading(true);
@@ -128,7 +153,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         placeholder={t("placeholderOldPass")}
         value={formData.CurrentPassword}
         onChange={handleChange}
-        required
+        star
       />
 
       <Input
@@ -138,7 +163,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         placeholder={t("placeholderNewPass")}
         value={formData.NewPassword}
         onChange={handleChange}
-        required
+        star
       />
 
       <Input
@@ -148,7 +173,7 @@ const ChangePasswordModal: React.FC<ModalProps> = ({
         placeholder={t("placeholderConfirmPass")}
         value={formData.ConfirmPassword}
         onChange={handleChange}
-        required
+        star
       />
 
       {/* <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">

@@ -127,7 +127,12 @@ const translations = {
     LastRegister: "Last Register",
     Children: "Children",
     Actions: "Actions",
+    ToAge_must_be_at_least_1: "End age must be at least 1",
+    FromAge_must_be_at_least_1: "Start age must be at least 1",
     ThumbnailUrlValid: "Thumbnail Url must be a valid URL",
+    AndroidLinkValid: "Android Link must be a valid URL",
+    IosLinkValid: "Ios Link must be a valid URL",
+    AppLinkValid: "App Link must be a valid URL",
     AgeSectorIExisting:
       "Age SectorId does not reference an existing Age group.",
     upload_thumbnail_required:
@@ -136,6 +141,7 @@ const translations = {
       "The age sector linked to this game was deleted. Please choose another one.",
     PasswordBetween: "Password must be between 8 and 15 characters",
     DeleteParent: "Delete Parent",
+    The_level_number_is_too_large: "The level number is too large",
     ParentDeletedSuccessfully: "Parent Deleted Successfully",
     AreYouSureDeleteParent: "Are you sure you want to delete this parent?",
     please_enter_valid_phone: "Please enter a valid phone number.",
@@ -152,6 +158,7 @@ const translations = {
     ParentChildren: "Parent Child",
     ChildrenSearch: "Child Search",
     NoData: "No Data Found",
+    PointsDistributionChild: "Kids",
     loading: "loading ...",
     UpdateParent: "Update Parent",
     AddParent: "Add Parent",
@@ -234,7 +241,7 @@ const translations = {
     Level3: "Level 3",
     Level4: "Level 4",
     Level5: "Level 5",
-    PointsDistribution: "Points Distribution",
+    PointsDistribution: "Distributing children into levels",
     permission_not_exist: "This role has no permissions.",
     UsersCount: "Users Count",
     UsersByAccount: "Users By Account",
@@ -266,6 +273,7 @@ const translations = {
       "Password Should contain one at least of (a capital letter, small letter, symbol, and number)",
     success_update: "Updated successfully",
     DisplayNameUnique: "Name must be unique.",
+    UserNotFound: "User not found.",
     RoleExists: "Role already exists.",
     /*** */
     password_min_length: "Password Must be 8 digits or more",
@@ -277,6 +285,7 @@ const translations = {
     oto_sent_success: "A verification code (OTP) has been sent to your email address.",
 
     ToAge_range: "The age limit must be between 1 and 99",
+    FromAge_range: "The age limit must be between 1 and 99",
     FromAge_less_than_ToAge: "Start age must be less than end age",
 
     InvalidEmailOrPasswordWithAttempts:
@@ -448,9 +457,6 @@ const translations = {
     PasswordNotMatch: "Passwords do not match",
     passUpdateSuccess: "Password updated successfully",
     resetEmailSuccess: "Reset email sent successfully",
-    AppLinkValid: "App Link must be a valid URL.",
-    IosLinkValid: "Ios Link must be a valid URL.",
-    AndroidLinkValid: "Android Link must be a valid URL.",
     // permission
     Permission: "Permissions",
     success_delete_role: "The Role has been deleted successfully",
@@ -509,7 +515,7 @@ const translations = {
     permissions_group_debug: "Debug",
 
     special_chars_not_allowed: "Special characters are not allowed",
-    can_accept_letter_only: "Name should contain letters only",
+    can_accept_letter_only: "Name should contain letters and numbers only",
     account_locked: "Account locked due to multiple failed attempts",
   },
   ar: {
@@ -605,7 +611,7 @@ const translations = {
     Level3: "مستوي 3",
     Level4: "مستوي 4",
     Level5: "مستوي 5",
-    PointsDistribution: "توزيع النقاط",
+    PointsDistribution: "توزيع الأطفال على المستويات",
     permission_not_exist: "لا يملك هذا الدور أي صلاحيات.",
     UsersCount: "عدد المستخدمين",
     UsersByAccount: "المستخدمون حسب الحساب",
@@ -650,9 +656,15 @@ const translations = {
       "الفئة العمرية المحذوفة كانت مرتبطة باللعبة، برجاء اختيار فئة عمرية جديدة",
     AgeSectorIExisting: "لا يشير Age SectorId إلى فئة عمرية موجودة.",
     ThumbnailUrlValid: "يجب أن يكون عنوان URL للصورة المصغرة صالحًا",
+    IosLinkValid: "يجب أن يكون رابط IOS صالحا",
+    AndroidLinkValid: "يجب أن يكون رابط الأندرويد صالحا",
+    AppLinkValid: "يجب أن يكون رابط التطبيق صالحا",
     PasswordBetween: "يجب أن تتراوح كلمة المرور بين 8 و 15 حرفًا",
     OnlyMP4Allowed: "يُسمح فقط بمقاطع الفيديو بصيغة MP4",
+    ToAge_must_be_at_least_1: "يجب أن تكون الفئة العمرية (إلى) 1 على الأقل",
+    FromAge_must_be_at_least_1: "يجب أن تكون الفئة العمرية (من) 1 على الأقل",
     DeleteParent: "حذف ولي الأمر",
+    The_level_number_is_too_large: "رقم المستوى كبير جدًا",
     AreYouSureDeleteParent: "هل أنت متأكد أنك تريد حذف ولي الأمر؟",
     please_enter_valid_phone: "من فضلك أدخل رقم هاتف صحيح.",
     phone_number_required: "من فضلك أدخل رقم الهاتف بعد مفتاح الدولة.",
@@ -675,6 +687,7 @@ const translations = {
     ParentChildren: "أبناء ولي الأمر",
     ChildrenSearch: "بحث عن الأبناء",
     Child: "ابن",
+    PointsDistributionChild: "اطفال",
     loading: "تحميل ...",
     NoData: "لا يوجد بيانات",
     TypeName: "نوع المستخدم",
@@ -725,6 +738,7 @@ const translations = {
     success_update: "تم التحديث بنجاح",
     DisplayNameUnique: "يجب أن يكون الاسم فريدًا.",
     RoleExists: "الدور موجود بالفعل",
+    UserNotFound: "المستخدم غير موجود",
     new_password_same_as_old: "كلمة المرور الجديدة يجب أن تختلف عن القديمة",
     PasswordContain:
       "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل مما يلي: (حرف كبير، حرف صغير، رمز، ورقم)",
@@ -751,6 +765,7 @@ const translations = {
     //password_requirements: "يجب أن تحتوي كلمة المرور على حرف كبير، حرف صغير، رمز، ورقم على الأقل",
 
     ToAge_range: "يجب أن تكون الفئة العمرية (إلى) بين 1 و 99",
+    FromAge_range: "يجب أن تكون الفئة العمرية (من) بين 1 و 99",
     FromAge_less_than_ToAge: "يجب أن يكون سن البداية أقل من سن النهاية",
     InvalidEmailOrPasswordWithAttempts:
       "البريد الإلكتروني أو كلمة المرور غير صحيحة. لديك {{count}} محاولات متبقية.",
@@ -924,9 +939,6 @@ const translations = {
     PasswordNotMatch: "كلمات المرور غير متطابقة",
     passUpdateSuccess: "تم تحديث كلمة المرور بنجاح",
     resetEmailSuccess: "تم إرسال بريد إعادة التعيين بنجاح",
-    AppLinkValid: "يجب أن يكون رابط التطبيق صالحًا.",
-    IosLinkValid: "يجب أن يكون رابط ios صالحًا.",
-    AndroidLinkValid: "يجب أن يكون رابط Android صالحًا.",
     Editprofile: "تعديل الملف الشخصي",
     resend_after: "إعادة الإرسال بعد",
     OtpSentMessage: "تم إرسال كلمة مرور لمرة واحدة (OTP) إلى بريدك الإلكتروني.",
@@ -1005,7 +1017,7 @@ const translations = {
     permissions_group_debug: "التصحيح والأخطاء",
 
     special_chars_not_allowed: "غير مسموح باستخدام الرموز الخاصة",
-    can_accept_letter_only: "يجب أن يحتوي الاسم على أحرف فقط",
+    can_accept_letter_only: "يجب أن يحتوي الاسم على أحرف وارقام فقط",
     account_locked: "تم قفل الحساب بسبب محاولات تسجيل دخول خاطئة متعددة",
   },
 };

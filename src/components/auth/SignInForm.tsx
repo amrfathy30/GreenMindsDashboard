@@ -57,6 +57,38 @@ export default function SignInForm() {
       );
   };
 
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const maxLength = 15;
+
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+
+    if (password.length < minLength || password.length > maxLength) {
+      return "PasswordBetween";
+    }
+
+    if (!hasUppercase) {
+      return "PasswordsUppercase";
+    }
+
+    if (!hasLowercase) {
+      return "PasswordsLowercase";
+    }
+
+    if (!hasNumber) {
+      return "PasswordsDigit";
+    }
+
+    if (!hasSpecialChar) {
+      return "PasswordsAlphanumeric";
+    }
+
+    return null;
+  };
+
   const getAdminRoute = (permissions: any) => {
     if (permissions.includes("Videos_GetPaged")) return "/videos";
     else if (permissions.includes("Games_GetPaged")) return "/games";
@@ -76,15 +108,13 @@ export default function SignInForm() {
       return;
     }
 
-    const MIN_PASSWORD_LENGTH = 8;
-    const MAX_PASSWORD_LENGTH = 15;
+    if (password) {
+      const passwordErrorKey = validatePassword(password);
 
-    if (
-      password.length < MIN_PASSWORD_LENGTH ||
-      password.length > MAX_PASSWORD_LENGTH
-    ) {
-      toast.error(t("PasswordBetween"));
-      return;
+      if (passwordErrorKey) {
+        toast.error(t(passwordErrorKey));
+        return;
+      }
     }
 
     setLoading(true);
@@ -135,6 +165,8 @@ export default function SignInForm() {
         } else {
           finalMsg = t("AccountLocked");
         }
+      } else if (message === "Web access is restricted to admin users") {
+        finalMsg = t("Web_access_restricted");
       } else {
         finalMsg = message || t("SomethingWentWrongPleaseTryAgain");
       }
@@ -157,9 +189,9 @@ export default function SignInForm() {
     try {
       setSendEmailLoading(true);
 
-      const res = await sendEmail(resetEmail);
+      await sendEmail(resetEmail);
 
-      ShowToastSuccess(res?.Message || t("oto_sent_success"));
+      ShowToastSuccess(t("oto_sent_success"));
 
       setResetPasswordStage("reset");
 
@@ -167,6 +199,7 @@ export default function SignInForm() {
     } catch (error: any) {
       const translations: Record<string, string> = {
         "Please try again": t("please_try_again"),
+        "User not found": t("UserNotFound"),
         "Password Should contain one at least of (a capital letter, small letter, symbol, and number)": t("PasswordContain"),
         "Web access is restricted to admin users": t("Web_access_restricted"),
         "Too many reset requests. Please wait at least 60 seconds before trying again, and do not exceed 5 requests per hour":

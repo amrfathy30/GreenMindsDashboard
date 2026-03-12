@@ -390,14 +390,19 @@ export default function VideoFormModal({
               type="number"
               placeholder="0"
               value={points.toString()}
-              onChange={(e) => setPoints(Number(e.target.value))}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val.length <= 10) {
+                  setPoints(Number(val));
+                }
+              }}
             // required
             />
           </div>
         </div>
         <Button
           type="submit"
-          className={`mt-4 py-3 transition-all duration-300 bg-black hover:bg-black/90`}
+          className={`mt-4 py-3 transition-all duration-300 bg-black hover:bg-black/80`}
           disabled={loading}
         >
           {loading

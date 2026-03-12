@@ -255,11 +255,10 @@ export default function AdminRoles() {
               <button
                 key={role.Id}
                 onClick={() => setActiveTab(index)}
-                className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 truncate md:w-57.5 ${
-                  activeTab === index
-                    ? "bg-secondary text-white shadow-md"
-                    : "text-gray-500 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
+                className={`py-2.5 px-4 text-start rounded-lg text-sm font-medium transition-all duration-200 truncate md:w-57.5 ${activeTab === index
+                  ? "bg-secondary text-white shadow-md"
+                  : "text-gray-500 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+                  }`}
               >
                 {role?.Name}
               </button>
@@ -274,7 +273,7 @@ export default function AdminRoles() {
                     <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">
                       {t("current_role")}
                     </span>
-                    <h3 className="text-lg font-bold text-gray-800 dark:text-white leading-tight line-clamp-1">
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-white leading-tight line-clamp-1 truncate max-w-[150px] md:max-w-[350px]">
                       {adminRoles[activeTab].Name}
                     </h3>
                   </div>
@@ -290,9 +289,9 @@ export default function AdminRoles() {
              disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {allPermissions.length > 0 &&
-                      allPermissions.every((p: any) =>
-                        selectedPermissions.includes(p.Id),
-                      )
+                        allPermissions.every((p: any) =>
+                          selectedPermissions.includes(p.Id),
+                        )
                         ? t("unselect_all")
                         : t("select_all")}
                     </button>

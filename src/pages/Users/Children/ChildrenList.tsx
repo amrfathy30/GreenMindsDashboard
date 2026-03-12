@@ -212,6 +212,11 @@ export default function ChildrenList({
       //   return;
       // }
 
+      if (!/^[a-zA-Z0-9\u0600-\u06FF]*$/.test(userName)) {
+        toast.error(t("can_accept_letter_only"));
+        return;
+      }
+
       if (!isEdit) {
         if (!data.Email?.trim()) {
           toast.error(t("email_required"));
@@ -358,7 +363,7 @@ export default function ChildrenList({
       key: "Email",
       label: t("email"),
       render: (row: any) => (
-        <div className="flex items-center gap-2 dark:text-white">
+        <div className="flex items-center gap-2 dark:text-white max-w-80 truncate">
           <span>{row.Email || "__"}</span>
         </div>
       ),

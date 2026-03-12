@@ -234,6 +234,18 @@ const GameModal: React.FC<GameModalProps> = ({
         toast.error(t("ThumbnailUrlValid"));
         return;
       }
+      if (!isValidUrl(formDataState.appLink)) {
+        toast.error(t("AppLinkValid"));
+        return;
+      }
+      if (!isValidUrl(formDataState.ios)) {
+        toast.error(t("IosLinkValid"));
+        return;
+      }
+      if (!isValidUrl(formDataState.android)) {
+        toast.error(t("AndroidLinkValid"));
+        return;
+      }
 
       // if (!isImageUrl(formDataState.thumbnailUrl)) {
       //   toast.error(t("imageTypeAllowed"));

@@ -215,6 +215,11 @@ export default function AdminsList({
       //   return;
       // }
 
+      if (!/^[a-zA-Z0-9\u0600-\u06FF]*$/.test(userName)) {
+        toast.error(t("can_accept_letter_only"));
+        return;
+      }
+
       if (!isEdit) {
         if (!data.Email?.trim()) {
           toast.error(t("email_required"));

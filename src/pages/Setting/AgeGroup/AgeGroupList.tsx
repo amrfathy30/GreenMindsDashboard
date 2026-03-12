@@ -112,6 +112,17 @@ export default function AgeGroupList() {
         toast.error(t("all_fields_required"));
         return;
       }
+
+      if (Number(data.FromAge) === 0) {
+        toast.error(t("FromAge_must_be_at_least_1"));
+        return;
+      }
+
+      if (Number(data.ToAge) === 0) {
+        toast.error(t("ToAge_must_be_at_least_1"));
+        return;
+      }
+
       const noSpecialCharsRegex = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
       if (!noSpecialCharsRegex.test(data.DisplayName)) {
         toast.error(t("DisplayNameInvalidCharacters"));
